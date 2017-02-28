@@ -33,9 +33,9 @@ If in a contract launched by the user the string MoneyTransfer("Recipient,Amount
 
 
 2. Adding in the *Signatures* table the entry containing:
-*	*MoneyTransfer* contract name,
-*	field names whose values will be displayed to the user, and their text description,
-*	text to be displayed upon confirmation.
+•	MoneyTransfer contract name,
+•	field names whose values will be displayed to the user, and their text description,
+•	text to be displayed upon confirmation.
 
 In the current example it will be enough specifying two fields **Receipient** and **Amount**:
 
