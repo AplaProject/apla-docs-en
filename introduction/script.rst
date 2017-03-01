@@ -12,15 +12,15 @@ Value types and variables
 
 The language variables are declared with the indication of the value type. The automatic type conversion is applied in obvious cases. The following types of values are used:
 
-●	**bool** - boolean which takes true or false value;
-●	**bytes** - byte sequence;
-●	**int** - 64-bit integer;
-●	**address** - 64-bit unsigned integer;
-●	**array** - an array of values with arbitrary types;
-●	**map** - an associative array of values with arbitrary types with string keys;
-●	**money** - an integer of the big integer type; the values are stored in the database without the decimal points, which are inserted upon display in the interface in accordance with the currency settings; 
+*	**bool** - boolean which takes true or false value;
+*	**bytes** - byte sequence;
+*	**int** - 64-bit integer;
+*	**address** - 64-bit unsigned integer;
+*	**array** - an array of values with arbitrary types;
+*	**map** - an associative array of values with arbitrary types with string keys;
+*	**money** - an integer of the big integer type; the values are stored in the database without the decimal points, which are inserted upon display in the interface in accordance with the currency settings; 
 float - 64-bit floating-point number;
-●	**string** - a line; it is specified in double or reverse quotes - “This is a line” or This is a line.
+*	**string** - a line; it is specified in double or reverse quotes - “This is a line” or This is a line.
 
 All identifiers - names of variables, functions, contracts, etc. are a case sensitive ones (MyFunc and myFunc - these are different names).
 
