@@ -305,7 +305,7 @@ Errors in the performance of any function are processed automatically causing th
 ********************************************************************************
 Rights of access to system components
 ********************************************************************************
-eGaaS has a multi-level rights management system for the creation and editing of database tables, contracts, pages and interface menu, and parameters of the state setting pattern. Rights are specified when creating and editing the above elements in the "Permissions" fields in the relevant sections of the state setting (smart contracts, tables, interface). Rights are recorded as logical expressions, and are provided if the expression is true at the time of access. If the "Permissions" field remains empty, then it automatically becomes false, and the access to perform the relevant actions is completely closed.
+eGaaS has a multi-level rights management system for the creation and editing of database tables, contracts, pages and interface menu, and parameters of the state setting pattern. Rights are specified when creating and editing the above elements in the "Permissions" fields in the relevant sections of the state setting (smart contracts, tables, interface). Rights are recorded as logical expressions, and are provided if the expression is *true* at the time of access. If the "Permissions" field remains empty, then it automatically becomes *false*, and the access to perform the relevant actions is completely closed.
 
 The rights to the following actions are fixed:
 
