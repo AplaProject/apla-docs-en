@@ -267,7 +267,7 @@ If in a contract launched by the user the string MoneyTransfer("Recipient,Amount
     }
 
 
-2. Adding in the *Signatures* table (on the page **Signatures** of eGaaS client software) the entry containing:
+2. Adding in the *Signatures* table (on the page **Signatures** of eGaaS client) the entry containing:
 
 •	*MoneyTransfer* contract name,
 •	field names whose values will be displayed to the user, and their text description,
