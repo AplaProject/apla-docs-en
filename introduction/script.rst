@@ -153,15 +153,15 @@ The contract input data, as well as the parameters of the form for the reception
 The data are listed line by line: first, the variable name is specified (only variables, but not arrays are transferred), then the type and the parameters for building of the interface form are indicated optionally through a gap in double quotation marks:
 
 
-●	*hidden* - hidden element of the form;
-●	*optional* - form element without obligatory filling in;
-●	*date* - field of the date and time selection;
-●	*polymap* - map with the selection of coordinates and areas;
-●	*map* - map with the ability to mark the place;
-●	*image* - images upload;
-●	*text* - entry of the text of HTML-code in the textarea field;
-●	*address* - field for input of the wallet address;
-●	*signature:contractname* - a line to display the contractname contract, which requires the signatures (it is discussed in detail in a special description section).
+*	*hidden* - hidden element of the form;
+*	*optional* - form element without obligatory filling in;
+*	*date* - field of the date and time selection;
+*	*polymap* - map with the selection of coordinates and areas;
+*	*map* - map with the ability to mark the place;
+*	*image* - images upload;
+*	*text* - entry of the text of HTML-code in the textarea field;
+*	*address* - field for input of the wallet address;
+*	*signature:contractname* - a line to display the contractname contract, which requires the signatures (it is discussed in detail in a special description section).
 
 .. code:: js
 
@@ -181,13 +181,13 @@ The variables in the contract
 
 The pre-defined variables that contain data about the transaction from which the contract was displayed are also available in the contract.
 
-●	*$time* - int. transaction time
-●	*$state* - int. state identifier
-●	*$block* - block number in which the int. transaction is sealed 
-●	*$citizen* - address of the citizen who signed the int transaction.
-●	*$wallet* - address of the wallet signatory to the transaction if the contract is outside the state, where the state == 0.
-●	*$wallet_block* - address of the node that has formed the block that includes the transaction.
-●	*$block_time* - time of formation of the block containing the transaction with the current int. contract.
+*	*$time* - int. transaction time
+*	*$state* - int. state identifier
+*	*$block* - block number in which the int. transaction is sealed 
+*	*$citizen* - address of the citizen who signed the int transaction.
+*	*$wallet* - address of the wallet signatory to the transaction if the contract is outside the state, where the state == 0.
+*	*$wallet_block* - address of the node that has formed the block that includes the transaction.
+*	*$block_time* - time of formation of the block containing the transaction with the current int. contract.
 
 .. code:: js
 
