@@ -235,11 +235,11 @@ MoneyTransfer("SenderAccountId,RecipientAccountId,Amount",sender_id,recipient_id
 An enclosed contract may return the value obtained in it through the global variables declared therein (with the **$** sign in front). 
 Display of the enclosed contract is also possible through the **CallContract()** function for which the contract name is transferred through a string variable. 
 
-Контракты с подписью
+Contracts with signature
 ==============================
-Поскольку язык написания контрактов позволяет выполнять вложенные контракты, то существует возможность выполнения такого вложенного контракта без ведома пользователя запустившего внешний контракт, что может привести к подписи пользователем несанкционированных им транзакций, скажем перевода денег со своего счета.
+Since the language of contracts writing allows performing enclosed contracts, it is possible to fulfill such an enclosed contract without the knowledge of the user who has run the external contract that may lead to the user's signature of transactions unauthorized by it, let's say the transfer of money from its account.
 
-К примеру, пусть имеется контракт перевода денег *MoneyTransfer*:
+Let's suppose there is a MoneyTransfer Contract *MoneyTransfer*:
 
 .. code:: js
 
@@ -251,9 +251,9 @@ Display of the enclosed contract is also possible through the **CallContract()**
         ...
     }
 
-Если в некотором контракте, запущенном пользователем, будет вписана строка  MoneyTransfer("Recipient,Amount", 12345, 100), то будет осуществлен перевод 100 монет на кошелек 12345. При этом пользователь, подписывающий внешний контракт, останется не в курсе осуществленной транзакции. Исключить такую ситуацию возможно, если контракт MoneyTransfer будет требовать получения дополнительной подписи пользователя при вызове его из других контрактов. Для этого необходимо:
+If in a contract launched by the user the string MoneyTransfer("Recipient,Amount", 12345, 100) is inscribed, 100 coins will be transferred to the wallet 12345. In such a case the user who signs an external contract will remain not in the know of the transaction. This situation may be excluded if the MoneyTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
 
-1. Добавить в секцию *data* контракта *MoneyTransfer* поле с именем **Signature** с параметрами *optional* и *hidden*, которые позволяют не требовать дополнительной подписи при прямом вызове контракта, поскольку в поле **Signature** уже будет подпись.
+1. Adding a field with the name **Signature** with the *optional* and *hidden* parameters in the *data* section of the *MoneyTransfer* contract, which allow not to require the additional signature in the direct calling of the contract, since there will be the signature in the **Signature** field so far.
 
 .. code:: js
 
@@ -267,21 +267,21 @@ Display of the enclosed contract is also possible through the **CallContract()**
     }
 
 
-2. Добавить в таблицу *Signatures* (на странице **Signatures** программного клиента eGaaS) запись содержащую: 
+2. Adding in the *Signatures* table (on the page **Signatures** of eGaaS client software) the entry containing:
 
-* имя контракта *MoneyTransfer*, 
-* имена полей, значения которых будут показываться пользователю, и их текстовое описание, 
-* текст, который будет выводиться при подтверждении. 
+•	*MoneyTransfer* contract name,
+•	field names whose values will be displayed to the user, and their text description,
+•	text to be displayed upon confirmation.
   
-В текущем примере достаточно указать два поля **Receipient** и **Amount**:
+In the current example it will be enough specifying two fields **Receipient** and **Amount**:
 
 * **Title**: Are you agree to send money this recipient?
-* **Parameter**: *Receipient* Text: Wallet ID
-* **Parameter**: *Amount* Text: Amount (qEGS)
+* **Parameter**: Receipient Text: Wallet ID
+* **Parameter**: Amount Text: Amount (qEGS)
 
-Теперь если вставить вызов контракта *MoneyTransfer("Recipient, Amount", 12345, 100)*, то будет получена системная ошибка *"Signature is not defined"*. Если же контракт будет вызван следующим образом *MoneyTransfer("Recipient, Amount, Signature", 12345, 100, "xxx...xxxxx"), то возникнет ошибка при проверке подписи. При вызове контракта проверяется подпись следующих данных: ""время оригинальной транзакции, id пользователя, значение полей указанных в таблице signatures"", и подделать эту подпись невозможно.
+Now, if inserting the *MoneyTransfer(“Recipient, Amount”, 12345, 100)* contract calling in, the system error *“Signature is not defined”* will be displayed. If the contract is called in as follow: *MoneyTransfer(“Recipient, Amount, Signature”, 12345, 100, ”xxx...xxxxx”), the system error will occur upon signature verification. Upon the contract calling in, the following information is verified: ""time of the initial transaction, user ID, the value of the fields specified in the signatures table"", and it is impossible to forge the signature.
 
-Для того, чтобы пользователь при вызове контракта *MoneyTransfer* увидел подтверждение на перевод денег, во внешний контракт необходимо добавить поле с произвольным названием и типом *string* и дополнительным параметром *signature:contractname*. При вызове вложенного контракта *MoneyTransfer* необходимо просто передать этот параметр. Также следует иметь в виду, что параметры для вызова защищенного контракта должны также быть описаны в секции *data* внешнего контракта (они могут быть скрытыми, но они все равно будут отображаться при подтверждении). Например,
+In order for the user to see the money transfer confirmation upon the *MoneyTransfer* contract calling in, it is necessary to add a field with an arbitrary name and the type *string*, and with the optional parameter *signature:contractname*. Upon calling in of the enclosed *MoneyTransfer* contract, you just need to forward this parameter. It should also be borne in mind that the parameters for the secured contract calling in must also be described in the *data* section of the external contract (they may be hidden, but they will still be displayed upon confirmation). For instance,
 
 .. code:: js
 
@@ -296,9 +296,11 @@ Display of the enclosed contract is also possible through the **CallContract()**
       }
     }
 
-При отправке контракта *MyTest*, у пользователя будет запрошено дополнительное подтверждение для перевода суммы на указанный кошелек. Если во вложенном контракте будут указаны другие значения, например *MoneyTransfer("Recipient,Amount,Signature",$Recipient, $Amount+10, 
-$Signature)*, то будет получена ошибку, что подпись неверна.
+When sending a *MyTest* contract, the additional confirmation of the money transfer to the indicated wallet will be requested from user. If other values, such as *MoneyTransfer(“Recipient,Amount,Signature”,$Recipient, $Amount+10, $Signature)*, are listed in the enclosed contract, the invalid signature error will occur.
 
+Error processing
+==============================
+Errors in the performance of any function are processed automatically causing the stop of the contract execution and the display of the relevant message.
 
 ********************************************************************************
 Rights of access to system components
