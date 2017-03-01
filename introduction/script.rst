@@ -100,7 +100,7 @@ In addition to the conditional expressions, the language supports the standard a
 Functions
 ********************************************************************************
 
-The function is defined by using the **func** keyword, followed by the function name, in parentheses, separated by commas, the transmitted parameters indicating type, and the returned value type after the closing parenthesis. The function body is enclosed in curly brackets. If the function has no parameters, the parentheses may be omitted. The return keyword is used **to return** a value from a function.
+The function is defined by using the **func** keyword, followed by the function name, in parentheses, separated by commas, the transmitted parameters indicating type, and the returned value type after the closing parenthesis. The function body is enclosed in curly brackets. If the function has no parameters, the parentheses may be omitted. The return keyword is used to **return** a value from a function.
 
 .. code:: js
 
