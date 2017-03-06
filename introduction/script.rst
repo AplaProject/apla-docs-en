@@ -117,7 +117,7 @@ The function is defined by using the **func** keyword, followed by the function 
 Ошибки при выполнении любой функции обрабатываются автоматически вызывая остановку выполнения контракта и вывод соответствующего сообщения.
 
 ********************************************************************************
-Контракты
+Contracts
 ********************************************************************************
 
 Contract is the basic language structure, which assists the implementation of a single action initiated by the user or other contract in the interface. The entire application source code is made as a system of contracts, interacting through the database or by displaying each other in the contract body.
