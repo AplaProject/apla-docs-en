@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-DayLight
+eGaaS
 ===============================================================================
 
-..  image:: img/small_information_items_187.png
+..  image:: img/logo.png
 ..   :height: 156 px
 ..   :width: 235 px
    :scale: 100 %
@@ -14,10 +14,10 @@ DayLight
    :align: center
 
 
-EgaaS.
+The description of the basic principles and approaches of technical performance of eGaaS platform is presented in the current document:
 
 
-EgaaS
+The description of platform
 ===============================================================================
 
 .. toctree::
@@ -25,19 +25,3 @@ EgaaS
 
    introduction/index.rst
 
-Daylight Manifest
-===============================================================================
-
-.. toctree::
-   :maxdepth: 4
-
-   manifest/index.rst
-
-
-White Paper: Daylight
-===============================================================================
-
-.. toctree::
-   :maxdepth: 4
-
-   whitepaper/index.rst
