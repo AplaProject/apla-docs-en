@@ -21,6 +21,7 @@ According to the technical view, eGaaS is an open blockchain platform designed f
 Contract itself is a basic construction for implementation of apps algorithms. The completed fragments of code are designed in a form of contracts, which ensure taking of incoming data from user or other contract, analysis of data’s correctness and implementation of the needed transactions. The language of contracts is a scripting language with a fast compilation into bite code, containing the needed set of functions for creation of registries and performing of any kind of transactions with records in them. 
 
 The attached language of page templates description allows: 
+
 * To simplify the writing of contracts interface 
 * To optimize and to ease the structures of programming languages for templates and contracts due to their mutual consistency
 * To increase the system protection by saving interfaces on blockchain along with contracts
