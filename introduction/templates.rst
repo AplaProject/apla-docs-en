@@ -226,12 +226,12 @@ Val(idname)
 The function returns the value of the HTML element by its identifier (id).
 
 ********************************************************************************
-Условная конструкция 
+Conditional construct
 ********************************************************************************
 
 If(condition) … Else … ElseIf … IfEnd 
 ==============================
-Условная конструкция позволяет выводить разные фрагменты  шаблона страницы в зависимости от истинности или ложности условного выражения. Конструкции **If** могут быть вложенными, например,
+A conditional construct allows displaying different fragments of the page template, depending on the truth or falsity of the conditional expression. **If** constructs may be the enclosed ones, for instance,
 
 .. code:: js
 
@@ -250,116 +250,116 @@ If(condition) … Else … ElseIf … IfEnd
       IfEnd:
 
 ********************************************************************************
-Вывод элементов форм
+Displaying form elements
 ********************************************************************************
 
 Form(class) … FormEnd 
 ==============================
-Функция обрамляет часть шаблона страницы контейнером <form>…</form>  с указанными классами (*class*).
+The function frames part of the page template with a <form>…</form> container with the indicated classes (*class*).
 
 Input(idname,[class],[placeholder],[type],[value]) 
 ==============================
-Функция создает поле ввода формы;
+The function creates a form input field;
 
-* *idname* - имя идентификатора поля;
-* *class*  - список классов;
-* *placeholder* - текст подсказка;
-* *type* - тип поля, по умолчанию *text*;
-* *value* - значение по умолчанию.
+* *idname* - field identifier name;
+* *class* - list of classes,
+* *placeholder* - hint text,
+* *type* - field type, text by default,
+* *value* - default value
 
 Textarea(idname,[class],[value]) 
 ==============================
-Функция выводит поле формы типа *textarea*.
+The function displays the textarea type form field
 
-* *idname* - имя идентификатора поля;
-* *class*  - список классов;
-* *value* - значение по умолчанию.
+* *idname* - field identifier name,
+* *class* - list of classes,
+* *value* - default value.
 
 
 InputAddress(idname,[class],[value] ) 
 ==============================
-Функция создает поле формы для ввода  адреса кошелька, при вводе адреса предполагаемые варианты показываются в выпадающем списке. 
+The function creates a form field for entering the wallet address, when entering the address, the suggested options are shown in the drop-down list 
 
-* *idname* - имя идентификатора поля;
-* *class*  - список классов;
-* *value* - значение по умолчанию.
+* *idname* - field identifier name,
+* *class*  - list of classes,
+* *value* - default value.
 
 InputDate(idname,[class],[value] ) 
 ==============================
-Функция создает поле формы для ввода даты и времени. 
+The function creates the form field for data and time entry.
 
-* *idname* - имя идентификатора поля;
-* *class*  - список классов;
-* *value* - значение по умолчанию.
+* *idname* - field identifier name,
+* *class* - list of classes,
+* *value* - default value.
 
 InputMoney(idname,[class],[value]) 
 ==============================
-Функция создает поле формы для ввода денежных значений. 
+The function creates the form field for entering money values.
 
-* *idname* - имя идентификатора поля;
-* *class*  - список классов;
-* *value* - значение по умолчанию.
+* *idname* - field identifier name,
+* *class* - list of classes,
+* *value* - default value.
 
 Select(idname, list, [class], [value]) 
 ==============================
-Функция создает разворачивающийся список  <select>. 
+The function creates a <select> drop-down list. 
 
-* *idname* - идентификатор. 
-* *list* - передает список значений; 
-* *value* - значение списка, выбранное по умолчанию;
-* *class*  - список классов.
+* *idname* - identifier, 
+* *list* - transfers a list of values, 
+* *value* - the list value, selected by default,
+* *class*  - list of classes.
 
-Существует два варианта определения списка *list*: 
+There are two options for defining the *list*: 
 
-1. перечисление  имен списка через запятую, при этом значение value в <option … >  будет равно порядковому номеру имени начиная с 1;
+1. listing the list names by commas, and the value in <option … > will be equal to the sequence number of the name starting with 1;
 
-2. получение значений из таблиц базы данных в формате **tablename.column.idname**, где tablename - имя таблицы, column - имя колонки, значения которой выводятся как имена списка, idname - имя колонки, значения которой используются в качестве value в <option … >. Если *idname* не указан, то по умолчанию используется колонка *id*; количество записей в таблице не может быть больше 50.
-Если в таблице languages имеются языковые ресурсы со значением имен списка, то они будут автоматически переводиться.
+2. obtaining values from the database table in the **tablename.column.idname** format, where tablename is the table name, column is the name of the column, whose values are displayed as the list names, idname -the name of the column, whose values are used as a value in <option … >. If *idname* is not indicated, the id column is used by default; the number of entries in the table may not be more than 50. 
+If the language resources with the list name values are present in the languages table, they will be automatically translated.
 
 TextHidden(idname,....) 
 ==============================
-Функция создает множество скрытых полей textarea; в качестве  идентификаторов (id)  устанавливаются перечисленные через запятую имена; значения полей берутся из одноименных переменных. Например, если есть переменная #test# = "Строка", то TextHidden(test) создаст textarea с id="test" и значением "Строка".
+The function creates a lot of hidden textarea fields; the names separated by commas are set as identifiers (id); the field values are taken from the variables having the same name. For instance, if the variable #test# = "Line" is present, the TextHidden(test) will create a textarea with id="test" and the "Line" value.
 
 Source(idname,[value]) 
 ==============================
-Функция выводит поле ввода текста с подстветкой операторов, ключевых слов и т.д. Используется, например, для редактирования контрактов.
+The function displays a text input field with highlighting of operators, keywords, etc. It is used, for example, to edit contracts
 
-* *idname* - идентификатор; 
-* *value* - значение по умолчанию.
+* *idname* - identifier; 
+* *value* - default value.
 
 ********************************************************************************
-Получение значений из базы данных
+ПObtaining values from the database
 ********************************************************************************
 
 ValueById(table,idval,columns,[aliases]) 
 ==============================
-Функция получает значения из записи таблицы базы данных по значению id строки.
+The function takes values from the database table entry by the id value of the string.
 
-* *table* - имя таблицы; 
-* *idval* - значение id получаемой записи;
-* *columns*  - имена колонок, перечисленные через запятую; по умолчанию будут созданы переменные с именами колонок, которым и будут переданы полученные значения; 
-* *aliases*  - имена переменных, отличные от имен колонок, перечисленные через запятую в том же порядке, что и имена колонок.
-Например, * ValueById(#state_id#_citizens, #citizen#, "name,avatar", "FirstName,Image") *
+* *table* - table name; 
+* *idval* - id value of the entry obtained;
+* *columns*  - the names of the columns separated by commas; the variables with column names will be created by default, to which the received values will be transferred; 
+* *aliases*  - the variable names other than column names separated by commas in the same sequence as the column names, 
+For instance,  * ValueById(#state_id#_citizens, #citizen#, "name,avatar", "FirstName,Image") *
 
 GetList(name, table, colnames, [where], [order], [limit]) 
 ==============================
-Функция получает записи из таблицы table. 
+The function obtains entries from the table.
 
-*  *name* - имя, по которому извлекается конкретная запись из полученного списка с помощью функций **ListVal** или **ForList**;
-*  *colnames* - список получаемых колонок, перечисленных через запятую; первым, необходимо указывать колонку с индексом и по этому значению будет реализован доступ к значениям в **ListVal** или **ForList**; 
-*  *where*, *order *, *limit * - условие, сортировка и кол-во получаемых строк.
+*  *name* - the name by which a particular record is extracted from the resulting list using **ListVal** or **ForList** functions;
+*  *colnames* - the list of resulting columns separated by commas; first the column with the index shall be specified, and by this value the access to values **ListVal** and **ForList** will be implemented; 
+*  *where*, *order *, *limit * - Condition, sorting and number of resulting strings.
 
 ListVal(name, index, column]) 
 ==============================
-Функция возвращает значение из списка полученного функцией **GetList**; 
+The function returns the value from the list obtained by **GetList** function; 
 
-* *name* - в качестве значения параметра  следует использовать имя, которое было указано в функции *GetList*;
-* *index* - значение идентификатора поиска по первой колонке, указанной в *GetList*; 
-* *column* - имя колонки с возвращаемым значением.
+* *name* - the name that was indicated in the *GetList* function shall be used as the parameter value;
+* *index* - the value of the identifier of search by the first column, indicated in *GetList*; 
+* *column* - the name of the column with the returned value.
 
 ForList(name) … FormListEnd 
-==============================
-Функция  выводит полный список записей, полученных с помощью функции **GetList**; в качестве значения параметра *name* следует использовать имя, которое было указано в функции *GetList*. Конец шаблона вывода одной записи фиксируется закрывающей функции **FormListEnd**. Значения колонок записи содержат переменные вида #name_column#, в которых после знака подчеркивания указывается имя колонки таблицы; доступна переменная #index#, которая содержит порядковый номер записи, начиная с 1.
+=============================
+The function displays a full list of entries obtained using **GetList** function; the *name* that was specified in the *GetList* function shall be used as the name parameter value. The end of the one record display template is fixed by the **FormListEnd** closing function. The values of the entry columns contain variables of #name_column# type, where the name of the table column is indicated after the underscore; the #index# variable is available, which contains the sequence number of the entry, starting with 1.
 
 .. code:: js
 
@@ -373,38 +373,38 @@ ForList(name) … FormListEnd
 
 GetOne(colname, table, where, [value]) 
 ==============================
-Функция возвращает  значение из таблицы базы данных по условию.
+The function returns the value from the database table by condition.
 
-* *colname* - имя возвращаемой колонки;
-* *table* полной имя таблицы (#state#_mytable); 
-* *where*  условие,
-* *value* - значение условия, если параметр *value* не указан, то тогда параметр *where* должен содержать полный запрос.
+* *colname* - the name of the returned column;
+* *table* - full name of the table (#state#_mytable); 
+* *where* - condition,
+* *value* - the condition value, if the *value* parameter is not indicated, then the *where* parameter shall contain the complete query.
 
 GetRow(prefix, table, colname, [value]) 
 ==============================
-Функция формирует множество переменных со значениями из  записи таблицы базы данных, полученной поиском по указанному полю и значению или по запросу.
+The function forms a set of variables with values from the database table entry obtained by searching by specified field and value, or on request.
 
-* *prefix* - префикс, используемый для образования имен переменных, в которые записываются значения полученной записи: переменные имеют вид *#prefix_id#, #prefix_name#*, где после знака подчеркивания указывается имя колонки таблицы.
-* *table* - полной имя таблицы (#state#_mytable); 
-* *colname* - имя колонки, по которой ищется запись;
-* *value* - значение, по которому ищется запись, если параметр *value* не указан, тогда параметре *colname * должен содержать полный запрос where к таблице.
+* *prefix* - the prefix used to form the names of variables into which the values of the resulting entry are written: the variables have the form *#prefix_id#, #prefix_name#*, where after the underscore the name of the table column is specified.
+* *table* - full name of the table (#state#_mytable); 
+* *colname* - the name of the column to search forthe entry;
+* *value* - the value by which the entry is searched, if the *value* parameter is not specified, then the  *colname* parameter shall contain full "where" query to the table.
 
 StateVal(name, [index]) 
 ==============================
-Функция выводит значение параметра из таблицы state_parameters.
+The function displays the parameter value from the state_parameters table.
 
-* *name* - имя значения;
-* *index* - порядковый номер значения, если их список приведен через запятую, например, *gender | male,female*, тогда StateVal(gender, 2) возвратит *female*  
-Если есть языковый ресурс полученным именем, то подставится его значение.
+* *name* - the value name;
+* *index* - the value sequence number, and if their list is indicated by a comma, for example, *gender | male,female*, then StateValue(gender, 2) will return *female*
+If the language resource with the resulting name is available, then its value will be substituted.
 
 Table 
 ==============================
-Функция создает таблицу со значениями из базы данных. Функция имеет именованные параметры, которые выводятся в фигурных кнопках: 
+The function creates a table with values from the database. The function has the named parameters, which are displayed in the shape buttons: 
 
-* *Table* - имя таблицы;
-* *Order* - имя колонки для сортировки строк таблицы, необязательный параметр;
-* *Where* - условие выборки, необязательный параметр;
-* *Columns* - массив отображаемых колонок, состоящий из заголовка и значений [[ColumnTitle, value],...]; соответствующие строке значения колонки из таблицы базы возвращаются переменной с именем колонки (#column_name#).
+* *Table* - table name;
+* *Order* - column name for sorting table rows, an optional parameter;
+* *Where* - sampling condition, an optional parameter;
+* *Columns* - an array of displayed columns, consisting of a title and the values [[ColumnTitle, value],...]; the column values from the base table corresponding to the line are returned as a variable with the column name (#column_name#).
 
 .. code:: js
      Table{
@@ -414,37 +414,37 @@ Table
      }
 
 ********************************************************************************
-Вызов контрактов
+Display of contracts
 ********************************************************************************
 
 BtnContract(contract, name, message, params, [class], [onsuccess], [pageparams]) 
 ==============================
-Функция создает кнопку, при клике на которой открывается модальное окно с предложением отказаться  или подтвердить вызов контракта. 
+The function creates a button, that when clicked, opens a modal window prompting to refuse or confirm the display of the contract. 
 
-* *contract* - имя контракта;
-* *name* - название кнопки;
-* *message* - текст для модального окна;
-* *params* - параметры, передаваемые контракту;
-* *class*  - список классов кнопки;
-* *onsuccess* - имя страницы, на которую следует сделать переход в случае успешного выполнения контракта;
-* *pageparams* - параметры, передаваемые странице в формате *var:value* через запятую.
+* *contract* - contract name;
+* *name* - column name;
+* *message* - text for modal window;
+* *params* - parameters transferred to the contract;
+* *class*  - list of button classes;
+* *onsuccess* - the name of the page to which the shift should be made if the contract is successfully executed;
+* *pageparams* - parameters transferred to the page in the *var:value* format separated by commas..
 
-Например, *BtnContract(DelContract, Delete, Delete Item?, "IdItem:id_item",'btn btn-default')*
+For instance, *BtnContract(DelContract, Delete, Delete Item?, "IdItem:id_item",'btn btn-default')*
 
 TxButton 
 ==============================
-Функция создает кнопку при клике на которой запускается выполнение контракта. Функция имеет именованные параметры, которые выводятся в фигурных кнопках:
+The function creates a button that when clicking starts the contract execution. The function has the named parameters, which are displayed in the shape buttons:
 
-* *Contract* - имя контракта;
-* *Name* - название кнопки, по умолчанию **Send**;
-* *Class* - список классов для контейнера <div> с кнопкой;
-* *ClassBtn* - список классов для кнопки;
-* *Inputs* - список передаваемых в контракт значений. По умолчанию, значения параметров контракта (секция *data*) берутся их HTML элементов (скажем, полей формы) с одноименными идентификаторами (*id*). Если идентификаторами элементов отличаются от названий параметров контракта, то используется присваивание в формате *Inputs: "contractField1=idname1, contractField2=idname2" Присваивать можно и значения переменных в формате *Inputs: "contractField1#=var1, contractField2=var2" (будут переданы значения переменных #var1# и #var2#);
-* *OnSuccess* - имя страницы, на которую будет осуществлен переход в случае успешного выполнения контракта, и через запятую передаваемые на страницу параметры в формате *var:value*, например,  * OnSuccess: "CompanyDetails, CompanyId:#CompanyId#" *;
-* *Silent* - при значении 1 вывод сообщения  об успешной выполнении контракта;
-* *AutoClose* - при значении 1 автоматическое закрытие сообщения об успешном выполнении контракта.
+* *Contract* - contract name;
+* *Name* - button name, **Send** by default;
+* *Class* - list of classes for the <div> container, with the button;
+* *ClassBtn* - list of classes for the button;
+* *Inputs* - list of values transferred to the contract. By default, the contract parameter values (*data* section) are taken from HTML elements (say, form fields) with the same identifiers (*id*). If the element identifiers differ from the contract parameter names, the assignment in  *Inputs: "contractField1=idname1, contractField2=idname2" format is used. The variable values in the format  *Inputs: "contractField1#=var1, contractField2=var2" (the values of the variables #var1# and #var2# will be transferred) may be assigned;
+* *OnSuccess* - the name of the page to which the shift will be made in case of successful performance of the contract, and the parameters in the format *var:value* transferred to the page separated by commas, for instance * OnSuccess: "CompanyDetails, CompanyId:#CompanyId#" *;
+* *Silent* - in case of value 1 - the display of the message on the successful completion of the contract;
+* *AutoClose* - in case of value 1 - the automatic closure of the message on the successful completion of the contract.
 
-Например,
+For instance,
 
 .. code:: js
 
@@ -457,12 +457,12 @@ TxButton
 
 TxForm 
 ==============================
-Функция создает форму для вода данных контракта. Функция имеет именованные параметры, которые выводятся в фигурных кнопках:
+The function creates a form for entering contract data. The function has the named parameters, which are displayed in the shape buttons:
 
-* *Contract* - имя контракта;
-* *OnSuccess* - имя страницы, на которую будет осуществлен переход в случае успешного выполнения контракта, и через запятую передаваемые на страницу параметры в формате *var:value*, например,  * OnSuccess: "CompanyDetails, CompanyId:#CompanyId#" *;
-* *Silent* - при значении 1 происходит вывод сообщения  об успешной выполнении контракта;
-* *AutoClose* - при значении 1 происходит автоматическое закрытие сообщения об успешном выполнении контракта.
+* *Contract* - contract name;;
+* *OnSuccess* - the name of the page to which the shift will be made in case of successful performance of the contract, and the parameters in the format *var:value* transferred to the page separated by commas, for instance * OnSuccess: "CompanyDetails, CompanyId:#CompanyId#" *;
+* *Silent* - in case of value 1 - the message on the successful completion of the contract is displayed;
+* *AutoClose* - in case of value 1 - the message on the successful completion of the contract is automatically closed.
 
 .. code:: js
 
@@ -472,12 +472,12 @@ TxForm
       }
 
 ********************************************************************************
-Элементы навигации
+Navigation elements
 ********************************************************************************
 
 Navigation( params, …) 
 ==============================
-Функция выводит панель с «хлебными крошками» и ссылкой на редактирование текущей страницы **Edit**. Например, Navigation( LiTemplate(dashboard_default, citizen),goverment).
+The function displays a panel with "bread crumbs" and the link to edit the current page **Edit**. Например, Navigation( LiTemplate(dashboard_default, citizen),goverment).
 
 LinkPage(page,text,[params]) 
 ==============================
@@ -487,82 +487,82 @@ LinkPage(page,text,[params])
 * *text*  - текст ссылки;
 * *params* - параметры передаваемые странице в формате *var:value* через запятую.
 
-
 LiTemplate(page, [text], [params], [class]) 
 ==============================
-Функция создает контейнер  <li>*text*</li> содержащий ссылку  на страницу. 
+The function creates the <li>*text*</li> container, containing a ling to a page
 
-* *page* - имя страницы;
-* *text*  - текст ссылки;
-* *params* - параметры передаваемые странице в формате *var:value* через запятую;
-* *class*  - список классов.
+* *page* - page name;
+* *text*  - link text;
+* *params* - parameters transferred to the page in the *var:value* format separated by commas;
+* *class*  - list of classes.
 
 .. code:: js
 
       LiTemplate(mypage, Home page, global:1)
+      
 
 BtnPage(page, name,[params],[class], [anchor]) 
 ==============================
-Функция создает кнопку, при клике на которой происходит переход на указанную страницу. Если параметр с классом не указан, то у кнопки будут классы *btn btn-primary*. C помощью этой же функции можно создавать ссылки на системные страницы. В этом случае добавьте префикс sys- перед именем страницы. Например, *BtnPage(sys-interface, Interface)*.
+The function creates a button, that when clicking, allows shifting to the specified page. If the parameter with the class is not specified, then the buttons will have the *btn btn-primary classes*. The links to system pages may be created using the function. In this case, add sys- prefix before the page name. For instance, *BtnTemplate(sys-interface, Interface)*.
 
-* *page* - имя страницы перехода; 
-* *name* - название  кнопки;
-* *params* - параметры, передаваемые странице;
-* *class*  - список классов кнопки;
-* *anchor* - якорь (id элемента страницы) для скроллинга страницы в указанное положение.
+* *page* - shift page name; 
+* *name* - column name;
+* *params* - parameters transferred to the page;
+* *class*  - list of button classes;
+* *anchor* - an anchor (id of the page element) to scroll the page to the specified position.
 
 BtnEdit( page, icon, [params] ) 
 ==============================
-Функция создает кнопку с указанной иконкой. Может использоваться в таблицах для перехода на страницы редактирования. Для перехода на системные страницы или страницы приложений необходимо добавлять соответствено префиксы **sys-** и **app-**. Например,
+The function creates a button in the form of a gear with a link to the specified page and transfers the id as a parameter; it is used in the screen tables to refer to the elements editing. Для перехода на системные страницы или страницы приложений необходимо добавлять соответствено префиксы **sys-** и **app-**. Например,
 *BtnEdit(sys-editPage, cog, "name: #name#, global: #global#")*.
 
 Back(page, [params]) 
 ==============================
-Функция вписывает вызов указанной страницы в историю вызовов. 
+The function enters the display of the specified page in the display history.
 
-* *page* - имя страницы;
-* *params* - параметры вызова страницы из истории в формате *var:value* через запятую.
+* *page* - page name;
+* *params* - parameters of the page display from history in the *var:value* format separated by commas.
 
 ********************************************************************************
-Оформление шаблона страницы
+Formatting the page template
 ********************************************************************************
 
 PageTitle(header) … PageEnd() 
 ==============================
-Функция фиксирует тело страницы и создает панель с заголовком, указанным в параметре *header*. 
+The function captures the page body and creates a panel with the header indicated in the *header* parameter 
 
 Title(text) 
 ==============================
-Функция создает заголовок с классом *content-heading*.
+The function creates a header with the *content-heading* class..
 
 FullScreen(state) 
 ==============================
-Функция переводит ширину рабочей области страницы на всю ширину окна когда параметр *state* равен 1, сужает рабочую область  при *state* равном  0.
+The function converts the width of the page working area to the entire width of the window when the *state* parameter equals 1, and narrows the working area when the *state* is 0.
 
 WhiteMobileBg(state) 
 ==============================
-Функция является аналогом функции **FullScreen** для мобильных устройств; переводит ширину рабочей области страницы на всю ширину окна когда параметр *state* равен 1, сужает рабочую область  при *state* равном  0.
+The function is an analogue of the **FullScreen** function for mobile devices; it converts the width of the page working area to the entire width of the window when the *state* parameter equals 1, and narrows the working area when the *state* is 0.
 
 ********************************************************************************
-Организация многоуровневого меню
+Organizing of a multi-level menu
 ********************************************************************************
 
 MenuItem(title, page, [params], [icon]) 
 ==============================
-Функция создает пункт меню. 
+The function creates a menu item. 
 
-* *title* - имя пункта меню, если в таблице languages имеется языковой ресурс со значением, указанным в *title*, то текст будет автоматически переводиться;
-* *page* - имя страницы перехода. Для перехода на системные страницы необходмо указывать префиксы **sys-** или **app-**;
-* *params* - параметры, передаваемые странице в формате *var:value* через запятую.
-* *icon* - иконка.
+* *title* - the name of the menu item, If the language resource with the value indicated in *title* is included in the languages table, the text will be automatically translated;
+* *page* - shift page name. Для перехода на системные страницы необходмо указывать префиксы **sys-** или **app-**;
+* *params* - parameters transferred to the page in the *var:value* format separated by commas.
+* *icon* - an icon.
 
 MenuGroup(title,[idname],[icon]) … MenuEnd: 
 ==============================
-Функция формирует в меню вложенное подменю. 
+The function forms a submenu in the menu. 
 
-* *title* - имя пункта меню, если в таблице languages имеется языковой ресурс со значением, указанным в *title*, то текст будет автоматически переводиться;
-* *idname* - идентификатор подменю;
-* *icon* - иконка.
+* *title* - the name of the menu item, If the language resource with the value indicated in *title* is included in the languages table, the text will be automatically translated;
+* *idname* - the submenu identifier;
+* *icon* - an icon.
 
 .. code:: js
 
@@ -573,92 +573,96 @@ MenuGroup(title,[idname],[icon]) … MenuEnd:
 
 MenuBack(title, [page]) 
 ==============================
-Функция заменяет ссылку перехода к родительскому меню (верхний пункт меню).
+The function replaces the link of shift to the parent menu (top menu item).
 
-* *title* - имя пункта меню, если в таблице languages имеется языковой ресурс со значением, указанным в *title*, то текст будет автоматически переводиться;
-* *page* - имя страницы перехода.
+* *title* - the name of the menu item, If the language resource with the value indicated in text is included in the languages table, the text will be automatically translated;
+* *page* - shift page name.
 
 
 MenuPage(page) 
 ==============================
-Функция устанавливает в качестве родительского пункта меню указанную  в параметре *page* страницу.
+The function sets the page specified in the *page* parameter as the parent menu item
 
 ********************************************************************************
-Представление данных
+Data representation
 ********************************************************************************
 
 Ring(count,[title],[size]) 
 ==============================
-Функция выводит круг со значением параметра *count* посередине. 
+The function displays a circle with the *count* parameter value in the middle
 
-* *title* - заголовок;
-* *size* - размер значения.
+* *title* - a title;
+* *size* - the value size.
 
 WiAccount(address) 
 ==============================
-Функция выводит в специальном оформлении номер аккаунта (адрес кошелька), переданном в параметре address.
+The function displays with the special design the account number (wallet address) transferred in the address parameter.
 
 WiBalance(value, money) 
 ==============================
-Функция выводит в специальном оформлении значение *value* в денежном формате и добавляет обозначение валюты указанной в параметре *money*.
+The function displays with the special design the *value* in the money format, and adds the currency designation specified in the *money* parameter.
 
 WiCitizen(name, address, [image], [flag]) 
 ==============================
-Функция выводит в специальном оформлении информацию о гражданине. 
+The function displays with the special design the information on the citizen.
 
-* *name* - имя;
-* *address*  - адрес кошелька, приведенный к виду 1234-...-5678;
-* *name* - изображение;
-* *name* - флаг страны. 
+* *name* - the name;
+* *address*  - the wallet address, normalized to the 1234-...-5678 form;
+* *name* - the image;
+* *name* - country flag. 
 
 Map(coords) 
 ==============================
-Функция выводит на страницу контейнер google maps с координатами указанными в параметре *coords*. Высоты контейнера берется из значения предварительно определенной переменной #hmap# (по умолчанию 100 пикселей), ширина растягивается на максимально возможную величину.
+The function displays on the page the google maps container with the coordinates indicated in the *coords* parameter. The container height is taken from the value of the predefined variable #hmap# (by default, 100 pixels), the width is stretched to the maximum possible value.
 
-MapPoint(coords) 
+MapPoint(coords)
 ==============================
-Функция выводит на страницу контейнер google maps с маркером по координатам указанным в параметре *coords*. Высоты контейнера берется из значения предварительно определенной переменной #hmap# (по умолчанию 100 пикселей), ширина растягивается на максимально возможную величину.
+The function displays on the page the google maps container with a marker on the coordinates specified in the coords parameter. The container height is taken from the value of the predefined variable #hmap# (by default, 100 pixels), the width is stretched to the maximum possible value.
 
 ChartPie 
 ==============================
-Функция выводит круговую диаграмму. Функция имеет именованные параметрами,  которые выводятся в фигурных кнопках: 
+The function displays a pie chart. The function has the named parameters, which are displayed in the shape buttons: 
 
-* *Data* - данные отражаемые диаграммой в виде списка [[value,color,label],....]; каждый элемент списка должен содержать три параметра: значение, цвет rrggbb и подпись; при наличии этого списка другие параметры будут игнорироваться;
-* *Columns* - список цветов rrggbb через запятую;
-* *Table* - имя таблицы, откуда будут браться данные;
-* *FieldValue* - имя столбца со значениями;
-* *FieldLabel* - имя столбца с подписями;
-* *Order* - имя колонки для сортировки строк таблицы, необязательный параметр;
-* *Where* - условие выборки, необязательный параметр;
-* *Limit* - смещение и количество выбираемых записей, необязательный параметр.
+* *Data* - data reflected by the diagram in the form of a list [[value,color,label],....]; each list item must contain three parameters: value, rrggbb color and signature; if this list is available, other parameters are ignored;
+* *Columns* - the list of rrggbb colors separated by commas;
+* *Table* - the name of the table from which the data will be taken;
+* *FieldValue* - the name of the column with the values;
+* *FieldLabel* - the name of the column with the signatures;
+* *Order* - column name for sorting table rows, an optional parameter;
+* *Where* - sampling condition, an optional parameter;
+* *Limit* - offset and number of selected records, an optional parameter.
 
 ChartBar 
 ==============================
-Функция выводит диаграмму в виде столбцов. Все параметры, за исключением *Data*, идентичны функции **ChartPie**.
+The function displays the chart as columns. All parameters, except for *Data*, are identical to the **ChartPie** function.
 
 ********************************************************************************
-Вывод языковых ресурсов
+Displaying language resources
 ********************************************************************************
 
 LangJS(resname) 
 ==============================
-Функция создает контейнер <span>*resname*</span>  со значением языкового ресурса. Используется для автоматической подстановки языковых ресурсов в браузере. (Речь идет о ресурсах, которые описаны в static/js/lang/*.js.)
+The function creates the <span>*resname*</span> container with the language resource value. It is used to automatically substitute the language resources in the browser. (These are resources described in static/js/lang/*.js.)
 
 LangRes(resname) 
 ==============================
-Функция возвращает из таблицы languages языковой ресурс с указанным именем.
+The function returns the language resource with the specified name from the languages table. 
 
 ********************************************************************************
-Служебные функции
+Service functions
 ********************************************************************************
+
+AppNav(appname, [name])
+==============================
+The function returns a link to the application specified. If the *name* is not indicated, the link text is the same as *appname*.
 
 BlockInfo(blockid) 
 ==============================
-Функция выводит ссылку с номером блока (blockid), при клике по которой будет открываться окно с информацией о блоке.
+The function displays a link with a block number (blockid), that when clicked, will open a window with information about the block.
 
 TxId(txname) 
 ==============================
-Функция возвращается идентификатор указанной транзакции. Например,
+The function returns the specified transaction identifier. For instance,
 
 .. code:: js
 
@@ -669,14 +673,13 @@ TxId(txname)
 
 Json(data) 
 ==============================
-Функция создает тэг script с переменной jdata с присвоением ей указанных в параметре data  данными в формате json.
-Например,
+The function creates a script tag with the jdata variable, and assigns of data specified in the data parameter in the json format. For instance,
 
 .. code:: js
 
       Json(`param1: 1, param2: "string"`) 
       
-получим 
+we will obtain
 
 .. code:: js
 
