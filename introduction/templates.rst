@@ -71,7 +71,7 @@ For instance,
  
 .. code:: js
 
-      SetVar( var1= value1, var2 = "Значение 2", var3=10, `var4 #= #citizen_id#, #state_id#` )
+      SetVar( var1= value1, var2 = "Value 2", var3=10, `var4 #= #citizen_id#, #state_id#` )
  
 In future, the variables may be referred as #var1#, #var2# …
 
@@ -339,7 +339,7 @@ The function takes values from the database table entry by the id value of the s
 * *idval* - id value of the entry obtained;
 * *columns*  - the names of the columns separated by commas; the variables with column names will be created by default, to which the received values will be transferred; 
 * *aliases*  - the variable names other than column names separated by commas in the same sequence as the column names, 
-For instance,  * ValueById(#state_id#_citizens, #citizen#, "name,avatar", "FirstName,Image") *
+For instance,  *ValueById(#state_id#_citizens, #citizen#, "name,avatar", "FirstName,Image")*
 
 GetList(name, table, colnames, [where], [order], [limit]) 
 ==============================
@@ -347,7 +347,7 @@ The function obtains entries from the table.
 
 *  *name* - the name by which a particular record is extracted from the resulting list using **ListVal** or **ForList** functions;
 *  *colnames* - the list of resulting columns separated by commas; first the column with the index shall be specified, and by this value the access to values **ListVal** and **ForList** will be implemented; 
-*  *where*, *order *, *limit * - Condition, sorting and number of resulting strings.
+*  *where*, *order*, *limit* - Condition, sorting and number of resulting strings.
 
 ListVal(name, index, column]) 
 ==============================
@@ -439,8 +439,8 @@ The function creates a button that when clicking starts the contract execution. 
 * *Name* - button name, **Send** by default;
 * *Class* - list of classes for the <div> container, with the button;
 * *ClassBtn* - list of classes for the button;
-* *Inputs* - list of values transferred to the contract. By default, the contract parameter values (*data* section) are taken from HTML elements (say, form fields) with the same identifiers (*id*). If the element identifiers differ from the contract parameter names, the assignment in  *Inputs: "contractField1=idname1, contractField2=idname2" format is used. The variable values in the format  *Inputs: "contractField1#=var1, contractField2=var2" (the values of the variables #var1# and #var2# will be transferred) may be assigned;
-* *OnSuccess* - the name of the page to which the shift will be made in case of successful performance of the contract, and the parameters in the format *var:value* transferred to the page separated by commas, for instance * OnSuccess: "CompanyDetails, CompanyId:#CompanyId#" *;
+* *Inputs* - list of values transferred to the contract. By default, the contract parameter values (*data* section) are taken from HTML elements (say, form fields) with the same identifiers (*id*). If the element identifiers differ from the contract parameter names, the assignment in  *Inputs: "contractField1=idname1, contractField2=idname2"* format is used. The variable values in the format  *Inputs: "contractField1#=var1, contractField2=var2"* (the values of the variables #var1# and #var2# will be transferred) may be assigned;
+* *OnSuccess* - the name of the page to which the shift will be made in case of successful performance of the contract, and the parameters in the format *var:value* transferred to the page separated by commas, for instance *OnSuccess: "CompanyDetails, CompanyId:#CompanyId#"*;
 * *Silent* - in case of value 1 - the display of the message on the successful completion of the contract;
 * *AutoClose* - in case of value 1 - the automatic closure of the message on the successful completion of the contract.
 
@@ -460,7 +460,7 @@ TxForm
 The function creates a form for entering contract data. The function has the named parameters, which are displayed in the shape buttons:
 
 * *Contract* - contract name;;
-* *OnSuccess* - the name of the page to which the shift will be made in case of successful performance of the contract, and the parameters in the format *var:value* transferred to the page separated by commas, for instance * OnSuccess: "CompanyDetails, CompanyId:#CompanyId#" *;
+* *OnSuccess* - the name of the page to which the shift will be made in case of successful performance of the contract, and the parameters in the format *var:value* transferred to the page separated by commas, for instance *OnSuccess: "CompanyDetails, CompanyId:#CompanyId#"*;
 * *Silent* - in case of value 1 - the message on the successful completion of the contract is displayed;
 * *AutoClose* - in case of value 1 - the message on the successful completion of the contract is automatically closed.
 
@@ -475,26 +475,26 @@ The function creates a form for entering contract data. The function has the nam
 Navigation elements
 ********************************************************************************
 
-Navigation( params, …) 
+Navigation(params, …) 
 ==============================
 The function displays a panel with "bread crumbs" and the link to edit the current page **Edit**. Например, Navigation( LiTemplate(dashboard_default, citizen),government).
 
 LinkPage(page,text,[params]) 
 ==============================
-Функция создает ссылку  на страницу. Если *name* не указан, то текст ссылки будет такой же как *page*. C помощью этой же функции можно создавать ссылки на предопределенные страницы. В этом случае добавьте префикс **sys-** перед именем страницы. Например, *LinkPage(sys-interface, Interface)*. Кроме этого, эту функцию можно использовать для создания ссылок на приложения. Для этого перед именем страницы-приложения необходимо указывать **app-**.
-
-* *page* - имя страницы;
-* *text*  - текст ссылки;
-* *params* - параметры передаваемые странице в формате *var:value* через запятую.
-
-LiTemplate(page, [text], [params], [class]) 
-==============================
-The function creates the <li>*text*</li> container, containing a ling to a page
+The function creates a button, that when clicking, allows shifting to the specified page. If the parameter *name* is not specified, the text of will be the same as *page*. The links to system pages may be created using the function. In this case, add **sys-** prefix before the page name, for instance *LinkPage(sys-interface, Interface)*.
 
 * *page* - page name;
 * *text*  - link text;
-* *params* - parameters transferred to the page in the *var:value* format separated by commas;
-* *class*  - list of classes.
+* *params* - parameters transferred to the page in the *var:value* format separated by commas.
+
+LiTemplate(page, [text], [params], [class])
+================================
+The function creates the <li>*text*</li> container, containing a ling to a page.
+
+* *page* - page name;
+* *text* - link text;
+* *params* - parameters transferred to the page in the var:value format separated by commas.
+* *class* - list of classes.
 
 .. code:: js
 
@@ -552,7 +552,7 @@ MenuItem(title, page, [params], [icon])
 The function creates a menu item. 
 
 * *title* - the name of the menu item, If the language resource with the value indicated in *title* is included in the languages table, the text will be automatically translated;
-* *page* - shift page name. To go to system pages, you need to specify prefixes **sys-** или **app-**;
+* *page* - shift page name. To go to system pages, you need to specify prefixes **sys-**;
 * *params* - parameters transferred to the page in the *var:value* format separated by commas.
 * *icon* - an icon.
 
@@ -613,7 +613,7 @@ The function displays with the special design the information on the citizen.
 
 Map(coords) 
 ==============================
-The function displays on the page the google maps container with the coordinates indicated in the *coords* parameter. The container height is taken from the value of the predefined variable #hmap# (by default, 100 pixels), the width is stretched to the maximum possible value.
+The function displays on the page the google maps container with the coordinates indicated in the *coords* parameter in a format {"center_point":["23.907173","54.333531"], "zoom":"7", "cords":[["23.915970","54.239502"],["23.654588","55.371094"],["22.958393","55.316162"]]}. The container height is taken from the value of the predefined variable #hmap# (by default, 100 pixels), the width is stretched to the maximum possible value.
 
 MapPoint(coords)
 ==============================
