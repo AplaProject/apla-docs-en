@@ -134,7 +134,7 @@ Date(date,[format])
 The function displays the date value in the specified format.
 
 *  *date* - time in the standard format 2006-01-02T15:04:05
-*  *format - format template: YY short year, YYYY full year, MM - month, DD – day, for example, DD.MM.YY. If the format is not specified, then the *dateformat* parameter value, indicated in the languages table will be used, and if it is absent, then YYYY-MM-DD.
+*  *format* - format template: YY short year, YYYY full year, MM - month, DD – day, for example, DD.MM.YY. If the format is not specified, then the *dateformat* parameter value, indicated in the languages table will be used, and if it is absent, then YYYY-MM-DD.
 
 DateTime(datetime,[format]) 
 ==============================
@@ -153,7 +153,7 @@ HTML elements
 
 A(class,text, href) 
 ==============================
-Функция создает контейнер <a href="*href*">*text*</a> с указанными классами (*class*).
+The function creates a <a href="*href*">*text*</a> container with the specified classes (*class*)
 
 Div(class,text) 
 ==============================
@@ -184,7 +184,7 @@ The function creates a <small>*text*</small> container with the specified classe
 
 Span(class,text) 
 ==============================
-Функция создает контейнер <span>*text*</span> с указанными классами  (*class*).
+The function creates a <span>*text*</span> container with the specified classes (*class*).
 
 Strong(class,text) 
 ==============================
@@ -200,7 +200,7 @@ The function creates a <legend>*text*</legend> container with the specified clas
 
 Tag(tagname, [text], [class]) 
 ==============================
-The function creates a <tagname>*text*</tagname> container with the specified classes; the h1-h6 tags are supported.
+The function creates a <tagname>*text*</tagname> container with the specified classes; the h1-h6, button tags are supported.
 
 Image(src, [alt], [class] ) 
 ==============================
@@ -328,7 +328,7 @@ The function displays a text input field with highlighting of operators, keyword
 * *value* - default value.
 
 ********************************************************************************
-ПObtaining values from the database
+Obtaining values from the database
 ********************************************************************************
 
 ValueById(table,idval,columns,[aliases]) 
@@ -477,7 +477,7 @@ Navigation elements
 
 Navigation( params, …) 
 ==============================
-The function displays a panel with "bread crumbs" and the link to edit the current page **Edit**. Например, Navigation( LiTemplate(dashboard_default, citizen),goverment).
+The function displays a panel with "bread crumbs" and the link to edit the current page **Edit**. Например, Navigation( LiTemplate(dashboard_default, citizen),government).
 
 LinkPage(page,text,[params]) 
 ==============================
@@ -552,7 +552,7 @@ MenuItem(title, page, [params], [icon])
 The function creates a menu item. 
 
 * *title* - the name of the menu item, If the language resource with the value indicated in *title* is included in the languages table, the text will be automatically translated;
-* *page* - shift page name. Для перехода на системные страницы необходмо указывать префиксы **sys-** или **app-**;
+* *page* - shift page name. To go to system pages, you need to specify prefixes **sys-** или **app-**;
 * *params* - parameters transferred to the page in the *var:value* format separated by commas.
 * *icon* - an icon.
 
@@ -651,10 +651,6 @@ The function returns the language resource with the specified name from the lang
 ********************************************************************************
 Service functions
 ********************************************************************************
-
-AppNav(appname, [name])
-==============================
-The function returns a link to the application specified. If the *name* is not indicated, the link text is the same as *appname*.
 
 BlockInfo(blockid) 
 ==============================
