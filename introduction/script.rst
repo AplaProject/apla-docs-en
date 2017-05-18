@@ -1,7 +1,10 @@
 ################################################################################
 Language of contracts
 ################################################################################
-
+.. contents::
+  :local:
+  :depth: 2
+  
 Contract is the basic structure for the eGaaS algorithms implementation. The complete code snippets ensuring the acceptance of input data from the user or any other contract, the analysis of their correctness and the performance of the necessary transactions are drawn up as contracts. The language of contracts is a scripting language with fast compilation to byte code. It supports variables with the main types of values, contains functions, a standard set of operators and structures, and a bug management database.
 
 Contracts are compiled into a byte code and are available for all users. Upon the contract display, the isolated stack with еру input data and a set of variables is created, which the virtual machine processes when executing a byte code. Thus, multiple processes which will not influence each other can be performed on the same byte code, which will not influence each other.
