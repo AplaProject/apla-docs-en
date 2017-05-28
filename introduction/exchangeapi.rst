@@ -2,27 +2,27 @@
 Description of the api requests
 ################################################################################
 
-This API allows creating private keys (wallets) on request to receive funds and then send the funds to other wallets. All the private keys created are stored in an encrypted form.
+The API allows creating private keys (wallets) on request to receive funds and then send them to other wallets. All the private keys created are stored in an encrypted form.
 
 ********************************************************************************
-Parameters at startup
+Startup parameters
 ********************************************************************************
 
-In order to work with this API, you need to specify the following parameters upon starting EGAAS.
+In order to work with this API, you need to specify the following parameters when starting EGAAS.
 
-**-boltDir** - the directory where the file with private keys will be created and stored. The NoSQL BoltDB database is used to store the keys. The file is named *exchangeapi.db*. If the parameter is not specified, the file is created in the current directory.
+**-boltDir** - a directory where the file containing private keys will be created and stored. NoSQL database BoltDB is used to store the keys. The file is named *exchangeapi.db*. If the parameter is not specified, the file will be created in the current directory.
 
 .. code:: 
       
       -boltDir=/home/temp
       
-**-boltPsw**  - password for encrypting private keys upon recording in the database. If the password was not specified at startup, the API will not work. The password specified at first startup should be specified at the following startups. The password is not saved anywhere, so do not forget it. If you specify an incorrect password or console as a password, after running EGAAS you will be prompted to enter the password in the console. Also, if the password has already been set, but not specified in the command line parameter, it will be requested in the console.
+**-boltPsw**  - password for encrypting private keys when writing to the database. The API will not work if the password was not specified at startup. The password specified at first startup should be specified at subsequent startups. Don’t forget the password because it is not saved anywhere. If you specify an incorrect password or you enter the word "console" as a password, then you will be prompted to enter the password in the console after running EGAAS. Also, if the password has already been set but not specified in the command line parameter, it will be requested for in the console.
 
 .. code:: 
 
       -boltPsw=mypass344
       
-**-apiToken**  - this parameter specifies the token that will need to be transferred upon request to API. The specified token will be saved, and it can be omitted in the following startups. If this parameter has not been specified, then you can call the API commands without specifying the token parameter. If you'll need to change the token, you should start EGAAS with a new value in this parameter.
+**-apiToken**  - this parameter specifies the token that will need to be passed when making a request to the API. The token specified will be saved, and can be omitted in subsequent startups. If this parameter has not been specified, then you will be able to call API commands without specifying the token parameter. If you'll need to change the token, you should start EGAAS with a new value in this parameter.
 
 .. code:: 
 
@@ -32,11 +32,11 @@ In order to work with this API, you need to specify the following parameters upo
 API requests
 ********************************************************************************
 
-Responses to API requests are in JSON format and all have an error field. If it is empty, then the request has been executed without errors. Otherwise, it contains the text of the error occurred.
+Responses to API requests are in JSON format and all of them have an error field. If this field is empty, then the request has been executed without errors. Otherwise, the field contains the text of the error that has occurred.
 
 /exchangeapi/newkey
 ==============================
-The command generates a private key, records it to a key file, and returns the public key and the wallet addresses. For example,
+The command generates a private key, records it to a key file, and returns the public key and wallet addresses. For example:
 
 
 */exchange/newkey?token=qweuytwuy347834*
@@ -49,7 +49,7 @@ Response example:
 
 /exchange/send?sender=...&recipient=...&amount=...
 ==============================
-The command sends money from the wallet (**sender**) from the database to the specified wallet (**recipient**). The wallets can be specified in any format - *XXXX-....-XXXX, int64, uint64*. It should be noted that the commands only sends the transaction, but does not wait for confirmation that the money is transferred. The value of the amount (**amount**) transferred should be indicated in *qEGS*.
+The command sends money from the wallet (**sender**) from the database to the specified wallet (**recipient**). The wallets can be specified in any format  *XXXX-....-XXXX, int64, uint64*. It should be noted that the command only sends the transaction, but does not wait for confirmation that the money has been transferred. The value of the amount  (**amount**) should be indicated in  *qEGS*.
 
 For example,
 
@@ -78,7 +78,7 @@ Response example:
 
 /exchangeapi/history?wallet=...&count=...
 ==============================
-The command returns the last history of the flow of funds in the specified wallet. count is an optional parameter and determines the number of records to be returned (1 more can be returned). By default, 50 entries will be returned, and the maximum number is 200.
+The command returns the last history of flow of funds in the specified wallet. count is an optional parameter and determines the number of records to be returned (1 more can be returned). By default, 50 entries will be returned, and the maximum number is 200.
 
 For example,
 
