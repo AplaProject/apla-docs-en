@@ -553,5 +553,162 @@ Possible response
     }      
 
 ********************************************************************************
-Команды API для работы с контрактами
+API commands for contracts
 ********************************************************************************
+
+contract/{id}/[?global=1]
+==============================
+**GET** to get contract fields with id **{id}**. By default, the contract for the current state is returned. If an additional *global* parameter is specified, then there will be information on the global contract.
+
+.. code:: 
+    
+    GET
+    /api/v1/contract/10
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "id": 45
+        "name": "MyContract",
+        "value": "contract MyContract{...", 
+        "active": 1,  - 1 if contract is active and otherwise 0.
+        "conditions": 'ContractConditions("MainCondition")',
+        "error": ""
+    }      
+
+contract
+==============================
+**POST** to add a new contract. You first need to call the the **prepare/contract** command (POST) and sign the returned *forsign* field.
+
+.. code:: 
+    
+    POST
+    /api/v1/contract
+    wallet - owner’s wallet. Not specified if the adding contract is the owner.
+    value - contract text
+    conditions - permission for edit
+    global - point 1, if you need to add a globak contract. Otherwise a contract will be added to the current state
+    signature - hex signature
+    time - time returned by preparee
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+        "error": ""
+    }      
+
+contract/{id}/[?global=1]
+==============================
+**PUT** replaces an existing contract with id **{id}**. You first need to call the **prepare/contract** command (PUT) and sign the returned forsign field. If the global contract is being replaced, you should add the *global* parameter.
+
+.. code:: 
+    
+    PUT
+    /api/v1/contract/4
+    value - contract text
+    conditions - permission for edit
+    signature - hex signature
+    time - time returned by prepare
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+        "error": ""
+    }      
+
+activatecontract/{id}/[?global=1]
+==============================
+**PUT** to activate a contract with id **{id}**. You first need to call the **prepare/activatecontract** command (PUT) and sign the returned forsign field. If the global contract is being activated, you should add the global parameter.
+
+.. code:: 
+    
+    PUT
+    /api/v1/activatecontract/5
+    signature - hex signature
+    time - time returned by prepare
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+        "error": ""
+    }      
+
+contractlist/[?limit=...&offset=...&global=1]
+==============================
+**GET** to return a list of contracts. If you need global contracts, you should add the *global* parameter. You can also specify the offset and the number of items received.
+
+
+.. code:: 
+    
+    GET
+    /api/v1/contractlist/
+    
+Possible response
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "list": [{ 
+            "id": 1,
+            "name": "MyContract",
+            "wallet": "XXXX-...-XXXX",
+            "active": 1
+        }, 
+        { 
+            "id": 2,
+            "name": "AnotherContract",
+            "wallet": "XXXX-...-XXXX",
+            "active": 1
+        }, 
+        ]
+        "error": ""
+    }      
+
+
+smartcontract/{name}
+==============================
+**GET** to get information about a smart contact named **{name}**. By default, a smart contract is sought in the current ecosystem. To get a global smart contract, specify @0 before the name, for example **@0GlobalContract**. This gives an object with the fields *fields, name, active*, where fields are an array containing information about each parameter in the **data** section of the contract and contains the fields **name, htmltype, txtype and tags**.
+
+.. code:: 
+    
+    GET
+    /api/v1/smartcontract/mycontract
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "fields" : [
+            {"name":"amount", "htmltype":"textinput", "txtype":"int64", "tags": "optional"},
+            {"name":"name", "htmltype":"textinput", "txtype":"string" "tags": ""}
+        ],
+        "name": "@1mycontract",
+        "active": true
+    }      
+
+smartcontract/{name}
+==============================
+**POST** to calls a smart contract named **{name}**. You first need to call the **prepare/smartcontract/{name}** command (POST) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully
