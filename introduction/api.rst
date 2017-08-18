@@ -712,3 +712,322 @@ Possible response
 smartcontract/{name}
 ==============================
 **POST** to calls a smart contract named **{name}**. You first need to call the **prepare/smartcontract/{name}** command (POST) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully
+
+.. code:: 
+ 
+    POST
+    /api/v1/smartcontract/mycontract
+    smart contract parameters
+    signature - hex signature
+    time - time returned by prepare
+    
+   Possible response
+   
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
+
+********************************************************************************
+API commands for ecosystems
+********************************************************************************
+
+newstate
+==============================
+**POST** Creates an ecosystem. You first need to call the **prepare/newstate** command (POST) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully.
+
+.. code:: 
+ 
+    POST
+    /api/v1/newstate
+    name - ecosystem name
+    currency - name of the ecosystem currency
+    signature - hex signature
+    time - time returned by prepare
+
+Possible response
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
+
+statelist/[?limit=...&offset=...]
+==============================
+**GET** returns a list of ecosystems. You can specify the offset and number of entries requested. Each element contains the following parameters: **id, name, logo, coords**.
+
+.. code:: 
+    
+    GET
+    /api/v1/statelist/?limit=2
+    
+Вариант ответа
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "list": [{ 
+            "id": 1,
+            "name": "MyState",
+            "logo": "",
+            "coords": "",
+        }, 
+        { 
+            "id": 2,
+            "name": "Test",
+            "logo": "",
+            "coords": "",
+        }, 
+        ]
+    }      
+
+stateparams/{name}
+==============================
+**GET** to gets information about a parameter named **{name}** in the current ecosystem. The following values are returned: **name, value, conditions**.
+
+.. code:: 
+    
+    GET
+    /api/v1/stateparams/currency_name
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "name": "currency_name",
+        "value": "MYCUR",
+        "condiitions": "true"
+    }      
+
+stateparamslist/[?limit=...&offset=...]
+==============================
+**GET** returns a list of parameters of the current ecosystem. You can specify the offset and the number of entries requested. Each element contains the following parameters: **name, value, conditions**.
+
+.. code:: 
+    
+    GET
+    /api/v1/stateparamslist
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "list": [{ 
+            "name": "state_name",
+            "value": "MyState",
+            "conditions": "true",
+        }, 
+        { 
+            "name": "state_currency",
+            "value": "MY",
+            "conditions": "true",
+        }, 
+        ]
+    }      
+
+stateparams
+==============================
+**POST** to add a parameter to the ecosystem. You first need to call the **prepare/stateparams** command (POST) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully.
+
+.. code:: 
+ 
+    POST
+    /api/v1/stateparams
+    name - parameter name
+    value - parameter value
+    conditions - conditions for changing the parameter
+    signature - hex signature
+    time - time returned by prepare
+
+Possible response
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
+
+stateparams/{name}
+==============================
+**PUT** to change the value of an existing parameter named **{name}**. You first need to call the **prepare/stateparams** command (PUT) and sign the returned forsign field.
+
+.. code:: 
+    
+    PUT
+    /api/v1/stateparams/myvalue
+    value - parameter value
+    conditions - permission for edit
+    signature - hex signature
+    time - time returned by prepare
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+        "error": ""
+    }      
+    
+********************************************************************************
+API commands for working with tables
+********************************************************************************
+
+table
+==============================
+**POST** to create a table. You first need to call the **prepare/table** command (POST) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully.
+
+.. code:: 
+ 
+    POST
+    /api/v1/table
+    name - table name
+    global - enter 1 if a global table will be added. Otherwise, the table will be added to the current state.
+    columns - a list of added columns with fields **name, type, index**. For example, **[["mytext","text","0"],["mynum","int64", "1"]]**
+    signature - hex signature
+    time - time returned by prepare
+
+
+Possible response
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
+
+column/{tablename}
+==============================
+**POST** to add a column to an existing table. You first need to call the **prepare/column/{tablename}** command (POST) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully. As a tablename, you need to specify the full table name with a prefix, for example, *1_mytable*.
+
+.. code:: 
+ 
+    POST
+    /api/v1/column
+    name - column name
+    type - type of the column, for example int64.
+    permissions - permissions to change the column.
+    index - point 1, if to create the index, and otherwise point 0.
+    signature - hex signature
+    time - time returned by prepare
+
+Possible response
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
+
+table/{tablename}
+==============================
+**PUT** to change table permissions. You first need to call the **prepare/table** command (PUT) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully. As a *tablename*, you need to specify the full table name with a prefix, for example, *1_mytable*.
+
+.. code:: 
+ 
+    POST
+    /api/v1/table/global_mytable
+    insert - permissions to insert an element
+    new_column - permissions to add a column
+    general_update - пpermissions to update permissions
+    signature - hex signature
+    time - time returned by prepare
+    
+    Possible response
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
+
+column/{tablename}/{columnname}
+==============================
+**PUT** to change table column permissions. You first need to call the **prepare/table/{tablename}/{columnname}** command (PUT) and sign the returned forsign field. The transaction hash is returned if the command was executed successfully. As a tablename, you need to specify the full table name with a prefix, for example, *1_mytable*.
+
+.. code:: 
+ 
+    POST
+    /api/v1/column/global_mytable/mycol
+    permissions - permissions to change that column 
+    signature - hex signature
+    time - time returned by prepare
+
+Possible response
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
+    
+tables/[?limit=...&offset=...&global=1]
+==============================
+**GET** returns a list of tables. You can specify the offset and the number of tables requested. If global tables are needed, then you should add the *global* parameter. You can also specify the offset and the number of items received.
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": "100"
+        "list": [{ 
+            "name": "1_accounts",
+        }, 
+        { 
+            "name": "1_citizens",
+       }, 
+        ]
+    }      
+    
+table/{name}[?global=1]
+==============================
+**GET** returns information about a table. To get information about a global table, you need to add the global parameter. The following fields are returned: "name" - table name, "insert" - permissions to insert elements, "new_column" - permissions to add a column, "general_update": permissions to update permissions, "columns" - an array of columns with the fields name, type, perm (meaning *name, type, change* permissions).
+
+.. code:: 
+    
+    GET
+    /api/v1/table/mytable
+    
+Possible response
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "name": "1_mytable",
+        "insert": "ContractConditions("MainCondition")",
+        "new_column": "ContractConditions("MainCondition")",
+        "general_update": "ContractConditions("MainCondition")",
+        "columns": [{"name": "mynum", "type": "numbers", "perm":"ContractConditions("MainCondition")" }, 
+            {"name": "mytext", "type": "text", "perm":"ContractConditions("MainCondition")" }
+        ]
+    }      
+    
