@@ -7,6 +7,22 @@ The functions of a contract language perform operations with data obtained in th
 Functions do not return errors – all errors are checked automatically. When an error is generated in any of the functions, the contract stops working and displays a description of the error in a special window.
 
 
+********************************************************************************
+Predefined values
+********************************************************************************
+
+The following variables are available when executing a contract. 
+
+* **$citizen** - numeric identifier (int64) of the citizen, who signed the transaction. 
+* **$wallet** - numeric identifier (int64) of the wallet. Matches with *$citizen*. 
+* **$state** - identifier of the ecosystem of which the user, who signed the transaction, is a member. 
+* **$type** identifier of an external contract from where the current contract was called. 
+* **$time** - time specified in the transaction in Unix format. 
+* **$block** - block number in which this transaction is sealed. 
+* **$block_time** - time specified in the block. 
+* **$wallet_block** - numeric identifier (int64) of the node that signed the block. 
+
+It should be kept in mind that these variables are available not only in the functions of the contract but also in other functions and expressions, for example, in conditions that are specified for contracts, pages and other objects. In this case, *$time and $block* variables related to the block and others are equal to 0.
 
 ********************************************************************************
 Retrieving values from the database
@@ -75,6 +91,20 @@ The function returns a numeric value from the column of the database table with 
 
     var val int
     val = DBIntWhere(Table("mytable"), "counter",  "idgroup = ? and statue=?", mygroup, 1 )
+
+DBRowExt(tblname string, columns string, val (int|string), column string) map
+==============================
+Function returns a massive of values (map) from database table with the search of record on the specified field and value.
+
+* *tblname* - table name in the database;
+* *columns* - the name of the columns you want to retrieve;
+* *val* - the value by which the record will be searched;
+* *column* - the name of the column on which the record will be searched. The table should have an index for this column.
+
+.. code:: js
+
+    var vals map
+    vals = DBRowExt(Table("mytable"), "address,postindex,name", $Company, "company" )
 
 DBString(tblname string, name string, id int) string
 ==============================
@@ -171,6 +201,18 @@ The function returns associative map arrays, containing a list of values of the 
         i++
     }
 	
+LangRes(idres string, lang string) string
+==============================
+The function returns a language resource named idres for a language specified in lang as a two-character code, for example, *en,fr,ru*. The function searches in the corresponding ecosystem. If there is no resource for such language, the English language resource will be returned. 
+
+* *idres* - имя языкового ресурса;
+* *lang* - двухсимвольный код языка;
+
+.. code:: js
+
+    warning LangRes("confirm", $Lang)
+    error LangRes("problems", "de")
+    
 ********************************************************************************
 Changing values in tables
 ********************************************************************************
@@ -187,6 +229,17 @@ The function adds a record to a specified table and returns the **id** of the in
 
     DBInsert(Table("mytable"), "name,amount", "John Dow", 100)
 
+DBInsertReport(tblname string, params string, val ...) int
+==============================
+The function adds an entry to the specified report table and returns **id** of the inserted entry. This function is almost identical to the DBInsert function, but it makes an entry only to the report table of the current ecosystem. 
+
+* *tblname* – the name of the table in the database. The report table in the database must have a name in the format **[state_id]_reports_[tblname]**. 
+* *params* – a comma-separated list of column names where the values listed in **val** will be written. 
+* *val* – a comma-separated list of values for columns listed in **params**; values can be a string or a number. 
+
+.. code:: js
+
+    DBInsertReport(Table("mytable"), "name,amount", "John Dow", 100)
 
 DBUpdate(tblname string, id int, params string, val...)
 ==============================
@@ -215,8 +268,18 @@ The function updates columns in a record whose column has a specified value. The
 
     DBUpdateExt(Table("mytable"), "address", addr, "name,amount", "John Dow", 100)
 
+FindEcosystem(name string) int
+==============================
+The function looks for an ecosystem with the specified name and returns its identifier. If the indicated ecosystem is absent, then it returns identifier. The search is going without register accounting.
+
+* *name* - ecosystem name.
+
+.. code:: js
+
+    id = FindEcosystem(`My Country`)
+
 ********************************************************************************
-Calling of contracts
+Work with contracts and language
 ********************************************************************************
 
 CallContract(name string, params map)
@@ -253,6 +316,29 @@ The function calls the **conditions** section from contracts with specified name
 
     ContractConditions("MainCondition")  
 
+EvalCondition(tablename string, name string, condfield string) 
+==============================
+Function takes from the *tablename* table the value of the *condfield* field from the record with the *’name’* field, which is equal to the *name* parameter and checks if the condition from the field *condfield* is made. 
+
+* *tablename* - name of the table.
+* *name* - value for searching by the field 'name'
+* *condfield* - the name of the field where the condition to be checked is stored.
+
+.. code:: js
+
+    EvalCondition(PrefixTable(`menu`, $Global), $Name, `condition`)  
+
+ValidateCondition(condition string, state int) 
+==============================
+The function tries to compile the condition specified in the *condition* parameter. If a mistake occurs during the compilation process, the mistake will be generated and the calling contract will complete is’s job. This function is designed to check the correctness of the conditions when they change.
+
+* *condition* - verifiable condition.
+* *state* - identifier of the state. Specifie 0 if checking for global conditions
+
+.. code:: js
+
+    ValidateCondition(`ContractAccess("@0MyContract")`, 0)
+    
 ********************************************************************************
 Operations with values of variables
 ********************************************************************************
