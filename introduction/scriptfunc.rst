@@ -343,9 +343,28 @@ The function tries to compile the condition specified in the *condition* paramet
 Operations with values of variables
 ********************************************************************************
 
-AddressToId(val int) int
+AddressToId(address string) int
 ==============================
+Function returns the the identification number of the citizen by the string value of the address of his wallet. If the wrong adress is specified, then 0 returns. 
 
+* *address* - the wallet adress in the format XXXX-...-XXXX or in the form of number.
+
+.. code:: js
+
+    wallet = AddressToId($Recipient)
+    
+Contains(s string, substr string) bool
+==============================
+Returnes true if the string *s* containts the substring *substr*.
+
+* *s* - checked string.
+* *substr* - which is searched in the specified line.
+
+.. code:: js
+
+    if Contains($Name, `my`) {
+    ...
+    }    
 
 Float(val int|string) float
 ==============================
@@ -356,6 +375,19 @@ The function converts an integer *int* or *string* to a floating-point number.
 .. code:: js
 
     val = Float("567.989") + Float(232)
+
+HasPrefix(s string, prefix string) bool
+==============================
+Function returns true, if the string bigins from the specified substring *prefix*.
+
+* *s* - checked string.
+* *prefix* - checked prefix for this string.
+
+.. code:: js
+
+    if HasPrefix($Name, `my`) {
+    ...
+    }
 
 HexToBytes(hexdata string) bytes
 ==============================
@@ -402,9 +434,39 @@ The function returns the wallet address by the public key in hexadecimal encodin
     var wallet int
     wallet = PubToID("fa5e78.....34abd6")
     
- AddressToId(address string) int
- ==============================
- The function returns the citizen's identification number by the string value of the address of his wallet.
+PrefixTable(tblname string, global int) string
+==============================
+The function returns the full name of the table with the numeric prefix of the state number, where the contract is calling, or with prefix **global**, if the value of *global* parameter is equel 1.
+
+* *tblname* - the part of the table name in the database after the underscore character.
+* *global* - if it is equel to 1, the prefix **global** will be added
+
+.. code:: js
+
+    Println( PrefixTable("pages", global)) // may be global_pages, 1_pages or 2_pages etc.
+
+Replace(s string, old string, new string) string
+============================
+Function replaces in the *s* string all cccurrences of the *old* string to *new* string and returnes the result.  
+
+* *s* - source string.
+* *old* - changed string.
+* *new* - new string.
+
+.. code:: js
+
+    s = Replace($Name, `me`, `you`)
+ 
+Size(val string) int
+==============================
+The function returns the size of the specified string.
+
+* *val* - the string for which we have to calculate the size.
+
+.. code:: js
+
+    var len int
+    len = Size($Name) 
  
  Sha256(val string) string
 ==============================
@@ -440,6 +502,19 @@ The function converts a numeric *int* or *float* value to a string.
     myfloat = 5.678
     val = Str(myfloat)
 
+Substr(s string, offset int, length int) string
+==============================
+Function returns the substring from the specified string starting from the offset *offset* (calculating from the 0) and with length *length*. In case of not correct offsets or length the empty column is returned. If the sum of offset and *length* is more than string size, then the substring will be returned from the offset to the end of the string.
+
+* *val* - string.
+* *offset* - offset of substring.
+* *length* - size of substring.
+
+.. code:: js
+
+    var s string
+    s = Substr($Name, 1, 10)
+
 Table(tblname) string
 ==============================
 The function returns the full name of a table with the numeric prefix of the state number in which the contract is called and with an underscore symbol between the prefix and the name. Allows you to make contracts become independent of the state.
@@ -449,6 +524,18 @@ The function returns the full name of a table with the numeric prefix of the sta
 .. code:: js
 
     Println( Table("citizens")) // may be 1_citizens or 2_citizens etc.
+
+UpdateLang(name string, trans string)
+==============================
+Function updates the language source in the memory. Is used in the transactions that change language sources.
+
+* *name* - name of the language source.
+* *trans* - source with translations.
+
+.. code:: js
+
+    UpdateLang($Name, $Trans)
+
 
 ********************************************************************************
 Updating platform elements
@@ -502,3 +589,78 @@ The function updates the *state_parameters* in the state_parameters table (param
 .. code:: js
 
     UpdateParam("state_flag", $flag, "ContractConditions(`MainCondition`)")
+    
+********************************************************************************
+Работа с системными таблицами
+********************************************************************************
+
+SysParamString(name string) string
+==============================
+Функция возвращает значение указанного системного параметра.
+
+* *name* - имя параметра;
+
+.. code:: js
+
+    url = SysParamString(`blockchain_url`)
+
+SysParamInt(name string) int
+==============================
+Функция возвращает значение указанного системного параметра в виде числа.
+
+* *name* - имя параметра;
+
+.. code:: js
+
+    maxcol = SysParam(`max_columns`)
+
+SysCost(name string) int
+==============================
+Функция возвращает стоимость указанной встроенной транзакции.
+
+* *name* - имя параметра;
+
+.. code:: js
+
+    cost = SysCost(`dlt_transfer`)
+
+
+UpdateSysParam(name, value, conditions string)
+==============================
+Функция обновляет значение и условие системного параметра. Если значение или условие менять не нужно, то следует в соответствующем параметре указать пустую строку.
+
+* *name* - имя параметра;
+* *value* - новое значение параметра;
+* *conditions* - новое условие изменения параметра;
+
+.. code:: js
+
+    UpdateSysParam(`fuel_rate`, `400000000000`, ``)
+
+********************************************************************************
+Работа с PostgreSQL
+********************************************************************************
+
+Функции не дают возможности напрямую отправлять запросы с select, update и т.д., но они позволяют использовать возможности и функции PostgrеSQL при получении значений и описания условий where в выборках. Это относится в том числе и к функциям по работе с датами и временем. Например, необходимо сравнить колонку *date_column* и текущее время. Если *date_column* имеет тип timestamp, то выражение будет следующим *date_column > now()*, а если *date_column* хранит время в Unix формате в виде числа, то тогда выражение будет *to_timestamp(date_column) > now()*. 
+
+.. code:: js
+
+    to_timestamp(date_column) > now()
+    date_initial < now() - 30 * interval '1 day'
+
+Рассмотрим ситуацию, когда у нас есть значение в формате Unix и необходимо записать его в поле имеющее тип *timestamp*. В этом случае, при перечислении полей, перед именем данной колонки необходимо указать **timestamp**. 
+
+.. code:: js
+
+   DBInsert(Table("mytable"), "name,timestamp mytime", "John Dow", 146724678424 )
+
+Если же вы имеете строковое значение времени и вам нужно записать его в поле с типом *timestamp*. В этом случае,  **timestamp** необходимо указать перед самим значением. 
+
+.. code:: js
+
+   DBInsert(Table("mytable"), "name,mytime", "John Dow", "timestamp 2017-05-20 00:00:00" )
+   var date string
+   date = "2017-05-20 00:00:00"
+   DBInsert(Table("mytable"), "name,mytime", "John Dow", "timestamp " + date )
+   DBInsert(Table("mytable"), "name,mytime", "John Dow", "timestamp " + $txtime )
+
