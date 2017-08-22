@@ -591,14 +591,14 @@ The function updates the *state_parameters* in the state_parameters table (param
     UpdateParam("state_flag", $flag, "ContractConditions(`MainCondition`)")
     
 ********************************************************************************
-Работа с системными таблицами
+Working with System Tables
 ********************************************************************************
 
 SysParamString(name string) string
 ==============================
-Функция возвращает значение указанного системного параметра.
+The function returns the value of the specified system parameter.
 
-* *name* - имя параметра;
+* *name* - parameter name;
 
 .. code:: js
 
@@ -606,9 +606,9 @@ SysParamString(name string) string
 
 SysParamInt(name string) int
 ==============================
-Функция возвращает значение указанного системного параметра в виде числа.
+The function returns the value of the specified system parameter in the form of a number.
 
-* *name* - имя параметра;
+* *name* - parameter name;
 
 .. code:: js
 
@@ -616,9 +616,9 @@ SysParamInt(name string) int
 
 SysCost(name string) int
 ==============================
-Функция возвращает стоимость указанной встроенной транзакции.
+The function returns the value of the specified embedded transaction.
 
-* *name* - имя параметра;
+* *name* - parameter name;
 
 .. code:: js
 
@@ -627,34 +627,34 @@ SysCost(name string) int
 
 UpdateSysParam(name, value, conditions string)
 ==============================
-Функция обновляет значение и условие системного параметра. Если значение или условие менять не нужно, то следует в соответствующем параметре указать пустую строку.
+The function updates the value and the condition of the system parameter. If you do not need to change the value or condition, then specify an empty string in the corresponding parameter.
 
-* *name* - имя параметра;
-* *value* - новое значение параметра;
-* *conditions* - новое условие изменения параметра;
+* *name* - parameter name;
+* *value* - new value of the parameter;
+* *conditions* - new condition for changing the parameter;
 
 .. code:: js
 
     UpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 ********************************************************************************
-Работа с PostgreSQL
+Working with PostgreSQL
 ********************************************************************************
 
-Функции не дают возможности напрямую отправлять запросы с select, update и т.д., но они позволяют использовать возможности и функции PostgrеSQL при получении значений и описания условий where в выборках. Это относится в том числе и к функциям по работе с датами и временем. Например, необходимо сравнить колонку *date_column* и текущее время. Если *date_column* имеет тип timestamp, то выражение будет следующим *date_column > now()*, а если *date_column* хранит время в Unix формате в виде числа, то тогда выражение будет *to_timestamp(date_column) > now()*. 
+Functions do not allow direct possibilities to select, update, etc.. but they allow you to use the capabilities and functions of PostgreSQL when you get values and a description of the where conditions  in the samples. This includes, among other things, the functions for working with dates and time. For example, you need to compare the column *date_column* and the current time. If  *date_column* has the  type timestamp, then the expression will be the following *date_column> now ()*.And if *date_column* stores time in Unix format as a number, then the expression will be *to_timestamp (date_column)> now ()*.
 
 .. code:: js
 
     to_timestamp(date_column) > now()
     date_initial < now() - 30 * interval '1 day'
-
-Рассмотрим ситуацию, когда у нас есть значение в формате Unix и необходимо записать его в поле имеющее тип *timestamp*. В этом случае, при перечислении полей, перед именем данной колонки необходимо указать **timestamp**. 
+    
+Consider the situation when we have a value in Unix format and we need to write it in a field of type *timestamp *. In this case, when listing fields, before the name of this column you need to specify **timestamp **.
 
 .. code:: js
 
    DBInsert(Table("mytable"), "name,timestamp mytime", "John Dow", 146724678424 )
 
-Если же вы имеете строковое значение времени и вам нужно записать его в поле с типом *timestamp*. В этом случае,  **timestamp** необходимо указать перед самим значением. 
+If you have a string value of time and you need to write it in a field with the type *timestamp*, in this case, **timestamp** must be specified before the value itself.
 
 .. code:: js
 
