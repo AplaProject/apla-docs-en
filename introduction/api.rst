@@ -91,7 +91,7 @@ API commands for working with EGS
     
 balance
 ==============================
-**GET** Gets the EGS balance of the specified wallet. The wallet number is indicated by the second parameter and can be represented in any format- int64, uint64, XXXX-...-XXXX. In the *amount* parameter, the amount in the wallet is returned in qEGS, while in the *egs* parameter, the same value is returned in EGS.
+**GET** gets the EGS balance of the specified wallet. The wallet number is indicated by the second parameter and can be represented in any format- int64, uint64, XXXX-...-XXXX. In the *amount* parameter, the amount in the wallet is returned in qEGS, while in the *egs* parameter, the same value is returned in EGS.
 
 .. code:: 
     
@@ -112,7 +112,7 @@ Possible response
     
     sendegs 
 ==============================
-**POST** Sends EGS from one wallet to another. Before calling this command, the **prepare/sendegs** request must be sent, and then, after signing return parameter *forsign*, you must send the same request with the signature field in which the *signature* is written.
+**POST** sends EGS from one wallet to another. Before calling this command, the **prepare/sendegs** request must be sent, and then, after signing return parameter *forsign*, you must send the same request with the signature field in which the *signature* is written.
 
 .. code:: 
     
@@ -143,7 +143,7 @@ API service commands
 
 prepare/{tx}
 ==============================
-**POST/PUT** Sends a request to get a string to sign a transaction, where **{tx}** is the name of the transaction for which you want to return the string for signature. In the forsign parameter, the string to be signed is returned. The time parameter, which needs to be posted together with the signature field, is also returned. The POST or PUT method must match with the method by which the transaction itself will be posted.
+**POST/PUT** sends a request to get a string to sign a transaction, where **{tx}** is the name of the transaction for which you want to return the string for signature. In the forsign parameter, the string to be signed is returned. The time parameter, which needs to be posted together with the signature field, is also returned. The POST or PUT method must match with the method by which the transaction itself will be posted.
 
 .. code:: 
     
@@ -335,7 +335,7 @@ menulist/[?limit=...&offset=...&global=1]
 
 page/{name}/[?global=1]
 ==============================
-**GET** to gets the fields of a page named **{name}**. By default, the page for the current state is returned. If an additional *global* parameter is specified, the global page will be returned. In addition to *name, value* and *conditions*, the name of the menu related to this page is also returned.
+**GET** to get the fields of a page named **{name}**. By default, the page for the current state is returned. If an additional *global* parameter is specified, the global page will be returned. In addition to *name, value* and *conditions*, the name of the menu related to this page is also returned.
 
 .. code:: 
     
@@ -372,7 +372,7 @@ page
     signature - hex signature
     time - time returned by prepare
     
-Вариант ответа
+Possible response
 
 .. code:: 
     
@@ -392,12 +392,12 @@ page/{name}/[?global=1]
     
     PUT
     /api/v1/page/default
-    value - шаблон страницы
-    conditions - права на изменения
-    signature - hex подпись
-    time - время, возвращенное prepare
+    value - page template
+    conditions - rights to edit
+    signature - hex signature
+    time - time returned by prepare
     
-Вариант ответа
+Possible answer
 
 .. code:: 
     
