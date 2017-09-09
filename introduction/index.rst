@@ -11,6 +11,7 @@ Description
    templates.rst
    appexample.rst
    exchangeapi.rst
+   api.rst
    alphabetical_index.rst
    
 
