@@ -3,21 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-eGaaS
+Apla Homestead Documentation
 ===============================================================================
 
 ..  image:: img/logo.png
-..   :height: 156 px
-..   :width: 235 px
+..   :height: 200 px
+..   :width: 695 px
    :scale: 100 %
-   :alt: daylight-logo
+   :alt: apla-logo
    :align: center
 
 
 The description of the basic principles and approaches of technical performance of eGaaS platform is presented in the current document:
 
 
-The description of platform
+Contents
 ===============================================================================
 
 .. toctree::
