@@ -14,7 +14,7 @@ Apla Homestead Documentation
    :align: center
 
 
-The description of the basic principles and approaches of technical performance of eGaaS platform is presented in the current document:
+The description of the basic principles and approaches of technical performance of Apla platform is presented in the current document:
 
 
 Contents
@@ -23,7 +23,7 @@ Contents
 .. toctree::
    :maxdepth: 4
 
-   introduction/what-is-eGaaS.rst
+   introduction/what-is-Apla.rst
    introduction/script.rst
    introduction/scriptfunc.rst
    introduction/templates.rst
