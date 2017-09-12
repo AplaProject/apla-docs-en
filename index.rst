@@ -23,5 +23,12 @@ The description of platform
 .. toctree::
    :maxdepth: 4
 
-   introduction/index.rst
+   introduction/what-is-eGaaS.rst
+   introduction/script.rst
+   introduction/scriptfunc.rst
+   introduction/templates.rst
+   introduction/appexample.rst
+   introduction/exchangeapi.rst
+   introduction/api.rst
+   introduction/alphabetical_index.rst
 
