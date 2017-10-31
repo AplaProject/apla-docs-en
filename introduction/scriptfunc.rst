@@ -66,7 +66,7 @@ The function returns the value of the **amount** column with type *money* with a
     
 StateVal(name string) string
 ==============================
-The function returns the value of a specified parameter from the state settings (*state_parameters*).
+The function returns the value of a specified parameter from the state settings (*parameters*).
 
 * *name* - name of the received parameter.
 
@@ -141,7 +141,7 @@ The function returns a string value from the column of the database table by the
 .. code:: js
 
     var val string
-    val = DBString(Table("mytable"), "name", $citizen)
+    val = DBString("mytable", "name", $citizen)
 
 DBStringExt(tblname string, name string, val (int|string), column string) string
 ==============================
