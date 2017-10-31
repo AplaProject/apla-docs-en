@@ -5,7 +5,7 @@ Language of contracts
   :local:
   :depth: 2
   
-Contract is the basic structure for the eGaaS algorithms implementation. The complete code snippets ensuring the acceptance of input data from the user or any other contract, the analysis of their correctness and the performance of the necessary transactions are drawn up as contracts. The language of contracts is a scripting language with fast compilation to byte code. It supports variables with the main types of values, contains functions, a standard set of operators and structures, and a bug management database.
+Contract is the basic structure for the Apla algorithms implementation. The complete code snippets ensuring the acceptance of input data from the user or any other contract, the analysis of their correctness and the performance of the necessary transactions are drawn up as contracts. The language of contracts is a scripting language with fast compilation to byte code. It supports variables with the main types of values, contains functions, a standard set of operators and structures, and a bug management database.
 
 Contracts are compiled into a byte code and are available for all users. Upon the contract display, the isolated stack with еру input data and a set of variables is created, which the virtual machine processes when executing a byte code. Thus, multiple processes which will not influence each other can be performed on the same byte code, which will not influence each other.
 
@@ -222,10 +222,10 @@ The variables in the contract
 The pre-defined variables that contain data about the transaction from which the contract was displayed are also available in the contract.
 
 *	*$time* - int. transaction time
-*	*$state* - int. state identifier
+*	*$state* - int. ecosystem identifier
 *	*$block* - block number in which the int. transaction is sealed 
 *	*$citizen* - address of the citizen who signed the int transaction.
-*	*$wallet* - address of the wallet signatory to the transaction if the contract is outside the state, where the state == 0.
+*	*$wallet* - address of the wallet signatory to the transaction if the contract is outside the ecosystem, where the state == 0.
 *	*$wallet_block* - address of the node that has formed the block that includes the transaction.
 *	*$block_time* - time of formation of the block containing the transaction with the current int. contract.
 
@@ -307,7 +307,7 @@ If in a contract launched by the user the string MoneyTransfer("Recipient,Amount
     }
 
 
-2. Adding in the *Signatures* table (on the page **Signatures** of eGaaS client) the entry containing:
+2. Adding in the *Signatures* table (on the page **Signatures** of Apla client) the entry containing:
 
 •	*MoneyTransfer* contract name,
 •	field names whose values will be displayed to the user, and their text description,
@@ -343,7 +343,7 @@ When sending a *MyTest* contract, the additional confirmation of the money trans
 ********************************************************************************
 Rights of access to system components
 ********************************************************************************
-eGaaS has a multi-level rights management system for the creation and editing of database tables, contracts, pages and interface menu, and parameters of the state setting pattern. Rights are specified when creating and editing the above elements in the "Permissions" fields in the relevant sections of the state setting (smart contracts, tables, interface). Rights are recorded as logical expressions, and are provided if the expression is *true* at the time of access. If the "Permissions" field remains empty, then it automatically becomes *false*, and the access to perform the relevant actions is completely closed.
+Apla has a multi-level rights management system for the creation and editing of database tables, contracts, pages and interface menu, and parameters of the state setting pattern. Rights are specified when creating and editing the above elements in the "Permissions" fields in the relevant sections of the state setting (smart contracts, tables, interface). Rights are recorded as logical expressions, and are provided if the expression is *true* at the time of access. If the "Permissions" field remains empty, then it automatically becomes *false*, and the access to perform the relevant actions is completely closed.
 
 The rights to the following actions are fixed:
 
@@ -354,7 +354,7 @@ The rights to the following actions are fixed:
 5.	*Conditions for change cmart contract* - the right to change the contract;
 6.	*Conditions for changepage* - the right to change the interface page;
 7.	*Conditions for change menu* - the right to change the menu;
-8.	*Conditions for change of State parameters* - the right to change a certain parameter of the state setting pattern.
+8.	*Conditions for change of State parameters* - the right to change a certain parameter of the ecosystem setting pattern.
 
 The simplest way to provide the rights is the prescription of the logical expression *$citizen == 2263109859890200332* in the “Conditions” field, with the indication of the identification number of a particular user. The use of the ContractAccess(“NameContract”) function, to which the list of contracts entitled to implement appropriate action is transferred, is the multi-purpose and recommended method to define the rights. For example, in the table of accounts after the prescription of the ContractAccess("MoneyTransfer") in the "Conditions" field of the amount column, the change of the amount value will be available only to the MoneyTransfer smart contract (all contracts involving the transfer of money from one account to another should only do so by displaying the MoneyTransfer contract). Conditions for obtaining access to the contracts is controlled in the conditions section and can be quite complex, involving many other contracts and smart-laws.
 
