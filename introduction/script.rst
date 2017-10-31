@@ -142,7 +142,7 @@ Let's consider a case, where a function has many parameters, but only a few of t
 
 .. code:: js
  
-    func DBFind(table string).Columns(columns string).Where(format string, tail ...)
+   func DBFind(table string).Columns(columns string).Where(format string, tail ...)
              .Limit(limit int).Offset(offset int) string  {
        ...
     }
@@ -151,7 +151,6 @@ Let's consider a case, where a function has many parameters, but only a few of t
        ...
        return DBFind("table").Columns("name").Where("id=?", 100).Limit(1)
     }
-
 
 
 ********************************************************************************
