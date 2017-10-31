@@ -98,6 +98,7 @@ The **while** structure is intended for the loops implementation. The while **bl
   }
 
 In addition to the conditional expressions, the language supports the standard arithmetic operations: +,-,*,/
+If you specify a variable of the **string** or **bytes** type as a condition, the condition will be true in cases where the length of the string (bytes) is greater than zero. The condition will be false for an empty string.
 
 ********************************************************************************
 Functions
@@ -118,6 +119,40 @@ The function is defined by using the **func** keyword, followed by the function 
   }
 
 Ошибки при выполнении любой функции обрабатываются автоматически вызывая остановку выполнения контракта и вывод соответствующего сообщения.
+
+You can pass any number of parameters to a function. To do this, use **...** as the last parameter type. In this case, the last parameter will be of *array* type and will contain all variables specified in the call, starting from this parameter. You can pass variables of any types, so please make sure you avoid conflicts caused by possible type mismatches.
+
+.. code:: js
+
+  func sum(out string, values ...) {
+      var i, res int
+      
+      while i < Len(values) {
+         res = res + values[i]
+         i = i + 1
+      }
+      Println(out, res)
+  }
+
+  func main() {
+     sum("Sum:", 10, 20, 30, 40)
+  }
+
+Let's consider a case, where a function has many parameters, but only a few of them are needed when calling this function. In this case, optional parameters can be specified as **func myfunc(name string).Param1(param string).Param2(param2 int) {...}**. You can specify any of the additional parameters in any order **myfunc("name").Param2(100)**. In the function body you can access these variables as usual. If the extended parameter is not specified with a call, default values are applied, for example, a string variable would be an empty string, and a number would be zero. You can also specify several extended parameters and use **...** - **func DBFind(table string).Where(request string, params ...)** and call **DBFind("mytable").Where("id > ? and type = ?", myid, 2)**
+
+.. code:: js
+ 
+    func DBFind(table string).Columns(columns string).Where(format string, tail ...)
+             .Limit(limit int).Offset(offset int) string  {
+       ...
+    }
+     
+    func names() string {
+       ...
+       return DBFind("table").Columns("name").Where("id=?", 100).Limit(1)
+    }
+
+
 
 ********************************************************************************
 Contracts
@@ -163,6 +198,7 @@ The data are listed line by line: first, the variable name is specified (only va
 *	*map* - map with the ability to mark the place;
 *	*image* - images upload;
 *	*text* - entry of the text of HTML-code in the textarea field;
+*crypt:Field* - create and encrypt a private key for the destination specified in the *Field* field. If only * crypt * is specified, then the private key will be created for the user who signs the contract.
 *	*address* - field for input of the wallet address;
 *	*signature:contractname* - a line to display the contractname contract, which requires the signatures (it is discussed in detail in a special description section).
 
@@ -174,6 +210,7 @@ The data are listed line by line: first, the variable name is specified (only va
         RequestId address
         Photo bytes "image optional"
         Amount money
+        Private bytes "crypt:RequestId"
     }
     ...
   }
@@ -301,9 +338,7 @@ In order for the user to see the money transfer confirmation upon the *MoneyTran
 
 When sending a *MyTest* contract, the additional confirmation of the money transfer to the indicated wallet will be requested from user. If other values, such as *MoneyTransfer(“Recipient,Amount,Signature”,$Recipient, $Amount+10, $Signature)*, are listed in the enclosed contract, the invalid signature error will occur.
 
-Error processing
-==============================
-Errors in the performance of any function are processed automatically causing the stop of the contract execution and the display of the relevant message.
+
 
 ********************************************************************************
 Rights of access to system components
