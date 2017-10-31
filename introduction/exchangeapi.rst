@@ -45,11 +45,15 @@ Response example:
 
 .. code:: 
 
-   {"error":"", "public":"b7880fa40779d673e7ea026377d7182744869c081b1d3a1d613fe661333ec67a74d985077555d80bc4aa65f5994f238def72881d6c2b6c60ffcc2ec7f050141d", "address":"0773-5161-7272-4133-0241", "wallet_id":7735161727241330241}
+   {"error":"", 
+    "public":"b7880fa40779d673e7....238def72881d6c2b6c60ffcc2ec7f050141d", 
+    "address":"0773-5161-7272-4133-0241", 
+    "wallet_id":7735161727241330241
+    }
 
 /exchange/send?sender=...&recipient=...&amount=...
 ==============================
-The command sends money from the wallet (**sender**) from the database to the specified wallet (**recipient**). The wallets can be specified in any format  *XXXX-....-XXXX, int64, uint64*. It should be noted that the command only sends the transaction, but does not wait for confirmation that the money has been transferred. The value of the amount  (**amount**) should be indicated in  *qEGS*.
+This command sends money from wallet (**sender**) in the DB to the specified wallet (**recipient**). Wallets can be specified in any format - *XXXX-....-XXXX, int64, uint64*. Please note, that the command sends the transaction, but does not wait for the confirmation of receipt. The amount to send (**amount**) should be specified in *qEGS*. The transaction hash is returned in the **txhash** field.
 
 For example,
 
@@ -59,7 +63,8 @@ Response example:
 
 .. code:: 
 
-     {"error":""}
+      {"txhash": "734fa..89ab5",
+     "error":""}
 
 
 /exchangeapi/balance?wallet=....
@@ -80,14 +85,72 @@ Response example:
 ==============================
 The command returns the last history of flow of funds in the specified wallet. count is an optional parameter and determines the number of records to be returned (1 more can be returned). By default, 50 entries will be returned, and the maximum number is 200.
 
-For example,
+Response:
 
-*/exchangeapi/history?wallet=1693-7869-8202-2463-0602&count=10*
+* *error* - error message 
+* *history* - balance history array 
+
+* *block_id* - block ID
+* *dif* - change involved
+* *txhash* - transaction hash 
+* *amount* - available amount in qEGS
+* *egs* - available amount in EGS
+* *time* - transaction timestamp 
+
+
+For example:
+
+*/exchangeapi/history?wallet=1693-7869-8202-2463-0602&count=10&token=mytoken*
 
 Response example:
 
 .. code:: 
 
-    {"error":"","history":[{"block_id":"118855","dif":"-0.001","amount":"99992318000000000000","egs":"99.992318","time":"03.05.2017 10:48:14"},{"block_id":"118855","dif":"-0.001999","amount":"99993318000000000000","egs":"99.993318","time":"03.05.2017 10:48:14"},{"block_id":"112283","dif":"-0.001","amount":"99995317000000000000","egs":"99.995317","time":"02.05.2017 18:28:24"}]}
+    {"error":"",
+    "history":[{"block_id":"118855","dif":"-0.001",
+    "amount":"99992318000000000000","egs":"99.992318","time":"03.05.2017 10:48:14"},
+    {"block_id":"118855","dif":"-0.001999","amount":"99993318000000000000","egs":"99.993318",
+    "time":"03.05.2017 10:48:14"},
+    {"block_id":"112283","dif":"-0.001","amount":"99995317000000000000","egs":"99.995317",
+    "time":"02.05.2017 18:28:24"}]}
 
+/exchangeapi/txstatus?hash=...
+==============================
 
+The command returns information on the transaction with hash specified in the *hash* field. If *block_id* is "0" and in the *error* field an empty string, then the transaction has not yet entered the block.
+
+Response
+
+* *block_id* - block ID 
+* *txhash* - transaction hash 
+* *amount* - transaction amount in qAPL
+* *egs* - transaction amount in APL
+* *time* - transaction timestamp
+* *sender* - sender ID 
+* *recipient* - recipient ID
+* *sender_address* - sender's address in the XXXX-...-XXXX format
+* *recipient_address* - recipient's address in the XXXX-...-XXXX format
+* *confirmations* - number of blocks after this block
+* *error* - error message 
+
+Example:
+
+*/exchangeapi/txstatus?hash=ca378ca44c388b79fba6d8643c5e8935*
+
+Response example:
+
+.. code:: 
+
+{
+    "block_id": "18111",
+    "confirmations": "3618",
+    "txhash": "ca378ca44c388b79fba6d8643c5e8935",
+    "amount": "46000000000000",
+    "egs": "0.000046",
+    "time": "1505306953",
+    "sender": "7480871936035188899",
+    "recipient": "-2411392676761618411",
+    "sender_address": "0748-0871-9360-3518-8899",
+    "recipient_address": "1603-5351-3969-4793-3205",
+    "error": ""
+   }
