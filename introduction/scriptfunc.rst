@@ -28,6 +28,30 @@ It should be kept in mind that these variables are available not only in the fun
 Retrieving values from the database
 ********************************************************************************
 
+DBFind(table string) [.Columns(columns string)] [.Where(where string, params ...)] [.WhereId(id int)] [.Order(order string)] [.Limit(limit int)] [.Offset(offset int)] [.Ecosystem(ecosystemid int)] array
+==========================
+The Function receives data from a database table in accordance with the request specified. Returned is an *array* comprised of *map* associative arrays.
+
+* *table* - table name.
+* *сolumns* - list of returned columns. If not specified, all columns will be returned. 
+* *Where* - search condition. For instance, *.Where("name = 'John'")* or *.Where("name = ?", "John")*
+* *id* - search by identifier. For example, *.WhereId(1)*
+* *order* - a field, which will be used for sorting. By default, values are sorted by *id*.
+* *limit* - number of returned values (default = 25, maximum = 250).
+* *offset* - returned values offset.
+* *ecosystemid* - ecosystem ID. By default, values are taken from the table in the current ecosystem.
+
+.. code:: js
+
+   var i int
+   ret = DBFind("contracts").Columns("id,value").Where("id> ? and id < ?", 3, 8).Order("id")
+   while i < Len(ret) {
+       var vals map
+       vals = ret[0]
+       Println(vals["value"])
+       i = i + 1
+   }
+
 DBAmount(tblname string, column string, id int) money
 ==============================
 The function returns the value of the **amount** column with type *money* with a search for a record by value of a specified column of the table. (The functions **DBInt()** and **DBIntExt()** that return int values cannot be used to obtain money *int*).
@@ -205,8 +229,8 @@ LangRes(idres string, lang string) string
 ==============================
 The function returns a language resource named idres for a language specified in lang as a two-character code, for example, *en,fr,ru*. The function searches in the corresponding ecosystem. If there is no resource for such language, the English language resource will be returned. 
 
-* *idres* - имя языкового ресурса;
-* *lang* - двухсимвольный код языка;
+* *idres* - name of the language source;
+* *lang* - two-character language code;
 
 .. code:: js
 
@@ -536,59 +560,6 @@ Function updates the language source in the memory. Is used in the transactions 
 
     UpdateLang($Name, $Trans)
 
-
-********************************************************************************
-Updating platform elements
-********************************************************************************
-
-UpdateContract(name string, value string, conditions string)
-==============================
-The function updates a specified contract (a contract cannot be modified via the **DBUpdate** function).
-
-* *name* - contract name;
-* *value* - contract text;
-* *conditions* - access rights to modify a contract.
-
-.. code:: js
-
-    UpdateContract("MyContract", source, "СonditionsContract($citizen)")
-
-UpdateMenu(name string, value string, conditions string)
-==============================
-The function updates a specified menu (the menu cannot be changed via the DBUpdate function).
-
-* *name* - name of the menu to be updated.
-* *value* - menu text.
-* *conditions* - access rights to change the menu.
-
-.. code:: js
-
-    UpdateMenu("main_menu", mymenu, "СonditionsContract($citizen)")
-
-UpdatePage(name string, value string, menu string, conditions string)
-==============================
-The function updates a specified page (the page cannot be changed via the **DBUpdate** function).
-
-* *name*  - name of the page being updated;
-* *value* - text of the page;
-* *menu* - name of the menu bound to the page;
-* *conditions* - access rights to change the page.
-
-.. code:: js
-
-    UpdatePage("default_dashboard",mypage, "main_menu", "СonditionsContract($citizen)")
-
-UpdateParam(name string, value string, conditions string)
-==============================
-The function updates the *state_parameters* in the state_parameters table (parameters cannot be changed through the DBUpdate **DBUpdate**).
-
-* *name* - parameter name;
-* *value* - parameter value;
-* *conditions* - access rights to change the parameter.
-
-.. code:: js
-
-    UpdateParam("state_flag", $flag, "ContractConditions(`MainCondition`)")
     
 ********************************************************************************
 Working with System Tables
