@@ -1,0 +1,7 @@
+################################################################################
+REST API v2
+################################################################################
+
+Draft of API V2 commands for work with EGAAS. To work with REST API V2 you need to compile a server from the **gorm_arch** branch. There's no graphic interface for API V2 when viewed in a browser.
+
+To call a command, use **/api/v2/command/[param]**, where **command** is a command name, and **param** is an additional parameter, for example, a name of a resource to change or to receive. Query parameters should be sent with **Content-Type: x-www-form-urlencoded**. Server will respond in JSON format.
