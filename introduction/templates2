@@ -239,7 +239,7 @@ Creates a **form** HTML element.
 * *Class* - classes for this *form*.
 * *Body* - child elements.
 
-**Style** - serves for specifying css styles.
+**Style** - specifies css styles.
 
 * *Style* - css styles.
 
@@ -365,9 +365,9 @@ LinkPage(Body, Page, Class, PageParams) [.Style(Style)]
 * *Class* - классы для данной кнопки.
 * *PageParams* - параметры для перехода на страницу.
 
-**Style** - служит для указания css стилей.
+**Style** - specifies css styles.
 
-* *Style* - css стили.
+* *Style* - css styles.
 
 .. code:: js
 
@@ -432,9 +432,9 @@ Select(Source, Column, Class) [.Style(Style)]
 * *Source* - имя источника данных. Например, из команды *DBFind* или *Data*.
 * *Column* - Имя колонки, из которой будут браться данные.
 
-**Style** - служит для указания css стилей.
+**Style** - specifies css styles.
 
-* *Style* - css стили.
+* *Style* - css styles.
 
 .. code:: js
 
@@ -486,9 +486,9 @@ Table(Source, Columns) [.Style(Style)]
 * *Source* - имя источника данных. Например, из команды *DBFind*.
 * *Columns* - Заголовки и соответствующие имена колонок в виде **Title1=column1,Title2=column2**.
 
-**Style** - служит для указания css стилей.
+**Style** - specifies css styles.
 
-* *Style* - css стили.
+* *Style* - css styles.
 
 .. code:: js
 
