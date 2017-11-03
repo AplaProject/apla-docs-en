@@ -25,10 +25,10 @@ Contents
 
    introduction/what-is-Apla.rst
    introduction/script.rst
-   introduction/scriptfunc.rst
-   introduction/templates.rst
+   introduction/scriptfunc2.rst
+   introduction/templates2.rst
    introduction/appexample.rst
    introduction/exchangeapi.rst
-   introduction/api.rst
+   introduction/api2.rst
    introduction/alphabetical_index.rst
 
