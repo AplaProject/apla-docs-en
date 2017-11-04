@@ -8,10 +8,10 @@ Description
    what-is-eGaaS.rst
    script.rst
    scriptfunc.rst
-   templates.rst
+   templates2.rst
    appexample.rst
    exchangeapi.rst
-   api.rst
+   api2.rst
    alphabetical_index.rst
    
 
