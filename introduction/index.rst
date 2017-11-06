@@ -13,5 +13,6 @@ Description
    exchangeapi.rst
    api2.rst
    alphabetical_index.rst
-   
-
+   contracts.rst
+   contractsignatures.rst
+   install.rst
