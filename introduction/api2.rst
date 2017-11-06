@@ -40,11 +40,11 @@ Error List
 * **E_INSTALLED** - Apla is already installed
 * **E_INVALIDWALLET** - Wallet %s is not valid
 * **E_NOTFOUND** - Content page or menu has not been found
-* **E_NOTINSTALLED** - Apla is not installed. В этом случае нужно запустить установку командно *install*.
+* **E_NOTINSTALLED** - Apla is not installed. In this case, you need to run the *install* by the command.
 * **E_QUERY** - DB query is wrong
-* **E_RECOVERED** - API recovered. Возвращается в случае panic error.
+* **E_RECOVERED** - API recovered. Returtns if there is panic error.
 * **E_REFRESHTOKEN** - Refresh token is not valid
-* **E_SERVER** - Server error. Возвращается в случае ошибки в библиотечных функциях golang. Поле *msg* содержит текст ошибки.
+* **E_SERVER** - Server error. Returns if there is an error in the library functions golang. The *msg* field contains the error text
 * **E_SIGNATURE** - Signature is incorrect
 * **E_STATELOGIN** - %s is not a membership of ecosystem %s
 * **E_TABLENOTFOUND** - Table %s has not been found
@@ -53,6 +53,9 @@ Error List
 * **E_UNAUTHORIZED** - Unauthorized
 * **E_UNDEFINEVAL** - Value %s is undefined
 * **E_UNKNOWNUID** - Unknown uid
+* **E_VDE** - Virtual Dedicated Ecosystem %s doesn't exist
+* **E_VDECREATED** - Virtual Dedicated Ecosystem is already created
+
 
 The **E_RECOVERED** error means that you encountered a bug that needs to be found and fixed. The **E_NOTINSTALLED** error should be returned by any command except for install, in case the system is not yet installed. The **E_SERVER** error may appear in response to any command. If it appears as a result of incorrect input parameters, it can be changed to relevant errors. In the other case, this error reports of invalid operation or incorrect system configuration, which requires a more detailed investigation. The **E_UNAUTHORIZED** error can be returned for any command except for *install, getuid, login* in cases where login was not performed or the session has expired.
 
@@ -107,7 +110,7 @@ Query
     POST
     /api/v2/login
     
-    * *[state]* - ecosystem ID. If not specified, the command will work with the first ecosystem.
+* *[state]* - ecosystem ID. If not specified, the command will work with the first ecosystem.
 * *[expire]* - lifetime of the JWT token in seconds (36000 by default).
 * *[pubkey]* - public hex key. If the blockchain already stores a key, then the wallet number should be passed with the *wallet* parameter. 
 * *[wallet]* - wallet in numerical or XXXX-...-XXXX format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*.
@@ -136,7 +139,7 @@ Response Example
         "address": "1234-....-3424"
     }      
     
-    Errors: *E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC* 
+ Errors: *E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC* 
     
 refresh
 ==============================
@@ -149,7 +152,7 @@ Query
     POST
     /api/v2/refresh
     
-    * *[expire]* - lifetime of the JWT token in seconds (36000 by default).
+* *[expire]* - lifetime of the JWT token in seconds (36000 by default).
 * *token* - refresh token from the previous **login** or **refresh** calls.
 
 Response
@@ -302,6 +305,31 @@ Response Example
         "number": 100,
     }      
 
+vde/create
+==============================
+**POST** Creates Virtal Dedicated Ecosystem for the current ecosystem.
+
+.. code:: 
+    
+    POST
+    /api/v2/vde/create
+
+Rsponse
+
+* *result* - returns *true*, if VDE have been created.
+    
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "result": true,
+    }     
+    
+Errors: *E_VDECREATED*
+
 ecosystemparams
 ==============================
 **GET** Returns a list of ecosystem parameters. 
@@ -315,6 +343,7 @@ Query
     
 * *[ecosystem]* - ecosystem identifier. If not specified, current ecosystem's parameters will be returned.
 * *[names]* - list of parameters to receive, separated by commas. Example: */api/v2/ecosystemparams/?names=name,currency,logo*.
+* *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter.
 
 
 Response
@@ -345,7 +374,7 @@ Response Example
         ]
     }      
     
-Errors: *E_ECOSYSTEM*
+Errors: *E_ECOSYSTEM,E_VDE*
 
 ecosystemparam/{name}
 ==============================
@@ -360,6 +389,7 @@ Query
     
 * *name* - name of the requested parameter.
 * *[ecosystem]* - ecosystem ID can be specified. The current ecosystem value will be returned by default.
+* *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter.
 
 Response
     
@@ -379,7 +409,7 @@ Response Example
         "conditions": "true"
     }      
     
-Errors: *E_ECOSYSTEM*
+Errors: **E_ECOSYSTEM,E_VDE*
 
 tables/[?limit=...&offset=...]
 ==============================
@@ -389,7 +419,7 @@ Query
 
 * *[limit]* - number of entries (25 by default).
 * *[offset]* - entries start offset (0 by default).
-
+* *[vde]* - specify *true*, if you need to recieve the list of the tables in VDE. In the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -423,6 +453,8 @@ Response Example
         ]
     }    
     
+    Ошибки: *E_VDE* 
+    
     table/{name}
 ==============================
 **GET** Returns information about the requested table in the current ecosystem.
@@ -437,6 +469,7 @@ Query
     /api/v2/table/mytable
      
 * *name* - table name (without ecosystem ID prefix).
+* *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter.
 
 Response
 
@@ -468,7 +501,7 @@ Response Example
         ]
     }      
     
-Errors: *E_TABLENOTFOUND*    
+Errors: *E_TABLENOTFOUND,E_VDE*  
 
 list/{name}[?limit=...&offset=...&columns=]
 ==============================
@@ -480,6 +513,7 @@ Query
 * *[limit]* - number of entries (25 by default).
 * *[offset]* - entries start offset (0 by default).
 * *[columns]* - list of requested columns, separated by commas. If not specified, all columns will be returned. The id column will be returned in all cases.
+* *[vde]* - specify *true*, if you need to recieve records from the table in VDE. In the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -522,6 +556,7 @@ Query
 * *tablename* - table name.
 * *id* - entry ID.
 * *[columns]* - a list of requested columns, separated by commas. If not specified, all columns will be returned. The id column will be returned in all cases.
+* *[vde]* - specify *true*, if you need to recieve the record from the table in VDE. In the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -560,6 +595,7 @@ Query
 
 * *[limit]* - number of entries (25 by default).
 * *[offset]* - entries start offset (0 by default).
+* *[vde]* - specify *true*, if you need to recieve the list of contracts from VDE. In the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -617,6 +653,7 @@ contract/{name}
 Response
 
 * *name* - smart contract name.
+* *[vde]* - specify *true*, if you need to recieve the information about the contract from VDE. In the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -667,6 +704,7 @@ Query
 * *signature* - hex signature of the *forsign* value, which was obtained from prepare.
 * *time* - time, returned by prepare.
 * *pubkey* - hex public key of the contract signer. Note, that if the public key is already stored in the keys table of the current ecosystem, it is not necessary to pass it.
+* *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter.
 
 .. code:: 
  
@@ -700,6 +738,7 @@ Query
 * *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for non-activated contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
 * *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling non-activated contracts.
 * *[payover]* - for non-activated contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment.
+* *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter
 * parameters, required for this contract.
 
 .. code:: 
@@ -757,6 +796,12 @@ Response Example
 content/{menu|page}/{name}
 ==============================
 **POST** Returns a JSON representation of the code of the specified page or menu named **{name}**, which is the result of processing by the template engine. The query can have additional parameters, which can be used in the template engine. If the page or menu can't be found, the 404 error is returned.
+    
+Request
+
+* *menu|page* - spesify *page* or *menu* to recieve the page or menu.
+* *name* - the name or menu of the page.
+* *[vde]* - specify *true*, if you recieve data from the page or menu in VDE. Otherwise, you do not need to specify this parameter.
 
 .. code:: 
     
@@ -765,12 +810,12 @@ content/{menu|page}/{name}
     
 Response
 
-* *menu* - menu name for a page when calling *content/page/...*.
-* *menutree* - JSON tree of the menu for the page when calling *content/page/...*.
-* *title* - menu header *content/menu/...*.
-* *tree* - JSON object tree.
+* *menu* - the menu name for the page when calling *content/page/...*.
+* *menutree* - JSON menu tree for the page when calling *content/page/...*.
+* *title* - head for the menu *content/menu/...*.
+* *tree* - JSON tree of objects.
 
-Response Example 
+Response example
 
 .. code:: 
     
@@ -784,5 +829,5 @@ Response Example
               ]
         },
     }      
-    
+
 Errors: *E_NOTFOUND*
