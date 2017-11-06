@@ -31,4 +31,7 @@ Contents
    introduction/exchangeapi.rst
    introduction/api2.rst
    introduction/alphabetical_index.rst
+   introduction/contractsignatures.rst
+   introduction/contracts
+   introduction/install.rst
 
