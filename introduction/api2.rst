@@ -459,7 +459,7 @@ Response Example
 ==============================
 **GET** Returns information about the requested table in the current ecosystem.
 
-In order to obtain information about a global table, just add the global parameter. Returned are the following fields: "name" – table name, "insert" – conditions for elements insertion, "new_column" – conditions for adding columns, "general_update": conditions for rights change, "columns" – an array of columns with fields *name, type, perm* - name, type, conditions for change.
+The next fields return: "name" - table name, "insert" - rights to insert the elements, "new_column" - rights to insert the column, "update" - rights to change the rights, "columns" - array of the columns with fields *name, type, perm* - name, type, rights for change.
 
 Query
 
