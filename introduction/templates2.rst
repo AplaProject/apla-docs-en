@@ -181,9 +181,9 @@ Creates a **data** element and returns data from a database table. Returned are 
 	3,"Unknown ""Person"""
      }
 
-DBFind(Name, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.Order(name)] [.Limit(limit)] [.Offset(offset)] [.Ecosystem(id)] [.Custom(Column,Body)]
+DBFind(Name, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.Order(name)] [.Limit(limit)] [.Offset(offset)] [.Ecosystem(id)] [.Custom(Column,Body)][.Vars(Prefix)]
 ==========================
-Creates a **dbfind** element and returns data from a database table. In *attr* returned are two arrays - *columns* with column names and *data* with entries. The order of column names in Columns corresponds to that of values in *data* entries.
++Создает элемент **dbfind** и возвращает данные из таблицы базы данных. В *attr* возвращаются три массива - *columns* c именами колонок, *types*, где для обычной колонки указан *text*, а для Custom колонок указан тип *tags* и массив *data* с записями. Последовательность в именах колонок соответствует последовательности значений в записях в *data*.
  
 * *Name* - table name.
 * *Source* - data source name. You can specify any name, which will have to be included in other commands later on (ex. *Table*) as a data source.
