@@ -163,15 +163,15 @@ Creates a **button** HTML element. This element creates a button, which sends a 
 Data(Source,Columns,Data) [.Custom(Column,Body)]
 ==========================
 Creates a **data** element and returns data from a database table. Returned are two arrays - *columns* with column names and *data* with entries.
-
-* *Source* - имя источника данных. Вы можете указать любое имя, которое потом будет указываться в других командах (например. *Table*) как источник данных.
-* *Columns* - список колонок. Данные должны быть идти в таком же порядке. 
-* *Data* - Данные по одной записи на строку с разделением на колонки через запятую. Можно заключать значения в двойные кавычки. Если нужно вставить кавычки, то их нужно удвоить.
-
-* **Custom** - позволяет определять вычисляемые столбцы для данных. Например, можно указывать шаблон для кнопок и дополнительного оформления. Можно определять несколько таких вычисляемых столбцов. Как правило, такие поля определяются для вывода в *Table* и других командах, которые используют полученные данные.
-
-  * *Column* - имя колонки. Нужно определить любое уникальное имя.
-  * *Body* - укажите шаблон. В нем можно получать значения из других колонок в данной записи с помощью **#columnname#**.
+ 
+* *Source* - data source name. You can specify any name, which will have to be included in other commands later on (ex. *Table*) as a data source.
+* *Columns* - list of columns.
+* *Data* - one data entry per line, divided into columns by commas. Data should be in the same order as set in *Columns*. Entry values can be embraced in double quotes. If you need to use quote marks in the text, use double quotes.
+ 
+* **Custom** - allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. Several calculated columns can be assigned. As a rule, these fields are assigned for output to *Table* and other commands that use received data.
+ 
+  * *Column* - column name. A unique name should be assigned.
+  * *Body* - a code fragment. You can obtain values from other columns in this entry using **#columnname#** and use them in this code fragment.
 
 .. code:: js
 
@@ -183,28 +183,34 @@ Creates a **data** element and returns data from a database table. Returned are 
 
 DBFind(Name, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.Order(name)] [.Limit(limit)] [.Offset(offset)] [.Ecosystem(id)] [.Custom(Column,Body)]
 ==========================
-Создает элемент **dbfind** и возвращает данные из таблицы базы данных. В *attr* возвращаются два массива - *columns* c именами колонок и *data* с записями. Последовательность в именах колонок соответствует последовательности значений в записях в *data*.
+Creates a **dbfind** element and returns data from a database table. In *attr* returned are two arrays - *columns* with column names and *data* with entries. The order of column names in Columns corresponds to that of values in *data* entries.
+ 
+* *Name* - table name.
+* *Source* - data source name. You can specify any name, which will have to be included in other commands later on (ex. *Table*) as a data source.
+ 
+* **Columns** - list of columns to be returned. If not specified, all columns will be returned.
+* **Where** - search condition. For example, *.Where(name = '#myval#')*
+* **WhereId** - search by ID. For example, *.WhereId(1)*
+* **Order** - sort by this field.
+* **Limit** - number of returned rows. Default value = 25, maximum value = 250.
+* **Offset** - offset of returned rows.
+* **Ecosystem** - ecosystem ID. By default, data is taken from the specified table in the current ecosystem.
+* **Custom** - allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. You can assign any number of calculated columns. As a rule, these fields are assigned for output to *Table* and other commands that use received data.
+ 
+  * *Column* - column name. A unique name should be assigned.
+  * *Body* - a code fragment. You can obtain values from other columns in this entry using **#columnname#** and use them in this code fragment.
+  
+  * **Vars** - the function generates a set of variables with values from the database table, obtained from this query. When specifying this function, the *Limit* parameter automatically becomes equal to 1 and only one record is returned.
 
-* *Name* - имя таблицы.
-* *Source* - имя источника данных. Вы можете указать любое имя, которое потом будет указываться в других командах (например. *Table*) как источник данных.
-
-* **Columns** - список возвращаемых колонок. Если не указано, то возвратятся все колонки. 
-* **Where** - условие поиска. Например, *.Where(name = '#myval#')*
-* **WhereId** - условие поиска по идентификатору. Достаточно указать значение идентификатора.  Например, *.WhereId(1)*
-* **Order** - поле, по которому нужно отсортировать. 
-* **Limit** - количество возвращаемыхх записей. По умолчанию, 25. Максимально возможно количество - 250.
-* **Offset** - смещение возвращаемых записей.
-* **Ecosystem** - идентификатор экосистемы. По умолчанию, берутся данные из таблицы в текущей экосистеме.
-* **Custom** - позволяет определять вычисляемые столбцы для данных. Например, можно указывать шаблон для кнопок и дополнительного оформления. Можно определять несколько таких вычисляемых столбцов. Как правило, такие поля определяются для вывода в *Table* и других командах, которые используют полученные данные.
-
-  * *Column* - имя колонки. Нужно определить любое уникальное имя.
-  * *Body* - укажите шаблон. В нем можно получать значения из других колонок в данной записи с помощью **#columnname#**.
+* *Prefix* - префикс, используемый для образования имен переменных, в которые записываются значения полученной записи: переменные имеют вид *#prefix_id#, #prefix_name#*, где после знака подчеркивания указывается имя колонки таблицы.
 
 .. code:: js
 
     DBFind(parameters,myparam)
     DBFind(parameters,myparam).Columns(name,value).Where(name='money')
-    DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){Strong(Em(#name#))Div(myclass, #company#)}
+    DBFind(parameters,myparam).Custom(myid){Strong(#id#)}.Custom(myname){
+       Strong(Em(#name#))Div(myclass, #company#)
+    }
     
 Div(Class, Body) [.Style(Style)]
 ==========================
@@ -221,6 +227,19 @@ Creates a **div** HTML element.
 
       Div(class1 class2, This is a paragraph.)
       
+EcosysParam(Name, Index, Source) 
+==============================
+Функция выводит значение параметра из таблицы parameters текущей экосистемы. Если есть языковый ресурс c полученным именем, то подставится его значение.
+ 
+* *Name* - имя значения;
+* *Index* - вы можете указать порядковый номер значения c 1, если параметр является список с элементами раззделенными запятыми. например, *gender = male,female*, тогда EcosysParam(gender, 2) возвратит *female*.  
+* *Source* - вы можете получить значения параметра разделенными запятыми в виде объекта *data*. В дальнейшем этот список можно указывать в качестве источника данных как для *Table*, так и для *Select*. Если вы указывайте этот параметр, то сама команда не будет возвращать значение, а возвратит список.
+
+.. code:: js
+
+     Address(EcosysParam(founder_account))
+     EcosysParam(gender, Source: mygender)
+
 Em(Body, Class)
 ==========================
 Creates an **em** HTML element.
@@ -275,16 +294,28 @@ Conditional statement. Returned are child elements of the first *If* or *ElseIf*
 
 Image(Src,Alt,Class) [.Style(Style)]
 ==============================
-Создает HTML элемент **image**.
+Creates an **image** HTML element.
  
-* *Src* - источник изображения, файл или *data:...*;
-* *Alt* - альтернативный текст для изображения; 
-* *Сlass* - список классов.
+* *Src* - image source, file or *data:...*;
+* *Alt* - alternative text for the image;
+* *Сlass* - list of classes.
 
 .. code:: js
 
     Image(\images\myphoto.jpg)
 
+ImageInput(Name, Width, Ratio) 
+==============================
+Создает элемент **imageinput** для загрузки картинок. По желанию можно указать ширину вырезаемой картинки и высоту или отношение сторон в виде *1/2*, *2/1*, *3/4* и т.п. в третьем параметре. По умолчанию берется ширина в 100 пикселей и отношение сторон *1/1*.
+
+* *Name* - имя элемента;
+* *Width* - ширина вырезаемого изображения;
+* *Ratio* - отношение сторон (ширины к высоте) или высота картинки. Если будет указана высота, то отношение сторон рассчитается автоматически.
+
+.. code:: js
+
+   ImageInput(avatar, 100, 2/1)
+   
 Include(Name)
 ==========================
 This command inserts a template with name *Name* from table *blocks*. On insertion, the template is parsed and single blocks are inserted.
@@ -358,12 +389,12 @@ Returns a specified language resource. In case of request to a tree for editing 
 
 LinkPage(Body, Page, Class, PageParams) [.Style(Style)]
 ==========================
-Создает элемент **linkpage** для ссылки на страницу. 
-
-* *Body* - дочерний текст или элементы.
-* *Page* - название страницы для перехода.
-* *Class* - классы для данной кнопки.
-* *PageParams* - параметры для перехода на страницу.
+Creates a **linkpage** element – a link to a page.
+ 
+* *Body* - child text or elements.
+* *Page* - page to redirect to.
+* *Class* - classes for this button.
+* *PageParams* - redirection parameters.
 
 **Style** - specifies css styles.
 
@@ -401,6 +432,19 @@ Creates a menu item and returns the **menuitem** element.
 
        MenuItem(Interface, interface)
 
+Now(Format, Interval) 
+==============================
+Функция возвращает текущее время в указанном формате, по умолчанию выводится  в UNIX-формате (число секунд с 1970 года). Если в качестве формата указано *datetime*, то дата и время выводится в виде YYYY-MM-DD HH:MI:SS. Во втором параметре можно указать интервал, например, *+5 days*.
+
+* *Format* - формат вывода с комбинацией YYYY, MM, DD, HH, MI, SS или *datetime*;
+* *Interval* - дополнтельный сдвиг времени назад или вперед;
+
+.. code:: js
+
+       Now()
+       Now(DD.MM.YYYY HH:MM)
+       Now(datetime,-3 hours)
+
 Or(parameters)
 ==========================
 This function returns a result of the **IF** logical operation with all parameters specified in parentheses and separated by commas. The parameter value is considered **false** if it equals an empty string (""), 0 or *false*. In all other cases the parameter value is considered **true**. The function returns 1 for true or 0 in all other cases. Element named **or** is created only when the tree for editing is requested. 
@@ -425,16 +469,22 @@ Creates a **p** HTML element.
       P(This is the first line.
         This is the second line.)
         
-Select(Source, Column, Class) [.Style(Style)]
+Select(Name, Source, NameColumn, ValueColumn, Value, Class) [.Validate(validation parameters)] [.Style(Style)]
 ==========================
-Создает HTML элемент **select**.
+Creates a **select** HTML element.
 
+* *Name* - имя элемента.
 * *Source* - имя источника данных. Например, из команды *DBFind* или *Data*.
-* *Column* - Имя колонки, из которой будут браться данные.
+* *NameColumn* - Имя колонки, из которой будeт браться текст для элементов.
+* *ValueColumn* - Имя колонки, из которой будут браться значения для элементов. В этом параметре нельзя указывать имена колонок созданных через Custom.
+* *Value* - Значение по умолчанию.
+* *Class* - Классы для элемента.
 
-**Style** - specifies css styles.
+**Validate** - параметры валидации.
 
-* *Style* - css styles.
+**Style** - служит для указания css стилей.
+
+* *Style* - css стили.
 
 .. code:: js
 
@@ -483,8 +533,8 @@ Table(Source, Columns) [.Style(Style)]
 ==========================
 Создает HTML элемент **table**.
 
-* *Source* - имя источника данных. Например, из команды *DBFind*.
-* *Columns* - Заголовки и соответствующие имена колонок в виде **Title1=column1,Title2=column2**.
+* *Source* - data source name as specified, for example, in the *DBFind* command.
+* *Columns* - Headers and corresponding column names, as follows: **Title1=column1,Title2=column2**.
 
 **Style** - specifies css styles.
 
