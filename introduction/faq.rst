@@ -52,7 +52,7 @@ o	Yes, contracts are editable. Rights to edit contracts are established by their
 21.	Can a contract call/execute another contract?
  -	Yes, contracts can call other contracts by way of directly addressing another contract and providing parameters to it, or by way of calling a contract by link (name)  (see contract language description).
 22.	Is master contract required for work of applications?
- 1.	No, it's not. Contracts are autonomous program modules that execute some functions. Each contract is configured to receive specific data, properly check this data, and execute some action, which will be recorded as a transition in the database.
+ -	No, it's not. Contracts are autonomous program modules that execute some functions. Each contract is configured to receive specific data, properly check this data, and execute some action, which will be recorded as a transition in the database.
 23.	Can applications be localized to different languages?
  -	Yes, the software client has a built-it mechanism for localization support, allowing for creation of interfaces on any languages. 
 24. Can interfaces be created without using the Protypo template language?
