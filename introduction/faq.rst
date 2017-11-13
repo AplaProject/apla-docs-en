@@ -8,7 +8,7 @@ FAQ
 3.	Does Apla work on the Bitcoin, Ethereum, or some other blockchain?
  -	The Apla platform is build on the basis of an original blockchain.
 4.	What are the main differences between Apla and other public blockchain platforms with built-in mechanisms for execution of smart contracts, such as Ethereum, Qtum, and those still being designed, including Tezos and EOS?
--	Apla features unique functions that cannot be found in the aforementioned blockchain platforms: 
+ -	Apla features unique functions that cannot be found in the aforementioned blockchain platforms: 
  - Integrated application development environment implemented in a single client software;
  - Specialized template language for design of interfaces, harmonized with the contract-building language;
  -	Multi-level system for management of access rights to data, contracts, and interfaces where rights can be granted to persons, member roles, and contracts;
@@ -71,20 +71,20 @@ o	Yes, contracts are editable. Rights to edit contracts are established by their
  - 	Yes, the use of resources of validating nodes should be paid in APL tokens.
 31. Who pays for operation of applications?
  - 	An APL wallet, which the tokens for payment for resources are debited from, is set by the contract creator on its activation; there is an algorithm to change the wallet. It can be defined using ecosystem's smart laws whether or not the ecosystem members will pay for work with the application, and if yes, than what way of payment it will be (contributions or otherwise). 
-32. How are applications within ecosystems protected from exploit of their vulnerabilities?
- -	 The Apla team understands that there is no way to completely avoid mistakes in the program code of applications, especially given that applications can be written by any user. That's why we decided to create a mechanism that eliminates the consequences of exploit of vulnerabilities. The platform has a legal system (a set of smart laws), that allow for stopping the operation of an attacking application and make a number of transactions restoring the status quo. The rights to execute such contracts and voting procedures to grant these rights are defined in the smart laws of the platform's legal system.   
-33. Which new functions are planned to be implemented in Apla in the future?
--	 Visual interface designer,
--	 Visual smart contract designer,
--	 Support of hybrid (SQL and NoSQL) databases,
--	 Parallel multi-threaded processing of transactions coming from different ecosystems.
--	 Execution of resource-intensive calculations on the client side.
--	 Hosting for ecosystems and a computing power exchange.
--	 Partial nodes that store only a part of blocks on the server.
--	 Semantic reference (ontology) for unification of operations with data within the platform.
-34. Are there any proofs of platform's operability?
--	 A number of proof of concept projects have been implemented on the Apla platform during the last months: a polling and voting system for a political party (Netherlands), new businesses registration (UAE), trading financial instruments (Luxembourg), register of property (India), and a contracts management system (UAE).
-35. Does Apla have any obvious drawbacks?
--  The biggest drawback of Apla, compared to, say, Ethereum, is that Apla is just in the launch mode. But this drawback will transform into a big advantage over time.
-36. How do you see the future of Alpa?
--	 The Apla (eGaaS) platform was designed based on the assumption that the full effect of the blockchain technology can be achieved only when all activities, operations, registers and contracts to one blockchain. Just as there can't be many co-existing Internets, there ultimately can't be many co-existing blockchain networks. We see Apla as a unified platform, which in the future will run all operations of all governments in the world.
+32.  How are applications within ecosystems protected from exploit of their vulnerabilities?
+ -	  The Apla team understands that there is no way to completely avoid mistakes in the program code of applications, especially given that applications can be written by any user. That's why we decided to create a mechanism that eliminates the consequences of exploit of vulnerabilities. The platform has a legal system (a set of smart laws), that allow for stopping the operation of an attacking application and make a number of transactions restoring the status quo. The rights to execute such contracts and voting procedures to grant these rights are defined in the smart laws of the platform's legal system.   
+33.  Which new functions are planned to be implemented in Apla in the future?
+ -	 Visual interface designer,
+ -	 Visual smart contract designer,
+ -	 Support of hybrid (SQL and NoSQL) databases,
+ -	 Parallel multi-threaded processing of transactions coming from different ecosystems.
+ -	 Execution of resource-intensive calculations on the client side.
+ -	 Hosting for ecosystems and a computing power exchange.
+ -	 Partial nodes that store only a part of blocks on the server.
+ -	 Semantic reference (ontology) for unification of operations with data within the platform.
+34.  Are there any proofs of platform's operability?
+ -	 A number of proof of concept projects have been implemented on the Apla platform during the last months: a polling and voting system for a political party (Netherlands), new businesses registration (UAE), trading financial instruments (Luxembourg), register of property (India), and a contracts management system (UAE).
+35.  Does Apla have any obvious drawbacks?
+ -  The biggest drawback of Apla, compared to, say, Ethereum, is that Apla is just in the launch mode. But this drawback will transform into a big advantage over time.
+36.  How do you see the future of Alpa?
+ -	 The Apla (eGaaS) platform was designed based on the assumption that the full effect of the blockchain technology can be achieved only when all activities, operations, registers and contracts to one blockchain. Just as there can't be many co-existing Internets, there ultimately can't be many co-existing blockchain networks. We see Apla as a unified platform, which in the future will run all operations of all governments in the world.
