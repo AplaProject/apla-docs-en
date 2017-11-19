@@ -24,7 +24,7 @@ Let's consider how the test version of Apla is installed on Windows.
 
 7.	Go to https://git-scm.com/download/win and download the relevant (32 or 64) version of Git for Windows and launch this installation. All other options can be left unchanged during installation.
 
-8.	Now launch the **go get -u github.com/Apla-Project/go-apla** command. Execution of the command can last for several minutes. After execution, you should have the directory c:\MyGo\src\github.com\Apla\go-apla with source files. There is another way to get the source files – go to github.com/Apla/go-apla. Click Clone & Download and click Download ZIP. After that, just unpack the contents of the go-apla-master directory of this zip into the directory *c:\MyGo\src\github.com\Apla\go-apla*.
+8.	Now launch the **go get -u github.com/AplaProject/go-apla** command. Execution of the command can last for several minutes. After execution, you should have the directory c:\MyGo\src\github.com\Apla\go-apla with source files. There is another way to get the source files – go to github.com/Apla/go-apla. Click Clone & Download and click Download ZIP. After that, just unpack the contents of the go-apla-master directory of this zip into the directory *c:\MyGo\src\github.com\Apla\go-apla*.
 
 9.	Launch the **go get -u github.com/jteeuwen/go-bindata** command and then go to the directory *c:\MyGo\src\github.com\jteeuwen\go-bindata\go-bindata*. Launch **go install**. The file go-bindata.exe will be created in the *c:\MyGo\bin* directory
 
