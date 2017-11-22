@@ -40,7 +40,7 @@ If a parameter contains a comma, it should be enclosed in quotes marks (back quo
       MyFunc("parameter number 1, the second part of first paremeter")
       MyFunc(`parameter number 1, the second part of first paremeter`)
       
-      If you put a parameter in quotes, but a parameter itself includes quotes, then you can use different type of quotes or double them in the text.
+If you put a parameter in quotes, but a parameter itself includes quotes, then you can use different type of quotes or double them in the text.
       
       .. code:: js
 
@@ -160,9 +160,21 @@ Creates a **button** HTML element. This element creates a button, which sends a 
       Button(Submit, default_page, mybtn_class).Alert(Alert message)
       Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 
+CmpTime(Time1, Time2)
+=============================
+This function compares two time values in the same format (preferably, standard format - YYYY-MM-DD HH:MM:SS, but any format can be used provided that the sequence is followed from years to seconds). Returns:
+
+* **-1** - Time1 < Time2, 
+* **0** - Time1 = Time2, 
+* **1** - Time1 > Time2.
+
+.. code:: js
+
+     If(CmpTime(#time1#, #time2#)<0){...}
+     
 Data(Source,Columns,Data) [.Custom(Column,Body)]
 ==========================
-Creates a **data** element and returns data from a database table. Returned are two arrays - *columns* with column names and *data* with entries.
+Creates element **data** and fills it with specified data. Three arrays will be returned in *attr* – *columns* with column names, *types*, where for standard columns the type is *text* and for custom columns the type is *tags*, and the *data* array with entries. The sequence of column names corresponds to that of *data* entry values.
  
 * *Source* - data source name. You can specify any name, which will have to be included in other commands later on (ex. *Table*) as a data source.
 * *Columns* - list of columns.
@@ -180,6 +192,17 @@ Creates a **data** element and returns data from a database table. Returned are 
 	2,"Mark, Smith"
 	3,"Unknown ""Person"""
      }
+     
+DateTime(DateTime, Format)
+==========================
+This function displays time and date in the specified format. 
+ *  *DateTime* - time and date in standard format 2006-01-02T15:04:05.
+ *  *Format* -  format template: YY 2-digit year format, YYYY 4-digit year format, MM - month, DD - day, HH - hours, MM - minutes, SS – seconds. Example: YY/MM/DD HH:MM. If the format is not specified, the *timeformat* parameter value set in the *languages* table will be used. If this parameter is absent, the YYYY-MM-DD HH:MI:SS format will be used instead.
+ 
+ .. code:: js
+
+    DateTime(2017-11-07T17:51:08)
+    DateTime(#mytime#,HH:MI DD.MM.YYYY)
 
 DBFind(Name, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.Order(name)] [.Limit(limit)] [.Offset(offset)] [.Ecosystem(id)] [.Custom(Column,Body)][.Vars(Prefix)]
 ==========================
@@ -227,13 +250,13 @@ Creates a **div** HTML element.
 
       Div(class1 class2, This is a paragraph.)
       
-EcosysParam(Name, Index, Source) 
+EEcosysParam(Name, Index, Source) 
 ==============================
-Функция выводит значение параметра из таблицы parameters текущей экосистемы. Если есть языковый ресурс c полученным именем, то подставится его значение.
+This function gets a parameter value from the parameters table of the current ecosystem. If there is a language resource for the resulting name, it will be translated accordingly.
  
-* *Name* - имя значения;
-* *Index* - вы можете указать порядковый номер значения c 1, если параметр является список с элементами раззделенными запятыми. например, *gender = male,female*, тогда EcosysParam(gender, 2) возвратит *female*.  
-* *Source* - вы можете получить значения параметра разделенными запятыми в виде объекта *data*. В дальнейшем этот список можно указывать в качестве источника данных как для *Table*, так и для *Select*. Если вы указывайте этот параметр, то сама команда не будет возвращать значение, а возвратит список.
+* *Name* - value name;
+* *Index* - in cases where the requested parameter is a list of elements separated by commas, you can specify an index starting from 1. For example, if *gender = male,female*, then EcosysParam(gender, 2) will return *female*.  
+* *Source* - you can receive the parameter values separated by commas as a *data* object. After that you will be able to specify this list as a data source for both *Table* and *Select*. If you specify this parameter, then the function will return a list as a *Data* object, not a separate value.
 
 .. code:: js
 
