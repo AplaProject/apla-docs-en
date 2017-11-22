@@ -123,6 +123,18 @@ This function returns the wallet address in the 1234-5678-...-7990 format given 
 
       Span(Your wallet: Address(#wallet#))
       
+AddToolButton(Title, Icon, Page, PageParams)
+==========================
+Adds a button to the buttons panel. Creates **addtoolbutton** element. 
+
+* *Title* - button title.
+* *Icon* - icon for the icon.
+* *Page* - page name for the jump.
+* *PageParams* - parmeters for the page.
+
+.. code:: js
+
+      AddToolButton(Help, help, help_page)     
 And (Parameters)
 ==========================
 This function returns the result of execution of the **and** logical operation with all parameters listed in parentheses and separated by commas. The parameter value will be **false** if it equals an empty string (""), zero or *false*. In all other cases the parameter value is **true**. The function returns 1 if true or 0 in all other cases. The element named **and** is created only when a tree for editing is requested. 
@@ -206,8 +218,8 @@ This function displays time and date in the specified format.
 
 DBFind(Name, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.Order(name)] [.Limit(limit)] [.Offset(offset)] [.Ecosystem(id)] [.Custom(Column,Body)][.Vars(Prefix)]
 ==========================
-+Создает элемент **dbfind** и возвращает данные из таблицы базы данных. В *attr* возвращаются три массива - *columns* c именами колонок, *types*, где для обычной колонки указан *text*, а для Custom колонок указан тип *tags* и массив *data* с записями. Последовательность в именах колонок соответствует последовательности значений в записях в *data*.
- 
+Creates **dbfind** element and returns data from the database table. Three arrays will be returned in *attr* – *columns* with column names, *types*, where for standard columns the type is *text* and for custom columns the type is *tags*, and the *data* array with entries. The sequence of column names corresponds to that of *data* entry values.
+
 * *Name* - table name.
 * *Source* - data source name. You can specify any name, which will have to be included in other commands later on (ex. *Table*) as a data source.
  
@@ -225,7 +237,7 @@ DBFind(Name, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.O
   
   * **Vars** - the function generates a set of variables with values from the database table, obtained from this query. When specifying this function, the *Limit* parameter automatically becomes equal to 1 and only one record is returned.
 
-* *Prefix* - префикс, используемый для образования имен переменных, в которые записываются значения полученной записи: переменные имеют вид *#prefix_id#, #prefix_name#*, где после знака подчеркивания указывается имя колонки таблицы.
+* *Prefix* - * *Prefix* - prefix function is used to generate names for variables, to which the values of the resulting row are saved: variables are of format *#prefix_id#, #prefix_name#*, where the column name follows the underscore sign.
 
 .. code:: js
 
@@ -327,13 +339,13 @@ Creates an **image** HTML element.
 
     Image(\images\myphoto.jpg)
 
-ImageInput(Name, Width, Ratio) 
+ImageInput(Name, Width, Ratio/Height) 
 ==============================
-Создает элемент **imageinput** для загрузки картинок. По желанию можно указать ширину вырезаемой картинки и высоту или отношение сторон в виде *1/2*, *2/1*, *3/4* и т.п. в третьем параметре. По умолчанию берется ширина в 100 пикселей и отношение сторон *1/1*.
+This function creates an **imageinput** element for image upload. In the third parameter you can specify either image height or aspect ratio to apply: *1/2*, *2/1*, *3/4*, etc. The default width is 100 pixels with *1/1* aspect ratio.
 
-* *Name* - имя элемента;
-* *Width* - ширина вырезаемого изображения;
-* *Ratio* - отношение сторон (ширины к высоте) или высота картинки. Если будет указана высота, то отношение сторон рассчитается автоматически.
+* *Name* - element name;
+* *Width* - width of cropped image;
+* *Ratio* - aspect ratio (width to height) or height of the image.
 
 .. code:: js
 
@@ -457,10 +469,10 @@ Creates a menu item and returns the **menuitem** element.
 
 Now(Format, Interval) 
 ==============================
-Функция возвращает текущее время в указанном формате, по умолчанию выводится  в UNIX-формате (число секунд с 1970 года). Если в качестве формата указано *datetime*, то дата и время выводится в виде YYYY-MM-DD HH:MI:SS. Во втором параметре можно указать интервал, например, *+5 days*.
+This function returns the current time in the specified format, which by default is the UNIX format (number of seconds elapsed since January 1, 1970). If the requested time format is *datetime*, then date and time are shown as YYYY-MM-DD HH:MI:SS. An interval can be specified in the second parameter (for instance, *+5 days*).
 
-* *Format* - формат вывода с комбинацией YYYY, MM, DD, HH, MI, SS или *datetime*;
-* *Interval* - дополнтельный сдвиг времени назад или вперед;
+* *Format* - output format with a desired combination of YYYY, MM, DD, HH, MI, SS or *datetime*;
+* *Interval* - backward or forward time offset;
 
 .. code:: js
 
@@ -496,23 +508,33 @@ Select(Name, Source, NameColumn, ValueColumn, Value, Class) [.Validate(validatio
 ==========================
 Creates a **select** HTML element.
 
-* *Name* - имя элемента.
-* *Source* - имя источника данных. Например, из команды *DBFind* или *Data*.
-* *NameColumn* - Имя колонки, из которой будeт браться текст для элементов.
-* *ValueColumn* - Имя колонки, из которой будут браться значения для элементов. В этом параметре нельзя указывать имена колонок созданных через Custom.
-* *Value* - Значение по умолчанию.
-* *Class* - Классы для элемента.
+* *Name* - element name.
+* *Source* - data source name. For example, *DBFind* or *Data*.
+* *NameColumn* - column from which the element names will be taken.
+* *ValueColumn* - column from which the element values will be taken. Columns created using Custom should not be specified in this parameter.
+* *Value* - default value.
+* *Class* - element classes.
 
-**Validate** - параметры валидации.
+**Validate** - validation parameters.
 
-**Style** - служит для указания css стилей.
+**Style** - specification of css styles.
 
-* *Style* - css стили.
+* *Style* - css styles.
 
 .. code:: js
 
       DBFind(mytable, mysrc)
       Select(mysrc, name)
+      
+SetTitle(Title)
+==========================
+Sets the page title. The element **settitle** will be created.
+
+* *Title* - page title.
+
+.. code:: js
+
+     SetTitle(My page)
 
 SetVar(Name, Value)
 ==========================
