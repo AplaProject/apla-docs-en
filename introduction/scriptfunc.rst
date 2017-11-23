@@ -13,9 +13,8 @@ Predefined values
 
 The following variables are available when executing a contract. 
 
-* **$citizen** - numeric identifier (int64) of the citizen, who signed the transaction. 
-* **$wallet** - numeric identifier (int64) of the wallet. Matches with *$citizen*. 
-* **$state** - identifier of the ecosystem of which the user, who signed the transaction, is a member. 
+* **$key_id** - numeric identifier (int64) of the wallet, who signed the transaction. 
+* **$ecosystem_id** - numeric identifier (int64) of the ecosystem where the transaction was created. Matches with *$citizen*. 
 * **$type** identifier of an external contract from where the current contract was called. 
 * **$time** - time specified in the transaction in Unix format. 
 * **$block** - block number in which this transaction is sealed. 
@@ -64,16 +63,16 @@ The function returns the value of the **amount** column with type *money* with a
 
     mymoney = DBAmount("dlt_wallets"), "wallet_id", $wallet)
     
-StateVal(name string) string
+EcosysParam(name string) string
 ==============================
-The function returns the value of a specified parameter from the state settings (*parameters*).
+The function returns the value of a specified parameter from the ecosystem settings (*parameters*).
 
 * *name* - name of the received parameter.
 
 .. code:: js
 
-    Println( StateVal("gov_account"))
-
+    Println( EcosysParam("gov_account"))
+    
 
 DBInt(tblname string, name string, id int) int
 ==============================
@@ -86,7 +85,7 @@ The function returns a numeric value from the database table by a specified **id
 .. code:: js
 
     var val int
-    val = DBInt(Table("mytable"), "counter", 1)
+    val = DBInt("mytable", "counter", 1)
 
 DBIntExt(tblname string, name string, val (int|string), column string) int
 ==============================
@@ -100,7 +99,7 @@ The function returns a numeric value from the database table, with a search of t
 .. code:: js
 
     var val int
-    val = DBIntExt(Table("mytable"), "balance", $wallet, "wallet_id")
+    val = DBIntExt("mytable", "balance", $wallet, "wallet_id")
 
 DBIntWhere(tblname string, name string, where string, params ...) int
 ==============================
@@ -114,7 +113,7 @@ The function returns a numeric value from the column of the database table with 
 .. code:: js
 
     var val int
-    val = DBIntWhere(Table("mytable"), "counter",  "idgroup = ? and statue=?", mygroup, 1 )
+    val = DBIntWhere("mytable", "counter",  "idgroup = ? and statue=?", mygroup, 1 )
 
 DBRowExt(tblname string, columns string, val (int|string), column string) map
 ==============================
@@ -128,7 +127,7 @@ Function returns a massive of values (map) from database table with the search o
 .. code:: js
 
     var vals map
-    vals = DBRowExt(Table("mytable"), "address,postindex,name", $Company, "company" )
+    vals = DBRowExt("mytable", "address,postindex,name", $Company, "company" )
 
 DBString(tblname string, name string, id int) string
 ==============================
@@ -177,54 +176,10 @@ The function returns a string value from the column of the database table, with 
 .. code:: js
 
     var val string
-    val = DBStringWhere(Table("mytable"), "address",  "idgroup = ? and company=?",
+    val = DBStringWhere("mytable", "address",  "idgroup = ? and company=?",
            mygroup, "My company" )
-
-DBGetList(tblname string, column string, offset int, limit int, order string, where string, params ...) array
-==============================
-The function returns a string value from the column of the database table, with a search of the record according to the conditions specified in **where**.
-
-* *tblname*  – name of the table in the database
-* *column*  - name of the column from where the values will be taken;
-* *offset* - offset to start selection of records;
-* *limit*  - number of records received; if limit is not needed, then the parameter value is **-1**;
-* *order* - sorting by columns; can be an empty string;
-* *where* - query conditions for retrieving records; the names of the fields are located to the left of the comparison signs; the characters **?** or **$** are used are used for substitution of parameters;
-* *params* - parameters that are substituted in query conditions in a given sequence.
-
-.. code:: js
-
-    var ret array
-    ret = DBGetList(Table("mytable"), "name", 0, -1, "", "idval > ? and idval <= ? and company=?", 
-                     10, 200, "My company")
-                     
-                     
-DBGetTable(tblname string, columns string, offset int, limit int, order string, where string, params ...) array
-==============================
-The function returns associative map arrays, containing a list of values of the listed columns of table records obtained by the conditions specified in **where**. All values in the associative array are of the type **string**, so they should be subsequently brought to the appropriate type.
-
-* *tblname*  – name of the table in the database
-* *columns* - names of received columns separated by comma;
-* *offset* - offset to start selection of records;
-* *limit*  - number of records received; if limit is not needed, then the parameter value is **-1**;
-* *order* - sorting by columns; can be an empty string;
-* *where* - query conditions for retrieving records; the names of the fields are located to the left of the comparison signs; the characters **?** or **$** are used are used for substitution of parameters;
-* *params* - parameters that are substituted in query conditions in a given sequence.
-
-.. code:: js
-
-    var ret array
-    ret = DBGetTable(Table("mytable"), "name,idval,company", 0, -1, "", "idval > ? and idval <= ? and company=?",
-                     10, 200, "My company")
-    var i int
-    while i<Len(ret) {
-        var row map
-    
-        row = ret[i]
-        myfunc(Sprintf("%s %s", row["name"], row["company"]), Int(row["idval"]) )
-        i++
-    }
-	
+                    
+                     	
 LangRes(idres string, lang string) string
 ==============================
 The function returns a language resource named idres for a language specified in lang as a two-character code, for example, *en,fr,ru*. The function searches in the corresponding ecosystem. If there is no resource for such language, the English language resource will be returned. 
@@ -251,7 +206,7 @@ The function adds a record to a specified table and returns the **id** of the in
 
 .. code:: js
 
-    DBInsert(Table("mytable"), "name,amount", "John Dow", 100)
+    DBInsert("mytable", "name,amount", "John Dow", 100)
 
 DBInsertReport(tblname string, params string, val ...) int
 ==============================
@@ -263,7 +218,7 @@ The function adds an entry to the specified report table and returns **id** of t
 
 .. code:: js
 
-    DBInsertReport(Table("mytable"), "name,amount", "John Dow", 100)
+    DBInsertReport("mytable", "name,amount", "John Dow", 100)
 
 DBUpdate(tblname string, id int, params string, val...)
 ==============================
@@ -276,7 +231,7 @@ The function changes the column values in the table in the record with a specifi
 
 .. code:: js
 
-    DBUpdate(Table("mytable"), myid, "name,amount", "John Dow", 100)
+    DBUpdate("mytable", myid, "name,amount", "John Dow", 100)
 
 DBUpdateExt(tblname string, column string, value (int|string), params string, val ...)
 ==============================
@@ -290,8 +245,8 @@ The function updates columns in a record whose column has a specified value. The
 
 .. code:: js
 
-    DBUpdateExt(Table("mytable"), "address", addr, "name,amount", "John Dow", 100)
-
+    DBUpdateExt("mytable", "address", addr, "name,amount", "John Dow", 100)
+    
 FindEcosystem(name string) int
 ==============================
 The function looks for an ecosystem with the specified name and returns its identifier. If the indicated ecosystem is absent, then it returns identifier. The search is going without register accounting.
@@ -350,7 +305,7 @@ Function takes from the *tablename* table the value of the *condfield* field fro
 
 .. code:: js
 
-    EvalCondition(PrefixTable(`menu`, $Global), $Name, `condition`)  
+    EvalCondition(`menu`, $Name, `condition`)  
 
 ValidateCondition(condition string, state int) 
 ==============================
@@ -458,17 +413,6 @@ The function returns the wallet address by the public key in hexadecimal encodin
     var wallet int
     wallet = PubToID("fa5e78.....34abd6")
     
-PrefixTable(tblname string, global int) string
-==============================
-The function returns the full name of the table with the numeric prefix of the state number, where the contract is calling, or with prefix **global**, if the value of *global* parameter is equel 1.
-
-* *tblname* - the part of the table name in the database after the underscore character.
-* *global* - if it is equel to 1, the prefix **global** will be added
-
-.. code:: js
-
-    Println( PrefixTable("pages", global)) // may be global_pages, 1_pages or 2_pages etc.
-
 Replace(s string, old string, new string) string
 ============================
 Function replaces in the *s* string all cccurrences of the *old* string to *new* string and returnes the result.  
@@ -538,16 +482,6 @@ Function returns the substring from the specified string starting from the offse
 
     var s string
     s = Substr($Name, 1, 10)
-
-Table(tblname) string
-==============================
-The function returns the full name of a table with the numeric prefix of the state number in which the contract is called and with an underscore symbol between the prefix and the name. Allows you to make contracts become independent of the state.
-
-* *tblname* - part of the name of the table in the database after the underscore symbol.
-
-.. code:: js
-
-    Println( Table("citizens")) // may be 1_citizens or 2_citizens etc.
 
 UpdateLang(name string, trans string)
 ==============================
