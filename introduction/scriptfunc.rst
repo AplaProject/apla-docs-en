@@ -557,15 +557,15 @@ Consider the situation when we have a value in Unix format and we need to write 
 
 .. code:: js
 
-   DBInsert(Table("mytable"), "name,timestamp mytime", "John Dow", 146724678424 )
+   DBInsert("mytable", "name,timestamp mytime", "John Dow", 146724678424 )
 
 If you have a string value of time and you need to write it in a field with the type *timestamp*, in this case, **timestamp** must be specified before the value itself.
 
 .. code:: js
 
-   DBInsert(Table("mytable"), "name,mytime", "John Dow", "timestamp 2017-05-20 00:00:00" )
+   DBInsert("mytable", "name,mytime", "John Dow", "timestamp 2017-05-20 00:00:00" )
    var date string
    date = "2017-05-20 00:00:00"
-   DBInsert(Table("mytable"), "name,mytime", "John Dow", "timestamp " + date )
-   DBInsert(Table("mytable"), "name,mytime", "John Dow", "timestamp " + $txtime )
+   DBInsert("mytable", "name,mytime", "John Dow", "timestamp " + date )
+   DBInsert("mytable", "name,mytime", "John Dow", "timestamp " + $txtime )
 
