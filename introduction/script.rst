@@ -118,8 +118,6 @@ The function is defined by using the **func** keyword, followed by the function 
       error "Ooops..."
   }
 
-Ошибки при выполнении любой функции обрабатываются автоматически вызывая остановку выполнения контракта и вывод соответствующего сообщения.
-
 You can pass any number of parameters to a function. To do this, use **...** as the last parameter type. In this case, the last parameter will be of *array* type and will contain all variables specified in the call, starting from this parameter. You can pass variables of any types, so please make sure you avoid conflicts caused by possible type mismatches.
 
 .. code:: js
@@ -216,8 +214,6 @@ The data are listed line by line: first, the variable name is specified (only va
   
 The variables in the contract
 ==============================
-Входные данные контракта, описанные в секции data,  передаются в другие секции через переменные с указанными именами с символом  **$** перед ними. Возможно определить и дополнительные переменные со знаком $, которые будут глобальными в рамках выполнения контракта, включая вложенные контракты. 
-
 The pre-defined variables that contain data about the transaction from which the contract was displayed are also available in the contract.
 
 *	*$time* - int. transaction time
