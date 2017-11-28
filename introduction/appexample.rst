@@ -63,7 +63,7 @@ Next, we create contracts needed to implement each of the actions.
 	}
 	func action {
 		
-		DBInsert(Table("accounts"), "citizen_id", $citizen_id)
+		DBInsert("accounts", "citizen_id", $citizen_id)
 		}
 	} 
   
@@ -103,9 +103,9 @@ Now, in this contract, the “creator of the state” – a user with the id spe
 
 	func action {
 		var recipient_amount money
-            	recipient_amount = DBAmount(Table("accounts"), "id", $AccountId)
+            	recipient_amount = DBAmount("accounts", "id", $AccountId)
             	recipient_amount = recipient_amount + $Amount
-            	DBUpdate(Table("accounts"), $AccountId, "amount", recipient_amount)
+            	DBUpdate("accounts", $AccountId, "amount", recipient_amount)
 		}
 	}
   
@@ -128,21 +128,21 @@ A system contract is also required in order to prevent unauthorized debiting of 
 		}
 	func conditions {
     
-	    	 if DBAmount(Table("accounts"), "id", $SenderAccountId) < $Amount {
+	    	 if DBAmount("accounts", "id", $SenderAccountId) < $Amount {
 			warning "Not enough money"
 	    	 }
 		}
 	func action {
 
 		    var sender_amount money
-		    sender_amount = DBAmount(Table("accounts"), "id", $SenderAccountId)
+		    sender_amount = DBAmount("accounts", "id", $SenderAccountId)
 		    sender_amount = sender_amount - $Amount
-		    DBUpdate(Table("accounts"), $SenderAccountId, "amount",  sender_amount)
+		    DBUpdate("accounts", $SenderAccountId, "amount",  sender_amount)
 
 		    var recipient_amount money
-		    recipient_amount = DBAmount(Table("accounts"), "id", $RecipientAccountId)
+		    recipient_amount = DBAmount("accounts", "id", $RecipientAccountId)
 		    recipient_amount = recipient_amount + $Amount
-		    DBUpdate(Table("accounts"), $RecipientAccountId, "amount", recipient_amount)
+		    DBUpdate("accounts", $RecipientAccountId, "amount", recipient_amount)
 
 		}
 	}
@@ -162,7 +162,7 @@ This is the main contract of the app, which implements money transfer, calling s
 		Signature string "signature:MoneyTransfer"
 		}
 	func conditions {
-	 	$sender_id = DBIntExt(Table("accounts"), "id", $citizen, "citizen_id")
+	 	$sender_id = DBIntExt("accounts", "id", $citizen, "citizen_id")
 	    	if $sender_id==$RecipientAccountId
 	    	{
 	        	warning("You can not send money to your own account")
