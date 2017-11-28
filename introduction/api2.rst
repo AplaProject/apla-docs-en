@@ -122,6 +122,9 @@ Response
 * *wallet* - wallet ID.
 * *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
 * *notify_key* - key for notifications.
+* *isnode* - true or false - if the one is the owner of this node.
+* *isowner* - true or false - if the one is the owner of this ecosystem.
+* *vde* - true or false - if the ecosystem hes virtual dedicated ecosystem.
 
 Response Example 
 
