@@ -238,8 +238,8 @@ The pre-defined variables that contain data about the transaction from which the
         $ownerId = 1232
     }
     func action {
-        DBUpdate(Table("mytable"), $ownerId, "name,amount", $Name, $Amount - 10 )
-        DBUpdate(Table("mytable2"), $citizen, "amount", 10 )
+        DBUpdate("mytable", $ownerId, "name,amount", $Name, $Amount - 10 )
+        DBUpdate("mytable2", $citizen, "amount", 10 )
     }
   }
   
