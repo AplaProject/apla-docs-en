@@ -19,7 +19,7 @@ The following variables are available when executing a contract.
 * **$time** - time specified in the transaction in Unix format. 
 * **$block** - block number in which this transaction is sealed. 
 * **$block_time** - time specified in the block. 
-* **$wallet_block** - numeric identifier (int64) of the node that signed the block. 
+* **$block_key_id** - numeric identifier (int64) of the node that signed the block. 
 
 It should be kept in mind that these variables are available not only in the functions of the contract but also in other functions and expressions, for example, in conditions that are specified for contracts, pages and other objects. In this case, *$time and $block* variables related to the block and others are equal to 0.
 
@@ -155,14 +155,6 @@ The function returns a string value from the database table, with a search of th
 
     var val string
     val = DBStringExt(Table("mytable"), "address", $Company, "company" )
-    
-DBFreeRequest(tblname string, val (int|string), column string)
-==============================
-The function checks for the presence of a specified record and has a zero execution cost. It is intended for preliminary verification of contract parameters for the purpose of protecting against “spam”. This function can only be called once in the contract. If a record with this column value is found, then the contract will continue its work. Otherwise, this function will generate an error.
-
-* *tblname*  – name of the table in the database
-* *val* - value by which the record will be searched;
-* *column* - name of the column where the record will be searched for; the table must have an index for this column.
 
 DBStringWhere(tblname string, name string, where string, params ...) string
 ==============================
@@ -263,7 +255,7 @@ Work with contracts and language
 
 CallContract(name string, params map)
 ==============================
-The function calls a contract by its name. All the parameters specified in the section data of the contract should be listed in the transmitted array.
+The function calls a contract by its name. All the parameters specified in the section data of the contract should be listed in the transmitted array. The function returns the value that was assigned to **$ result**  variable in the contract.
 
 * *name*  - name of the contract being called.
 * *params* - an associative array with input data for the contract.
@@ -518,17 +510,6 @@ The function returns the value of the specified system parameter in the form of 
 .. code:: js
 
     maxcol = SysParam(`max_columns`)
-
-SysCost(name string) int
-==============================
-The function returns the value of the specified embedded transaction.
-
-* *name* - parameter name;
-
-.. code:: js
-
-    cost = SysCost(`dlt_transfer`)
-
 
 UpdateSysParam(name, value, conditions string)
 ==============================
