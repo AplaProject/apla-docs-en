@@ -80,7 +80,7 @@ getuid
 In cases where authorization is not required, returned is the following:
 
 * *expire* - number of seconds before the time runs out. 
-* *state* - ecosystem ID.
+* *ecosystem* - ecosystem ID.
 * *wallet* - wallet ID.
 * *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
     
@@ -108,7 +108,7 @@ Query
     POST
     /api/v2/login
     
-* *[state]* - ecosystem ID. If not specified, the command will work with the first ecosystem.
+* *[ecosystem]* - ecosystem ID. If not specified, the command will work with the first ecosystem.
 * *[expire]* - lifetime of the JWT token in seconds (36000 by default).
 * *[pubkey]* - public hex key. If the blockchain already stores a key, then the wallet number should be passed with the *wallet* parameter. 
 * *[wallet]* - wallet in numerical or XXXX-...-XXXX format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*.
@@ -118,7 +118,7 @@ Response
 
 * *token* - JWT token.
 * *refresh* - JWT token to extend the session. Should be sent in the **refresh** command.
-* *state* - ecosystem ID.
+* *ecosystem* - ecosystem ID.
 * *wallet* - wallet ID.
 * *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
 * *notify_key* - key for notifications.
@@ -135,7 +135,7 @@ Response Example
     {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYT8fNGODp0Y"
         "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........iOiI1Nzk3ODE3NjYwNDM2ODA5MzQ2Iiw"        
-        "state":"1",
+        "ecosystem":"1",
         "wallet":"12345",
         "address": "1234-....-3424"
     }      
