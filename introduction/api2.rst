@@ -81,7 +81,7 @@ In cases where authorization is not required, returned is the following:
 
 * *expire* - number of seconds before the time runs out. 
 * *ecosystem* - ecosystem ID.
-* *wallet* - wallet ID.
+* *key_id* - wallet ID.
 * *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
     
 Response Example
@@ -110,8 +110,8 @@ Query
     
 * *[ecosystem]* - ecosystem ID. If not specified, the command will work with the first ecosystem.
 * *[expire]* - lifetime of the JWT token in seconds (36000 by default).
-* *[pubkey]* - public hex key. If the blockchain already stores a key, then the wallet number should be passed with the *wallet* parameter. 
-* *[wallet]* - wallet in numerical or XXXX-...-XXXX format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*.
+* *[pubkey]* - public hex key. If the blockchain already stores a key, then the wallet number should be passed with the *key_id* parameter. 
+* *[key_id]* - wallet in numerical or XXXX-...-XXXX format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*.
 * *signature* - a uid signature received though getuid hex.
 
 Response
@@ -119,7 +119,7 @@ Response
 * *token* - JWT token.
 * *refresh* - JWT token to extend the session. Should be sent in the **refresh** command.
 * *ecosystem* - ecosystem ID.
-* *wallet* - wallet ID.
+* *key_id* - wallet ID.
 * *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
 * *notify_key* - key for notifications.
 * *isnode* - true or false - if the one is the owner of this node.
@@ -136,7 +136,7 @@ Response Example
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYT8fNGODp0Y"
         "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........iOiI1Nzk3ODE3NjYwNDM2ODA5MzQ2Iiw"        
         "ecosystem":"1",
-        "wallet":"12345",
+        "key_id":"12345",
         "address": "1234-....-3424"
     }      
     
@@ -259,9 +259,9 @@ Query
 .. code:: 
     
     GET
-    /api/v2/balance/{wallet}
+    /api/v2/balance/{key_id}
     
-* *wallet* - wallet number. Can be specified in any format - int64, uint64, XXXX-...-XXXX. This wallet will be searched for in the ecosystem, which the user is currently logged in.   
+* *key_id* - wallet number. Can be specified in any format - int64, uint64, XXXX-...-XXXX. This wallet will be searched for in the ecosystem, which the user is currently logged in.   
     
 Response
 
@@ -612,7 +612,7 @@ Response
   * *name* - contract name.
   * *value* - initial text of the contract.
   * *active* - equals "1" if the contract is activated or "0" otherwise.
-  * *wallet_id* - wallet, contract owner. 
+  * *key_id* - wallet, contract owner. 
   * *address* - contract owner's wallet in the XXXX-...-XXXX format. 
   * *conditions* - conditions for change.
   * *token_id* - identifier of the ecosystem, which currency will be used to pay for the contract.
@@ -629,7 +629,7 @@ Response Example
             "id": "1",
             "name": "MainCondition",
             "token_id":"1", 
-            "wallet_id":"2061870654370469385", 
+            "key_id":"2061870654370469385", 
             "active":"0",
             "value":"contract MainCondition {
   conditions {
@@ -665,7 +665,7 @@ Response
 
 * *name* - name of the smart contract with ecosystem ID. Example: *@{idecosystem}name.
 * *active* - true if the contract is activated and false otherwise.
-* *walletid* - contract owner's ID.
+* *key_id* - contract owner's ID.
 * *address* - owner's wallet in the XXXX-...-XXXX format.
 * *tableid* - entry ID in the contracts table, where the source code of the contract is stored.
 * *fields* -  an array that contains information about every parameter in the **data** section of the contract and contains the following fields:
