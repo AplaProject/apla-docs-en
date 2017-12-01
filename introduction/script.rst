@@ -217,10 +217,9 @@ The variables in the contract
 The pre-defined variables that contain data about the transaction from which the contract was displayed are also available in the contract.
 
 *	*$time* - int. transaction time
-*	*$ecosystem* - int. ecosystem identifier
+*	*$ecosystem_id* - int. ecosystem identifier
 *	*$block* - block number in which the int. transaction is sealed 
-*	*$citizen* - address of the citizen who signed the int transaction.
-*	*$key_id* - address of the wallet signatory to the transaction if the contract is outside the ecosystem, where the ecosystem == 0.
+*	*$key_id* - address of the wallet signatory to the transaction if the contract is outside the ecosystem, where the ecosystem_id == 0.
 *	*$wallet_block* - address of the node that has formed the block that includes the transaction.
 *	*$block_time* - time of formation of the block containing the transaction with the current int. contract.
 
