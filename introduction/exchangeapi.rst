@@ -48,7 +48,7 @@ Response example:
    {"error":"", 
     "public":"b7880fa40779d673e7....238def72881d6c2b6c60ffcc2ec7f050141d", 
     "address":"0773-5161-7272-4133-0241", 
-    "wallet_id":7735161727241330241
+    "key_id":7735161727241330241
     }
 
 /exchange/send?sender=...&recipient=...&amount=...
@@ -67,13 +67,13 @@ Response example:
      "error":""}
 
 
-/exchangeapi/balance?wallet=....
+/exchangeapi/balance?key_id=....
 ==============================
 The command returns the balance of any wallet.
 
 For example,
 
-*/exchangeapi/balance?wallet=0773-5161-7272-4133-0241*
+*/exchangeapi/balance?key_id=0773-5161-7272-4133-0241*
 
 Response example:
 
@@ -81,7 +81,7 @@ Response example:
 
      {"error":"","amount":"99992318000000000000","egs":"99.992318"}
 
-/exchangeapi/history?wallet=...&count=...
+/exchangeapi/history?key_id=...&count=...
 ==============================
 The command returns the last history of flow of funds in the specified wallet. count is an optional parameter and determines the number of records to be returned (1 more can be returned). By default, 50 entries will be returned, and the maximum number is 200.
 
@@ -100,7 +100,7 @@ Response:
 
 For example:
 
-*/exchangeapi/history?wallet=1693-7869-8202-2463-0602&count=10&token=mytoken*
+*/exchangeapi/history?key_id=1693-7869-8202-2463-0602&count=10&token=mytoken*
 
 Response example:
 
