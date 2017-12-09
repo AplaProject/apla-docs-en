@@ -72,62 +72,6 @@ The function returns the value of a specified parameter from the ecosystem setti
 .. code:: js
 
     Println( EcosysParam("gov_account"))
-    
-
-DBInt(tblname string, name string, id int) int
-==============================
-The function returns a numeric value from the database table by a specified **id** of the record.
-
-* *tblname*  – name of the table in the database;
-* *name* - name of the column whose value will be returned.
-* *id*- identifier of the record **id** field from where the value will be taken.
-
-.. code:: js
-
-    var val int
-    val = DBInt("mytable", "counter", 1)
-
-DBIntExt(tblname string, name string, val (int|string), column string) int
-==============================
-The function returns a numeric value from the database table, with a search of the record by a specified field and value.
-
-* *tblname*  – name of the table in the database
-* *name* - name of the column whose value will be returned.
-* *val* - value by which the record will be searched.
-* *column* - name of the column where the record will be searched for; the table must have an index for this column.
-
-.. code:: js
-
-    var val int
-    val = DBIntExt("mytable", "balance", $wallet, "wallet_id")
-
-DBIntWhere(tblname string, name string, where string, params ...) int
-==============================
-The function returns a numeric value from the column of the database table with a search for the record by the conditions specified in **where**.
-
-* *tblname*  – name of the table in the database
-* *name* - name of the column whose value will be returned.
-* *where* - query conditions for retrieving records; names of the fields are located to the left of the comparison signs; the characters **?** or **$** are used are used for substitution of parameters.
-* *params* - parameters that are substituted in query conditions in a given sequence.
-
-.. code:: js
-
-    var val int
-    val = DBIntWhere("mytable", "counter",  "idgroup = ? and statue=?", mygroup, 1 )
-
-DBRowExt(tblname string, columns string, val (int|string), column string) map
-==============================
-Function returns a massive of values (map) from database table with the search of record on the specified field and value.
-
-* *tblname* - table name in the database;
-* *columns* - the name of the columns you want to retrieve;
-* *val* - the value by which the record will be searched;
-* *column* - the name of the column on which the record will be searched. The table should have an index for this column.
-
-.. code:: js
-
-    var vals map
-    vals = DBRowExt("mytable", "address,postindex,name", $Company, "company" )
 
 DBString(tblname string, name string, id int) string
 ==============================
@@ -141,36 +85,6 @@ The function returns a string value from the column of the database table by the
 
     var val string
     val = DBString("mytable", "name", $citizen)
-
-DBStringExt(tblname string, name string, val (int|string), column string) string
-==============================
-The function returns a string value from the database table, with a search of the record by a specified field and value.
-
-* *tblname*  – name of the table in the database
-* *name* - name of the column whose value will be returned.
-* *val* - value by which the record will be searched;
-* *column* - name of the column where the record will be searched for; the table must have an index for this column.
-
-.. code:: js
-
-    var val string
-    val = DBStringExt(Table("mytable"), "address", $Company, "company" )
-
-DBStringWhere(tblname string, name string, where string, params ...) string
-==============================
-The function returns a string value from the column of the database table, with a search of the record according to conditions specified in *where*.
-
-* *tblname*  – name of the table in the database
-* *name* - name of the column whose value will be returned
-* *where* - query conditions for retrieving records; the names of the fields are located to the left of the comparison signs; the characters **?** or **$** are used are used for substitution of parameters.
-* *params* - parameters that are substituted in query conditions in a given sequence.
-
-.. code:: js
-
-    var val string
-    val = DBStringWhere("mytable", "address",  "idgroup = ? and company=?",
-           mygroup, "My company" )
-                    
                      	
 LangRes(idres string, lang string) string
 ==============================
@@ -238,16 +152,6 @@ The function updates columns in a record whose column has a specified value. The
 .. code:: js
 
     DBUpdateExt("mytable", "address", addr, "name,amount", "John Dow", 100)
-    
-FindEcosystem(name string) int
-==============================
-The function looks for an ecosystem with the specified name and returns its identifier. If the indicated ecosystem is absent, then it returns identifier. The search is going without register accounting.
-
-* *name* - ecosystem name.
-
-.. code:: js
-
-    id = FindEcosystem(`My Country`)
 
 ********************************************************************************
 Work with contracts and language
