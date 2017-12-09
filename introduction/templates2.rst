@@ -339,13 +339,14 @@ Creates an **image** HTML element.
 
     Image(\images\myphoto.jpg)
 
-ImageInput(Name, Width, Ratio/Height) 
+ImageInput(Name, Width, Ratio, Format) 
 ==============================
 This function creates an **imageinput** element for image upload. In the third parameter you can specify either image height or aspect ratio to apply: *1/2*, *2/1*, *3/4*, etc. The default width is 100 pixels with *1/1* aspect ratio.
 
 * *Name* - element name;
 * *Width* - width of cropped image;
-* *Ratio* - aspect ratio (width to height) or height of the image.
+* *Ratio* - aspect ratio (width to height) or height of the image;
+* *Format* - format of the uploaded image.
 
 .. code:: js
 
