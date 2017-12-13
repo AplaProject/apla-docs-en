@@ -172,7 +172,8 @@ Parameters
   * *name* - column name in Latin script.
   * *type* - type **varchar,bytea,number,datetime,money,text,double,character**.
   * *index* - non-indexed field - "0"; create index - "1".
-  * *conditions* - condition for column change.
+  * *conditions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, *{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}*
+
 
 * *Permissions string* - access conditions in JSON format *{"insert": "...", "new_column": "...", "update": "..."}*.
 
@@ -203,7 +204,7 @@ Parameters
 * *Name* - column name in Latin script.
 * *Type* - type **varchar,bytea,number,money,datetime,text,double,character**.
 * *Index* - non-indexed field - "0"; create index - "1".
-* *Permissions* - permissions to edit the column.
+* *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, *{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}*
 
 EditColumn
 ==============================
@@ -213,7 +214,7 @@ Parameters
 
 * *TableName string* - table name in Latin script. 
 * *Name* - column name in Latin script.
-* *Permissions* - permissions to edit the column.
+* *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, *{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}*
 
 NewLang
 ==============================
