@@ -122,9 +122,9 @@ Response
 * *key_id* - wallet ID.
 * *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
 * *notify_key* - key for notifications.
-* *isnode* - true or false - if the one is the owner of this node.
-* *isowner* - true or false - if the one is the owner of this ecosystem.
-* *vde* - true or false - if the ecosystem hes virtual dedicated ecosystem.
+* *isnode* - true or false - is this user the owner of this node.
+* *isowner* - true or false - is this user the owner of this ecosystem.
+* *vde* - true or false - does this ecosystem have a virtual dedicated ecosystem.
 
 Response Example 
 
@@ -584,6 +584,46 @@ Response Example
         }
     }   
     
+systemparams
+==============================
+**GET** Returns a list of system parameters.
+
+Query
+ 
+.. code:: 
+    
+    GET
+    /api/v2/systemparams/[?names=...]
+
+* *[names]* - list of requested parameters: a list of parameters to receive can be specified separated by commas. For instance, */api/v2/systemparams/?names=max_columns?max_indexes*.
+ 
+Reply 
+ 
+* *list* - array, each element of which contains the following parameters:
+* *name* - parameter name.
+* *value* - parameter value.
+* *conditions* - conditions for parameter change
+
+ Response example
+ 
+ .. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "list": [{ 
+            "name": "max_columns",
+            "value": "100",
+            "conditions": "ContractAccess("@0UpdSysParam")",
+        }, 
+        { 
+            "name": "max_indexes",
+            "value": "1",
+            "conditions": "ContractAccess("@0UpdSysParam")",
+        }, 
+        ]
+    }      
+
 ********************************************************************************
 Functions for Work with Contracts
 ********************************************************************************
