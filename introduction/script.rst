@@ -117,6 +117,8 @@ The function is defined by using the **func** keyword, followed by the function 
   func ooops {
       error "Ooops..."
   }
+  
+Errors occurring in the course of execution of a function are processed automatically, causing the contract to stop and showing the corresponding error message.
 
 You can pass any number of parameters to a function. To do this, use **...** as the last parameter type. In this case, the last parameter will be of *array* type and will contain all variables specified in the call, starting from this parameter. You can pass variables of any types, so please make sure you avoid conflicts caused by possible type mismatches.
 
@@ -214,7 +216,7 @@ The data are listed line by line: first, the variable name is specified (only va
   
 The variables in the contract
 ==============================
-The pre-defined variables that contain data about the transaction from which the contract was displayed are also available in the contract.
+Contract input data, provided in the data section, are sent to other sections using variables with data names and with the **$** sign before them. Using the $ sign you can define additional parameters, which will be considered global within the contract execution process, including nested contracts.
 
 *	*$time* - int. transaction time
 *	*$ecosystem_id* - int. ecosystem identifier
