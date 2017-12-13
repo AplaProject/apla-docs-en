@@ -51,6 +51,14 @@ Parameters
       
 * *Id int* - ID of the contract to activate.
 
+DeactivateContract
+ ==============================
+Unbinds a contract from an account in the current ecosystem. Only the account which the contract is currently bound to can unbind it. After the contract is unbound, its execution will be paid by a user that executes it.
+ 
+ Parameters
+ 
+* *Id int* - identifier of the contract to unbind.
+
 NewParameter
 ==============================
 This contract adds a new parameter to the current ecosystem.
@@ -225,3 +233,29 @@ Parameters
 * *Name string* - name of the language resource in Latin script. 
 * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. Например: **{"en": "English text", "ru": "Английский текст"}**.
  
+NewSign
+==============================
+This contract adds the signature confirmation requirement for a contract in the current ecosystem.
+
+Parameters
+
+* *Name string* - name of the contract, where an additional signature confirmation will be required. 
+* *Value string* - description of parameters in a JSON string. 
+    
+  * *title* - message text
+  * *params* - array of parameters that are displayed to users, where **name** is the field name, and **text** is the parameter description.
+    
+* *Conditions string* - condition for changing the parameters.
+
+Example of *Value*
+
+**{"title": "Would you like to sign?", "params":[{"name": "Recipient", "text": "Wallet"},{"name": "Amount", "text": "Amount(EGS)"}]}** 
+
+EditSign
+==============================
+The contract updates the parameters of a contract with a signature in the current ecosystem. 
+Parameters
+
+ * *Id int* - identifier of the signature to be changed.
+ * *Value string* - a string containing new parameters.
+ * *Conditions string* - new condition for changing the signature parameters.
