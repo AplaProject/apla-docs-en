@@ -26,4 +26,4 @@ Let's consider how the test version of Apla is installed on Windows.
 
 8.	Now launch the **go get -u github.com/AplaProject/go-apla** command. Execution of the command can last for several minutes. After execution, you should have the directory c:\MyGo\src\github.com\Apla\go-apla with source files. There is another way to get the source files – go to github.com/Apla/go-apla. Click Clone & Download and click Download ZIP. After that, just unpack the contents of the go-apla-master directory of this zip into the directory *c:\MyGo\src\github.com\Apla\go-apla*.
 
-9.  Copy go-apla.exe to a directory, for example *c:\\Apla* and run it.
+9.  Copy the go-apla.exe file into your preferred directory, for instance, *c:\\Apla* and execute it.
