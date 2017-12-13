@@ -254,8 +254,17 @@ Example of *Value*
 EditSign
 ==============================
 The contract updates the parameters of a contract with a signature in the current ecosystem. 
+
 Parameters
 
  * *Id int* - identifier of the signature to be changed.
  * *Value string* - a string containing new parameters.
  * *Conditions string* - new condition for changing the signature parameters.
+
+Import 
+==============================
+This contract imports data from a *. sim file into the ecosystem.
+
+Parameters
+
+* *Data string* - data to be imported in text format; this data is the result of export from an ecosystem to a .sim file.
