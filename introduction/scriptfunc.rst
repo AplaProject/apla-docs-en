@@ -13,8 +13,8 @@ Predefined values
 
 The following variables are available when executing a contract. 
 
-* **$key_id** - numeric identifier (int64) of the wallet, who signed the transaction. 
-* **$ecosystem_id** - numeric identifier (int64) of the ecosystem where the transaction was created. Matches with *$citizen*. 
+* **$key_id** - a numerical identifier (int64) of the account that signed the transaction.
+* **$ecosystem_id** - identifier of the ecosystem where the transaction was created. 
 * **$type** identifier of an external contract from where the current contract was called. 
 * **$time** - time specified in the transaction in Unix format. 
 * **$block** - block number in which this transaction is sealed. 
@@ -22,6 +22,8 @@ The following variables are available when executing a contract.
 * **$block_key_id** - numeric identifier (int64) of the node that signed the block. 
 
 It should be kept in mind that these variables are available not only in the functions of the contract but also in other functions and expressions, for example, in conditions that are specified for contracts, pages and other objects. In this case, *$time and $block* variables related to the block and others are equal to 0.
+
+The value that needs to be returned from the contract should be assigned to a predefined variable **$result**.
 
 ********************************************************************************
 Retrieving values from the database
@@ -51,6 +53,22 @@ The Function receives data from a database table in accordance with the request 
        i = i + 1
    }
 
+DBRow(table string) [.Columns(columns string)] [.Where(where string, params ...)] [.WhereId(id int)] [.Order(order string)] [.Ecosystem(ecosystemid int)] map
+==========================
+The function returns an associative array *map* with data obtained from a database table in accordance with the specified query, where * *table* is the table name.
+
+ * *columns* - a list of columns to be returned. If not specified, all columns will be returned. 
+ * *Where* - search parameters; for example, *.Where("name = 'John'")* or *.Where("name = ?", "John")*
+ * *id* - identifier of the string to be returned.  For instance, *.WhereId(1)*
+ * *order* - a field to use for sorting; by default, information is sorted by *id* field.
+ * *ecosystemid* - ecosystem identifier; by default it is the current ecosystem id.
+ 	
+.. code:: js
+
+   var ret map
+   ret = DBRow("contracts").Columns("id,value").Where("id = ?", 1)
+   Println(map)
+
 DBAmount(tblname string, column string, id int) money
 ==============================
 The function returns the value of the **amount** column with type *money* with a search for a record by value of a specified column of the table. (The functions **DBInt()** and **DBIntExt()** that return int values cannot be used to obtain money *int*).
@@ -72,6 +90,18 @@ The function returns the value of a specified parameter from the ecosystem setti
 .. code:: js
 
     Println( EcosysParam("gov_account"))
+
+LangRes(label string, lang string) string
+==============================
+This function returns a language resource with name label for language lang, specified as a two-character code, for instance, *en, fr, ru*; if there is no language resource for a selected language, the result will be returned in English.
+
+* *label* - language resource name;
+* *lang* - two-character language code;
+
+.. code:: js
+
+    warning LangRes("confirm", $Lang)
+    error LangRes("problems", "de")
 
 DBString(tblname string, name string, id int) string
 ==============================
@@ -274,6 +304,32 @@ The function converts a string with hexadecimal encoding to a *bytes* value (seq
 
     var val bytes
     val = HexToBytes("34fe4501a4d80094")
+    
+Join(in array, sep string) string
+==============================
+This function collects the elements of the *in* array into a string, separated by *sep*.
+
+* *in* - name of the *array*, the elements of which need to be collected in one string.
+* *sep* - separator string.
+
+.. code:: js
+
+    var val string, myarr array
+    myarr[0] = "first"
+    myarr[1] = 10
+    val = Join(myarr, ",")
+    
+Split(in string, sep string) array
+==============================
+This function returns an array comprised of elements of the *in* string as a result of its division using *sep* as a separator.
+
+* *in* - string that needs to be separated.
+* *sep* - separator string.
+
+.. code:: js
+
+    var myarr array
+    myarr = Split("first,second,third", ",")
 
 Int(val string) int
 ==============================
