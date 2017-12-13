@@ -100,6 +100,11 @@ To substitute the language resources of the ecosystem, you can use the **$langre
 
      Span($yourname$: #name#)
      
+The following variables are predefined 
+
+* **#key_id#** - current user account identifier.
+* **#ecosystem_id#** - current ecosystem identifier.
+ 
 ********************************************************************************
 Return Value
 ********************************************************************************
@@ -134,7 +139,8 @@ Adds a button to the buttons panel. Creates **addtoolbutton** element.
 
 .. code:: js
 
-      AddToolButton(Help, help, help_page)     
+      AddToolButton(Help, help, help_page) 
+      
 And (Parameters)
 ==========================
 This function returns the result of execution of the **and** logical operation with all parameters listed in parentheses and separated by commas. The parameter value will be **false** if it equals an empty string (""), zero or *false*. In all other cases the parameter value is **true**. The function returns 1 if true or 0 in all other cases. The element named **and** is created only when a tree for editing is requested. 
@@ -285,6 +291,17 @@ Creates an **em** HTML element.
 .. code:: js
 
       This is an Em(important news).
+      
+ForList(Source, Body)
+==========================
+Displays a list of elements from the *Source* data source in the template format set out in *Body*, and creates the **forlist** element.
+
+* *Source* - data source from *DBFind* or *Data* functions.
+* *Body* - a template to insert the elements in.
+
+.. code:: js
+
+      ForList(mysrc){Span(#name#)}
 
 Form(Class, Body) [.Style(Style)]
 ==========================
@@ -504,7 +521,29 @@ Creates a **p** HTML element.
 
       P(This is the first line.
         This is the second line.)
-        
+	
+RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) [.Validate(validation parameters)] [.Style(Style)]
+==========================
+Creates a **radiogroup** element.
+
+* *Name* - element name.
+* *Source* - data source name from *DBFind* or *Data* functions.
+* *NameColumn* - column name to use a source of element names.
+* *ValueColumn* - column name to use a source of element values. Columns created using Custom should not be used in this parameter.
+* *Value* - default value.
+* *Class* - classes for the element.
+
+**Validate** - validation parameters.
+
+**Style** - specification of css styles.
+ 
+* *Style* - css styles.
+
+.. code:: js
+
+      DBFind(mytable, mysrc)
+      RadioGroup(mysrc, name)
+
 Select(Name, Source, NameColumn, ValueColumn, Value, Class) [.Validate(validation parameters)] [.Style(Style)]
 ==========================
 Creates a **select** HTML element.
