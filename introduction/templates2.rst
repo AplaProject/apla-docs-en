@@ -472,14 +472,15 @@ This function forms a nested submenu in a menu and returns the **menugroup** ele
           MenuItem(Dahsboard, dashboard_default)
       }
 
-MenuItem(Title, Page, Params, Icon) 
+MenuItem(Title, Page, Params, Icon, Vde) 
 ==============================
 Creates a menu item and returns the **menuitem** element. 
 
 * *Title* - menu item name;
 * *Page* - page to redirect to;
 * *Params* - parameters, passed to the page in the *var:value* format, separated by commas.
-* *Icon* - icon.
+* *Icon* - icon;
+* *Vde* - parameter that determines the transition to a virtual ecosystem..
 
 .. code:: js
 
