@@ -595,7 +595,7 @@ Query
     GET
     /api/v2/systemparams/[?names=...]
 
-* *[names]* - list of requested parameters: a list of parameters to receive can be specified separated by commas. For instance, */api/v2/systemparams/?names=max_columns?max_indexes*.
+* *[names]* - list of requested parameters: a list of parameters to receive can be specified separated by commas. For instance, */api/v2/systemparams/?names=max_columns,max_indexes*.
  
 Reply 
  
