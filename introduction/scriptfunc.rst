@@ -68,18 +68,6 @@ The function returns an associative array *map* with data obtained from a databa
    var ret map
    ret = DBRow("contracts").Columns("id,value").Where("id = ?", 1)
    Println(map)
-
-DBAmount(tblname string, column string, id int) money
-==============================
-The function returns the value of the **amount** column with type *money* with a search for a record by value of a specified column of the table.
-
-* *tblname* - name of the table in the database;
-* *column* - name of the column where the record will be searched for;
-* *id* - value for record search, *column=id* selection.
-
-.. code:: js
-
-    mymoney = DBAmount("dlt_wallets"), "wallet_id", $wallet)
     
 EcosysParam(name string) string
 ==============================
