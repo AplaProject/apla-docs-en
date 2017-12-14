@@ -71,7 +71,7 @@ The function returns an associative array *map* with data obtained from a databa
 
 DBAmount(tblname string, column string, id int) money
 ==============================
-The function returns the value of the **amount** column with type *money* with a search for a record by value of a specified column of the table. (The functions **DBInt()** and **DBIntExt()** that return int values cannot be used to obtain money *int*).
+The function returns the value of the **amount** column with type *money* with a search for a record by value of a specified column of the table.
 
 * *tblname* - name of the table in the database;
 * *column* - name of the column where the record will be searched for;
@@ -102,19 +102,6 @@ This function returns a language resource with name label for language lang, spe
 
     warning LangRes("confirm", $Lang)
     error LangRes("problems", "de")
-
-DBString(tblname string, name string, id int) string
-==============================
-The function returns a string value from the column of the database table by the record **id**.
-
-* *tblname*  – name of the table in the database
-* *name* - name of the column whose value will be returned.
-* *id* - identifier of the record **id** field from where the value will be taken.
-
-.. code:: js
-
-    var val string
-    val = DBString("mytable", "name", $citizen)
                      	
 LangRes(idres string, lang string) string
 ==============================
