@@ -280,6 +280,9 @@ This function gets a parameter value from the parameters table of the current ec
 
      Address(EcosysParam(founder_account))
      EcosysParam(gender, Source: mygender)
+ 
+     EcosysParam(Name: gender_list, Source: src_gender)
+     Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 
 Em(Body, Class)
 ==========================
