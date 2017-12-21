@@ -483,7 +483,7 @@ Creates a menu item and returns the **menuitem** element.
 * *Page* - page to redirect to;
 * *Params* - parameters, passed to the page in the *var:value* format, separated by commas.
 * *Icon* - icon;
-* *Vde* - parameter that determines the transition to a virtual ecosystem..
+* *Vde* -  is a parameter that defines the transition to a virtual ecosystem. If Vde: true, then the link redirects to VDE; if Vde: false, then the link redirects to the blockchain; if the parameter was not specified, then it is defined based on where the menu was loaded.
 
 .. code:: js
 
