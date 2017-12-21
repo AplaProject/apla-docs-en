@@ -624,6 +624,36 @@ Reply
         ]
     }      
 
+history/{name}/{id}
+==============================
+ **GET** Returns the changelog of an entry in the specified table in the current ecosystem. 
+
+Request
+ 
+ * *name* - table name.
+ * *id* - entry identifier.
+ 
+Reply 
+ * *list* an array, the elements of which contain modified parameters of the requested entry 
+ 
+Reply Example
+  
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "list": [
+            {
+                "name": "default_page",
+                "value": "P(class, Default Ecosystem Page)"
+            },
+            {
+                "menu": "default_menu"
+            }
+        ]
+    }
+
 ********************************************************************************
 Functions for Work with Contracts
 ********************************************************************************
