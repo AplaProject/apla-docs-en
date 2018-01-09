@@ -462,7 +462,7 @@ Creates a **linkpage** element – a link to a page.
 
 MenuGroup(Title, Body, Icon) 
 ==============================
-This function forms a nested submenu in a menu and returns the **menugroup** element. 
+Forms a nested submenu in the menu and returns the **menugroup** element. The *name* parameter will also return the value of *Title* before replacement with language resources.
 
 * *Title* - menu item name.
 * *Body* - child elements in submenu;
@@ -617,6 +617,16 @@ Creates a **strong** HTML element.
 .. code:: js
 
       This is Strong(the first item, myclass1).
+      
+SysParam(Name) 
+ ==============================
+Displays the value of a system parameter from the system_parameters table. 
+
+* *Name* - parameter name;
+
+.. code:: js
+
+     Address(SysParam(founder_account))
       
 Table(Source, Columns) [.Style(Style)]
 ==========================
