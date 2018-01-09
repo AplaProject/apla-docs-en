@@ -233,6 +233,16 @@ Function returns the the identification number of the citizen by the string valu
 
     wallet = AddressToId($Recipient)
     
+IdToAddress(id int) string
+==============================
+Returns the address of a wallet based on its ID number. If a wrong ID is specified, returned is 'invalid'.
+
+* *id* - ID, numerical.
+
+.. code:: js
+
+    $address = IdToAddress($id)
+    
 Contains(s string, substr string) bool
 ==============================
 Returnes true if the string *s* containts the substring *substr*.
