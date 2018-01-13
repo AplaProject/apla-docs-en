@@ -2,7 +2,7 @@
 REST API v2
 ################################################################################
 
-To call a command, use **/api/v2/command/[param]**, where **command** is a command name, and **param** is an additional parameter, for example, a name of a resource to change or to receive. Query parameters should be sent with **Content-Type: x-www-form-urlencoded**. Server will respond in JSON format.
+To call a command, use ``/api/v2/command/[param]``, where **command** is a command name, and **param** is an additional parameter, for example, a name of a resource to change or to receive. Query parameters should be sent with ``Content-Type: x-www-form-urlencoded``. Server will respond in JSON format.
 
 ********************************************************************************
 Error Handling
@@ -10,8 +10,8 @@ Error Handling
 
 In case of successful query execution, returned is status 200. In case of an error, apart from an error status, returned is a JSON object with the following fields:
 
-* **error** - error identifier. 
-* **msg** - error text. 
+* **error** - error identifier,
+* **msg** - error text,
 * **params** - array of additional parameters of the error, which can be put into the error message.
 
 Response Example 
@@ -28,31 +28,31 @@ Response Example
 
 Error List
 
-* **E_CONTRACT** - There is not %s contract
-* **E_DBNIL** - DB is nil
-* **E_ECOSYSTEM** - Ecosystem %d doesn't exist
-* **E_EMPTYPUBLIC** - Public key is undefined
-* **E_EMPTYSIGN** - Signature is undefined
-* **E_HASHWRONG** - Hash is incorrect
-* **E_HASHNOTFOUND** - Hash has not been found
-* **E_INSTALLED** - Apla is already installed
-* **E_INVALIDWALLET** - Wallet %s is not valid
-* **E_NOTFOUND** - Content page or menu has not been found
-* **E_NOTINSTALLED** - Apla is not installed. In this case, you need to run the *install* by the command.
-* **E_QUERY** - DB query is wrong
-* **E_RECOVERED** - API recovered. Returtns if there is panic error.
-* **E_REFRESHTOKEN** - Refresh token is not valid
-* **E_SERVER** - Server error. Returns if there is an error in the library functions golang. The *msg* field contains the error text
-* **E_SIGNATURE** - Signature is incorrect
-* **E_STATELOGIN** - %s is not a membership of ecosystem %s
-* **E_TABLENOTFOUND** - Table %s has not been found
-* **E_TOKEN** - Token is not valid
-* **E_TOKENEXPIRED** - Token is expired by %s
-* **E_UNAUTHORIZED** - Unauthorized
-* **E_UNDEFINEVAL** - Value %s is undefined
-* **E_UNKNOWNUID** - Unknown uid
-* **E_VDE** - Virtual Dedicated Ecosystem %s doesn't exist
-* **E_VDECREATED** - Virtual Dedicated Ecosystem is already created
+* **E_CONTRACT** - There is not %s contract,
+* **E_DBNIL** - DB is nil,
+* **E_ECOSYSTEM** - Ecosystem %d doesn't exist,
+* **E_EMPTYPUBLIC** - Public key is undefined,
+* **E_EMPTYSIGN** - Signature is undefined,
+* **E_HASHWRONG** - Hash is incorrect,
+* **E_HASHNOTFOUND** - Hash has not been found,
+* **E_INSTALLED** - Apla is already installed,
+* **E_INVALIDWALLET** - Wallet %s is not valid,
+* **E_NOTFOUND** - Content page or menu has not been found,
+* **E_NOTINSTALLED** - Apla is not installed. In this case, you need to run the *install* by the command,
+* **E_QUERY** - DB query is wrong,
+* **E_RECOVERED** - API recovered returtns if there is panic error,
+* **E_REFRESHTOKEN** - Refresh token is not valid,
+* **E_SERVER** - Server error. Returns if there is an error in the library functions golang. The *msg* field contains the error text,
+* **E_SIGNATURE** - Signature is incorrect,
+* **E_STATELOGIN** - %s is not a membership of ecosystem %s,
+* **E_TABLENOTFOUND** - Table %s has not been found,
+* **E_TOKEN** - Token is not valid,
+* **E_TOKENEXPIRED** - Token is expired by %s,
+* **E_UNAUTHORIZED** - Unauthorized,
+* **E_UNDEFINEVAL** - Value %s is undefined,
+* **E_UNKNOWNUID** - Unknown uid,
+* **E_VDE** - Virtual Dedicated Ecosystem %s doesn't exist,
+* **E_VDECREATED** - Virtual Dedicated Ecosystem is already created.
 
 
 The **E_RECOVERED** error means that you encountered a bug that needs to be found and fixed. The **E_NOTINSTALLED** error should be returned by any command except for install, in case the system is not yet installed. The **E_SERVER** error may appear in response to any command. If it appears as a result of incorrect input parameters, it can be changed to relevant errors. In the other case, this error reports of invalid operation or incorrect system configuration, which requires a more detailed investigation. The **E_UNAUTHORIZED** error can be returned for any command except for *install, getuid, login* in cases where login was not performed or the session has expired.
@@ -61,7 +61,7 @@ The **E_RECOVERED** error means that you encountered a bug that needs to be foun
 Authentication
 ********************************************************************************
 
-The **JWT token** http://www.jwt.org is used for authentication. After receiving a JWT token you need to put it in the header of every query: **Authorization: Bearer TOKEN_HERE**. 
+The **JWT token** http://www.jwt.org is used for authentication. After receiving a JWT token you need to put it in the header of every query: ``Authorization: Bearer TOKEN_HERE``. 
 
 getuid
 ==============================
@@ -79,10 +79,10 @@ getuid
 
 In cases where authorization is not required, returned is the following:
 
-* *expire* - number of seconds before the time runs out. 
-* *ecosystem* - ecosystem ID.
-* *key_id* - wallet ID.
-* *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
+* *expire* - number of seconds before the time runs out, 
+* *ecosystem* - ecosystem ID,
+* *key_id* - wallet ID,
+* *address* - wallet address in the ``XXXX-XXXX-.....-XXXX`` format.
     
 Response Example
 
@@ -108,22 +108,22 @@ Query
     POST
     /api/v2/login
     
-* *[ecosystem]* - ecosystem ID. If not specified, the command will work with the first ecosystem.
-* *[expire]* - lifetime of the JWT token in seconds (36000 by default).
-* *[pubkey]* - public hex key. If the blockchain already stores a key, then the wallet number should be passed with the *key_id* parameter. 
-* *[key_id]* - wallet in numerical or XXXX-...-XXXX format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*.
+* *[ecosystem]* - ecosystem ID. If not specified, the command will work with the first ecosystem,
+* *[expire]* - lifetime of the JWT token in seconds (36000 by default),
+* *[pubkey]* - public hex key. If the blockchain already stores a key, then the wallet number should be passed with the *key_id* parameter,
+* *[key_id]* - wallet in numerical or ``XXXX-...-XXXX`` format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*,
 * *signature* - a uid signature received though getuid hex.
 
 Response
 
-* *token* - JWT token.
-* *refresh* - JWT token to extend the session. Should be sent in the **refresh** command.
-* *ecosystem* - ecosystem ID.
-* *key_id* - wallet ID.
-* *address* - wallet address in the XXXX-XXXX-.....-XXXX format.
-* *notify_key* - key for notifications.
-* *isnode* - true or false - is this user the owner of this node.
-* *isowner* - true or false - is this user the owner of this ecosystem.
+* *token* - JWT token,
+* *refresh* - JWT token to extend the session. Should be sent in the **refresh** command,
+* *ecosystem* - ecosystem ID,
+* *key_id* - wallet ID,
+* *address* - wallet address in the ``XXXX-XXXX-.....-XXXX`` format,
+* *notify_key* - key for notifications,
+* *isnode* - true or false - is this user the owner of this node,
+* *isowner* - true or false - is this user the owner of this ecosystem,
 * *vde* - true or false - does this ecosystem have a virtual dedicated ecosystem.
 
 Response Example 
@@ -188,7 +188,7 @@ signtest
 
 Response
 
-* *signature* - signature in hexadecimal 
+* *signature* - signature in hexadecimal, 
 * *pubkey* - public key for the sent hex private key.
     
 Response Example
@@ -219,16 +219,16 @@ Query
     POST
     /api/v2/install
     
-* *type* - installation type: **PRIVATE_NET, TESTNET_NODE, TESTNET_URL**.
-* *log_level* - level of logging: **ERROR, DEBUG**.
-* *first_load_blockchain_url* - address to obtain the blockchain. In case of *type* it is set as *TESTNET_URL*.
-* *db_host* - host for PostgreSQL DB. For example, *localhost*
-* *db_port* - port for the PostgreSQL DB. For example, *5432*
-* *db_name* - name of the PostgreSQL DB. For example, *mydb*
-* *db_user* - username to connect to the PostgreSQL DB. For example, *postgres*
-* *db_pass* - password to connect to the PostgreSQL DB. For example, *postgres*
-* *generate_first_block* - can be 0 or 1 when *type* is *Private-net*. 
-* *first_block_dir* - directory that contains the *1block* file with the fist block. Should be specified when *generate_first_block* is 0 and *type* is *PRIVATE_NET*.
+* *type* - installation type: **PRIVATE_NET, TESTNET_NODE, TESTNET_URL**,
+* *log_level* - level of logging: **ERROR, DEBUG**,
+* *first_load_blockchain_url* - address to obtain the blockchain, is specified in case of *type* it is set as *TESTNET_URL*,
+* *db_host* - host for PostgreSQL DB. For example, *localhost*,
+* *db_port* - port for the PostgreSQL DB. For example, *5432*,
+* *db_name* - name of the PostgreSQL DB. For example, *mydb*,
+* *db_user* - username to connect to the PostgreSQL DB, for example, *postgres*,
+* *db_pass* - password to connect to the PostgreSQL DB, for example, *postgres*,
+* *generate_first_block* - can be 0 or 1 when *type* is *Private-net*,
+* *first_block_dir* - directory that contains the *1block* file with the fist block, should be specified when, *generate_first_block* is 0 and *type* is *PRIVATE_NET*.
 
 Response
 
@@ -252,7 +252,7 @@ Data Request Functions
 
 balance
 ==============================
-**GET** Requests the balance of a wallet in the current ecosystem. 
+**GET** Requests the balance of an account in the current ecosystem. 
 
 Query
 
@@ -261,12 +261,12 @@ Query
     GET
     /api/v2/balance/{key_id}
     
-* *key_id* - wallet number. Can be specified in any format - int64, uint64, XXXX-...-XXXX. This wallet will be searched for in the ecosystem, which the user is currently logged in.   
+* *key_id* - account id can be specified in any format - ``int64, uint64, XXXX-...-XXXX``. This wallet will be searched for in the ecosystem, which the user is currently logged in.   
     
 Response
 
-* *amount* - wallet balance in minimum units (for example, qAPLA).
-* *money* - wallet balance in units (for example, APLA).
+* *amount* - account balance in minimum units (for example, qAPLA),
+* *money* - account balance in units (for example, APLA).
     
 Response Example
 
@@ -308,7 +308,7 @@ Response Example
 
 vde/create
 ==============================
-**POST** Creates Virtal Dedicated Ecosystem for the current ecosystem.
+**POST** Creates Virtal Dedicated Ecosystem (VDE) for the current ecosystem.
 
 .. code:: 
     
@@ -343,17 +343,17 @@ Query
     /api/v2/ecosystemparams/[?ecosystem=...&names=...]
     
 * *[ecosystem]* - ecosystem identifier. If not specified, current ecosystem's parameters will be returned.
-* *[names]* - list of parameters to receive, separated by commas. Example: */api/v2/ecosystemparams/?names=name,currency,logo*.
-* *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter.
+* *[names]* - list of parameters to receive, separated by commas, example: ``/api/v2/ecosystemparams/?names=name,currency,logo*``,
+* *[vde]* - specify ``true``, if you need to recieve VDE params. In the other case you don't need to specify this parameter.
 
 
 Response
 
 * *list* - an array where each element stores the following parameters:
 
-  * *name* - parameter name.
-  * *value* - parameter value.
-  * *conditions* - conditions to change the parameter
+  * *name* - parameter name,
+  * *value* - parameter value,
+  * *conditions* - conditions to change the parameter.
 
 Response Example
 
@@ -388,15 +388,15 @@ Query
     GET
     /api/v2/ecosystemparam/{name}[?ecosystem=1]
     
-* *name* - name of the requested parameter.
-* *[ecosystem]* - ecosystem ID can be specified. The current ecosystem value will be returned by default.
-* *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter.
+* *name* - name of the requested parameter,
+* *[ecosystem]* - ecosystem ID can be specified. The current ecosystem value will be returned by default,
+* *[vde]* - specify ``true``, if you need to recieve VDE params, in the other case you don't need to specify this parameter.
 
 Response
     
-* *name* - parameter name.
-* *value* - parameter value.
-* *conditions* - condition for parameter change 
+* *name* - parameter name,
+* *value* - parameter value,
+* *conditions* - condition for parameter change. 
     
 Response Example
 
@@ -418,21 +418,21 @@ tables/[?limit=...&offset=...]
 
 Query
 
-* *[limit]* - number of entries (25 by default).
-* *[offset]* - entries start offset (0 by default).
-* *[vde]* - specify *true*, if you need to recieve the list of the tables in VDE. In the other case you don't need to specify this parameter.
+* *[limit]* - number of entries (25 by default),
+* *[offset]* - entries start offset (0 by default),
+* *[vde]* - specify *true*, if you need to recieve the list of the tables in VDE, in the other case you don't need to specify this parameter.
 
 .. code:: 
     
     GET
-    /api/v2/tables
+    ``/api/v2/tables``
     
 Response
 
-* *count* - total number of entries in the table.
+* *count* - total number of entries in the table,
 * *list* - an array where each element stores the following parameters:
 
-  * *name* - table name (returned without prefix).
+  * *name* - table name (returned without prefix),
   * *count* - number of entries in the table.
 
 Response Example
@@ -460,30 +460,36 @@ Response Example
 ==============================
 **GET** Returns information about the requested table in the current ecosystem.
 
-The next fields return: "name" - table name, "insert" - rights to insert the elements, "new_column" - rights to insert the column, "update" - rights to change the rights, "columns" - array of the columns with fields *name, type, perm* - name, type, rights for change.
+The next fields return: 
+
+* *name* - table name, 
+* *insert* - rights to insert the elements, 
+* *new_column* - rights to insert the column, 
+* *update* - rights to change the rights, 
+* *columns* - array of the columns with fields ``name, type, perm`` - name, type, rights for change.
 
 Query
 
 .. code:: 
     
     GET
-    /api/v2/table/mytable
+    ``/api/v2/table/mytable``
      
-* *name* - table name (without ecosystem ID prefix).
-* *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter.
+* *name* - table name (without ecosystem ID prefix),
+* *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter,
 
 Response
 
-* *name* - table name (without ecosystem ID prefix).
-* *insert* - condition for adding an entry.
-* *new_column* - condition for adding a column.
-* *update* - condition for changing entries.
-* *conditions* - condition for changing table configuration.
+* *name* - table name (without ecosystem ID prefix),
+* *insert* - right for adding an entry,
+* *new_column* - right for adding a column,
+* *update* - right for changing entries,
+* *conditions* - right for changing table configuration,
 * *columns* - an array of information about columns.
 
-  * *name* - column name.
-  * *type* - column type. Possible values include: **varchar,bytea,number,money,text,double,character**.
-  * *perm* - condition for changing an entry in a column.
+  * *name* - column name,
+  * *type* - column type. Possible values include: **varchar,bytea,number,money,text,double,character**,
+  * *perm* - right for changing an entry in a column.
     
 Response Example 
 
@@ -510,10 +516,10 @@ list/{name}[?limit=...&offset=...&columns=]
 
 Query
 
-* *name* - table name.
-* *[limit]* - number of entries (25 by default).
-* *[offset]* - entries start offset (0 by default).
-* *[columns]* - list of requested columns, separated by commas. If not specified, all columns will be returned. The id column will be returned in all cases.
+* *name* - table name,
+* *[limit]* - number of entries (25 by default),
+* *[offset]* - entries start offset (0 by default),
+* *[columns]* - list of requested columns, separated by commas, if not specified, all columns will be returned. The id column will be returned in all cases,
 * *[vde]* - specify *true*, if you need to recieve records from the table in VDE. In the other case you don't need to specify this parameter.
 
 .. code:: 
@@ -523,10 +529,10 @@ Query
     
 Response
 
-* *count* - total number of entries in the table.
+* *count* - total number of entries in the table,
 * *list* - an array where each element stores the following parameters:
 
-  * *id* - entry ID.
+  * *id* - entry ID,
   * order of requested columns. 
 
 Response Example
@@ -554,10 +560,10 @@ row/{tablename}/{id}[?columns=]
 
 Query
 
-* *tablename* - table name.
-* *id* - entry ID.
-* *[columns]* - a list of requested columns, separated by commas. If not specified, all columns will be returned. The id column will be returned in all cases.
-* *[vde]* - specify *true*, if you need to recieve the record from the table in VDE. In the other case you don't need to specify this parameter.
+* *tablename* - table name,
+* *id* - entry ID,
+* *[columns]* - a list of requested columns, separated by commas. If not specified, all columns will be returned. The id column will be returned in all cases,
+* *[vde]* - specify *true*, if you need to recieve the record from the table in VDE, in the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -566,9 +572,9 @@ Query
     
 Response
 
-* *value* - an array of received column values.
+* *value* - an array of received column values:
 
-  * *id* - entry ID.
+  * *id* - entry ID,
   * order of requested columns. 
 
 Response Example
@@ -595,14 +601,15 @@ Query
     GET
     /api/v2/systemparams/[?names=...]
 
-* *[names]* - list of requested parameters: a list of parameters to receive can be specified separated by commas. For instance, */api/v2/systemparams/?names=max_columns,max_indexes*.
+* *[names]* - list of requested parameters, a list of parameters to receive can be specified separated by commas. For instance, ``/api/v2/systemparams/?names=max_columns,max_indexes``.
  
 Reply 
  
 * *list* - array, each element of which contains the following parameters:
-* *name* - parameter name.
-* *value* - parameter value.
-* *conditions* - conditions for parameter change
+
+* *name* - parameter name,
+* *value* - parameter value,
+* *conditions* - conditions for parameter change.
 
  Response example
  
@@ -630,7 +637,7 @@ history/{name}/{id}
 
 Request
  
- * *name* - table name.
+ * *name* - table name,
  * *id* - entry identifier.
  
 Reply 
@@ -664,9 +671,9 @@ contracts[?limit=...&offset=...]
 
 Query
 
-* *[limit]* - number of entries (25 by default).
-* *[offset]* - entries start offset (0 by default).
-* *[vde]* - specify *true*, if you need to recieve the list of contracts from VDE. In the other case you don't need to specify this parameter.
+* *[limit]* - number of entries (25 by default),
+* *[offset]* - entries start offset (0 by default),
+* *[vde]* - specify *true*, if you need to recieve the list of contracts from VDE, in the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -675,15 +682,15 @@ Query
 
 Response
 
-* *count* - total number of entries in the table.
+* *count* - total number of entries in the table,
 * *list* - an array where each element stores the following parameters:
 
-  * *id* - entry ID.
-  * *name* - contract name.
-  * *value* - initial text of the contract.
-  * *active* - equals "1" if the contract is activated or "0" otherwise.
-  * *key_id* - wallet, contract owner. 
-  * *address* - contract owner's wallet in the XXXX-...-XXXX format. 
+  * *id* - entry ID,
+  * *name* - contract name,
+  * *value* - initial text of the contract,
+  * *active* - equals "1" if the contract is activated or "0" otherwise,
+  * *key_id* - account tied to the contract, 
+  * *address* - address of the account tied to the contract in the ``XXXX-...-XXXX`` format, 
   * *conditions* - conditions for change.
   * *token_id* - identifier of the ecosystem, which currency will be used to pay for the contract.
 
@@ -723,8 +730,8 @@ contract/{name}
 
 Response
 
-* *name* - smart contract name.
-* *[vde]* - specify *true*, if you need to recieve the information about the contract from VDE. In the other case you don't need to specify this parameter.
+* *name* - smart contract name,
+* *[vde]* - specify *true*, if you need to recieve the information about the contract from VDE, in the other case you don't need to specify this parameter.
 
 .. code:: 
     
@@ -733,16 +740,16 @@ Response
     
 Response
 
-* *name* - name of the smart contract with ecosystem ID. Example: *@{idecosystem}name.
-* *active* - true if the contract is activated and false otherwise.
-* *key_id* - contract owner's ID.
-* *address* - owner's wallet in the XXXX-...-XXXX format.
+* *name* - name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``,
+* *active* - true if the contract is activated and false otherwise,
+* *key_id* - contract owner's ID,
+* *address* - address of the account tied to the contract in the ``XXXX-...-XXXX`` format.
 * *tableid* - entry ID in the contracts table, where the source code of the contract is stored.
 * *fields* -  an array that contains information about every parameter in the **data** section of the contract and contains the following fields:
 
-  * *name* - field name.
-  * *htmltype* - html type.
-  * *type* - parameter type.
+  * *name* - field name,
+  * *htmltype* - html type,
+  * *type* - parameter type,
   * *tags* - parameter tags.
     
 Response Example
@@ -763,19 +770,19 @@ Response Example
     
 contract/{name}
 ==============================
-**POST** Calls a smart contract with the specified name **{name}**. Prior to that you should call the **prepare/{name}** command (POST) and sign the returned *forsign* field. In case of successful execution, a transaction hash is returned, which can be used to obtain a block number in case of success or an error text otherwise.
+**POST** Calls a smart contract with the specified name **{name}**. Prior to that you should call the ``prepare/{name}`` command (POST) and sign the returned *forsign* field. In case of successful execution, a transaction hash is returned, which can be used to obtain a block number in case of success or an error text otherwise.
 
 Query
 
-* *name* - name of the contract to call. If the contract is called from another ecosystem, then the full name with ecosystem ID should be specified (*@1MainContract*).
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for non-activated contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling non-activated contracts.
-* *[payover]* - for non-activated contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment.
-* parameters, required for this contract.
-* *signature* - hex signature of the *forsign* value, which was obtained from prepare.
-* *time* - time, returned by prepare.
-* *pubkey* - hex public key of the contract signer. Note, that if the public key is already stored in the keys table of the current ecosystem, it is not necessary to pass it.
-* *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter.
+* *name* - name of the contract to call, if the contract is called from another ecosystem, then the full name with ecosystem ID should be specified (*@1MainContract*),
+* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for non-activated contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same,
+* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling contracts not tied to the account,
+* *[payover]* - for contracts not tied to the account, an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
+* parameters, required for this contract,
+* *signature* - hex signature of the *forsign* value, which was obtained from prepare,
+* *time* - time, returned by prepare,
+* *pubkey* - hex public key of the contract signer, note, that if the public key is already stored in the keys table of the current ecosystem, it is not necessary to pass it,
+* *[vde]* - specify *true*, if you call smart-contract from VDE params, in the other case you don't need to specify this parameter.
 
 .. code:: 
  
@@ -805,12 +812,12 @@ prepare/{name}
 
 Query
 
-* *name* - contract name. If the contract is called from another ecosystem, then the full name should be specified (*@1MainContract*).
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for non-activated contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling non-activated contracts.
-* *[payover]* - for non-activated contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment.
-* *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter
-* parameters, required for this contract.
+* *name* - contract name, if the contract is called from another ecosystem, then the full name should be specified (``@1MainContract``),
+* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for the contracts not tied to the account. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
+* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling not tied contracts,
+* *[payover]* - for not tied contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
+* *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter,
+* parameters transferred to the contract.
 
 .. code:: 
     
@@ -819,7 +826,7 @@ Query
 
 Response
 
-* *forsign* - string to be signed.
+* *forsign* - string to be signed,
 * *time* - time information, which needs to be sent together with the contract.
 
 Response Example
@@ -870,8 +877,8 @@ content/{menu|page}/{name}
     
 Request
 
-* *menu|page* - spesify *page* or *menu* to recieve the page or menu.
-* *name* - the name or menu of the page.
+* *menu|page* - *page* or *menu* to recieve the page or menu.
+* *name* - the name or menu of the page,
 * *[vde]* - specify *true*, if you recieve data from the page or menu in VDE. Otherwise, you do not need to specify this parameter.
 
 .. code:: 
@@ -881,9 +888,9 @@ Request
     
 Response
 
-* *menu* - the menu name for the page when calling *content/page/...*.
-* *menutree* - JSON menu tree for the page when calling *content/page/...*.
-* *title* - head for the menu *content/menu/...*.
+* *menu* - the menu name for the page when calling *content/page/...*,
+* *menutree* - JSON menu tree for the page when calling *content/page/...*,
+* *title* - head for the menu *content/menu/...*,
 * *tree* - JSON tree of objects.
 
 Response example
