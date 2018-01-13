@@ -110,8 +110,8 @@ Query
     
 * *[ecosystem]* - ecosystem ID. If not specified, the command will work with the first ecosystem,
 * *[expire]* - lifetime of the JWT token in seconds (36000 by default),
-* *[pubkey]* - public hex key. If the blockchain already stores a key, then the wallet number should be passed with the *key_id* parameter,
-* *[key_id]* - wallet in numerical or ``XXXX-...-XXXX`` format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*,
+* *[pubkey]* - public hex key, if the blockchain already stores a key, then the wallet number should be passed with the *key_id* parameter,
+* *[key_id]* - account id or ``XXXX-...-XXXX`` format. Use this in cases where the public key is already stored in the blockchain. Can't be used together with *pubkey*,
 * *signature* - a uid signature received though getuid hex.
 
 Response
@@ -119,8 +119,8 @@ Response
 * *token* - JWT token,
 * *refresh* - JWT token to extend the session. Should be sent in the **refresh** command,
 * *ecosystem* - ecosystem ID,
-* *key_id* - wallet ID,
-* *address* - wallet address in the ``XXXX-XXXX-.....-XXXX`` format,
+* *key_id* - account ID,
+* *address* - account address in the ``XXXX-XXXX-.....-XXXX`` format,
 * *notify_key* - key for notifications,
 * *isnode* - true or false - is this user the owner of this node,
 * *isowner* - true or false - is this user the owner of this ecosystem,
@@ -425,7 +425,7 @@ Query
 .. code:: 
     
     GET
-    ``/api/v2/tables``
+    /api/v2/tables
     
 Response
 
@@ -473,7 +473,7 @@ Query
 .. code:: 
     
     GET
-    ``/api/v2/table/mytable``
+    /api/v2/table/mytable
      
 * *name* - table name (without ecosystem ID prefix),
 * *[vde]* - specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter,
@@ -688,7 +688,7 @@ Response
   * *id* - entry ID,
   * *name* - contract name,
   * *value* - initial text of the contract,
-  * *active* - equals "1" if the contract is activated or "0" otherwise,
+  * *active* - equals "1" if the contract is tied to the account or "0" otherwise,
   * *key_id* - account tied to the contract, 
   * *address* - address of the account tied to the contract in the ``XXXX-...-XXXX`` format, 
   * *conditions* - conditions for change.
@@ -741,7 +741,7 @@ Response
 Response
 
 * *name* - name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``,
-* *active* - true if the contract is activated and false otherwise,
+* *active* - true if the contract is tied to the account and false otherwise,
 * *key_id* - contract owner's ID,
 * *address* - address of the account tied to the contract in the ``XXXX-...-XXXX`` format.
 * *tableid* - entry ID in the contracts table, where the source code of the contract is stored.
@@ -775,7 +775,7 @@ contract/{name}
 Query
 
 * *name* - name of the contract to call, if the contract is called from another ecosystem, then the full name with ecosystem ID should be specified (*@1MainContract*),
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for non-activated contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same,
+* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for not tied contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same,
 * *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling contracts not tied to the account,
 * *[payover]* - for contracts not tied to the account, an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
 * parameters, required for this contract,
