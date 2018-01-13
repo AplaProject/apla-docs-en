@@ -1,12 +1,7 @@
 ################################################################################
-Page Template Engine V2
+User Interfaces
 ################################################################################
-********************************************************************************
-Updates in the new version
-********************************************************************************
-Due to the transition of the interface communications to API-only and the transition of the interface itself to the new platform (**React**), we had to change the result of the template engine operation. Also, the new version had to reflect comments and suggestions sent to us by users of the first version of the template engine
-Unlike the first version of the template engine, which produced ready-to-use HTML pages, the Page Template Engine V2 produces trees with HTML tags, positioned in accordance with their description in the template engine. To produce such a tree for pages and menus, please use the content command from API V2. Also, for testing purposes, you can send POST requests to **api/v2/content**, specifying the template to be processed in the *template* parameter.
-Please note, that Page Template Engine V2 does not any more have two function types – () and {}. From now on, you can use only calls (), but for all calls there is an option to specify parameters by their names. It will be discussed in more detail further in this document. The list of functions is subject to be changed later.
+
 
 ********************************************************************************
 Overview of the Template Engine
