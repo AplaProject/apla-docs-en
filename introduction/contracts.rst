@@ -1,36 +1,30 @@
 ************************************************
-Contracts
+System Contracts
 ************************************************
 
-This describes contracts, which are created by default on product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, **@1NewContract**.
+System contracts are created by default during product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, **@1NewContract**.
 
 NewEcosystem
 ==============================
-This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. 
-
-Parameters
+This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. Parameters:
    
 * *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
 
 MoneyTransfer
 ==============================
-This contract transfers money from the current wallet in the current ecosystem to a specified wallet.
+This contract transfers money from the current wallet in the current ecosystem to a specified wallet. Parameters:
 
-Parameters
-
-* *Recipient string* - recipient's wallet in any format – a number or ``XXXX-....-XXXX``,
+* *Recipient string* - recipient's account in any format – a number or ``XXXX-....-XXXX``,
 * *Amount    string* - transaction amount in qAPL,
 * *Comment   string "optional"* - comments.
 
 NewContract
 ==============================
-This contract creates a new contract in the current ecosystem. 
-
-Parameters
+This contract creates a new contract in the current ecosystem. Parameters:
 
 * *Value string* - text of the contract or contracts,
 * *Conditions string* - contract change conditions,
-* *Wallet string "optional"* - identifier of a wallet that can activate the contract later,
+* *Wallet string "optional"* - identifier of user's id where contract should be tied,
 * *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
 
 EditContract
@@ -39,13 +33,13 @@ Editing the contract in the current ecosystem.
 
 Parameters
       
-* *Id int* - ID of the contract to be edited.
-* *Value string* - text of the contract or contracts.
-* *Conditions string* - condition for change.
+* *Id int* - ID of the contract to be edited,
+* *Value string* - text of the contract or contracts,
+* *Conditions string* - rights for contract change.
 
 ActivateContract
 ==============================
-Activation of a contract in the current ecosystem. Contracts can be activated only from the wallet, which was specified when the contract was created. After the contract is activated, this wallet will pay for execution of this contract.
+Binding of a contract to the account in the current ecosystem. Contracts can be tied only from the account, which was specified when the contract was created. After the contract is tied, this account will pay for execution of this contract.
 
 Parameters
       
@@ -57,7 +51,7 @@ Unbinds a contract from an account in the current ecosystem. Only the account wh
  
  Parameters
  
-* *Id int* - identifier of the contract to unbind.
+* *Id int* - identifier of the tied contract.
 
 NewParameter
 ==============================
@@ -67,7 +61,7 @@ Parameters
 
 * *Name string* - parameter name,
 * *Value string* - parameter value,
-* *Conditions string.
+* *Conditions string - rights for parameter change.
 
 EditParameter
 ==============================
@@ -88,7 +82,7 @@ Parameters
 * *Name string* - menu name,
 * *Value string* - menu text,
 * *Title string "optional"* - menu header,
-* *Conditions string* - condition for menu change,
+* *Conditions string* - rights for menu change,
 
 EditMenu
 ==============================
@@ -97,9 +91,9 @@ This contract changes an existing menu in the current ecosystem.
 Parameters
 
 * *Id int* - ID of the menu to be changed,
-* *Value string* - new value,
+* *Value string* - new text of menu,
 * *Title string "optional"* - menu header,
-* *Conditions string* - new condition for menu change.
+* *Conditions string* - new rights for page change.
 
 AppendMenu
 ==============================
@@ -107,19 +101,17 @@ This contract adds text to an existing menu in the current ecosystem.
 
 Parameters
 
-* *Id int* - ID of the menu to be changed,
-* *Value string* - string to be added to the menu.
+* *Id int* - complemented menu identifier,
+* *Value string* - text to be added.
 
 NewPage
 ==============================
-This contract adds a new page in the current ecosystem.
-
-Parameters
+This contract adds a new page in the current ecosystem. Parameters:
 
 * *Name string* - page name,
 * *Value string* - page text,
 * *Menu string* - name of the menu, attached to this page,
-* *Conditions string* - condition for change.
+* *Conditions string* - rights for change.
 
 EditPage
 ==============================
@@ -128,9 +120,9 @@ This contract changes an existing page in the current ecosystem.
 Parameters
 
 * *Id int* - ID of the page to be changed,
-* *Value string* - new page value,
+* *Value string* - new text of the page,
 * *Menu string* - name of the new menu on the page,
-* *Conditions string* - new condition for change.
+* *Conditions string* - new rights for page change.
 
 AppendPage
 ==============================
@@ -139,17 +131,17 @@ The contract adds text to an existing page in the current ecosystem.
 Parameters
 
 * *Id int* - ID of the page to be changed,
-* *Value string* - value that needs to be added to the page.
+* *Value string* - text that needs to be added to the page.
 
 NewBlock
 ==============================
-This contract adds a new block with a template to the current ecosystem. These blocks can be used in the template engine using the Input function.
+This contract adds a new page block with a template to the current ecosystem. 
 
 Parameters
 
 * *Name string* - block name,
 * *Value string* - block text,
-* *Conditions string* - condition for change.
+* *Conditions string* - rights for block change.
 
 EditBlock
 ==============================
@@ -158,28 +150,27 @@ This contract changes an existing block in the current ecosystem.
 Parameters
 
 * *Id int* - ID of the block to be changed,
-* *Value string* - new block value,
-* *Conditions string* - new condition for change.
+* *Value string* - new text of a block,
+* *Conditions string* - new rights for change.
 
 NewTable
 ==============================
-This contract adds a new table in the current ecosystem. 
-Parameters
+This contract adds a new table in the current ecosystem. Parameters:
 
 * *Name string* - table name in Latin script, 
-* *Columns string* - array of columns in JSON format ``[{"name":"...", "type":"...","index": "0", "conditions":"..."},...]``.
+* *Columns string* - array of columns in JSON format ``[{"name":"...", "type":"...","index": "0", "conditions":"..."},...]``, where
 
   * *name* - column name in Latin script,
   * *type* - type ``varchar,bytea,number,datetime,money,text,double,character``,
   * *index* - non-indexed field - "0"; create index - "1",
-  * *conditions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, *{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}*
+  * *conditions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
 
 
 * *Permissions string* - access conditions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
 
-  * *insert* - condition to insert records,
-  * *new_column* - condition to add columns,
-  * *update* - condition to change data.
+  * *insert* - rights to insert records,
+  * *new_column* - rights to add columns,
+  * *update* - rights to change rights.
 
 
 EditTable
