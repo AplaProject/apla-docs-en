@@ -13,6 +13,7 @@ Integrated Development Environment of the Molis software client includes an inte
 
 Interface Template
 ==============================
+
 Creating Interface Templates
 ==============================
 
@@ -37,7 +38,7 @@ Language resources can be created and edited in the Language resources section o
 Rights to add and change language resources can be configured using the same way as for any other table in the languages table (Tables section of the Molis administrative tools). 
 
 Protypo Template Language
------------------------------
+==============================
 
 Protypo functions provide for implementation of the following operations:
 
@@ -57,7 +58,7 @@ Protypo functions provide for implementation of the following operations:
 
 
 Overview of the Template Language Protypo
-==========================================
+-----------------------------
 Page template language is a functional language that allows for calling functions using ``FuncName(parameters)``, and for nesting functions into each other. Parameters can be specified without quote marks. Unnecessary parameters can be dropped.
 
 .. code:: js
