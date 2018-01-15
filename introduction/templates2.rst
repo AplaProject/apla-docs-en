@@ -268,7 +268,7 @@ This function displays time and date in the specified format.
     DateTime(#mytime#,HH:MI DD.MM.YYYY)
 
 Now(Format, Interval) 
-==============================
+------------------------------
 This function returns the current time in the specified format, which by default is the UNIX format (number of seconds elapsed since January 1, 1970). If the requested time format is *datetime*, then date and time are shown as ``YYYY-MM-DD HH:MI:SS``. An interval can be specified in the second parameter (for instance, *+5 days*).
 
 * *Format* - output format with a desired combination of ``YYYY, MM, DD, HH, MI, SS`` or *datetime*,
@@ -281,7 +281,7 @@ This function returns the current time in the specified format, which by default
        Now(datetime,-3 hours)
 
 Or(parameters)
-==========================
+------------------------------
 This function returns a result of the **IF** logical operation with all parameters specified in parentheses and separated by commas. The parameter value is considered ``false`` if it equals an empty string (``""``), 0 or ``false``. In all other cases the parameter value is considered ``true``. The function returns 1 for true or 0 in all other cases. Element named **or** is created only when the tree for editing is requested. 
 
 .. code:: js
