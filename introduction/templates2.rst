@@ -11,8 +11,9 @@ Interfaces building
 ********************************************************************************
 Integrated Development Environment of the Molis software client includes an interface editor and a virtual interface designer. Interface pages are the essential part of applications that provides for retrieval and display of data from database tables, creation of forms for receipt of user input data, passing data to a contract, and navigation between application pages. Interface pages, just as contracts, are stored in the blockchain, which ensures their protection from falsification when loading them in the software client.  
 
+********************************************************************************
 Interface Template
-==============================
+********************************************************************************
 
 Creating Interface Templates
 ==============================
@@ -37,8 +38,9 @@ Language resources can be created and edited in the Language resources section o
 
 Rights to add and change language resources can be configured using the same way as for any other table in the languages table (Tables section of the Molis administrative tools). 
 
+********************************************************************************
 Protypo Template Language
-==============================
+********************************************************************************
 
 Protypo functions provide for implementation of the following operations:
 
@@ -58,7 +60,7 @@ Protypo functions provide for implementation of the following operations:
 
 
 Overview of the Template Language Protypo
------------------------------
+==============================
 Page template language is a functional language that allows for calling functions using ``FuncName(parameters)``, and for nesting functions into each other. Parameters can be specified without quote marks. Unnecessary parameters can be dropped.
 
 .. code:: js
@@ -141,18 +143,7 @@ The following variables are predefined
 
 Calling Contracts
 -----------------------------
-Protypo implements contract calling by clicking on a button in a form (Button function). Once  this event is initiated, the data entered by the user in the fields of the interface forms is passed to the contract (if the names of form fields correspond to the names of variables in the data section of the called contract, data is transferred automatically). The Button function allows for opening a modal window for user verification of the contract execution (Alert), and initiation of redirect to a specified page after the successful execution of the contract, and passing certain parameters to this page.
-
-********************************************************************************
-Return Value
-********************************************************************************
-
-The resulting JSON tree consists of **Node** objects with the following parameters:
-
-* *tag* String – a name of an HTML element or special object.
-* *attr* Object – an object consisting of key-value pairs of transferred attributes. As a rule, these include all parameters with names in lower case. Example: **class, value, id**.
-* *text* String – plain text. In this case, *tag* equals **text**. 
-* *children* Array – an array of nested *Node* objects. This includes all elements described in the **Body** parameter.     
+Protypo implements contract calling by clicking on a button in a form (Button function). Once  this event is initiated, the data entered by the user in the fields of the interface forms is passed to the contract (if the names of form fields correspond to the names of variables in the data section of the called contract, data is transferred automatically). The Button function allows for opening a modal window for user verification of the contract execution (Alert), and initiation of redirect to a specified page after the successful execution of the contract, and passing certain parameters to this page.    
 
 ********************************************************************************
 Functions of Protypo
@@ -265,7 +256,7 @@ This function compares two time values in the same format (preferably, standard 
      If(CmpTime(#time1#, #time2#)<0){...}
      
 DateTime(DateTime, Format)
-==========================
+------------------------------
 This function displays time and date in the specified format. 
 
  *  *DateTime* - time and date in standard format ``2006-01-02T15:04:05``.
@@ -382,7 +373,7 @@ Table(Source, Columns) [.Style(Style)]
 Receiving data
 ==============================
 
-Address (Wallet)
+Address (account)
 ------------------------------
 This function returns the account address in the ``1234-5678-...-7990`` format given the numerical value of the address; if the address is not specified, the address of the current user will be taken as the argument. 
 
@@ -460,7 +451,7 @@ This function gets a parameter value from the parameters table of the current ec
      Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
      
 LangRes(Name, Lang)
-==========================
+------------------------------
 Returns a specified language resource. In case of request to a tree for editing it returns the ``$langres$`` element.
 
 * *Name* - name of language resource,
@@ -472,7 +463,7 @@ Returns a specified language resource. In case of request to a tree for editing 
       LangRes(myres, fr)     
 
 SysParam(Name) 
-==============================
+------------------------------
 Displays the value of a system parameter from the system_parameters table. 
 
 * *Name* - parameter name.
@@ -596,7 +587,7 @@ Creates a **form** HTML element.
       Form(class1 class2, Input(myid))
       
 ImageInput(Name, Width, Ratio, Format) 
-==============================
+------------------------------
 This function creates an **imageinput** element for image upload. In the third parameter you can specify either image height or aspect ratio to apply: *1/2*, *2/1*, *3/4*, etc. The default width is 100 pixels with *1/1* aspect ratio.
 
 * *Name* - element name,
@@ -609,7 +600,7 @@ This function creates an **imageinput** element for image upload. In the third p
    ImageInput(avatar, 100, 2/1)    
    
 Input(Name,Class,Placeholder,Type,Value) [.Validate(validation parameters)] [.Style(Style)]
-==========================
+------------------------------
 Creates an **input** HTML element.
 
 * *Name* - element name.
@@ -630,7 +621,7 @@ Creates an **input** HTML element.
       Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 
 InputErr(Name,validation errors)]
-==========================
+------------------------------
 Creates an **inputerr** element with validation error texts.
 
 * *Name* - name of the corresponding **Input** element.
@@ -641,8 +632,9 @@ Creates an **inputerr** element with validation error texts.
           minLength: Value is too short, 
           maxLength: The length of the value must be less than 20 characters)
 	  
+
 RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) [.Validate(validation parameters)] [.Style(Style)]
-==========================
+------------------------------
 Creates a **radiogroup** element.
 
 * *Name* - element name,
