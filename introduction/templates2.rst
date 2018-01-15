@@ -794,5 +794,5 @@ Icons
 All icons from FontAwesome: ``fa fa-<icon-name></icon-name>``
 
 All icons from SimpleLineIcons: ``icon-<icon-name>``
-    
+   
       
