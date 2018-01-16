@@ -4,7 +4,13 @@ Smart-contracts
 .. contents::
   :local:
   :depth: 2
-  
+
+A smart contract (hereinafter, "contract") is a basic element of applications, which performs a single action (typically, makes a record in a database table), initiated from the user interface by a user or by another contract. All operations with data in applications are formed as a system of contracts, interacting with each other through database tables or by call functions in a contract body.
+
+Contracts in Apla are written using an original (developed by the Apla team) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. 
+
+Contracts can be edited, but only if editing was not forbidden by way of putting false in the contract editing rights. Operations with data in the blockchain are performed by the most up-to-date (current) version of the contract. The complete history of changes made to contracts is stored in the blockchain and available from the software client.
+
 ********************************************************************************
 Structure of the contract
 ********************************************************************************
@@ -59,9 +65,6 @@ Action section
 Variables in the contract
 ==============================
 
-********************************************************************************
-Enclosed contracts
-********************************************************************************
 
 ********************************************************************************
 Contracts with signature
@@ -127,14 +130,6 @@ In order for the user to see the money transfer confirmation upon the *TokenTran
 
 When sending a *MyTest* contract, the additional confirmation of the money transfer to the indicated account will be requested from user. If other values, such as ``TokenTransfer(“Recipient,Amount,Signature”,$Recipient, $Amount+10, $Signature)``, are listed in the enclosed contract, the invalid signature error will occur.
 
-Simvolio Contracts Language
-Contracts in Apla are written using an original (developed by the Apla team) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. The Simvolio language provides for:
-•	Declaration of variables with different data types, as well as simple and associative arrays: var, array, map
-•	Use of the if conditional statement and the while loop structure
-•	Retrieval of values from the database and recording data to database DBFind, DBInsert, DBUpdate
-•	Work with contracts CallContract, ContractAccess, etc.
-•	Conversion of variables HexToBytes, Int, Str, etc.
-•	Operations with strings Size, Replace, Substr
 
 ********************************************************************************
 Contract Editor
@@ -151,6 +146,7 @@ Contracts can be created and edited in a special editor which is a part of the M
 Simvolio Contracts Language
 ********************************************************************************
 Contracts in Apla are written using an original (developed by the Apla team) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. The Simvolio language provides for:
+
 -	Declaration of variables with different data types, as well as simple and associative arrays: var, array, map,
 -	Use of the if conditional statement and the while loop structure,
 -	Retrieval of values from the database and recording data to database DBFind, DBInsert, DBUpdate,
@@ -163,7 +159,7 @@ Basic elements and constructions of the language
 Value Types and Variables
 ------------------------------
 
-Massives
+Arrays
 ------------------------------
 
 Functions
@@ -246,7 +242,8 @@ EcosysParam(name string) string
 ------------------------------
 The function returns the value of a specified parameter from the ecosystem settings (*parameters*).
 
-* *name* - name of the received parameter.
+* *name* - name of the received parameter,
+* *num* - sequence number of the parameter.
 
 .. code:: js
 
@@ -369,6 +366,7 @@ The function tries to compile the condition specified in the *condition* paramet
 
     ValidateCondition(`ContractAccess("@0MyContract")`, 0)
     
+
 Operations with account addresses
 ==============================
 
