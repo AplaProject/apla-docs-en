@@ -196,7 +196,7 @@ Retrieving values from the database
 ==============================
 
 DBFind(table string) [.Columns(columns string)] [.Where(where string, params ...)] [.WhereId(id int)] [.Order(order string)] [.Limit(limit int)] [.Offset(offset int)] [.Ecosystem(ecosystemid int)] array
-==========================
+------------------------------
 The Function receives data from a database table in accordance with the request specified. Returned is an *array* comprised of *map* associative arrays.
 
 * *table* - table name.
