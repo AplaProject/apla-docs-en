@@ -65,6 +65,10 @@ Action section
 Variables in the contract
 ==============================
 
+********************************************************************************
+Nested Contracts 
+********************************************************************************
+A nested contract can be called from the conditions and action sections of the enclosing contract. A nested contract can be called directly with parameters specified in parenthesis after its name (NameContract(Params)), or using the CallContract function, for which the contract name is passed using a string variable.
 
 ********************************************************************************
 Contracts with signature
