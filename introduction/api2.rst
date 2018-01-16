@@ -2,7 +2,9 @@
 REST API v2
 ################################################################################
 
-To call a command, use ``/api/v2/command/[param]``, where **command** is a command name, and **param** is an additional parameter, for example, a name of a resource to change or to receive. Query parameters should be sent with ``Content-Type: x-www-form-urlencoded``. Server will respond in JSON format.
+All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the Apla platform. Thus, by using REST API developers can access any function of the platform without using the Molis software client.
+
+Command calls are performed by addressing ``/api/v2/command/[param]``, where **command** is a command name, and **param** is an additional parameter (for example, the name of the resource to change or receive). Request parameters should be sent with ``Content-Type: x-www-form-urlencoded``. The server response will be sent in JSON format.
 
 ********************************************************************************
 Error Handling
@@ -14,7 +16,7 @@ In case of successful query execution, returned is status 200. In case of an err
 * **msg** - error text,
 * **params** - array of additional parameters of the error, which can be put into the error message.
 
-Response Example 
+Response example 
 
 .. code:: 
 
@@ -65,7 +67,7 @@ The **JWT token** http://www.jwt.org is used for authentication. After receiving
 
 getuid
 ==============================
-**GET** Returns a unique value, which needs to be signed with your private key and sent back to server using the **login** command. Currently, a temporary JWT token is created, which needs to be passed to **Authorization** when calling **login**.
+**GET**/ Returns a unique value, which needs to be signed with your private key and sent back to server using the **login** command. Currently, a temporary JWT token is created, which needs to be passed to **Authorization** when calling **login**.
 
 .. code:: 
     
@@ -99,7 +101,7 @@ Response Example
 
 login
 ==============================
-**POST** User authentication. The **getuid** command should be called in the first place in order to receive a unique value and sign it. A temporary JWT token, which was received along with getuid, should be passed in the header. In case of success, the token that was received in the response should be included in all queries in the *Authorization* header.
+**POST**/ User authentication. The **getuid** command should be called in the first place in order to receive a unique value and sign it. A temporary JWT token, which was received along with getuid, should be passed in the header. In case of success, the token that was received in the response should be included in all queries in the *Authorization* header.
 
 Query
 
@@ -144,7 +146,7 @@ Response Example
     
 refresh
 ==============================
-**POST** Issues new tokens and extends the user session. In case of successful completion you need to send the token, which was received in response, in the *Authorization* header of all queries.
+**POST**/ Issues new tokens and extends the user session. In case of successful completion you need to send the token, which was received in response, in the *Authorization* header of all queries.
 
 Query
 
@@ -176,15 +178,15 @@ Errors: *E_SERVER, E_TOKEN, E_REFRESHTOKEN*
 
 signtest
 ==============================
-**POST** Signs a string with the specified private key. It should be used only for API testing, because normally the private key should not be sent to the sever. The private key can be found in the directory where the server was launched.
+**POST**/ Signs a string with the specified private key. It should be used only for API testing, because normally the private key should not be sent to the sever. The private key can be found in the directory where the server was launched.
 
 .. code:: 
     
     POST
     /api/v2/signtest
     
-* *private* - hex private key
-* *forsign* - string for signing
+* *private* - hex private key,
+* *forsign* - string for signing.
 
 Response
 
@@ -210,7 +212,7 @@ Service Commands
 
 install
 ==============================
-**POST** Starts the installation process. After successful installation, the system should be restarted. 
+**POST**/ Starts the installation process. After successful installation, the system should be restarted. 
 
 Query
 
@@ -252,7 +254,7 @@ Data Request Functions
 
 balance
 ==============================
-**GET** Requests the balance of an account in the current ecosystem. 
+**GET**/ Requests the balance of an account in the current ecosystem. 
 
 Query
 
@@ -285,7 +287,7 @@ Work with Ecosystems
 
 ecosystems
 ==============================
-**GET** Returns a number of ecosystems.
+**GET**/ Returns a number of ecosystems.
 
 .. code:: 
     
@@ -308,7 +310,7 @@ Response Example
 
 vde/create
 ==============================
-**POST** Creates Virtal Dedicated Ecosystem (VDE) for the current ecosystem.
+**POST**/ Creates Virtal Dedicated Ecosystem (VDE) for the current ecosystem.
 
 .. code:: 
     
@@ -333,7 +335,7 @@ Errors: *E_VDECREATED*
 
 ecosystemparams
 ==============================
-**GET** Returns a list of ecosystem parameters. 
+**GET**/ Returns a list of ecosystem parameters. 
 
 Query
 
@@ -379,7 +381,7 @@ Errors: *E_ECOSYSTEM,E_VDE*
 
 ecosystemparam/{name}
 ==============================
-**GET** Receive information about the **{name}** parameter in the current or specified ecosystem. 
+**GET**/ Returns information about the **{name}** parameter in the current or specified ecosystem. 
 
 Query
 
@@ -414,7 +416,7 @@ Errors: **E_ECOSYSTEM,E_VDE*
 
 tables/[?limit=...&offset=...]
 ==============================
-**GET** Returns a list of tables in the current ecosystem. You can add set an offset and specify a number of requested tables. 
+**GET**/ Returns a list of tables in the current ecosystem. You can add set an offset and specify a number of requested tables. 
 
 Query
 
@@ -458,7 +460,7 @@ Response Example
     
     table/{name}
 ==============================
-**GET** Returns information about the requested table in the current ecosystem.
+**GET**/ Returns information about the requested table in the current ecosystem.
 
 The next fields return: 
 
@@ -485,10 +487,10 @@ Response
 * *new_column* - right for adding a column,
 * *update* - right for changing entries,
 * *conditions* - right for changing table configuration,
-* *columns* - an array of information about columns.
+* *columns* - an array of information about columns:
 
   * *name* - column name,
-  * *type* - column type. Possible values include: **varchar,bytea,number,money,text,double,character**,
+  * *type* - column type. Possible values include: ``varchar,bytea,number,money,text,double,character``,
   * *perm* - right for changing an entry in a column.
     
 Response Example 
@@ -512,7 +514,7 @@ Errors: *E_TABLENOTFOUND,E_VDE*
 
 list/{name}[?limit=...&offset=...&columns=]
 ==============================
-**GET** Returns a list of entries of the specified table in the current ecosystem. An offset and the number of requested table entries can be specified. 
+**GET**/ Returns a list of entries of the specified table in the current ecosystem. An offset and the number of requested table entries can be specified. 
 
 Query
 
@@ -556,7 +558,7 @@ Response Example
     
 row/{tablename}/{id}[?columns=]
 ==============================
-**GET** Returns a table entry with specified id in the current ecosystem. Columns to be returned can be specified. 
+**GET**/ Returns a table entry with specified id in the current ecosystem. Columns to be returned can be specified. 
 
 Query
 
@@ -592,7 +594,7 @@ Response Example
     
 systemparams
 ==============================
-**GET** Returns a list of system parameters.
+**GET**/ Returns a list of system parameters.
 
 Query
  
@@ -633,7 +635,7 @@ Reply
 
 history/{name}/{id}
 ==============================
- **GET** Returns the changelog of an entry in the specified table in the current ecosystem. 
+ **GET**/ Returns the changelog of an entry in the specified table in the current ecosystem. 
 
 Request
  
@@ -667,7 +669,7 @@ Functions for Work with Contracts
 
 contracts[?limit=...&offset=...]
 ==============================
-**GET** Returns a list of contracts in the current ecosystem. An offset and a number of requested contracts can be specified. 
+**GET**/ Returns a list of contracts in the current ecosystem. An offset and a number of requested contracts can be specified. 
 
 Query
 
@@ -726,7 +728,7 @@ Response Example
 
 contract/{name}
 ==============================
-**GET** Provides information about smart contract **{name}**. By default, the smart contract is searched for in the current ecosystem.
+**GET**/ Provides information about smart contract **{name}**. By default, the smart contract is searched for in the current ecosystem.
 
 Response
 
@@ -770,7 +772,7 @@ Response Example
     
 contract/{name}
 ==============================
-**POST** Calls a smart contract with the specified name **{name}**. Prior to that you should call the ``prepare/{name}`` command (POST) and sign the returned *forsign* field. In case of successful execution, a transaction hash is returned, which can be used to obtain a block number in case of success or an error text otherwise.
+**POST**/ Calls a smart contract with the specified name **{name}**. Prior to that you should call the ``prepare/{name}`` command (POST) and sign the returned *forsign* field. In case of successful execution, a transaction hash is returned, which can be used to obtain a block number in case of success or an error text otherwise.
 
 Query
 
@@ -808,7 +810,7 @@ Response Example
     
 prepare/{name}
 ==============================
-**POST** Sends a request to get a string to sign the specified contract. Here, **{name}** is the name of the transaction for which the string for signing should be returned. This string will be returned in the forsign parameter. Also, returned is the time parameter, which needs to be passed together with the signature. 
+**POST**/ Sends a request to get a string to sign the specified contract. Here, **{name}** is the name of the transaction for which the string for signing should be returned. This string will be returned in the forsign parameter. Also, returned is the time parameter, which needs to be passed together with the signature. 
 
 Query
 
@@ -842,7 +844,7 @@ Response Example
     
 txstatus/{hash}
 ==============================
-**GET** Returns a block number or an error of the sent transaction with given hash. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
+**GET**/ Returns a block number or an error of the sent transaction with given hash. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
 
 Query
 
@@ -855,8 +857,8 @@ Query
      
 Response
 
-* *blockid* - number of the block in case the transaction has been processed successfully.
-* *result* - result of the transaction operation, returned through the **$result** variable.
+* *blockid* - number of the block in case the transaction has been processed successfully,
+* *result* - result of the transaction operation, returned through the **$result** variable,
 * *errmsg* - error message in case the transaction was refused.
     
 Response Example
@@ -873,11 +875,11 @@ Response Example
 
 content/{menu|page}/{name}
 ==============================
-**POST** Returns a JSON representation of the code of the specified page or menu named **{name}**, which is the result of processing by the template engine. The query can have additional parameters, which can be used in the template engine. If the page or menu can't be found, the 404 error is returned.
+**POST**/ Returns a JSON representation of the code of the specified page or menu named **{name}**, which is the result of processing by the template engine. The query can have additional parameters, which can be used in the template engine. If the page or menu can't be found, the 404 error is returned.
     
 Request
 
-* *menu|page* - *page* or *menu* to recieve the page or menu.
+* *menu|page* - *page* or *menu* to recieve the page or menu,
 * *name* - the name or menu of the page,
 * *[vde]* - specify *true*, if you recieve data from the page or menu in VDE. Otherwise, you do not need to specify this parameter.
 
