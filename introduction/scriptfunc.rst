@@ -618,6 +618,265 @@ Functions for VDE
 ==============================
 
 ************************************************
-System contracts
+System Contracts
 ************************************************
 
+System contracts are created by default during product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, **@1NewContract**.
+
+NewEcosystem
+==============================
+This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. Parameters:
+   
+* *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
+
+MoneyTransfer
+==============================
+This contract transfers money from the current wallet in the current ecosystem to a specified wallet. Parameters:
+
+* *Recipient string* - recipient's account in any format – a number or ``XXXX-....-XXXX``,
+* *Amount    string* - transaction amount in qAPL,
+* *Comment   string "optional"* - comments.
+
+NewContract
+==============================
+This contract creates a new contract in the current ecosystem. Parameters:
+
+* *Value string* - text of the contract or contracts,
+* *Conditions string* - contract change conditions,
+* *Wallet string "optional"* - identifier of user's id where contract should be tied,
+* *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
+
+EditContract
+==============================
+Editing the contract in the current ecosystem.
+
+Parameters
+      
+* *Id int* - ID of the contract to be edited,
+* *Value string* - text of the contract or contracts,
+* *Conditions string* - rights for contract change.
+
+ActivateContract
+==============================
+Binding of a contract to the account in the current ecosystem. Contracts can be tied only from the account, which was specified when the contract was created. After the contract is tied, this account will pay for execution of this contract.
+
+Parameters
+      
+* *Id int* - ID of the contract to activate.
+
+DeactivateContract
+==============================
+Unbinds a contract from an account in the current ecosystem. Only the account which the contract is currently bound to can unbind it. After the contract is unbound, its execution will be paid by a user that executes it.
+ 
+ Parameters
+ 
+* *Id int* - identifier of the tied contract.
+
+NewParameter
+==============================
+This contract adds a new parameter to the current ecosystem.
+
+Parameters
+
+* *Name string* - parameter name,
+* *Value string* - parameter value,
+* *Conditions string - rights for parameter change.
+
+EditParameter
+==============================
+This contract changes an existing parameter in the current ecosystem.
+
+Parameters
+
+* *Name string* - name of the parameter to be changed,
+* *Value string* - new value,
+* *Conditions string* - new condition for parameter change.
+
+NewMenu
+==============================
+This contract adds a new menu in the current ecosystem.
+
+Parameters
+
+* *Name string* - menu name,
+* *Value string* - menu text,
+* *Title string "optional"* - menu header,
+* *Conditions string* - rights for menu change,
+
+EditMenu
+==============================
+This contract changes an existing menu in the current ecosystem.
+
+Parameters
+
+* *Id int* - ID of the menu to be changed,
+* *Value string* - new text of menu,
+* *Title string "optional"* - menu header,
+* *Conditions string* - new rights for page change.
+
+AppendMenu
+==============================
+This contract adds text to an existing menu in the current ecosystem.
+
+Parameters
+
+* *Id int* - complemented menu identifier,
+* *Value string* - text to be added.
+
+NewPage
+==============================
+This contract adds a new page in the current ecosystem. Parameters:
+
+* *Name string* - page name,
+* *Value string* - page text,
+* *Menu string* - name of the menu, attached to this page,
+* *Conditions string* - rights for change.
+
+EditPage
+==============================
+This contract changes an existing page in the current ecosystem.
+
+Parameters
+
+* *Id int* - ID of the page to be changed,
+* *Value string* - new text of the page,
+* *Menu string* - name of the new menu on the page,
+* *Conditions string* - new rights for page change.
+
+AppendPage
+==============================
+The contract adds text to an existing page in the current ecosystem.
+
+Parameters
+
+* *Id int* - ID of the page to be changed,
+* *Value string* - text that needs to be added to the page.
+
+NewBlock
+==============================
+This contract adds a new page block with a template to the current ecosystem. 
+
+Parameters
+
+* *Name string* - block name,
+* *Value string* - block text,
+* *Conditions string* - rights for block change.
+
+EditBlock
+==============================
+This contract changes an existing block in the current ecosystem.
+
+Parameters
+
+* *Id int* - ID of the block to be changed,
+* *Value string* - new text of a block,
+* *Conditions string* - new rights for change.
+
+NewTable
+==============================
+This contract adds a new table in the current ecosystem. Parameters:
+
+* *Name string* - table name in Latin script, 
+* *Columns string* - array of columns in JSON format ``[{"name":"...", "type":"...","index": "0", "conditions":"..."},...]``, where
+
+  * *name* - column name in Latin script,
+  * *type* - type ``varchar,bytea,number,datetime,money,text,double,character``,
+  * *index* - non-indexed field - "0"; create index - "1",
+  * *conditions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
+
+
+* *Permissions string* - access conditions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
+
+  * *insert* - rights to insert records,
+  * *new_column* - rights to add columns,
+  * *update* - rights to change rights.
+
+
+EditTable
+==============================
+This contract changes access permissions to tables in the current ecosystem. 
+
+Parameters 
+
+* *Name string* - table name, 
+* *Permissions string* - access permissions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
+
+  * *insert* - condition to insert records,
+  * *new_column* - condition to add columns,
+  * *update* - condition to change data.   
+
+NewColumn
+==============================
+This contract adds a new column to a table in the current ecosystem. 
+
+Parameters
+
+* *TableName string* - table name in,
+* *Name* - column name in Latin script,
+* *Type* - type ``varchar,bytea,number,money,datetime,text,double,character``,
+* *Index* - non-indexed field - "0"; create index - "1",
+* *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
+
+EditColumn
+==============================
+This contract changes the rights to change a table column in the current ecosystem. 
+
+Parameters
+
+* *TableName string* - table name in Latin script, 
+* *Name* - column name in Latin script,
+* *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``.
+
+NewLang
+==============================
+This contract adds language resources in the current ecosystem. Permissions to add resources are set in the *changing_language* parameter in the ecosystem configuration. 
+
+Parameters
+
+* *Name string* - name of the language resource in Latin script, 
+* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``.
+
+EditLang
+==============================
+This contract updates the language resource in the current ecosystem. Permissions to make changes are set in the *changing_language* parameter in the ecosystem configuration. 
+
+Parameters
+
+* *Name string* - name of the language resource,
+* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``.
+ 
+NewSign
+==============================
+This contract adds the signature confirmation requirement for a contract in the current ecosystem.
+
+Parameters
+
+* *Name string* - name of the contract, where an additional signature confirmation will be required,
+* *Value string* - description of parameters in a JSON string, where
+    
+  * *title* - message text,
+  * *params* - array of parameters that are displayed to users, where **name** is the field name, and **text** is the parameter description.
+    
+* *Conditions string* - condition for changing the parameters.
+
+Example of *Value*
+
+``{"title": "Would you like to sign?", "params":[{"name": "Recipient", "text": "Wallet"},{"name": "Amount", "text": "Amount(EGS)"}]}`` 
+
+EditSign
+==============================
+The contract updates the parameters of a contract with a signature in the current ecosystem. 
+
+Parameters
+
+ * *Id int* - identifier of the signature to be changed,
+ * *Value string* - a string containing new parameters,
+ * *Conditions string* - new condition for changing the signature parameters.
+
+Import 
+==============================
+This contract imports data from a *. sim file into the ecosystem.
+
+Parameters
+
+* *Data string* - data to be imported in text format; this data is the result of export from an ecosystem to a .sim file.
