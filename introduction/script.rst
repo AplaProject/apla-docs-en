@@ -623,6 +623,8 @@ System Contracts
 
 System contracts are created by default during product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, **@1NewContract**.
 
+List of System Contracts
+==============================
 NewEcosystem
 ------------------------------
 This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. Parameters:
