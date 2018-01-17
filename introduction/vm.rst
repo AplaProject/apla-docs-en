@@ -588,9 +588,107 @@ Besides the **CompileBlock** function, you should also mention the **FlushBlock*
 Lexical analysis
 *******************************************************************    
 
+The lexical analyzer processes the incoming string and forms a sequence of tokens of the following types:
 
+* **sys** - is the system token, for example: {}[](),.
+* **oper** – operator + - / *
+* **number** – number,
+* **ident** – identifier,
+* **newline** – line break,
+* **string** – string,
+* **comment** – comment.
 
+In this version, preliminarily with the help of *script/lextable/lextable.go*, a transition table (finite state machine) is constructed to parse the tokens, which is written to the *lex_table.go* file. Generally, you can get rid of the preliminary generation of this file and create a transfer table at startup immediately in memory (in init ()). The lexical analysis itself occurs in the *lexParser* function in *lex.go*.
 
+*lextable/lextable.go*
+
+Here we define the alphabet with which our language will operate and describe the finite state machine that changes from one state to another depending on the next received symbol.
+
+*states* contains a JSON object containing a list of states.
+
+In addition to the specific symbols, d is used to indicate all symbols that are not indicated in the state
+
+n is 0x0a, s is a space, q is the backquotes, Q is double quotes, r is characters>= 128, a is A-Z and a-z, 1 is 1-9
+
+The names of the states are the keys, and the possible values are listed in the value object, and then there is a new state to make the transition into for each set, then the name of the token, if we need to return to the initial state and the third parameter is the service flags, which indicate what to do with the current symbol.
+
+For example, we have the main state and the incoming character /. 
+``"/": ["Solidus", "", "push next"],``
+
+**push** gives the command to remember it in a separate stack, and **next** – go to the next character, while we change the state to **solidus**. After that, take the next character and look at the **solidus** state.
+
+If we have/or * – then we go into the comment state, so they start with // or / *. It is clear that for each comment there are different subsequent states, since they end in different symbols.
+
+And if we have the following character not/and not *, then we record everything put in our stack (/) as a token with oper type, clear the stack and return to the main state.
+
+This module changes this state tree into a numeric array and writes it to the *lex_table.go file*.
+
+In the first loop
+
+.. code:: 
+
+    for ind, ch := range alphabet {
+    i := byte(ind)
+    
+we form the alphabet of allowed symbols. Further in *state2int*, we give each state its own sequence identifier.
+    
+.. code:: 
+
+    state2int := map[string]uint{`main`: 0}
+    if err := json.Unmarshal([]byte(states), &data); err == nil {
+    for key := range data {
+    if key != `main` {
+    state2int[key] = uint(len(state2int))
+    
+When we go through all the states and for each set in the state and for each symbol in this set, we write a three-byte number [id of the new state (0 = main)] + [token type (0-no token)] + [flags]. The two-dimensionality of the *table* array consists in its division into states and 33 incoming symbols from the *alphabet* array located in the same order. That is, in the future we will work with this table in approximately the following way.
+
+We are in the *main* state on the zero line of the *table*. We take the first character, look up its index in the *alphabet* array and take the value from the column with the given index. Further from the received value we receive flags in the lower byte, the second byte – indicates the type of the received token, if its parsing is finished, and in the third byte we receive the index of a new state where we should go. All this will be discussed in more detail in the **lexParser** function in the *lex.go file*.
+
+If you want to add some new characters, you need to add them to the *alphabet* array and increase the *AlphaSize* constant. If you want to add a new combination of symbols, they should be described in the states, similar to the existing options. After this, run lextable.and update the *lex_table.go* file.
+
+*lex.go*
+
+The **lexParser** function produces lexical analysis directly and on the basis of an incoming string returns an array of received tokens. Let us consider the structure of a token.
+
+.. code:: 
+
+    type Lexem struct {
+       Type uint32 // Type of the lexem
+       Value interface{} // Value of lexem
+       Line uint32 // Line of the lexem
+       Column uint32 // Position inside the line
+    }
+
+* **Type** – token type. It can be one of the following values: *lexSys, lexOper, lexNumber, lexIdent, lexString, lexComment, lexKeyword, lexType, lexExtend*,
+
+* **Value** – the value of the token. The type of the value depends on the type. Let us consider it in more detail,
+
+* **lexSys** – this includes brackets, commas, etc. In this case, *Type = ch << 8 | lexSys* – see the *isLPar ... isRBrack constants, and the Value itself is uint32(ch)*,
+* **lexOper** – values represent an equivalent sequence of characters in the form of uint32. For example, see the isNot ... isOr constants,
+* **lexNumber** – numbers are stored as *int64* or *float64*. If the number has a decimal point, then it is float64,
+* **lexIdent** – identifiers are stored as strings,
+* **lexNewLine** – the line break character. Also serves to count the line and token position,
+* **lexString** – lines are stored as *string*,
+* **lexComment** – comments are also stored as *string*,
+* **lexKeyword** – the keywords store the corresponding index only – constants from *keyContract ... keyTail*. In this case, *Type = KeyID << 8 | lexKeyword*. Also, it should be noted that the *true,false,nil* keywords are immediately converted to tokens of *lexNumber* type, with the appropriate bool and *intreface{}* types,
+* **lexType** – in this case, the value contains the corresponding *reflect.Type* type value,
+* **lexExtend** – identifiers starting with the dollar sign **$**. These variables and functions are passed from the outside and are therefore allocated to a special type of tokens. The value contains the name in the form of a string without the dollar sign in the beginning,
+
+* **Line** – the string where the token is found,
+* **Column** – the position of the token in the string.
+
+Let us consider the **lexParser** function in detail. The *todo* function – based on the current state and the transmitted symbol, finds the symbol index in our alphabet and gets a new state, the token identifier, if any, and additional flags from the transition table. The parsing itself involves sequential calling of this function for each next character and switching to a new state. As soon as we see that a token is received, we create the corresponding token in the output maxim and continue parsing. It should be noted that in the process of parsing, we do not accumulate symbols of a token in a separate stack or array as we just save the offset, where our token begins. After the token is obtained, we shift the offset for the next token to the current parsing position.
+
+Remaining is to review the flags that are used in the parsing:
+
+* **push** – this flag means that we begin to accumulate symbols in a new token,
+* **next** – the character must be added to the current token,
+* **pop** – the receipt of the token is completed. As a rule, with this flag we have an identifier-type of the parsed token,
+* **skip** – this flag is used to exclude a character from parsing. For example, the control slashes in the string are *\n \r \"*. They are automatically replaced at the stage of this lexical analysis.
+
+*******************************************************************
+Simvolio language
+*******************************************************************
     
 
 
