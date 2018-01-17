@@ -624,13 +624,13 @@ System Contracts
 System contracts are created by default during product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, **@1NewContract**.
 
 NewEcosystem
-==============================
+------------------------------
 This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. Parameters:
    
 * *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
 
 MoneyTransfer
-==============================
+------------------------------
 This contract transfers money from the current wallet in the current ecosystem to a specified wallet. Parameters:
 
 * *Recipient string* - recipient's account in any format – a number or ``XXXX-....-XXXX``,
@@ -638,7 +638,7 @@ This contract transfers money from the current wallet in the current ecosystem t
 * *Comment   string "optional"* - comments.
 
 NewContract
-==============================
+------------------------------
 This contract creates a new contract in the current ecosystem. Parameters:
 
 * *Value string* - text of the contract or contracts,
@@ -647,7 +647,7 @@ This contract creates a new contract in the current ecosystem. Parameters:
 * *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
 
 EditContract
-==============================
+------------------------------
 Editing the contract in the current ecosystem.
 
 Parameters
@@ -657,7 +657,7 @@ Parameters
 * *Conditions string* - rights for contract change.
 
 ActivateContract
-==============================
+------------------------------
 Binding of a contract to the account in the current ecosystem. Contracts can be tied only from the account, which was specified when the contract was created. After the contract is tied, this account will pay for execution of this contract.
 
 Parameters
@@ -665,7 +665,7 @@ Parameters
 * *Id int* - ID of the contract to activate.
 
 DeactivateContract
-==============================
+------------------------------
 Unbinds a contract from an account in the current ecosystem. Only the account which the contract is currently bound to can unbind it. After the contract is unbound, its execution will be paid by a user that executes it.
  
  Parameters
@@ -673,7 +673,7 @@ Unbinds a contract from an account in the current ecosystem. Only the account wh
 * *Id int* - identifier of the tied contract.
 
 NewParameter
-==============================
+------------------------------
 This contract adds a new parameter to the current ecosystem.
 
 Parameters
@@ -683,7 +683,7 @@ Parameters
 * *Conditions string - rights for parameter change.
 
 EditParameter
-==============================
+------------------------------
 This contract changes an existing parameter in the current ecosystem.
 
 Parameters
@@ -693,7 +693,7 @@ Parameters
 * *Conditions string* - new condition for parameter change.
 
 NewMenu
-==============================
+------------------------------
 This contract adds a new menu in the current ecosystem.
 
 Parameters
@@ -704,7 +704,7 @@ Parameters
 * *Conditions string* - rights for menu change,
 
 EditMenu
-==============================
+------------------------------
 This contract changes an existing menu in the current ecosystem.
 
 Parameters
@@ -715,7 +715,7 @@ Parameters
 * *Conditions string* - new rights for page change.
 
 AppendMenu
-==============================
+------------------------------
 This contract adds text to an existing menu in the current ecosystem.
 
 Parameters
@@ -724,7 +724,7 @@ Parameters
 * *Value string* - text to be added.
 
 NewPage
-==============================
+------------------------------
 This contract adds a new page in the current ecosystem. Parameters:
 
 * *Name string* - page name,
@@ -733,7 +733,7 @@ This contract adds a new page in the current ecosystem. Parameters:
 * *Conditions string* - rights for change.
 
 EditPage
-==============================
+------------------------------
 This contract changes an existing page in the current ecosystem.
 
 Parameters
@@ -744,7 +744,7 @@ Parameters
 * *Conditions string* - new rights for page change.
 
 AppendPage
-==============================
+------------------------------
 The contract adds text to an existing page in the current ecosystem.
 
 Parameters
@@ -753,7 +753,7 @@ Parameters
 * *Value string* - text that needs to be added to the page.
 
 NewBlock
-==============================
+------------------------------
 This contract adds a new page block with a template to the current ecosystem. 
 
 Parameters
@@ -763,7 +763,7 @@ Parameters
 * *Conditions string* - rights for block change.
 
 EditBlock
-==============================
+------------------------------
 This contract changes an existing block in the current ecosystem.
 
 Parameters
@@ -773,7 +773,7 @@ Parameters
 * *Conditions string* - new rights for change.
 
 NewTable
-==============================
+------------------------------
 This contract adds a new table in the current ecosystem. Parameters:
 
 * *Name string* - table name in Latin script, 
@@ -793,7 +793,7 @@ This contract adds a new table in the current ecosystem. Parameters:
 
 
 EditTable
-==============================
+------------------------------
 This contract changes access permissions to tables in the current ecosystem. 
 
 Parameters 
@@ -806,7 +806,7 @@ Parameters
   * *update* - condition to change data.   
 
 NewColumn
-==============================
+------------------------------
 This contract adds a new column to a table in the current ecosystem. 
 
 Parameters
@@ -818,7 +818,7 @@ Parameters
 * *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
 
 EditColumn
-==============================
+------------------------------
 This contract changes the rights to change a table column in the current ecosystem. 
 
 Parameters
@@ -828,7 +828,7 @@ Parameters
 * *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``.
 
 NewLang
-==============================
+------------------------------
 This contract adds language resources in the current ecosystem. Permissions to add resources are set in the *changing_language* parameter in the ecosystem configuration. 
 
 Parameters
@@ -837,7 +837,7 @@ Parameters
 * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``.
 
 EditLang
-==============================
+------------------------------
 This contract updates the language resource in the current ecosystem. Permissions to make changes are set in the *changing_language* parameter in the ecosystem configuration. 
 
 Parameters
@@ -846,7 +846,7 @@ Parameters
 * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``.
  
 NewSign
-==============================
+------------------------------
 This contract adds the signature confirmation requirement for a contract in the current ecosystem.
 
 Parameters
@@ -864,7 +864,7 @@ Example of *Value*
 ``{"title": "Would you like to sign?", "params":[{"name": "Recipient", "text": "Wallet"},{"name": "Amount", "text": "Amount(EGS)"}]}`` 
 
 EditSign
-==============================
+------------------------------
 The contract updates the parameters of a contract with a signature in the current ecosystem. 
 
 Parameters
@@ -874,7 +874,7 @@ Parameters
  * *Conditions string* - new condition for changing the signature parameters.
 
 Import 
-==============================
+------------------------------
 This contract imports data from a *. sim file into the ecosystem.
 
 Parameters
