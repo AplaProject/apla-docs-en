@@ -27,7 +27,7 @@ The data are listed line by line: first, the variable name is specified (only va
 *	*image* - images upload,
 *	*text* - entry of the text of HTML-code in the textarea field,
 *crypt:Field* - create and encrypt a private key for the destination specified in the *Field* field. If only * crypt * is specified, then the private key will be created for the user who signs the contract,
-*	*address* - field for input of the wallet address,
+*	*address* - field for input of the account address,
 *	*signature:contractname* - a line to display the contractname contract, which requires the signatures (it is discussed in detail in a special description section).
 
 .. code:: js
@@ -88,7 +88,7 @@ Let's suppose there is a TokenTransfer Contract *TokenTransfer*:
         ...
     }
 
-If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the wallet 12345. In such a case the user who signs an external contract will remain not in the know of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
+If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the account 12345. In such a case the user who signs an external contract will remain not in the know of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
 
 1. Adding a field with the name **Signature** with the ``optional`` and ``hidden`` parameters in the *data* section of the *TokenTransfer* contract, which allow not to require the additional signature in the direct calling of the contract, since there will be the signature in the **Signature** field so far.
 
@@ -112,7 +112,7 @@ If in a contract launched by the user the string ``TokenTransfer("Recipient,Amou
 In the current example it will be enough specifying two fields **Receipient** and **Amount**:
 
 * **Title**: Are you agree to send money this recipient?
-* **Parameter**: Receipient Text: Wallet ID
+* **Parameter**: Receipient Text: Account ID
 * **Parameter**: Amount Text: Amount (qEGS)
 
 Now, if inserting the *TokenTransfer(“Recipient, Amount”, 12345, 100)* contract calling in, the system error ``“Signature is not defined”`` will be displayed. If the contract is called in as follow: ``TokenTransfer("Recipient, Amount, Signature", 12345, 100, "xxx...xxxxx")``, the system error will occur upon signature verification. Upon the contract calling in, the following information is verified: *time of the initial transaction, user ID, the value of the fields specified in the signatures table*, and it is impossible to forge the signature.
@@ -376,9 +376,9 @@ Operations with account addresses
 
 AddressToId(address string) int
 ------------------------------
-Function returns the the identification number of the citizen by the string value of the address of his wallet. If the wrong adress is specified, then 0 returns. 
+Function returns the the identification number of the citizen by the string value of the address of his account. If the wrong adress is specified, then 0 returns. 
 
-* *address* - the wallet adress in the format XXXX-...-XXXX or in the form of number.
+* *address* - the account adress in the format XXXX-...-XXXX or in the form of number.
 
 .. code:: js
 
@@ -386,7 +386,7 @@ Function returns the the identification number of the citizen by the string valu
     
 IdToAddress(id int) string
 ------------------------------
-Returns the address of a wallet based on its ID number. If a wrong ID is specified, returned is 'invalid'.
+Returns the address of a account based on its ID number. If a wrong ID is specified, returned is 'invalid'.
 
 * *id* - ID, numerical.
 
@@ -397,7 +397,7 @@ Returns the address of a wallet based on its ID number. If a wrong ID is specifi
 
 PubToID(hexkey string) int
 ------------------------------
-The function returns the wallet address by the public key in hexadecimal encoding.
+The function returns the account address by the public key in hexadecimal encoding.
 
 * *hexkey* - public key in hexadecimal form.
 
@@ -633,7 +633,7 @@ This contract creates a new ecosystem. To get an identifier of the newly created
 
 MoneyTransfer
 ------------------------------
-This contract transfers money from the current wallet in the current ecosystem to a specified wallet. Parameters:
+This contract transfers money from the current account in the current ecosystem to a specified account. Parameters:
 
 * *Recipient string* - recipient's account in any format – a number or ``XXXX-....-XXXX``,
 * *Amount    string* - transaction amount in qAPL,
