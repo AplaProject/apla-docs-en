@@ -208,6 +208,389 @@ The **Cmd** field stores the command identifier, and the **Value** field contain
 * **cmdFuncName** – adds parameters that are transferred using sequential descriptions divided by the dot *func name Func (...) .Name (...)*,
 * **cmdError** – a command is created that terminates a contract or function with an error that was specified in *error, warning* or *info*.
 
+Below are the commands to work directly with the stack. The *Value* field is not used in them. It should be noted that now there is no fully automatic type conversion. For example, *string + float | int | decimal => float | int | decimal, float + int | str => float*, but *int + string => runtime error*.
+
+* **cmdNot** – logic negation *(val) => (! ValueToBool (val))*,
+* **cmdSign** – change of sign. *(val) => (-val)*,
+* **cmdAdd** – adding. *(val1) (val2) => (val1 + val2)*,
+* **cmdSub** – subtraction. *(val1) (val2) => (val1-val2)*,
+* **cmdMul** – multiplication. *(val1) (val2) => (val1 * val2)*,
+* **cmdDiv** – division. *(val1) (val2) => (val1 / val2)*,
+* **cmdAnd** – logical AND *(val1) (val2) => (valueToBool (val1) && valueToBool (val2))*,
+* **cmdOr** – logical OR. *(val1) (val2) => (valueToBool (val1) || valueToBool (val2))*,
+* **cmdEqual** – equality comparison, bool is returned. *(val1) (val2) => (val1 == val2)*,
+* **cmdNotEq** – comparison for inequality, bool is returned. *(val1) (val2) => (val1! = val2)*,
+* **cmdLess** – comparison for being less, bool is returned. *(val1) (val2) => (val1 <val2)*
+* **cmdNotLess** – the comparison for being greater or equal, bool is returned. *(val1) (val2) => (val1> = val2)*,
+* **cmdGreat** – comparison for being greater, bool is returned. *(val1) (val2) => (val1> val2)*,
+* **cmdNotGreat** – comparison for being less or equal, bool is returned. *(val1) (val2) => (val1 <= val2)*.
+
+As already noted, the execution of bytecode does not affect the virtual machine. This, for example, allows you to simultaneously run various functions and contracts within a single virtual machine. The **Runtime** structure is used in order to start functions and contracts, as well as any expressions and bytecodes.
+
+.. code:: 
+
+    type RunTime struct {
+       stack []interface{}
+       blocks []*blockStack
+       vars []interface{}
+       extend *map[string]interface{}
+       vm *VM
+       cost int64
+       err error
+    }
+    
+* **stack** – the stack on which the bytecode is executed,
+* **blocks** – block calls stack.
+
+.. code:: 
+
+    type blockStack struct {
+         Block *Block
+         Offset int
+    }
+    
+* **Block** – indicator of the block being executed,
+* **Offset** – the offset of the last command executed in the bytecode of the specified block,
+* **vars** – stack of variables. When calling a bytecode in a block, its variables are added to this stack of variables.
+
+After exiting the block, the size of the variables stack returns to the previous value.
+
+* **extend** – a map indicator with values of external variables ($name),
+* **vm** – a virtual machine indicator,
+* **cost** – the resulting cost of execution,
+* **err** – run error if occurred.
+
+Running the bytecode occurs in the RunCode function. It contains a loop that performs the appropriate actions for each bytecode command. Before starting the bytecode processing, we must initialize the necessary data. Here we add our block to the
+
+.. code:: 
+
+    rt.blocks = append(rt.blocks, &blockStack{block, len(rt.vars)})
+        
+Next, we get information about the parameters of the "tail" functions, which should be in the last element of the stack.
+    
+.. code:: 
+
+    var namemap map[string][]interface{}
+    if block.Type == ObjFunc && block.Info.(*FuncInfo).Names != nil {
+        if rt.stack[len(rt.stack)-1] != nil {
+            namemap = rt.stack[len(rt.stack)-1].(map[string][]interface{})
+        }
+        rt.stack = rt.stack[:len(rt.stack)-1]
+    }
+    
+Next, we must initialize all the variables that are defined in this block with initial values.
+
+.. code:: 
+
+   start := len(rt.stack)
+   varoff := len(rt.vars)
+   for vkey, vpar := range block.Vars {
+      rt.cost--
+      var value interface{}
+      
+Since our functions’ variables are also variables, we need to take them from the last elements of the stack in the same order as they are described in the function itself.
+
+.. code:: 
+
+   if block.Type == ObjFunc && vkey < len(block.Info.(*FuncInfo).Params) {
+      value = rt.stack[start-len(block.Info.(*FuncInfo).Params)+vkey]
+   } else {
+   
+Here we initialize local variables with initial values.
+
+.. code:: 
+
+        value = reflect.New(vpar).Elem().Interface()
+        if vpar == reflect.TypeOf(map[string]interface{}{}) {
+           value = make(map[string]interface{})
+        } else if vpar == reflect.TypeOf([]interface{}{}) {
+           value = make([]interface{}, 0, len(rt.vars)+1)
+        }
+     }
+     rt.vars = append(rt.vars, value)
+   }
+   
+Next, we need to update the values ​​of the variable parameters that were transferred in the "tail" functions.
+
+.. code:: 
+
+   if namemap != nil {
+     for key, item := range namemap {
+       params := (*block.Info.(*FuncInfo).Names)[key]
+       for i, value := range item {
+          if params.Variadic && i >= len(params.Params)-1 {
+          
+If it is possible to transfer a variable number of parameters, then we combine them into one variable array.
+
+.. code:: 
+
+                 off := varoff + params.Offset[len(params.Params)-1]
+                 rt.vars[off] = append(rt.vars[off].([]interface{}), value)
+             } else {
+                 rt.vars[varoff+params.Offset[i]] = value
+           }
+        }
+      }
+   }
+   
+After that, all we are left to do is move the stack by removing the values that were transferred as parameters of the function from the stack top. We have already copied their values ​​into an array of variables.
+
+.. code:: 
+
+    if block.Type == ObjFunc {
+         start -= len(block.Info.(*FuncInfo).Params)
+    }
+    
+After the bytecode commands execution loop is over, we must correctly clear the stack.
+
+.. code:: 
+
+    last := rt.blocks[len(rt.blocks)-1]
+    
+Remove the current block from the stack of blocks.
+
+.. code:: 
+
+    rt.blocks = rt.blocks[:len(rt.blocks)-1]
+    if status == statusReturn {
+
+In case of a successful exit from the executed function, we add the return values ​​to the previous end of the stack.
+
+.. code:: 
+
+   if last.Block.Type == ObjFunc {
+       for count := len(last.Block.Info.(*FuncInfo).Results); count > 0; count-- {
+          rt.stack[start] = rt.stack[len(rt.stack)-count]
+          start++
+      }
+     status = statusNormal
+   } else {
+   
+As you can see, if that is not a function that we perform, then we do not restore the stack state, but we exit the function as is. The thing is that loops and conditional constructions already executed inside a function are also the bytecode block.
+
+.. code:: 
+
+        return
+      }
+    }
+    rt.stack = rt.stack[:start]
+    
+Let us consider other functions for working with a virtual machine. Any virtual machine is created using the NewVM function. Three functions of **ExecContract**, **CallContract** and **Settings** are immediately added to each virtual machine. The adding occurs using the **Extend** function.
+
+.. code:: 
+
+   for key, item := range ext.Objects {
+       fobj := reflect.ValueOf(item).Type()
+
+We go through all the transferred objects and look only at the functions.
+       
+.. code:: 
+
+   switch fobj.Kind() {
+   case reflect.Func:
+   
+According to the information received about the function, we fill the **ExtFuncInfo** structure and add it to the top-level map Objects by its name.
+
+.. code:: 
+
+  data := ExtFuncInfo{key, make([]reflect.Type, fobj.NumIn()), make([]reflect.Type, fobj.NumOut()), 
+     make([]string, fobj.NumIn()), fobj.IsVariadic(), item}
+  for i := 0; i < fobj.NumIn(); i++ {
+  
+We have the so-called **Auto** parameters. Typically, this is the first parameter, for example sc *SmartContract* or rt *Runtime*. We cannot transfer them from the Simvolio language, but they are necessary for us when performing some golang functions. Therefore, we specify which variables will be automatically used at the time the function is called. In this case, the **ExecContract**, **CallContract** functions have such rt *Runtime* parameter. 
+
+.. code:: 
+
+  if isauto, ok := ext.AutoPars[fobj.In(i).String()]; ok {
+     data.Auto[i] = isauto
+  }
+  
+We fill in the information about the parameters
+
+.. code:: 
+
+    data.Params[i] = fobj.In(i)
+  }
+  
+and about the types of returned values
+
+.. code:: 
+
+   for i := 0; i < fobj.NumOut(); i++ {
+      data.Results[i] = fobj.Out(i)
+   }
+   
+Adding a function to the root Objects will allow the compiler to find them later when used from contracts.
+
+.. code:: 
+
+             vm.Objects[key] = &ObjInfo{ObjExtFunc, data}
+        }
+    }
+    
+************************************************************
+Compilation
+************************************************************    
+   
+The functions located in the *compile.go* file are responsible for the compilation of the array of tokens obtained from the lexical analyzer. The compilation can be conditionally divided into two levels. At the top level, we process functions, contracts, blocks of code, conditional statements and loop statements, variable definitions, and so on. At the lower level, we compile expressions that are inside of code blocks or conditions in a loop and a conditional statement. In the beginning, let us consider a simpler lower level.
+Translating expressions into a bytecode is done in the **compileEval** function. Since we have a virtual machine working with a stack, it is necessary to translate the usual infix record of expressions into a postfix notation or a reverse Polish notation. For example, 1 +2 should be converted to 12+, then you put 1 and 2 to the stack, and then we apply the addition operation for the last two elements in the stack and write the result to the stack. The translation algorithm itself can be found on the Internet – for example, https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/. The global variable *opers = map [uint32] operPrior* contains the priorities of the operations that are necessary when translating into the reverse Polish notation. The following variables are defined at the beginning of the function:
+
+* **buffer** – temporary buffer for bytecode commands,
+* **bytecode** – final buffer of bytecode commands,
+* **parcount** – temporary buffer for calculating parameters when calling functions,
+* **setIndex** – the variable in the process of work is set to *true*, when we are assigning to the *map* or *array* element. For example, *a["my"] = 10*. In this case, we will need to use the special **cmdSetIndex command**.
+
+Then there is a loop in which we get the next token and process it accordingly. For example, if braces are found
+    
+.. code:: 
+
+    case isRCurly, isLCurly:
+         i--
+        break main
+    case lexNewLine:
+          if i > 0 && ((*lexems)[i-1].Type == isComma || (*lexems)[i-1].Type == lexOper) {
+               continue main
+          }
+         for k := len(buffer) - 1; k >= 0; k-- {
+              if buffer[k].Cmd == cmdSys {
+                  continue main
+             }
+         }
+        break main
+        
+we stop parsing the expression, and when moving the string, we look at whether the previous statement is an operation and whether we are inside the parentheses, otherwise we exit and the expression is parsed. In general, the algorithm itself corresponds to an algorithm for translating into a reverse Polish notation, taking into account that it is necessary to take the calls of functions, contracts, index calls, and other things that you will not meet in case of parsing, for example, for a calculator, into account. Consider the option of parsing the *lexIdent* type token. We are looking for a variable, function or contract with this name. If nothing is found and this is not a function or a contract call, then we indicate an error.
+
+.. code:: 
+
+    objInfo, tobj := vm.findObj(lexem.Value.(string), block)
+    if objInfo == nil && (!vm.Extern || i > *ind || i >= len(*lexems)-2 || (*lexems)[i+1].Type != isLPar) {
+          return fmt.Errorf(`unknown identifier %s`, lexem.Value.(string))
+    }
+    
+We may have a situation where a contract called will be described later. In this case, if a function and a variable with the same name are not found, then we believe that we will have a contract call. In a language, the contracts and functions calls do not differ. But we need to call the contract through the **ExecContract** function, the one we use in the bytecode.
+    
+ .. code:: 
+
+    if objInfo.Type == ObjContract {
+        objInfo, tobj = vm.findObj(`ExecContract`, block)
+        isContract = true
+    }
+    
+In *count*, we will write down the number of variables so far and this value will also go to the stack with the number of function parameters. We simply increase this quantity by one unit in the last element of the stack at each subsequent detection of the parameter.
+
+.. code:: 
+
+    count := 0
+    if (*lexems)[i+2].Type != isRPar {
+        count++
+    }
+    
+Since we have the *Used* list of called parameters for contracts, then we need to make the marks for the case of contract being called, and in case the contract is called without the *MyContract()* parameters, we have to add two empty parameters to the call **ExecContract**, which should get the minimum two parameters.
+ 
+.. code:: 
+
+    if isContract {
+       name := StateName((*block)[0].Info.(uint32), lexem.Value.(string))
+       for j := len(*block) - 1; j >= 0; j-- {
+          topblock := (*block)[j]
+          if topblock.Type == ObjContract {
+                if topblock.Info.(*ContractInfo).Used == nil {
+                     topblock.Info.(*ContractInfo).Used = make(map[string]bool)
+                }
+               topblock.Info.(*ContractInfo).Used[name] = true
+           }
+        }
+        bytecode = append(bytecode, &ByteCode{cmdPush, name})
+        if count == 0 {
+           count = 2
+           bytecode = append(bytecode, &ByteCode{cmdPush, ""})
+           bytecode = append(bytecode, &ByteCode{cmdPush, ""})
+         }
+        count++
+
+    }
+    
+If we see that there is a square bracket next, then we add the **cmdIndex** command to get the value by the index.
+
+.. code:: 
+
+    if (*lexems)[i+1].Type == isLBrack {
+         if objInfo == nil || objInfo.Type != ObjVar {
+             return fmt.Errorf(`unknown variable %s`, lexem.Value.(string))
+         }
+        buffer = append(buffer, &ByteCode{cmdIndex, 0})
+    }
+    
+The **compileEval** function generates the bytecode of the expressions in blocks directly, but the **CompileBlock** function forms both the object tree and the bytecode not related to the expressions. Compilation is also based on the work of the finite state machine, just as it was done for lexical analysis, but with the following differences. First, we do not operate with symbols but with tokens, and second, we describe all states and transitions in *states* variable immediately. It represents an array of maps with indices by type of tokens and each token has the structure of the *compileState* with a new state specified in the *NewState*, and in case it is clear what structure we have parsed, then the function of the handler in the *Func* field is specified.
+
+Let us review the main state as an example
+  
+.. code:: 
+
+    { // stateRoot
+       lexNewLine: {stateRoot, 0},
+       lexKeyword | (keyContract << 8): {stateContract | statePush, 0},
+       lexKeyword | (keyFunc << 8): {stateFunc | statePush, 0},
+       lexComment: {stateRoot, 0},
+       0: {errUnknownCmd, cfError},
+    },
+    
+If we encounter line break or comments, then we stay in the same state. If we encounter the **contract** keyword, then we change the state to the *stateContract* and begin parsing this construction. If we encounter the **func** keyword, then we change to the *stateFunc state*. If other tokens are received, the error generation function will be called. Suppose that we have encountered the *func* keyword and we have changed the state to *stateFunc*. 
+
+.. code:: 
+
+    { // stateFunc
+        lexNewLine: {stateFunc, 0},
+        lexIdent: {stateFParams, cfNameBlock},
+        0: {errMustName, cfError},
+    },
+    
+Since the name of the function must follow the **func** keyword, then when changing the string, we remain in the same state, and with all the other tokens we generate the corresponding error. If we get the function name in the token-identifier, then we go to *stateFParams* state in which we get the parameters of the function. In doing so, we call the **fNameBlock** function. It should be noted that the *Block* structure was created using the *statePush* flag, and here we take it from the buffer and fill with the data we need.
+
+.. code:: 
+
+    func fNameBlock(buf *[]*Block, state int, lexem *Lexem) error {
+        var itype int
+
+        prev := (*buf)[len(*buf)-2]
+        fblock := (*buf)[len(*buf)-1]
+       name := lexem.Value.(string)
+       switch state {
+         case stateBlock:
+            itype = ObjContract
+           name = StateName((*buf)[0].Info.(uint32), name)
+           fblock.Info = &ContractInfo{ID: uint32(len(prev.Children) - 1), Name: name,
+               Owner: (*buf)[0].Owner}
+        default:
+           itype = ObjFunc
+           fblock.Info = &FuncInfo{}
+         }
+         fblock.Type = itype
+        prev.Objects[name] = &ObjInfo{Type: itype, Value: fblock}
+        return nil
+    }
+    
+The **fNameBlock** function is used for contracts and functions (including those nested in other functions and contracts). It fills the *Info* field with the appropriate structure and writes itself into the map *Objects* of the parent block. This is done so that we can then call this function or contract by the given name. Similarly, we create functions for all states and variants. These functions are usually very small and perform some work on the formation of the virtual machine tree. As for the **CompileBlock** function, it simply goes through all the tokens and switches states according to those described in the *states*. Almost the whole additional processing code for additional flags.
+    
+* **statePush** – the *Block* object is added to the object tree,
+* **statePop** – used when the block ends with closing curly braces,
+* **stateStay** – indicates that when you change to a new state, you need to stay on the current token,
+* **stateToBlock** – indicates the transition to *stateBlock* state. Used to handle while and if, when it is needed to go into * * **the processing** of the block inside curly brackets after the expression is processed,
+* **stateToBody** – indicates the transition to *stateBody*,
+* **stateFork** – saves the position of the token. Used when an expression starts in an identifier or a name with **$**. We can have either a function call or an assignment,
+* **stateToFork** – used to get the token stored in the *stateFork* flag. This token will be passed to the processing function,
+* **stateLabel** – serves for inserting the **cmdLabel** command. This flag is needed for the while construction,
+* **stateMustEval** – checks for a conditional expression availability at the beginning of the if and while constructions.
+    
+Besides the **CompileBlock** function, you should also mention the **FlushBlock** function. The matter is that the tree of blocks is built independent of the existing virtual machine. More precisely, we take information about the functions and contracts existing in a virtual machine, but we gather the compiled blocks into a separate tree. Otherwise, if an error occurs during compilation, we will have to roll back the state of the virtual machine to the previous state. Therefore, we compile the tree separately, but have to call the **FlushContract** function after the compilation is successful. This function adds our finished block tree to the current virtual machine. At this point, the compilation stage is considered complete.
+  
+*******************************************************************
+Lexical analysis
+*******************************************************************    
+
+
+
+
     
 
 
