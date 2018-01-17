@@ -690,9 +690,84 @@ Remaining is to review the flags that are used in the parsing:
 Simvolio language
 *******************************************************************
     
+<decimal digit> ::= „0“ | „1“ | „2“ | „3“ | „4“ | „5“ | „6“ | „7“ | „8“ | „9
 
+<decimal number> ::= <decimal digit> {<decimal digit>}
 
+<character code> ::= „“„<any character>“„“
 
+<real number> ::= [„-„] <decimal number>“.“[<decimal number>]
+
+<integer> ::= [„-„] < decimal number > | < character code >
+
+<number> := <integer> | <real number>
+
+<letter> ::= „A“ | „B“ | … | „Z“ | „a“ | „b“ | … | „z“ | 0x80 | 0x81 | … | 0xFF
+
+<space> ::= 0x20
+
+<tab> ::= 0x09
+
+<end of line> := 0x0D 0x0A
+
+<special character> ::= „!“ | „»“ | „$“ | „““ | „(„ | „)“ | „*“ | „+“ | „,“ | „-„ | „.“ | „/“ | „<“ | „=“ | „>“ | „[„ | „“ | „]“ | „_“ | „|“ | „}“ | „{„ | <tab> | <space> | <end of line>
+
+<symbol> ::= <decimal digit> | <letter> | <special character>
+
+<name> ::= (<letter> | „_“) {<letter> | „_“ | <decimal digit>}
+
+<function name> ::= <name>
+
+<variable name> ::= <name>
+
+<type name> ::= <name>
+
+<string symbol > ::= <tab> | <space> | „!“ | „#“ | … | „[„ | „]“ | …
+
+<string element> ::= {<string symbol> | „»“ | „n“ | „r“ }
+
+<string> ::= „»“ { <string element> } „»“ | „`“ { <string element> } „`“
+
+<assignment operator> ::= „=“
+
+<unary operator> ::= „-„
+
+<binary operator> ::= „==“ | „!=“ | „>“ | „<“ | „<=“ | „>=“ | „&&“ | „||“ | „*“ | „/“ | „+“ | „-„
+
+<operator> ::= < assignment operator > | < unary operator > | <binary operator>
+
+<parameters> ::= <expression> {„,“<expression>}
+
+<contract call> ::= <contract name> „(„ [<parameters>] „)“
+
+<function call> ::= <contract call> [{„.“ <name> „(„ [<parameters>] „)“}]
+
+<block contents> ::= <block command> {<end of line><block command>}
+
+<block> ::= „{„<block content>“}“
+
+<block command> ::= (<block> | <expression> | <variables definition> | <if> | <while> | break | continue | return)
+
+<if> ::= if <expression><block> [else <block>]
+
+<while> ::= while <expression><block>
+
+Keywords 
+action break conditions continue contract data else error false func if info nil return settings true var warning while
+
+**Types**
+
+Next to the types the corresponding types from golang are provided.
+
+* **bool** – bool,
+* **bytes** – []byte{},
+* **int** – int64,
+* **address** – uint64,
+* **array** – []interface{},
+* **map** – map[string]interface{},
+* **money** – decimal.Decimal,
+* **float** – float64,
+* **string** – string.
 
 
 
