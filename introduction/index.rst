@@ -16,3 +16,4 @@ Description
    contracts.rst
    contractsignatures.rst
    install.rst
+   vm.rst
