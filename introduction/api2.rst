@@ -911,3 +911,34 @@ Response example
     }      
 
 Errors: *E_NOTFOUND*
+
+node/{name}
+==============================
+**POST** Calls the **{name}** smart contract on behalf of a node. Used for calling smart contracts from VDE contracts though the **HTTPRequest** function. Since in this case the contract can't be signed with an account key, it will be signed with the node's private key. All other parameters are similar to those when sending a contract. The called contract should be bound to an account, because the node's private key account does not have enough funds to execute the contract. If the contract is called from a VDE contract, then the authorization token **$auth_token** should be passed to **HTTPRequest**.
+.. code:: js
+
+	var pars, heads map
+	heads["Authorization"] = "Bearer " + $auth_token
+	pars["vde"] = "false"
+	ret = HTTPRequest("http://localhost:7079/api/v2/node/mycontract", "POST", heads, pars)
+
+Reply
+
+.. code:: 
+ 
+    POST
+    /api/v2/node/mycontract
+
+Ответ
+
+* *hash* - hex hash of the sent transaction.
+
+Reply example
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hash" : "67afbc435634.....",
+    }
