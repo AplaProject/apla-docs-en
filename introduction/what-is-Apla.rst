@@ -1,22 +1,26 @@
 ################################################################################
 General information
 ################################################################################
+
+.. contents::
+  :local:
+  :depth: 3
+  
 ********************************************************************************
 What is Apla?
 ********************************************************************************
 
-Apla is a universal blockchain-platform for organizing of economical, governmental and social activities of citizens and their communities in planetary scales. Apla proposes mechanism protected from falsification for facts saving and usage of them for creation of any contracts that  regulate relationships between people and organizations. 
+Apla is a blockchain platform for building digital ecosystems. The platform includes an integrated application development environment with a multi-level system of access rights to data, interfaces and smart contracts. The Apla platform is built based on software developed by EGAAS Corporation (EGAAS S.A.).
 
-In spite of other existed blockchain-projects trying to solve local tasks, Apla offers the complex solution for shifting of all instruments needed for governmental and business management on blockchain-platform. Apla provides the mechanism for creation of object registries included in legal and economical relations of individuals and legal entities, properties, securities and ect. Apla gives the opportunity for Central Banks to open accounts for all citizens and organizations, allowing to conduct transactions in national currency. Apla supports the technology of smart contracts needed for business operations. The smart contracts automatically implement the algorithm of deals with objects registry using transactions between the central bank's accounts. 
+In terms of its structure and functioning, Apla is fundamentally different from most of the existing blockchain platforms: 
 
-The mechanism of formation and usage of smart laws is implemented in Apla first in the world. Smart laws are the electronic algorithms describing norms and terms of governmental laws performance, which are proved by electronic signatures of representatives of legislature or through the referendum. Smart laws regulate the creation and implementation of smart contracts and automatically regulate the relations between citizens and organizations in all spheres of governmental activities (from civil status registration to payment of tax).
-
-Thus Apla combines financial system, the structure of registries, mechanisms of smart contracts and smart laws into one blockchain platform, providing state, citizens and business with full instrument for governing of any activity.
+* The development and use of blockchain applications is carried out in autonomous software environments , called *ecosystems*. Every ecosystem has its own membership rules, initially established by the ecosystem founder. 
+* Activities in ecosystems are based on creating *registers* and recording/modifying the data involved using *smart contracts*, whereas in most other blockchain platforms activities are based on exchanging transactions or messages between accounts. 
+* Management of access permissions to registers, and relation management between ecosystem members are regulated by a set of rules called *smart laws*.
 
 ********************************************************************************
 Apla Blockchain Platform
 ********************************************************************************
-
 Network
 ==========================
 The Apla blockchain platform is built based on a peer-to-peer network. Full nodes of the network store the up-to-date version of the blockchain and the database, in which the current state of the platform is recorded. The network users receive data by requesting it from databases of full nodes using the software client (or REST AP commands). New data is sent to the network in the form of transactions signed by users. Such transactions are in essence commands for modification of information in the database. Transactions are aggregated in blocks, which are then added to the blockchain on the network nodes. After a new block is added to the blockchain, each full node processes the transactions in this block, thus making changes to data in its database accordingly.
@@ -85,8 +89,9 @@ The platform's unified database, copies of which are stored and maintained up-to
 
 Currently, the Apla platform uses PostgreSQL as its database management system. 
 
+********************************************************************************
 Platform's Ecosystems
-==========================
+********************************************************************************
 The data space of the Apla platform is divided into many relatively independent clusters – *ecosystems*, in which the activities of the network's users are implemented. An Apla ecosystem is an autonomous software environment that consists of a certain number of applications and users, who create these applications and work with them. Any holder of an Apla account can create a new ecosystem.
 
 The software basis of an ecosystem is a collection of applications, which are systems of interfaces, contracts, and database tables. The specific ecosystem to which application elements belong is indicated by prefixes in their name (for example, @1name), where the ecosystem's ID is indicated after the “@” sign. When addressing application elements within the current ecosystem, the prefix can be omitted. 
@@ -146,7 +151,7 @@ Rights to edit can be specified for every ecosystem's parameter.
 
 In order to retrieve values of certain ecosystem parameters, both the contracts language Simvolio and the template language Protypo have the EcosysParam function, where an ecosystem parameter name can be specified as an argument. To retrieve an element from a list (entered as an ecosystem parameter and separated by commas), you should specify you desired element's counting number as a second argument for the function. 
 
-Parameters of the Platform Configuration Ecosystem
+Parameters of the Platform Ecosystem
 --------------------------
 All parameters of the Apla blockchain platform are stored in the parameters table of the platform configuration ecosystem. These are the following parameters:
 
@@ -171,28 +176,28 @@ Controlled Operations
 ==========================
 Permissions can be defined in the Permissions field of contracts, tables and interface (pages, menus, and page blocks) editors, available from the Molis administrative tools section. Permissions for the following operations can be configured:
 
-1.	Table column permission – permission to change values in the table column.
-2.	Table Insert permission – permission to add a new row to the table.
-3.	Table New Column permission – permission to add a new column.
-4.	Conditions for changing of Table permissions – permission to change rights, listed in items 1-3.
-5.	Conditions for change smart contract – permission to edit the smart contract.
-6.	Conditions for change page – permission to edit the interface page.
-7.	Conditions for change menu – permission to edit the menu.
+1.	Table column permission – permission to change values in the table column,
+2.	Table Insert permission – permission to add a new row to the table,
+3.	Table New Column permission – permission to add a new column,
+4.	Conditions for changing of Table permissions – permission to change rights, listed in items 1-3,
+5.	Conditions for change smart contract – permission to edit the smart contract,
+6.	Conditions for change page – permission to edit the interface page,
+7.	Conditions for change menu – permission to edit the menu,
 8.	Conditions for change of ecosystem parameters – permission to change a certain parameter in the ecosystem configuration table.
 
 Ways to Manage Permissions
 ==========================
-Rules, that define the access rights, should be entered in the *Permissions fields as arbitrary expressions in Simvolio language. Access will be granted in the event that at the moment of request the expression was true. If the Permissions field is left blank, it is automatically set to false, and the execution of related actions is blocked.
+Rules, that define the access rights, should be entered in the *Permissions* fields as arbitrary expressions in Simvolio language. Access will be granted in the event that at the moment of request the expression was true. If the *Permissions* field is left blank, it is automatically set to *false*, and the execution of related actions is blocked.
 
-The easiest way to define permissions is to enter a logical (boolean) expression in the Permissions field. For example, $member == 2263109859890200332, where the ID of a certain ecosystem member is given. 
+The easiest way to define permissions is to enter a logical (boolean) expression in the *Permissions* field. For example, $member == 2263109859890200332, where the ID of a certain ecosystem member is given. 
 
-The most versatile and recommended method for defining permissions is the use of the ContractConditions function, to which a contract name can be passed as a parameter. This contract should include the conditions, in which formulation of the table values (for example, user roles tables) and ecosystem parameters can be used. 
+The most versatile and recommended method for defining permissions is the use of the *ContractConditions* function, to which a contract name can be passed as a parameter. This contract should include the conditions, in which formulation of the table values (for example, user roles tables) and ecosystem parameters can be used. 
 
-Another method of permissions management is the use of the ContractAccess function. The list of contracts that are eligible to implement a corresponding action can be passed to the ContractAccess function as parameters. For example, if we take the table that lists the accounts in the ecosystem's tokens, and put ContractAccess(“TokenTransfer”) function in the Permissions field of the amount column, then the operation of changing the values in the amount column will be allowed only to the TokenTransfer contract (all contracts that perform token transfer operations between accounts, will be able to perform such operations only by calling the TokenTransfer contract). Conditions for accessing the contracts themselves can be managed in the conditions section. They can be rather complex and can include many other contracts.
+Another method of permissions management is the use of the ContractAccess function. The list of contracts that are eligible to implement a corresponding action can be passed to the ContractAccess function as parameters. For example, if we take the table that lists the accounts in the ecosystem's tokens, and put ``ContractAccess(“TokenTransfer”)`` function in the *Permissions* field of the amount column, then the operation of changing the values in the amount column will be allowed only to the *TokenTransfer* contract (all contracts that perform token transfer operations between accounts, will be able to perform such operations only by calling the *TokenTransfer* contract). Conditions for accessing the contracts themselves can be managed in the conditions section. They can be rather complex and can include many other contracts.
 
 Exclusive Rights
 ==========================
-To resolve conflict situations or those critical for the operation of an ecosystem, the Ecosystem parameters table has a number of special parameters (changing_smart_contracts, changing_tables, changing_pages), where the conditions for obtaining exclusive rights to access any smart contracts, tables and pages are defined. These rights are set using special smart contracts, for example, executing a voting of ecosystem members or requesting the availability of a number of signatures of different user roles.
+To resolve conflict situations or those critical for the operation of an ecosystem, the Ecosystem parameters table has a number of special parameters (*changing_smart_contracts, changing_tables, changing_pages*), where the conditions for obtaining exclusive rights to access any smart contracts, tables and pages are defined. These rights are set using special smart contracts, for example, executing a voting of ecosystem members or requesting the availability of a number of signatures of different user roles.
 
 ********************************************************************************
 Virtual Dedicated Ecosystems
