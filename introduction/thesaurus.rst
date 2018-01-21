@@ -25,29 +25,28 @@ General Blockchain Technology Terms
 - *private blockchain* - a blockchain network where all nodes and access rights to data are under the centralized control of a single organization (government, corporation, or private individual).
 - *public blockchain* - a blockchain network which is not controlled by any organization, all decisions are made by reaching a consensus among the network's participants, and data is available to everyone for read access. 
 - *delegated proof of stake (DPoS)* - a blockchain network consensus algorithm, where validating nodes are assigned by delegates (usually, token owners), who vote using their shares of rights.
+
+
+
 ********************************************************************************
-Terms Specific to the Apla Blockchain Platform
+Terms of the platform
 ********************************************************************************
-- *Apla* - a public blockchain platform for creating digital ecosystems that includes an integrated application development environment with a multi-level system for managing access rights to data, interfaces, and smart contracts.
-- *Apla for government* - a private version of the Apla blockchain platform built for implementation of e-Government projects.
-- *Apla for business* - a private version of the Apla blockchain platform built for the creation of business applications.
-- *testnet* - a version of the Apla network that is used for testing Apla software.
-- *mainnet* - main version of the Apla network.
-- *APL* - name of the token used in the Apla blockchain network. APL is used to pay for the use of the network’s resources (fees).
-- *Fuel* - a conventional unit used in Apla to calculate the fee for execution of certain operations on the network; Fuel to APL exchange rate is decided on by the voting of validating nodes.
-- *virtual account* - a storage record for tokens, which can be accessed with a pair of keys – a private and a public one. 
-- *address* - a character-coded identifier of a user on the Apla network, regarded as the name of this user's virtual account.
+- *testnet* - a version of the network that is used for testing software.
+- *mainnet* - main version of the network.
+- *fuel* - a conventional unit used to calculate the fee for execution of certain operations on the network; fuel to exchange rate is decided on by the voting of validating nodes.
+- *account* - a storage record for tokens, which can be accessed with a pair of keys – a private and a public one. 
+- *address* - a character-coded identifier of a user on the network, regarded as the name of this user's virtual account.
 - *associated virtual account* - a virtual account from which the payment for execution of a contract is debited; an association of a contract with a virtual account is established upon contract creation and can be changed at any time; by default (before an association is established) payment is debited from the virtual account of the user who executed the contract.
-- *Molis* - a software client used to connect to the Apla network; Molis enables users to work with their virtual accounts, build ecosystems, and create applications in an integrated development environment (creating and editing tables, interface pages, and contracts).
+- *Molis* - a software client used to connect to the network; Molis enables users to work with their virtual accounts, build ecosystems, and create applications in an integrated development environment (creating and editing tables, interface pages, and contracts).
 - *web-Molis* - a fully-functional software client that works as a web-application; 
-- *Apla ecosystem* - a relatively closed programming environment, which includes large numbers of applications and users who create and/or use these applications; ecosystem members can initiate the emission of the ecosystem's own token, use a system of smart contracts to establish the rules of interaction between its members, and set members' permissions to access the ecosystem's elements.
+- *platform ecosystem* - a relatively closed programming environment, which includes large numbers of applications and users who create and/or use these applications; ecosystem members can initiate the emission of the ecosystem's own token, use a system of smart contracts to establish the rules of interaction between its members, and set members' permissions to access the ecosystem's elements.
 - *ecosystem parameters* - a set of configurable ecosystem attributes (name, description, logo, name of the ecosystem’s token and its emission parameters, etc.); these attributes are stored and can be edited in a dedicated configuration table. 
 - *ecosystem members* - users who have access to functions and applications of a particular ecosystem. 
-- *dedicated ecosystem* - an ecosystem that has all the functions of a standard ecosystem, but works outside the blockchain (no data is saved in the Apla blockchain); in dedicated ecosystems contracts are able to access any web resources over HTTP/HTTPS protocols, and rights to read data can be configured.
-- *Delegated Proof of Value of Ecosystem (DPoV(E))* - Apla's consensus algorithm, where validating nodes are assigned by the voting of ecosystems whose significance to the platform is confirmed (Valued Ecosystems), since it is in their best interest to maintain the smooth operation of the network; the approval of ecosystems that satisfy a number of formal indicators (number of transactions, number of members) to become Valued Ecosystems is implemented by the voting of token owners (in order to avoid fake ecosystems with bot-generated activities from taking part in the approval of Validating Nodes). 
+- *dedicated ecosystem* - an ecosystem that has all the functions of a standard ecosystem, but works outside the blockchain (no data is saved in the  blockchain); in dedicated ecosystems contracts are able to access any web resources over HTTP/HTTPS protocols, and rights to read data can be configured.
+- *delegated Proof of Value of Ecosystem (DPoV(E))* - consensus algorithm, where validating nodes are assigned by the voting of ecosystems whose significance to the platform is confirmed (Valued Ecosystems), since it is in their best interest to maintain the smooth operation of the network; the approval of ecosystems that satisfy a number of formal indicators (number of transactions, number of members) to become Valued Ecosystems is implemented by the voting of token owners (in order to avoid fake ecosystems with bot-generated activities from taking part in the approval of Validating Nodes). 
 - *Simvolio* - a script language for building contracts; Simvolio contains functions for processing data received from interface pages, and for performing operations with values in database tables; contracts can be created and edited in the editor of the Molis software client.
 - *Protypo* - a template language that includes functions required for obtaining values from database tables, and conditional statements/operators for building interface pages and forwarding user input data to contracts. 
-- *Apla integrated development environment* - a set of software tools used for creating applications; the Molis software client's integrated development environment includes a contract editor, pages editor, tools for work with database tables, language resource editor, and application export and import functions; the integrated development environment will soon be complemented with visual editors based on semantic tools.
+- *integrated development environment* - a set of software tools used for creating applications; the Molis software client's integrated development environment includes a contract editor, pages editor, tools for work with database tables, language resource editor, and application export and import functions; the integrated development environment will soon be complemented with visual editors based on semantic tools.
 - *interface designer* - a tool in the Molis software client used for creating interfaces of application pages by arranging basic application elements (HTML containers, form fields, buttons, etc.) directly on the screen.
 - *visual interface editor * - a tool in the Molis software client used for creating interfaces of application pages, which includes an interface designer and a generator of page code in Protypo language.
 - *visual contract editor* - a tool in the Molis software client used for creating contracts using a visual interface.
@@ -56,14 +55,11 @@ Terms Specific to the Apla Blockchain Platform
 - *import of applications* - uploading an application (all tables, pages, and contracts included in an exported file) into an ecosystem.
 - *smart law* - a record in the blockchain that contains regulatory information, which is used for controlling the operation of contracts and management of access rights to registers; smart laws are specialized smart contracts.
 - *legal system* - a set of regulations established in smart laws; a legal system regulates the relations between the platform users, defines procedures for changing protocol parameters and includes mechanisms that provide solutions to various challenges.
-- *Apla application* - a functionally complete software product created in the Molis software client's integrated development environment; an application consists of database tables, contracts, and interface pages. 
+- *application* - a functionally complete software product created in the Molis software client's integrated development environment; an application consists of database tables, contracts, and interface pages. 
 - *application interface page* - a program code, written using the Protypo template language, that forms an interface on the screen.
 - *interface block* - a program code, written using the Protypo template language, that can be included in application interface pages.
 - *contract association* - linking a contract with a Virtual Account, from which the fee for  performing contract operations will be debited. 
 - *access rights* - conditions for obtaining access to creating and editing tables, contracts and interface pages; access rights to tables can be specifically set for adding rows and columns, and for editing values in columns; 
-- *full node* - a node on the Apla network that stores the full up-to-date version of the blockchain.
-- *partial node* - a node on the Apla network that stores only the blocks with data related to one ecosystem.  
-- *ecosystem hosting* - a service that supports the operation of applications and dedicated ecosystems; this service is provided by full nodes on the Apla network to ecosystems that do not have their own nodes.
+- *full node* - a node on the network that stores the full up-to-date version of the blockchain.
+- *partial node* - a node on the network that stores only the blocks with data related to one ecosystem.  
 - *concurrent transactions processing* - a method for increasing the processing speed of transactions by simultaneously processing data from different ecosystems.
-
-
