@@ -104,12 +104,12 @@ Integrated Development Environment
 ==========================
 The Molis software client includes a full-scale integrated development environment (IDE) for creation of blockchain applications. Working with this IDE does not require the software developers to have profound knowledge of blockchain technology. The IDE is comprised of:
 
--	Ecosystem parameters table
--	Contracts editor 
--	Database tables administration tools
--	Interface editor and a visual interface designer
--	Language resource editor
--	Application import / export service
+-	Ecosystem parameters table,
+-	Contracts editor, 
+-	Database tables administration tools,
+-	Interface editor and a visual interface designer,
+-	Language resource editor,
+-	Application import / export service.
 
 Applications on Apla 
 ==========================
@@ -142,10 +142,10 @@ Ecosystem Parameters
 ==========================
 The ecosystem parameters are available for viewing and editing from the Ecosystem parameters section in the administrative tools of the Molis software client. Ecosystem parameters can be divided into the following groups:
 
-•	General parameters: name of the ecosystem (ecosystem_name), its description (ecosystem_description), account of its founder (founder_account), and other information
+•	General parameters: name of the ecosystem (ecosystem_name), its description (ecosystem_description), account of its founder (founder_account), and other information,
 •	Access parameters, which define exclusive rights to access application elements (changing_tables, changing_contracts, changing_page, changing_menu, changing_signature, changing_language)
-•	Technical parameters: for example, user stylesheets (stylesheet)
-•	User parameters of the ecosystem, where constants or lists (separated by commas), required for the work of applications are stored
+•	Technical parameters: for example, user stylesheets (stylesheet),
+•	User parameters of the ecosystem, where constants or lists (separated by commas), required for the work of applications are stored.
 
 Rights to edit can be specified for every ecosystem's parameter.
 
