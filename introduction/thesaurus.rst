@@ -60,6 +60,6 @@ Terms of the platform
 - *interface block* - a program code, written using the Protypo template language, that can be included in application interface pages.
 - *contract association* - linking a contract with a Virtual Account, from which the fee for  performing contract operations will be debited. 
 - *access rights* - conditions for obtaining access to creating and editing tables, contracts and interface pages; access rights to tables can be specifically set for adding rows and columns, and for editing values in columns; 
-- *full node* - a node on the network that stores the full up-to-date version of the blockchain.
-- *partial node* - a node on the network that stores only the blocks with data related to one ecosystem.  
+- *full node* - a node on the platform network that stores the full up-to-date version of the blockchain.
+- *partial node* - a node on the platform network that stores only the blocks with data related to one ecosystem.  
 - *concurrent transactions processing* - a method for increasing the processing speed of transactions by simultaneously processing data from different ecosystems.
