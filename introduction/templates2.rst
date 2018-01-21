@@ -9,14 +9,22 @@ User Interfaces
 ********************************************************************************
 Interfaces building
 ********************************************************************************
-Integrated Development Environment of the Molis software client includes an interface editor and a virtual interface designer. Interface pages are the essential part of applications that provides for retrieval and display of data from database tables, creation of forms for receipt of user input data, passing data to a contract, and navigation between application pages. Interface pages, just as contracts, are stored in the blockchain, which ensures their protection from falsification when loading them in the software client.  
+Integrated Development Environment of the Molis software client, which is created using the *JavaScript React library*, includes an interface editor and a virtual interface designer. Interface pages are the essential part of applications that provides for retrieval and display of data from database tables, creation of forms for receipt of user input data, passing data to contracts, and navigation between application pages. Interface pages, just as contracts, are stored in the blockchain, which ensures their protection from falsification when loading them in the software client.  
 
-********************************************************************************
-Interface Template
-********************************************************************************
+Interface Template Engine
+==============================
+Interface elements (pages and menus) are formed on Validating Nodes in a so-called *template engine* from templates created by programmers in the interface editor of the Molis software client. All interface pages are built using the Protypo functional language developed by Apla. Interfaces are requested from nodes on the network using the *content* API command. What the template engine sends as a reply to such request is not an HTML page, but a JSON code comprised of HTML tags that form a tree in accordance with the template structure. For testing purposes, a POST request can be sent to ``api/v2/content`` with the *template* parameter containing the name of a template to process.
 
 Creating Interface Templates
 ==============================
+Interfaces can be created and edited using a specialized editor, available in the **Interface** section of administrative tools in Molis. The editor provides for:
+
+- Writing codes of interface pages with highlighting of keywords of the Protypo template language,
+- Selecting a menu, which will be displayed on the page,
+- Editing the page menu,
+- Configuring permission to edit the page (typically, by way of specifying the name of the contract with permissions in the *ContractConditions* function, or by direct indication of access rights in the *Change conditions* field),
+- Launching a visual interface designer,
+- Page preview.
 
 Visual Interface Designer
 -----------------------------
@@ -57,7 +65,6 @@ Protypo functions provide for implementation of the following operations:
 - conditional display of page layout fragments: ``If, ElseIf, Else``,
 - creation of multi-level menus,
 - interface localization.
-
 
 Overview of the Template Language Protypo
 ==============================
@@ -141,9 +148,21 @@ The following variables are predefined
 * ``#key_id#`` - current user account identifier,
 * ``#ecosystem_id#`` - current ecosystem identifier.
 
+Passing parameters to a page using PageParams
+-----------------------------
+There is a number of functions that support the **PageParams** parameter, which serves for passing parameters when redirecting to a new page. For example, ``PageParams: "param1=value1,param2=value2"``. Parameter values can be both simple strings or rows with value substitution. When parameters are passed to a page, variables with parameter names are created; for example, ``#param1#`` and ``#param2#``.  
+
+* ``PageParams: "hello=world"`` - the page will receive the hello parameter with world as value,
+* ``PageParams: "hello=#world#"`` - the page will receive the hello parameter with the value of the world variable.
+
+Additionally, the **Val** function allows for obtaining data from forms, which were specified in redirect. In this case,
+
+* ``PageParams: "hello=Val(world)"`` - the page will receive the hello parameter with the value of the world form element.
+
+
 Calling Contracts
 -----------------------------
-Protypo implements contract calling by clicking on a button in a form (Button function). Once  this event is initiated, the data entered by the user in the fields of the interface forms is passed to the contract (if the names of form fields correspond to the names of variables in the data section of the called contract, data is transferred automatically). The Button function allows for opening a modal window for user verification of the contract execution (Alert), and initiation of redirect to a specified page after the successful execution of the contract, and passing certain parameters to this page.    
+Protypo implements contract calling by clicking on a button in a form (*Button* function). Once  this event is initiated, the data entered by the user in the fields of the interface forms is passed to the contract (if the names of form fields correspond to the names of variables in the data section of the called contract, data is transferred automatically). The Button function allows for opening a modal window for user verification of the contract execution (Alert), and initiation of redirect to a specified page after the successful execution of the contract, and passing certain parameters to this page.    
 
 ********************************************************************************
 Functions of Protypo
@@ -165,7 +184,7 @@ SetVar(Name, Value)
 ------------------------------
 Assigns a *Value* to a *Name* variable. 
 
-* *Name* - name of the variable.
+* *Name* - name of the variable,
 * *Value* - value of the variable, which can contain a reference to another variable.
 
 .. code:: js
@@ -196,8 +215,7 @@ Creates a **button** HTML element. This element creates a button, which sends a 
 * *Page* - name of the page to redirect to,
 * *Class* - classes for the button,
 * *Contract* - name of the contract to execute,
-* *Params* - list of values to pass to the contract. By default, values of contract parameters (data section) are obtained from HTML elements (for example, input fields) with similarly-named identifiers (id). If the element identifiers differ from the names of contract parameters, then the assignment in the *contractField1=idname1, contractField2=idname2* format should be used. This parameter is returned to *attr* as an object *{field1: idname1, field2: idname2}*,
-**NOTE** In cases where Inputs are not specified, the implementation on the front end can take call controls from the form where the button is located, or independently request a list of parameters from API and take *input* values with same identifiers,
+* *Params* - list of values to pass to the contract. By default, values of contract parameters (data ``section``) are obtained from HTML elements (for example, input fields) with similarly-named identifiers (``id``). If the element identifiers differ from the names of contract parameters, then the assignment in the ``contractField1=idname1, contractField2=idname2`` format should be used. This parameter is returned to *attr* as an object ``{field1: idname1, field2: idname2}``,
 * *PageParams* - parameters for redirection to the page.
 
 **Alert** - displays a message.
@@ -372,7 +390,6 @@ Table(Source, Columns) [.Style(Style)]
       
 Receiving data
 ==============================
-
 Address (account)
 ------------------------------
 This function returns the account address in the ``1234-5678-...-7990`` format given the numerical value of the address; if the address is not specified, the address of the current user will be taken as the argument. 
@@ -388,8 +405,7 @@ Creates element **data** and fills it with specified data and put into the *Sour
 * *Source* - data source name. You can specify any name, which will have to be included in other commands later on (ex. *Table*) as a data source,
 * *Columns* - list of columns,
 * *Data* - one data entry per line, divided into columns by commas. Data should be in the same order as set in *Columns*, Entry values can be embraced in double quotes. If you need to use quote marks in the text, use double quotes.
- 
-* **Custom** - allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. Several calculated columns can be assigned. As a rule, these fields are assigned for output to *Table* and other commands that use received data.
+* **Custom** - allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. Several calculated columns can be assigned. As a rule, these fields are assigned for output to *Table* and other commands that use received data,
  
   * *Column* - column name. A unique name should be assigned,
   * *Body* - a code fragment. You can obtain values from other columns in this entry using ``#columnname#`` and use them in this code fragment.
@@ -405,7 +421,7 @@ Creates element **data** and fills it with specified data and put into the *Sour
 
 DBFind(table, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.Order(name)] [.Limit(limit)] [.Offset(offset)] [.Ecosystem(id)] [.Custom(Column,Body)][.Vars(Prefix)]
 ------------------------------
-Creates **dbfind** element and returns data from the database table. Three arrays will be returned in *attr* – *columns* with column names, *types*, where for standard columns the type is *text* and for custom columns the type is *tags*, and the *data* array with entries. The sequence of column names corresponds to that of *data* entry values.
+Creates the **dbfind** element, fills it with data from the *table* table, and puts it to the *Source* structure. The *Source* structure can be then used in *Table* and other commands that receive *Source* as input data. The sequence of records in *data* should correspond to the sequence of column names.
 
 * *Name* - table name,
 * *Source* - arbitrary data source name,
@@ -568,7 +584,6 @@ Creates a **strong** HTML element.
 
       This is Strong(the first item, myclass1).
       
-
 Elements of forms
 ==============================      
 Form(Class, Body) [.Style(Style)]
@@ -603,10 +618,10 @@ Input(Name,Class,Placeholder,Type,Value) [.Validate(validation parameters)] [.St
 ------------------------------
 Creates an **input** HTML element.
 
-* *Name* - element name.
-* *Class* - classes for the *input*.
-* *Placeholder* - *placeholder* for the *input*.
-* *Type* - *input* type.
+* *Name* - element name,
+* *Class* - classes for the *input*,
+* *Placeholder* - *placeholder* for the *input*,
+* *Type* - *input* type,
 * *Value* - element value.
 
 **Validate** - validation parameters.
