@@ -19,7 +19,7 @@ FAQ
 6.	Which network nodes are eligible to become validating nodes?
  -	No, there can be only fixed number of validating nodes in the network.
 7.	Who can maintain a validating node?
- -	Any network node with sufficient processing power and fail tolerance can become a validating one. A node can become a validating node based on voting of ecosystems, but only ecosystems that are proved by investors as genuinely functioning (by APL tokens owners) can participate in such voting. Therefore, platform network implements a new consensus algorithm – Delegated Proof of Value of Ecosystems (DPoVE). With this algorithm it is most likely that the validating nodes will be run by major ecosystems, since it is in their best interest to maintain the network operation.
+ -	Any network node with sufficient processing power and fail tolerance can become a validating one. A node can become a validating node based on voting of ecosystems, but only ecosystems that are proved by investors as genuinely functioning (by platform tokens owners) can participate in such voting. Therefore, platform network implements a new consensus algorithm – Delegated Proof of Value of Ecosystems (DPoVE). With this algorithm it is most likely that the validating nodes will be run by major ecosystems, since it is in their best interest to maintain the network operation.
 8.	What are platform ecosystems?
  -	Ecosystems are virtually autonomous software environments for creation of blockchain applications and user operations with them. 
 9.	Who can create an ecosystem?
@@ -61,9 +61,9 @@ o	Yes, contracts are editable. Rights to edit contracts are established by their
 26. Should all applications in a new ecosystem be written from scratch?
  - No, each new ecosystem as a number of applications available out-of-the-box: a mechanism for management of members and roles in an ecosystem, an application for configuration and emission of tokens, a voting system, a social news system with incentives for activity, and a messenger for ecosystem members. These applications can be edited and configured to meet the specific requirements of any ecosystem.
 27. Is there any payment for operation of applications?
- - 	Yes, the use of resources of validating nodes should be paid in APL tokens.
+ - 	Yes, the use of resources of validating nodes should be paid in platform tokens.
 28. Who pays for operation of applications?
- - 	An APL wallet, which the tokens for payment for resources are debited from, is set by the contract creator on its activation; there is an algorithm to change the wallet. It can be defined using ecosystem's smart laws whether or not the ecosystem members will pay for work with the application, and if yes, than what way of payment it will be (contributions or otherwise). 
+ - 	An account (binding account), which the tokens for payment for resources are debited from, is set by the contract creator on its activation; there is an algorithm to change the wallet. It can be defined using ecosystem's smart laws whether or not the ecosystem members will pay for work with the application, and if yes, than what way of payment it will be (contributions or otherwise). 
 29.  How are applications within ecosystems protected from exploit of their vulnerabilities?
  -	  The platform team understands that there is no way to completely avoid mistakes in the program code of applications, especially given that applications can be written by any user. That's why we decided to create a mechanism that eliminates the consequences of exploit of vulnerabilities. The platform has a legal system (a set of smart laws), that allow for stopping the operation of an attacking application and make a number of transactions restoring the status quo. The rights to execute such contracts and voting procedures to grant these rights are defined in the smart laws of the platform's legal system.   
 30.  Which new functions are planned to be implemented in platform in the future?
