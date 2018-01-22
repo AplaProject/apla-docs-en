@@ -7,7 +7,7 @@ Smart-contracts
 
 A smart contract (hereinafter, "contract") is a basic element of applications, which performs a single action (typically, makes a record in a database table), initiated from the user interface by a user or by another contract. All operations with data in applications are formed as a system of contracts, interacting with each other through database tables or by call functions in a contract body.
 
-Contracts in Apla are written using an original (developed by the Apla team) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. 
+Contracts are written using an original (developed by the team of platform developers) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. 
 
 Contracts can be edited, but only if editing was not forbidden by way of putting false in the contract editing rights. Operations with data in the blockchain are performed by the most up-to-date (current) version of the contract. The complete history of changes made to contracts is stored in the blockchain and available from the software client.
 
@@ -168,7 +168,7 @@ If in a contract launched by the user the string ``TokenTransfer("Recipient,Amou
         ...
     }
 
-2. Adding in the *Signatures* table (on the page *Signatures* of Apla client) the entry containing:
+2. Adding in the *Signatures* table (on the page *Signatures* of platform client) the entry containing:
 
 •	*TokenTransfer* contract name,
 •	field names whose values will be displayed to the user, and their text description,
@@ -213,7 +213,7 @@ Contracts can be created and edited in a special editor which is a part of the M
 ********************************************************************************
 Simvolio Contracts Language
 ********************************************************************************
-Contracts in Apla are written using an original (developed by the Apla team) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. The Simvolio language provides for:
+Contracts in the platform are written using an original (developed by the platform team) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. The Simvolio language provides for:
 
 - Declaration of variables with different data types, as well as simple and associative arrays: var, array, map,
 - Use of the ``if`` conditional statement and the ``while`` loop structure,
