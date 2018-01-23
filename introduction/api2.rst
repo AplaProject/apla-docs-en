@@ -9,7 +9,6 @@ Command calls are performed by addressing ``/api/v2/command/[param]``, where **c
 ********************************************************************************
 Error Handling
 ********************************************************************************
-
 In case of successful query execution, returned is status 200. In case of an error, apart from an error status, returned is a JSON object with the following fields:
 
 * **error** - error identifier,
@@ -690,9 +689,9 @@ Response
   * *id* - entry ID,
   * *name* - contract name,
   * *value* - initial text of the contract,
-  * *active* - equals "1" if the contract is tied to the account or "0" otherwise,
-  * *key_id* - account tied to the contract, 
-  * *address* - address of the account tied to the contract in the ``XXXX-...-XXXX`` format, 
+  * *active* - equals "1" if the contract is bound to the account or "0" otherwise,
+  * *key_id* - account bound to the contract, 
+  * *address* - address of the account bound to the contract in the ``XXXX-...-XXXX`` format, 
   * *conditions* - conditions for change.
   * *token_id* - identifier of the ecosystem, which currency will be used to pay for the contract.
 
@@ -743,9 +742,9 @@ Response
 Response
 
 * *name* - name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``,
-* *active* - true if the contract is tied to the account and false otherwise,
+* *active* - true if the contract is bound to the account and false otherwise,
 * *key_id* - contract owner's ID,
-* *address* - address of the account tied to the contract in the ``XXXX-...-XXXX`` format.
+* *address* - address of the account bound to the contract in the ``XXXX-...-XXXX`` format.
 * *tableid* - entry ID in the contracts table, where the source code of the contract is stored.
 * *fields* -  an array that contains information about every parameter in the **data** section of the contract and contains the following fields:
 
@@ -777,9 +776,9 @@ contract/{name}
 Query
 
 * *name* - name of the contract to call, if the contract is called from another ecosystem, then the full name with ecosystem ID should be specified (*@1MainContract*),
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for not tied contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same,
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling contracts not tied to the account,
-* *[payover]* - for contracts not tied to the account, an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
+* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for not bound contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same,
+* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling contracts not bound to the account,
+* *[payover]* - for contracts not bound to the account, an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
 * parameters, required for this contract,
 * *signature* - hex signature of the *forsign* value, which was obtained from prepare,
 * *time* - time, returned by prepare,
@@ -815,9 +814,9 @@ prepare/{name}
 Query
 
 * *name* - contract name, if the contract is called from another ecosystem, then the full name should be specified (``@1MainContract``),
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for the contracts not tied to the account. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling not tied contracts,
-* *[payover]* - for not tied contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
+* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for the contracts not bound to the account. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
+* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling not bound contracts,
+* *[payover]* - for not bound contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
 * *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter,
 * parameters transferred to the contract.
 
