@@ -13,7 +13,7 @@ Integrated Development Environment of the Molis software client, which is create
 
 Interface Template Engine
 ==============================
-Interface elements (pages and menus) are formed on Validating Nodes in a so-called *template engine* from templates created by programmers in the interface editor of the Molis software client. All interface pages are built using the Protypo functional language developed by Apla. Interfaces are requested from nodes on the network using the *content* API command. What the template engine sends as a reply to such request is not an HTML page, but a JSON code comprised of HTML tags that form a tree in accordance with the template structure. For testing purposes, a POST request can be sent to ``api/v2/content`` with the *template* parameter containing the name of a template to process.
+Interface elements (pages and menus) are formed on Validating Nodes in a so-called *template engine* from templates created by programmers in the interface editor of the Molis software client. All interface pages are built using the Protypo functional language developed by platform developers. Interfaces are requested from nodes on the network using the *content* API command. What the template engine sends as a reply to such request is not an HTML page, but a JSON code comprised of HTML tags that form a tree in accordance with the template structure. For testing purposes, a POST request can be sent to ``api/v2/content`` with the *template* parameter containing the name of a template to process.
 
 Creating Interface Templates
 ==============================
