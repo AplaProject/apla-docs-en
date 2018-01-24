@@ -2,7 +2,7 @@
 REST API v2
 ################################################################################
 
-All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the Apla platform. Thus, by using REST API developers can access any function of the platform without using the Molis software client.
+All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the platform. Thus, by using REST API developers can access any function of the platform without using the Molis software client.
 
 Command calls are performed by addressing ``/api/v2/command/[param]``, where **command** is a command name, and **param** is an additional parameter (for example, the name of the resource to change or receive). Request parameters should be sent with ``Content-Type: x-www-form-urlencoded``. The server response will be sent in JSON format.
 
@@ -36,10 +36,10 @@ Error List
 * **E_EMPTYSIGN** - Signature is undefined,
 * **E_HASHWRONG** - Hash is incorrect,
 * **E_HASHNOTFOUND** - Hash has not been found,
-* **E_INSTALLED** - Apla is already installed,
+* **E_INSTALLED** - Platform is already installed,
 * **E_INVALIDWALLET** - Wallet %s is not valid,
 * **E_NOTFOUND** - Content page or menu has not been found,
-* **E_NOTINSTALLED** - Apla is not installed. In this case, you need to run the *install* by the command,
+* **E_NOTINSTALLED** -  Platform is not installed. In this case, you need to run the *install* by the command,
 * **E_QUERY** - DB query is wrong,
 * **E_RECOVERED** - API recovered returtns if there is panic error,
 * **E_REFRESHTOKEN** - Refresh token is not valid,
