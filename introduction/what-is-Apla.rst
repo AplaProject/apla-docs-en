@@ -7,10 +7,10 @@ General information
   :depth: 3
   
 ********************************************************************************
-What is Apla?
+Distinctive features
 ********************************************************************************
 
-Apla is a blockchain platform for building digital ecosystems. The platform includes an integrated application development environment with a multi-level system of access rights to data, interfaces and smart contracts. The Apla platform is built based on software developed by EGAAS Corporation (EGAAS S.A.).
+The blockchain platform is developed for building digital ecosystems. The platform includes an integrated application development environment with a multi-level system of access rights to data, interfaces and smart contracts. The platform is built based on software developed by EGAAS Corporation (EGAAS S.A.).
 
 In terms of its structure and functioning, Apla is fundamentally different from most of the existing blockchain platforms: 
 
