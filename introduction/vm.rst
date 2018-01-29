@@ -37,7 +37,7 @@ A virtual machine is a tree of **Block** type objects. In fact, a block is an in
          }
     } 
     
-    creates the block with a function in which there is a block with if having, in turn, a block with while.
+Сreates a block with a function that includes a block with *if* statement, which, in turn, has a block with *while* statement in it.
     
     .. code:: 
 
