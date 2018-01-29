@@ -1,264 +1,195 @@
 ################################################################################
-Apps
+Applications on Apla
 ################################################################################
-The app for the eGaaS platform is a standalone software solution that performs a specific action or a set of actions within a certain activity. The app consists of
 
-* Contracts that implement its functionality,
-*	Database tables
-* Page and menu for data input and display
+. contents::
+  :local:
+  :depth: 3
+  
+An application on Apla is a system of contracts, tables and interfaces that performs a certain function or provides a dedicated service. An application is not a autonomous program module - the only thing that unites the application elements is the performance of certain functions and exchange data. The boundaries of an application are not always strictly defined, since its elements can be simultaneously used in multiple applications.  
 
-The applications have an open structure; therefore they can be expanded by adding new contracts, pages and tables.
+The following is a typical functional fragment of an application:
 
-Applications are developed in the eGaaS software client, which ensures:
+1. Redirect to a page that displays: 
 
-*	Opening of new tables and adding of the required number of columns (menu item Tables) to them. When creating table columns in the applications, the following formats are supported:
+* information, received from database tables (*DBFind* function), 
+* form fields for user input of new data, 
+* button (*Button* function), which calls a contract.
 
-      * Text – text (without index support);
-      * Numbers – integer values bigint (8 bytes);
-      *	Date/Time – date and time in YYYY-MM-DD HH:MM:SS format;
-      * Varchar(32) – a string of no more than 32 characters;
-      *	Money – integer (numeric);
-      *	Double – a double-precision floating-point number.
-*	Creating new contracts (menu item Smart contracts);
-*	Creating new page and menu templates (menu item Interface);
-*	Adding and editing parameters of the configuration table (link State parameters on the Tables page);
-*	Adding and editing edit permissions for tables, table columns, contracts, pages and menu, parameters of the setup table.
+2. On the contract call:
 
-Special languages of the eGaaS platform are used for writing contracts and pages of templates.
+* data from form fields is passed to the ``data`` section of the contract, 
+* the ``conditions`` section checks user rights to launch this contract and the validity of data received from the page; if for some reason the contract cannot be executed, a message is displayed on the screen (``error``, ``warning`` or ``info``), leaving the user on the same interface page, 
+* the ``action`` section receives additional data from tables (DBFind function) and records data into the database (using *DBUpdate* and *DBInsert* functions).
 
-********************************************************************************
-Example of an application
-********************************************************************************
-We will consider an example, where a simple test application is created and which facilitates the following action:
+3. After the contract has been successfully executed, the user is redirected to the page, which name was specified in the *Page* parameter of the *Button* function that launched the contract, and the parameters listed in the *PageParams* are passed to the new page.
 
-*	Opening of personal accounts by the Central Bank;
-*	Depositing of money in an account by the Central Bank;
-*	Transfer of money between accounts.
+A page can have more than one button to call various contracts. Buttons that call contracts and redirect to pages can be built in rows of tables that display data about objects in the user interface. In this case, object identifiers are used in button parameters, which can be used to redirect to object-related pages (for example, object editing).
+  
+=========================
+Tables and Data Storage
+=========================
 
-First of all, we create a table called accounts with the following columns:
+Applications use database tables that can be conditionally divided into two types: 
 
-*	**id** – account number *Numbers + Index*;
-*	**amount** – amount of money in the account, *Money + Index*;
-*	**citizen_id** – the identification number of the citizen *Numbers + Index*.
+1. Registers that store big arrays of structured data about objects (persons, organizations, property, etc.), 
+2. Document tables that store the current state of the processes implemented by a particular application (process type, stage, signatures, etc.) or data about its current operations (notifications,  messages, records about voting and transactions). 
 
-Next, we create contracts needed to implement each of the actions.
+Typically, register tables contain the most up-to-date information, which means that information about objects in the registers is updated as soon as a new piece of data is received. The work with documents is based on a completely different principle. Due to the fact that the *DBFind* functions  of the Simvolio and Protypo languages can request information only from a single table (which means that they don't support *JOIN*), it is necessary to record exhaustive information (IDs, names, pictures) in the tables that store documents. For example, when requesting information from a table that stores messages, we need to receive not just the ``id`` of the sender, but all information required to display the message on an interface page, including the user name and avatar (userpic). After having being saved, the data in the document tables should not be modified. It should be noted that non-normalization of data in tables is not related only to the technical limitations of *JOIN* use, but is prescribed by the very ideology of the blockchain as a temporal database that is designed to store the complete history of events. This means that a document (for example, a message), which was signed and saved in a table, should not under any circumstances be modified in the future, even, for example, in case its author changes their name in the register of users (whereas such modification is inevitable under the relational data scheme). 
 
-**Opening a new account**
+=========================
+Navigation
+=========================
+Users can switch between applications using sections, displayed in the software client as tabs, or using cascading menus inside these sections. After clicking on a section tab, users are redirected to the section's main page, which can be defined from the administrative tools. 
+ 
+Navigation within an application is carried out for the most part using the menus (each page has one menu liked to it). Transition between pages can be implemented using links (*LinkPage*) or button clicks (*Button*). In both cases parameters *PageParams* can be passed to the *Page* target page. Calling a new page is also possible after successful execution of a contract. In this case, the parameters of the *Button* function, which calls the contract, should include the name of the page to redirect to (*Page*) and the passed parameters *PageParams*.
+
+Navigation in multi-user applications can be organized using ready-to-use *Notification* and *Roles* applications, which are installed by default in every ecosystem. The *Notification* application allows for display of messages to specific users or user roles in the Molis software client. A notification message consists of a header and a link to a page. Additionally, parameters can be passed using *PageParams* to the target page in the format, supported by the *LinkPage* and *Button* functions. Sometimes, a target page where, for example, a user needs to make some decision, can be accessed only from a notification, because there are no links from menus or other pages to this target page. Notifications are formed with contracts *Notifications_Single_Send* or *Notifications_Roles_Send*, which should be called from a contract that ends some functional stage of an application. After the user receives a notification, opens the target page and performs the required action (thus, executing a contract), the notification should be deactivated by calling the *Notifications_Single_Close* or *Notifications_Roles_Finishing* contract. The list of notifications and their statuses is available in the *Notification* application.
+
+=========================
+Interface Pages
+=========================
+Page structure is formed using the ``If(Condition){Body } .ElseIf(Condition){Body} .Else{Body}`` conditional statement, which can use the PageParam parameters sent to the page when it was called by the LinkPage or Button functions. If some code fragments need to be used in many pages, they should be recorded into page blocks. Such blocks can be included in a page using the *Include* function.
+
+=========================
+Variables, Column Names and Language Resources
+=========================
+The unification of names of variables (on pages and in contracts), identifiers of interface page form fields, table column names and language resource labels can help significantly speed up the development of applications and make the program code easier to read. Let's suppose we want to pass parameters from an interface page to a contract. In this case, if a the name of the username variable in the data section of the contract corresponds to the name of the username field of an interface page, which was passed to this contract, then you don't need to specify this ``username=username`` pair in the *Params* parameters of the *Button* function. Using the same names for variables and column names makes it easier to use the DBInsert and DBUpdate functions; for example, ``DBUpdate("member", $id, "username",$username)``. Using the same names for variables and language resource labels makes it easier to display the columns names of interface tables ``Table(mysrc,"ID=id,$username$=username")``.
+
+=========================
+Access Rights
+=========================
+The most important element of an application is the system for management of access rights to its resources. These access rights can be established on a number of levels:
+
+1. Permission to call a specific contract by the current user. This permission can be configured in the ``conditions`` section of the contract by using a logical expression in the ``If`` statement, or with nested contracts; for example, *MainConditions* or *RoleConditions*, where typical rights or user role rights are defined.
+2. Current user's permission to change (using the contracts) values in table columns or to add rows to tables. Permissions can be set using the *ContractConditions* function in *Permissions* fields of table columns and in the *Permissions / Insert* field on the table editing page.
+3. Permission only for specific contracts to change values in table columns or to add rows to tables. Contract names should be specified in the parameters of the *ContractAccess* function, which should be written in *Permissions* fields of table columns, and in the *Permissions / Insert* field on the table editing page.
+4. Permission to edit application elements (contracts, pages, menu, and page blocks). Permissions can be set in the *Change conditions* fields in element editors. This is done using the *ContractConditions* function, to which the name of the contract that checks the permissions of the current user should be passed as a parameter.
+
+=========================
+Application Example:  SendTokens
+=========================
+The application sends tokens from one user account to another. Information about the amounts of tokens on accounts is stored in the *keys* tables (*amount* column), which are installed in ecosystems by default. This example implies that the tokens have already been distributed to user accounts. 
+
+System Contract
+-----------------
+The main contract for this application is the *TokenTransfer* contract, which has the exclusive permission to change values in the *amount* column of the *keys* table. In order to activate this permission, we should write the ``ContractAccess("TokenTransfer")`` function in the *Permissions* field of the *amount* column. From this moment, any operations with tokens can only be carried out by calling the TokenTransfer contract.
+
+In order to prevent the execution of the TokenTransfer contract from within another contract without the knowledge of the account holder, TokenTransfer should be a contract with confirmation. This means that its ``data`` section should contain the ``Signature string "optional hidden"`` string, and the confirmation parameters should be set on the *Contracts with Confirmation* page in the Molis administrative tools, which includes: text and parameters that should be displayed to the user in a pop-up information window (for details, see the *Contracts with Confirmation* section).
 
 .. code:: js
 
-	contract AddCitizenAccount {
-	data {
-		CitizenId string
-	}
-	func conditions {
-	    
-	    	$citizen_id = AddressToId($CitizenId)
-		if $citizen_id == 0 {
-			warning "not valid citizen id"
-		}
-		
-		CentralBankConditions()
-	
-	}
-	func action {
-		
-		DBInsert("accounts", "citizen_id", $citizen_id)
-		}
-	} 
-  
-  
-In the conditions section, the citizen's id is verified and the user calling this contract is checked to see whether he/she has permission to open an account. To this end, a special contract CentralBankConditions is created.
-
-**Authorization to sign contracts on behalf of the Central Bank**
-
-.. code:: js
-
-	contract CentralBankConditions {
-	data {	}
-	func conditions	{
-	   if StateValue("gov_account") != $citizen
-	   {
-	       	warning "You have no right to this action"
-	   }
-	}
-	func action {	}
-	}
-  
-Now, in this contract, the “creator of the state” – a user with the id specified in the *gov_account* row of configuration table **State parameters** – is authorized to perform actions on behalf of the Central Bank. From henceforth, by changing this contract, signature rights can be transferred to a citizen holding the relevant position in the bank. This contract in the app plays the role of a smart law, which can be amended by a representative body.
-
-**Depositing money in an account**
-
-.. code:: js
-
-	contract RechargeAccount {
-	data {
-		AccountId int
-		Amount money
-		}
-	
-	func conditions	{
-		CentralBankConditions()
-		}
-
-	func action {
-		var recipient_amount money
-            	recipient_amount = DBAmount("accounts", "id", $AccountId)
-            	recipient_amount = recipient_amount + $Amount
-            	DBUpdate("accounts", $AccountId, "amount", recipient_amount)
-		}
-	}
-  
-The citizen's account number and the amount of money being deposited are indicated in the contract as input data. In the *conditions* section, the user calling this contract is checked whether  he/she is authorized to act on behalf of the Central Bank. In the *action* section, the procedure for depositing money in the account is implemented.
-
-**System contract for money transfer from account to account**
-
-A separate system contract for money transfer is necessary first of all to prevent unauthorized access to accounts. It is this system contract that is indicated in the list of contracts authorized to edit the value of the *amount* column in the **accounts** table. To do this, when editing a table, the function *ContractAccess(“MoneyTransfer”,”RechargeAccount”)* should be entered in the *Permissions* field in the *amount* parameter. After that, only these two contracts will be able to change accounts, and transactions between accounts in all applications will have to be implemented only by calling the **MoneyTransfer contract**.
-
-A system contract is also required in order to prevent unauthorized debiting of money from a user's account via hidden nested contracts. To this end, the money transfer system contract uses a signature verification mechanism described in the Contracts with signature section :ref:`id8`
-
-.. code:: js
-
-	contract MoneyTransfer {
-	data {
-		Amount money
-		SenderAccountId int
-		RecipientAccountId int
-		Signature string "optional hidden"
-		}
-	func conditions {
+    contract TokenTransfer {
+    data {
+        Amount money
+        Sender_AccountId int
+        Recipient_AccountId int
+        Signature string "optional hidden"
+    }
+    conditions {
+        //check the sender
+        $sender = DBFind("keys").Where("id=$", $Sender_AccountId)
+        if(Len($sender) == 0){
+            error Sprintf("Sender %s is invalid", $Sender_AccountId)
+        }
+        $vals_sender = $sender[0]
     
-	    	 if DBAmount("accounts", "id", $SenderAccountId) < $Amount {
-			warning "Not enough money"
-	    	 }
-		}
-	func action {
+        //check the recipient
+        $recipient = DBFind("keys").Where("id=$", $Recipient_AccountId)
+        if(Len($recipient) == 0){
+            error Sprintf("Recipient %s is invalid", $Recipient_AccountId)
+        }
+        $vals_recipient = $recipient[0]
+    
+        //check amount
+        if $Amount == 0 {
+            error "Amount is zero"
+        }
+    
+        //check balance
+        var sender_balance money
+        sender_balance = Money($vals_sender["amount"])
+        if $Amount > sender_balance {
+            error Sprintf("Money is not enough %v < %v", sender_balance, $Amount)
+        }
+    }
+    action {
+        DBUpdate("keys", $Sender_AccountId, "-amount", $Amount)
+        DBUpdate("keys", $Recipient_AccountId, "+amount", $Amount)
+    }
+    }
+    
+The following checks are carried out in the conditions section of the TokenTransfer contract: the accounts involved in the transaction should exist, the amount of tokens to be transferred should be non-zero, the amount of transaction should be smaller or equal to the balance of the sender's account. The action section carries out the modification of values in the amount column of the sender's and receiver's accounts.
 
-		    var sender_amount money
-		    sender_amount = DBAmount("accounts", "id", $SenderAccountId)
-		    sender_amount = sender_amount - $Amount
-		    DBUpdate("accounts", $SenderAccountId, "amount",  sender_amount)
-
-		    var recipient_amount money
-		    recipient_amount = DBAmount("accounts", "id", $RecipientAccountId)
-		    recipient_amount = recipient_amount + $Amount
-		    DBUpdate("accounts", $RecipientAccountId, "amount", recipient_amount)
-
-		}
-	}
-  
-Inserted in the contract is the line *Signature string “optional hidden”*, which calls the transaction confirmation window (for more details, see “Contracts with signature”). In the *conditions* section, the account is checked to see whether there is enough money in it.
-
-**User contract for money transfer from account to account**
-
-This is the main contract of the app, which implements money transfer, calling system contract **MoneyTransfer**.
-
-.. code:: js
-
-	contract SendMoney {
-	data {
-		RecipientAccountId int 
-		Amount money
-		Signature string "signature:MoneyTransfer"
-		}
-	func conditions {
-	 	$sender_id = DBIntExt("accounts", "id", $citizen, "citizen_id")
-	    	if $sender_id==$RecipientAccountId
-	    	{
-	        	warning("You can not send money to your own account")
-	    	}    
-		}
-	func action {
-		MoneyTransfer("SenderAccountId,RecipientAccountId,Amount,Signature",$sender_id,$RecipientAccountId,$Amount,$Signature)
-		}
-	}
-
-For the contracts described (except **MoneyTransfer** and **CentralBankConditions**, which are used as nested ones), interface forms will have to be created for data input and contract call.
-
-First of all, we create a new Central Bank page: go to *Interface* in the menu option of program agent eGaaS, then click the *addPage* button. In the appropriate fields, enter the name of the **CentralBank page**, the necessary navigation elements and two panels to be used to call a contract:
+Token Sending Form
+-----------------
+The token sending form contains fields to input the transaction amount and the recipient address.  
 
 .. code:: js
 
-	Title : Central bank
-	Navigation( LiTemplate(government, Government),Central bank)
-	MarkDown: ## Accounts 
+    Div(Class: panel panel-default){
+      Form(){ 
+        Div(Class: list-group-item text-center){
+          Span(Class: h3, Body: LangRes(SendTokens))  
+        }
+        Div(Class: list-group-item){
+          Div(Class: row df f-valign){
+            Div(Class: col-md-3 mt-sm text-right){
+              Label(For: Recipient_Account){
+                Span(Body: LangRes(Recipient_Account))
+              }
+            }
+            Div(Class: col-md-9 mb-sm text-left){
+              Input(Name: Recipient_Account, Type: text, Placeholder: "xxxx-xxxx-xxxx-xxxx") 
+            } 
+          }
+          Div(Class: row df f-valign){
+            Div(Class: col-md-3 mt-sm text-right){
+              Label(For: Amount){
+                Span(Body: LangRes(Amount))
+              }
+            }
+            Div(Class: col-md-9 mc-sm text-left){
+              Input(Name: Amount, Type: text, Placeholder: "0", Value: "5000000")
+            } 
+          }
+        }
+        Div(Class: panel-footer clearfix){
+          Div(Class: pull-right){
+            Button(Body: LangRes(send), Contract: SendTokens, Class: btn btn-default)
+          }
+        }
+      }
+    }      
+    
+We could use the Button function to directly call the TokenTransfer transfer contract and pass the current user's (sender) account address to it, but for the purpose of demonstration of the work of contracts with confirmation we'll create an intermediary user contract SendTokens. It is important to note, that since the names of data in the data section of the contract and the names of interface form fields are the same, we don't need to specify the Params parameters in the Button function.
 
-	Divs(md-4, panel panel-default panel-body data-sweet-alert)
-	    Form()
-		Legend(" ", "Add citizen account")
+The form can be placed on any page in the software client. After the contract execution has ended, the user will stay on the current page (because we didn't specify a target page Page in the Button function).
 
-		Divs(form-group)
-		    Label("Citizen ID")
-		    InputAddress(CitizenId, "form-control input-lg m-b")
-		DivsEnd:
-
-		TxButton{ Contract: AddCitizenAccount, Name: Add, OnSuccess: "template, CentralBank" }
-	    FormEnd:
-	DivsEnd:
-
-	Divs(md-4, panel panel-default panel-body data-sweet-alert)
-	    Form()
-		Legend(" ", "Recharge Account")
-
-		Divs(form-group)
-		    Label("Account ID")
-		    Select(AccountId, #state_id#_accounts.id, "form-control input-lg m-b")
-		DivsEnd:
-
-		Divs(form-group)
-		    Label("Amount")
-		    InputMoney(Amount, "form-control input-lg")
-		DivsEnd:
-
-		TxButton{ Contract: RechargeAccount, Name: Change, OnSuccess: "template,CentralBank" }
-	    FormEnd:
-	DivsEnd:
-
-	PageEnd:
-  
-  
-Here, it is necessary to note that when calling a contract, the **TxButton** function automatically passes the values of form fields to the contract if their identifiers coincide with the names of the input parameters of the contracts (*CitizenId* for the **AddCitizenAccount** contract, and *AccountId* and *Amount* for the **RechargeAccount contract**).
-
-To access the created **CentralBank page**, add an item to one of the existing menus, for example, *government*: go to menu editing (from the *Interface* page or from the **CentralBank** page editor) and add the following string:
-
-.. code:: js
-
-	MenuItem(CentralBank, load_template, CentralBank)
-
-Also, in the **CentralBank** page editor, specify the menu that will be displayed when you open the Central Bank page (drop-down list *Menu*) – in our example, it is the menu *government*.
-
-Now you only need to open the citizen’s page **dashboard_default** for editing. Add to it two panels for displaying the account number and balance and a panel for calling the money transfer contract:
+Custom Contracts
+-----------------
+The TokenTransfer contract is defined as a contract with confirmation, and that is why in order to call it from another contract we need to place the Signature string "signature:TokenTransfer" in the data section of our custom contract. 
+The conditions section of the SendTokens contract checks the availability of the account; the action section calls the TokenTransfer contract and passes parameters to it.
 
 .. code:: js
 
-	Divs(md-6)
-	     Divs()
-	     WiBalance(GetOne(amount, #state_id#_accounts, "citizen_id", #citizen#), StateValue(currency_name) )
-	     DivsEnd:
-	     Divs()
-	     WiAccount( GetOne(id, #state_id#_accounts, "citizen_id", #citizen#) )
-	     DivsEnd:
-	  DivsEnd:
+    contract SendTokens {
+        data {
+            Amount money
+            Recipient_Account string
+            Signature string "signature:TokenTransfer"
+        }
+    
+        conditions {
+            $recipient = AddressToId($Recipient_Account)
+            if $recipient == 0 {
+                error Sprintf("Recipient %s is invalid", $Recipient_Account)
+            }
+        }
+    
+        action {
+            TokenTransfer("Amount,Sender_AccountId,Recipient_AccountId,Signature", $Amount, $key_id, $recipient, $Signature)
+        }
+    }
 
 
-	 Divs(md-6, panel panel-default panel-body data-sweet-alert)
-	    Form()
-		Legend(" ", "Send Money")
-
-		Divs(form-group)
-		    Label("Account ID")
-		    Select(RecipientAccountId, #state_id#_accounts.id, "form-control  m-b")
-		DivsEnd:
-
-		Divs(form-group)
-		    Label("Amount")
-		    InputMoney(Amount, "form-control")
-		DivsEnd:
-
-		TxButton{ Contract: SendMoney, OnSuccess: "template,dashboard_default,global:0" }
-	    FormEnd:
-	DivsEnd:
-
-Now if you have the permissions prescribed in the **CentralBankConditions** smart law, you can open accounts for citizens in the **Centralbank** page and recharge the accounts with some amounts. After that, the citizens will be able to transfer money from an account to another account.
-
-As already noted in the description of applications, they are open standalone modules. If necessary, contracts and forms for opening corporate accounts and other forms of accounts can be added to the application.
