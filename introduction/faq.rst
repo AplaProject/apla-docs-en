@@ -1,7 +1,7 @@
 ################################################################################
 FAQ
 ################################################################################
-1.	What is Apla?
+1.	In a few words, how would you describe the platform?
  -	blockchain platform, designed to build digital ecosystems on the basis of an integrated application development environment with a multi-level system for management of access rights to data, interfaces and smart contracts.
 2.	Does platform work on the Bitcoin, Ethereum, or some other blockchain?
  -	platform is build on the basis of an original blockchain.
