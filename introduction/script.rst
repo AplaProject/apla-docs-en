@@ -311,6 +311,8 @@ Variables of **string** and **bytes** types can be used as a condition. In this 
 
 Functions
 ------------------------------
+Functions of the contracts language perform operations with data received in the data section of a contract: reading and writing database values, converting value types, and establishing connections between contracts.
+
 Functions are declared with the **func** keyword, followed by the function name and a list of parameters passed to it (with their types), all enclosed in curly brackets and separated by commas. After the closing curly bracket the data type of the value returned by the function should be stated. The function body should be enclosed in curly brackets. If a function does not have parameters, then the curly brackets are not necessary. To return a value from a function, the ``return`` keyword is used.
 
 .. code:: js
@@ -325,7 +327,7 @@ Functions are declared with the **func** keyword, followed by the function name 
       error "Ooops..."
   }
   
-Errors in execution of any function are handled automatically: the contract execution is stopped and a corresponding error message is displayed.
+Functions don't return errors, because all error checks are carried out automatically. When an error is generated in any function, the contract stops its operation and displays a window with the error description.
 
 An undefined number of parameters can be passed to a function. To do this, put **...** instead of the type of the last parameter. In this case, the data type of the last parameter will be *array*, and it will contain all, starting from this parameter, variables that were passed with the call. Variables of any type can be passed, but you should take care of possible conflicts related to data type mismatch.
 
