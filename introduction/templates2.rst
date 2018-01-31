@@ -331,7 +331,26 @@ Creates a **code** element for displaying the specified code.
       Code( P(This is the first line.
           Span(This is the second line.))
       )  
+      
+Chart(Type, Source, FieldLabel, FieldValue, Colors)
+------------------------------
+Creates an HTML diagram.
 
+* *Type* - diagram type,
+* *Source* - name of the data source, for example, from the *DBFind* command,
+* *FieldLabel* - name of the field used for headers,
+* *FieldValue* - name of the field used for values,
+* *Colors* - list of used colors.
+
+.. code:: js
+
+      Data(mysrc,"name,count"){
+          John Silver,10
+          "Mark, Smith",20
+          "Unknown ""Person""",30
+      }
+      Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Colors: "red, green")
+	  
 ForList(Source, Body)
 ------------------------------
 Displays a list of elements from the *Source* data source in the template format set out in *Body*, and creates the **forlist** element.
