@@ -26,19 +26,19 @@ General Blockchain Technology Terms
 - *public blockchain* - a blockchain network which is not controlled by any organization, all decisions are made by reaching a consensus among the network's participants, and data is available to everyone for read access. 
 - *delegated proof of stake (DPoS)* - a blockchain network consensus algorithm, where validating nodes are assigned by delegates (usually, token owners), who vote using their shares of rights.
 
-
-
 ********************************************************************************
 Terms of the platform
 ********************************************************************************
 - *testnet* - a version of the network that is used for testing software.
 - *mainnet* - main version of the network.
+- *Platform token* - tokens of the platform, which are used for payments for the use of network resources (fees).
+- *Platform transaction* - commands that call contracts and pass parameters to them; the result of execution of a transaction by a node is the update of the platform's database.
 - *fuel* - a conventional unit used to calculate the fee for execution of certain operations on the network; fuel to exchange rate is decided on by the voting of validating nodes.
 - *account* - a storage record for tokens, which can be accessed with a pair of keys – a private and a public one. 
 - *address* - a character-coded identifier of a user on the network, regarded as the name of this user's virtual account.
 - *associated virtual account* - a virtual account from which the payment for execution of a contract is debited; an association of a contract with a virtual account is established upon contract creation and can be changed at any time; by default (before an association is established) payment is debited from the virtual account of the user who executed the contract.
 - *Molis* - a software client used to connect to the network; Molis enables users to work with their virtual accounts, build ecosystems, and create applications in an integrated development environment (creating and editing tables, interface pages, and contracts).
-- *web-Molis* - a fully-functional software client that works as a web-application; 
+- *web-Molis* - a fully-functional software client that works as a web-application. 
 - *platform ecosystem* - a relatively closed programming environment, which includes large numbers of applications and users who create and/or use these applications; ecosystem members can initiate the emission of the ecosystem's own token, use a system of smart contracts to establish the rules of interaction between its members, and set members' permissions to access the ecosystem's elements.
 - *ecosystem parameters* - a set of configurable ecosystem attributes (name, description, logo, name of the ecosystem’s token and its emission parameters, etc.); these attributes are stored and can be edited in a dedicated configuration table. 
 - *ecosystem members* - users who have access to functions and applications of a particular ecosystem. 
