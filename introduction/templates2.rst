@@ -216,7 +216,7 @@ Creates a **button** HTML element. This element creates a button, which sends a 
 * *Class* - classes for the button,
 * *Contract* - name of the contract to execute,
 * *Params* - list of values to pass to the contract. By default, values of contract parameters (data ``section``) are obtained from HTML elements (for example, input fields) with similarly-named identifiers (``id``). If the element identifiers differ from the names of contract parameters, then the assignment in the ``contractField1=idname1, contractField2=idname2`` format should be used. This parameter is returned to *attr* as an object ``{field1: idname1, field2: idname2}``,
-* *PageParams* - parameters for redirection to the page.
+* *PageParams* - parameters for redirection to a page in the following format: ``contractField1=idname1, contractField2=idname2``. In this case, variables with parameter names ``#contractField1#`` and ``#contractField2`` are created on the target page, and are assigned the specified values (see the parameter passing specifications in the "*Passing Parameters to a Page Using PageParams*" section above).
 
 **Alert** - displays a message.
 
@@ -260,6 +260,18 @@ This function returns the result of execution of the **and** logical operation w
 .. code:: js
 
       If(And(#myval1#,#myval2#), Span(OK))
+      
+Calculate(Exp, Type, Prec)
+------------------------------
+This function returns the result of an arithmetic expression passed in the **Exp** parameter. The following operations can be used: +, -, *, /, and parenthesis (). 
+
+* **Exp** - arithmetic expression. Can contain numbers and *#name#* variables.
+* **Type** - result data type: **int, float, money**. If not specified, then the result type will be *float* in case there are numbers with a decimal point, or *int* in all other cases.
+* **Prec** - the number of significant digits after the point can be specified for *float* and *money* types.
+
+Calculate( Exp: (342278783438+5000)*(#val#-932780000), Type: money, Prec:18 )
+Calculate(10000-(34+5)*#val#)
+Calculate("((10+#val#-45)*3.0-10)/4.5 + #val#", Prec: 4)      
 
 CmpTime(Time1, Time2)
 ------------------------------
