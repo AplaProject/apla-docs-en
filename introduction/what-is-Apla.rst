@@ -12,18 +12,18 @@ Distinctive features
 
 The blockchain platform is developed for building digital ecosystems. The platform includes an integrated application development environment with a multi-level system of access rights to data, interfaces and smart contracts. The platform is built based on software developed by EGAAS Corporation (EGAAS S.A.).
 
-In terms of its structure and functioning, Apla is fundamentally different from most of the existing blockchain platforms: 
+In terms of its structure and functioning, Genesis is fundamentally different from most of the existing blockchain platforms: 
 
 * The development and use of blockchain applications is carried out in autonomous software environments , called *ecosystems*. Every ecosystem has its own membership rules, initially established by the ecosystem founder. 
 * Activities in ecosystems are based on creating *registers* and recording/modifying the data involved using *smart contracts*, whereas in most other blockchain platforms activities are based on exchanging transactions or messages between accounts. 
 * Management of access permissions to registers, and relation management between ecosystem members are regulated by a set of rules called *smart laws*.
 
 ********************************************************************************
-Apla Blockchain Platform
+Genesis Blockchain Platform
 ********************************************************************************
 Network
 ==========================
-The Apla blockchain platform is built based on a peer-to-peer network. Full nodes of the network store the up-to-date version of the blockchain and the database, in which the current state of the platform is recorded. The network users receive data by requesting it from databases of full nodes using the software client (or REST AP commands). New data is sent to the network in the form of transactions signed by users. Such transactions are in essence commands for modification of information in the database. Transactions are aggregated in blocks, which are then added to the blockchain on the network nodes. After a new block is added to the blockchain, each full node processes the transactions in this block, thus making changes to data in its database accordingly.
+The Genesis blockchain platform is built based on a peer-to-peer network. Full nodes of the network store the up-to-date version of the blockchain and the database, in which the current state of the platform is recorded. The network users receive data by requesting it from databases of full nodes using the software client (or REST AP commands). New data is sent to the network in the form of transactions signed by users. Such transactions are in essence commands for modification of information in the database. Transactions are aggregated in blocks, which are then added to the blockchain on the network nodes. After a new block is added to the blockchain, each full node processes the transactions in this block, thus making changes to data in its database accordingly.
 
 Validating Nodes
 ==========================
@@ -87,18 +87,18 @@ Platform's Database
 ==========================
 The platform's unified database, copies of which are stored and maintained up-to-date on every full node of the network, is used for storing large volumes of data (registers) and quick retrieval of data by contracts and interfaces. In the formation of a new block and its addition to the blockchain, all full nodes of the platform carry out a simultaneous update of database tables. Thus, the database stores the current (up-to-date) state of the blockchain, which ensures the equivalence of data on all full nodes and unambiguousness of contract execution on any Validating Node. When a new full node is added to the network, the up-to-date status of its database is reached by way of subsequent execution of all transactions recorded in the blocks of the blockchain. 
 
-Currently, the Apla platform uses PostgreSQL as its database management system. 
+Currently, the Genesis platform uses PostgreSQL as its database management system. 
 
 ********************************************************************************
 Platform's Ecosystems
 ********************************************************************************
-The data space of the Apla platform is divided into many relatively independent clusters – *ecosystems*, in which the activities of the network's users are implemented. An Apla ecosystem is an autonomous software environment that consists of a certain number of applications and users, who create these applications and work with them. Any holder of an Apla account can create a new ecosystem.
+The data space of the Genesis platform is divided into many relatively independent clusters – *ecosystems*, in which the activities of the network's users are implemented. An Genesis ecosystem is an autonomous software environment that consists of a certain number of applications and users, who create these applications and work with them. Any holder of an Genesis account can create a new ecosystem.
 
 The software basis of an ecosystem is a collection of applications, which are systems of interfaces, contracts, and database tables. The specific ecosystem to which application elements belong is indicated by prefixes in their name (for example, @1name), where the ecosystem's ID is indicated after the “@” sign. When addressing application elements within the current ecosystem, the prefix can be omitted. 
 
 The Molis software client provides access to database management tools, contracts editor, interface editor, and other functions required for the creation of applications in an ecosystem, without resorting to any additional software modules. 
 
-A person can become a user of the Apla platform only after receiving a private key for accessing one of the ecosystems (by default, ecosystem #1). A user can be a member of any number of ecosystems. Switching between ecosystems is carried out using a specialized menu of the software client.
+A person can become a user of the Genesis platform only after receiving a private key for accessing one of the ecosystems (by default, ecosystem #1). A user can be a member of any number of ecosystems. Switching between ecosystems is carried out using a specialized menu of the software client.
 
 Integrated Development Environment
 ==========================
@@ -111,13 +111,13 @@ The Molis software client includes a full-scale integrated development environme
 -	Language resource editor,
 -	Application import / export service.
 
-Applications on Apla 
+Applications on Genesis 
 ==========================
-An application on the Apla platform is a system of tables, contracts and interfaces with configured access rights. Such applications perform useful functions or implement various services. 
+An application on the Genesis platform is a system of tables, contracts and interfaces with configured access rights. Such applications perform useful functions or implement various services. 
 
 Each ecosystems creates its own set of tables for development of applications. This, however, does not exclude the possibility of accessing tables from other ecosystems by specifying those ecosystems' prefixes in table names. Tables are not in any way bound (nor belong) to specific contracts, and can be used by all applications. The permissions for entering data into tables are set by way of configuring the access rights. Specialized contracts – smart laws – can be used for rights management. 
 
-It should be noted, that the design and creation of applications on Apla does not require the software developers to know the structure of the network and its protocols, nor to understand the algorithm of blockchain formation and synchronization of databases on full nodes. Work in the Molis software client, including the creation of application elements, reading data from tables, execution of contracts and displaying results on the screen, looks and feels like operations with modules of a software environment on a local computer.
+It should be noted, that the design and creation of applications on Genesis does not require the software developers to know the structure of the network and its protocols, nor to understand the algorithm of blockchain formation and synchronization of databases on full nodes. Work in the Molis software client, including the creation of application elements, reading data from tables, execution of contracts and displaying results on the screen, looks and feels like operations with modules of a software environment on a local computer.
 
 Ecosystem's Tables
 ==========================
@@ -153,7 +153,7 @@ In order to retrieve values of certain ecosystem parameters, both the contracts 
 
 Parameters of the Platform Ecosystem
 --------------------------
-All parameters of the Apla blockchain platform are stored in the parameters table of the platform configuration ecosystem. These are the following parameters:
+All parameters of the Genesis blockchain platform are stored in the parameters table of the platform configuration ecosystem. These are the following parameters:
 
 -	Time period for creation of a block by a Validating Node,
 -	Source codes of pages, contracts, tables, and menus of new ecosystems,
@@ -168,9 +168,9 @@ Managing the parameters of the platform configuration ecosystem on the program l
 ********************************************************************************
 Access Rights Control Mechanism 
 ********************************************************************************
-Apla has a multi-level access rights management system. Access rights can be configured to create and change any element of an application: contracts, database tables, interface pages, and ecosystem parameters. Permissions to change access rights can be configured as well.
+Genesis has a multi-level access rights management system. Access rights can be configured to create and change any element of an application: contracts, database tables, interface pages, and ecosystem parameters. Permissions to change access rights can be configured as well.
 
-By default, all rights in an Apla ecosystem are managed by its founder (this is defined in the MainCondition contract, which every ecosystem has by default). However, after specialized smart laws are created, access rights control can be transferred to all ecosystem members or a group of such members.
+By default, all rights in an Genesis ecosystem are managed by its founder (this is defined in the MainCondition contract, which every ecosystem has by default). However, after specialized smart laws are created, access rights control can be transferred to all ecosystem members or a group of such members.
 
 Controlled Operations
 ==========================
@@ -203,7 +203,7 @@ To resolve conflict situations or those critical for the operation of an ecosyst
 Virtual Dedicated Ecosystems
 ********************************************************************************
 
-Apla allows for creation of Virtual Dedicated Ecosystems (VDE), which have the full set of functions of standard ecosystems, but work outside the blockchain. In VDE full-scale applications can be created using the contract and template languages, database tables and other software client functions. Contracts from blockchain ecosystems can be called using API.
+Genesis allows for creation of Virtual Dedicated Ecosystems (VDE), which have the full set of functions of standard ecosystems, but work outside the blockchain. In VDE full-scale applications can be created using the contract and template languages, database tables and other software client functions. Contracts from blockchain ecosystems can be called using API.
 
 Requests to Web-Resources
 ==========================
