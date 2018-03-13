@@ -107,6 +107,8 @@ A contract can access predefined variables that contain data about the transacti
 * ``$key_id`` – ID of the account that signed the transaction; the value will be zero for VDE contracts,
 * ``$wallet_block`` – address of the node that formed the block, in which this transaction is included,
 * ``$block_time`` – time, when the block with the transaction containing the current contract was formed.
+* ``$original_contract`` - name of the contract, which was initially called for transaction processing. If this variable is an empty string, it means that the contract was called in the process of verification of a condition. To check whether this contract was called by another contract or directly from a transaction, the values of **$original_contract** and **$this_contract**. If they are equal, it means that the contract was called from the transaction.
+* ``$this_contract`` - name of the currently executed contract.  
 
 Predefined variables are accessible not only in contracts, but also in Permissions fields, (where conditions for access to application elements are defined), where they are used in construction of logical expressions. When used in Permissions fields, variables related to block formation (``$time``, ``$block``, etc.) always equal zero.
 
@@ -473,8 +475,8 @@ The function adds a record to a specified *table* and returns the **id** of the 
 
 DBUpdate(tblname string, id int, params string, val...)
 ------------------------------
-The function changes the column values in the table in the record with a specified **id**.
-
+The function changes the column values in the table in the record with a specified **id**. If a record with this identifier does not exist, the operation will result with an error.
+  
 * *tblname*  – name of the table in the database,
 * *id* - identifier **id** of the changeable record,
 * *params* - list of comma-separated names of the columns to be changed,
@@ -612,6 +614,28 @@ Function takes from the *tablename* table the value of the *condfield* field fro
 .. code:: js
 
     EvalCondition(`menu`, $Name, `condition`)  
+    
+GetContractById(id int) string
+------------------------------
+The function returns the contract name by its identifier. If the contract can't be found, an empty string will be returned.
+
+ * *id* - a contract identifier in the *contracts* table.
+
+.. code:: js
+
+    var id int
+    id = GetContractById(`NewBlock`)  
+    
+GetContractByName(name string) int
+------------------------------ 
+The function returns a contract identifier in the *contracts* by its name. If the contract does not exist, a zero value will be returned.
+
+ * *name* - a contract identifier in the *contracts* table.
+
+.. code:: js
+
+    var name string
+    name = GetContractByName($IdContract) 
 
 ValidateCondition(condition string, state int) 
 ------------------------------
@@ -815,6 +839,7 @@ Function returns the substring from the specified string starting from the offse
 
 Operations with system parameters
 ==============================
+
 SysParamString(name string) string
 ------------------------------
 The function returns the value of the specified system parameter.
@@ -847,6 +872,22 @@ The function updates the value and the condition of the system parameter. If you
 
     DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
     
+Using JSON in PostgreSQL queries
+==============================
+
+**JSON** type can be specified as column type. In this case, use the following syntax: **columnname->fieldname** to address record fields. The obtained value will be recorded in the column with name **columnname.fieldname**. Syntax **columnname->fieldname** can be used in parameters *Columns,One,Where* when using **DBFind**.
+
+.. code:: js
+
+	var ret map
+	var val str
+	var list array
+	ret = DBFind("mytable").Columns("myname,doc,doc->ind").WhereId($Id).Row()
+	val = ret["doc.ind"]
+	val = DBFind("mytable").Columns("myname,doc->type").WhereId($Id).One("doc->type")
+	list = DBFind("mytable").Columns("myname,doc,doc->ind").Where("doc->ind = ?", "101")
+	val = DBFind("mytable").WhereId($Id).One("doc->check")
+	
 
 Date/time operations in PostgreSQL queries
 ==============================
@@ -937,7 +978,7 @@ NewContract
 ------------------------------
 This contract creates a new contract in the current ecosystem. Parameters:
 
-* *Value string* - text of the contract or contracts,
+* *Value string* - text of the contract,there should be only one contract on the upper level,
 * *Conditions string* - contract change conditions,
 * *Wallet string "optional"* - identifier of user's id where contract should be tied,
 * *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
