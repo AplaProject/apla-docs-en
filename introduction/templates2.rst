@@ -457,8 +457,8 @@ Creates the **dbfind** element, fills it with data from the *table* table, and p
 * *Name* - table name,
 * *Source* - arbitrary data source name,
  
-* **Columns** - list of columns to be returned. If not specified, all columns will be returned,
-* **Where** - search condition. For example, ``.Where(name = '#myval#')``,
+* **Columns** - list of columns to be returned. If not specified, all columns will be returned. If there are columns of JSON type, you can address the record fields using the following syntax: **columnname->fieldname**. In this case, the resulting column name will be **columnname.fieldname**.
+* **Where** - data search condition, for example, ``.Where(name = '#myval#')``. If there are columns of JSON type, you can address record fields using the following syntax: **columnname->fieldname**,
 * **WhereId** - search by ID. For example, ``.WhereId(1)``,
 * **Order** - sort by this field,
 * **Limit** - number of returned rows. Default value = 25, maximum value = 250,
@@ -471,7 +471,7 @@ Creates the **dbfind** element, fills it with data from the *table* table, and p
   
   * **Vars** - the function generates a set of variables with values from the database table, obtained from this query. When specifying this function, the *Limit* parameter automatically becomes equal to 1 and only one record is returned,
 
-* *Prefix* - * *Prefix* - prefix function is used to generate names for variables, to which the values of the resulting row are saved: variables are of format *#prefix_id#, #prefix_name#*, where the column name follows the underscore sign.
+* *Prefix* - prefix function is used to generate names for variables, to which the values of the resulting row are saved: variables are of format *#prefix_id#, #prefix_name#*, where the column name follows the underscore sign. If there are columns containing JSON fields, then the resulting variable will be of the following format **#prefix_columnname_field#**.
 
 .. code:: js
 
@@ -502,7 +502,7 @@ LangRes(Name, Lang)
 Returns a specified language resource. In case of request to a tree for editing it returns the ``$langres$`` element.
 
 * *Name* - name of language resource,
-* *Lang* - by default, returned is the language defined in request to *Accept-Language*. You can specify your own two-character language identifier.
+* *Lang* - two-character language identifier, by default, returned is the language defined in request to *Accept-Language*. You can specify your own two-character language identifier. lcid identifiers can be specified, for example, *en-US,en-GB*. In this case, if the requested values will not be found, for example, for *en-US*, then the language resource will be looked for in *en*.
 
 .. code:: js
 
