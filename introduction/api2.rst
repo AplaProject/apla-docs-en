@@ -1,7 +1,6 @@
 ################################################################################
 REST API v2
 ################################################################################
-
 All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the platform. Thus, by using REST API developers can access any function of the platform without using the Molis software client.
 
 Command calls are performed by addressing ``/api/v2/command/[param]``, where **command** is a command name, and **param** is an additional parameter (for example, the name of the resource to change or receive). Request parameters should be sent with ``Content-Type: x-www-form-urlencoded``. The server response will be sent in JSON format.
@@ -9,6 +8,7 @@ Command calls are performed by addressing ``/api/v2/command/[param]``, where **c
 ********************************************************************************
 Error Handling
 ********************************************************************************
+
 In case of successful query execution, returned is status 200. In case of an error, apart from an error status, returned is a JSON object with the following fields:
 
 * **error** - error identifier,
@@ -880,6 +880,7 @@ Request
 
 * *menu|page* - *page* or *menu* to recieve the page or menu,
 * *name* - the name or menu of the page,
+*[lang]* - either lcid or a two-letter language code can be specified to address the corresponding language resources. For example, *en,ru,fr,en-US,en-GB*. If, for example, the *en-US* resource will not be found, the *en* resources will be used instead of the missing *en-US* ones,
 * *[vde]* - specify *true*, if you recieve data from the page or menu in VDE. Otherwise, you do not need to specify this parameter.
 
 .. code:: 
