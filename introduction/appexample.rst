@@ -22,7 +22,7 @@ The following is a typical functional fragment of an application:
 * the ``conditions`` section checks user rights to launch this contract and the validity of data received from the page; if for some reason the contract cannot be executed, a message is displayed on the screen (``error``, ``warning`` or ``info``), leaving the user on the same interface page, 
 * the ``action`` section receives additional data from tables (DBFind function) and records data into the database (using *DBUpdate* and *DBInsert* functions).
 
-3. After the contract has been successfully executed, the user is redirected to the page, which name was specified in the *Page* parameter of the *Button* function that launched the contract, and the parameters listed in the *PageParams* are passed to the new page.
+3. After the contract has been successfully executed, the user is redirected to the page, whose name was specified in the *Page* parameter of the *Button* function that launched the contract, and the parameters listed in the *PageParams* are passed to the new page.
 
 A page can have more than one button to call various contracts. Buttons that call contracts and redirect to pages can be built in rows of tables that display data about objects in the user interface. In this case, object identifiers are used in button parameters, which can be used to redirect to object-related pages (for example, object editing).
   
@@ -54,12 +54,12 @@ Page structure is formed using the ``If(Condition){Body } .ElseIf(Condition){Bod
 =========================
 Variables, Column Names and Language Resources
 =========================
-The unification of names of variables (on pages and in contracts), identifiers of interface page form fields, table column names and language resource labels can help significantly speed up the development of applications and make the program code easier to read. Let's suppose we want to pass parameters from an interface page to a contract. In this case, if a the name of the username variable in the data section of the contract corresponds to the name of the username field of an interface page, which was passed to this contract, then you don't need to specify this ``username=username`` pair in the *Params* parameters of the *Button* function. Using the same names for variables and column names makes it easier to use the DBInsert and DBUpdate functions; for example, ``DBUpdate("member", $id, "username",$username)``. Using the same names for variables and language resource labels makes it easier to display the columns names of interface tables ``Table(mysrc,"ID=id,$username$=username")``.
+The unification of names of variables (on pages and in contracts), identifiers of interface page form fields, table column names and language resource labels can help significantly speed up the development of applications and make the program code easier to read. Let's suppose we want to pass parameters from an interface page to a contract. In this case, if the name of the username variable in the data section of the contract corresponds to the name of the username field of an interface page, which was passed to this contract, then you don't need to specify this ``username=username`` pair in the *Params* parameters of the *Button* function. Using the same names for variables and column names makes it easier to use the DBInsert and DBUpdate functions; for example, ``DBUpdate("member", $id, "username",$username)``. Using the same names for variables and language resource labels makes it easier to display the columns names of interface tables ``Table(mysrc,"ID=id,$username$=username")``.
 
 =========================
 Access Rights
 =========================
-The most important element of an application is the system for management of access rights to its resources. These access rights can be established on a number of levels:
+The most important element of an application is the system for the management of access rights to its resources. These access rights can be established on a number of levels:
 
 1. Permission to call a specific contract by the current user. This permission can be configured in the ``conditions`` section of the contract by using a logical expression in the ``If`` statement, or with nested contracts; for example, *MainConditions* or *RoleConditions*, where typical rights or user role rights are defined.
 2. Current user's permission to change (using the contracts) values in table columns or to add rows to tables. Permissions can be set using the *ContractConditions* function in *Permissions* fields of table columns and in the *Permissions / Insert* field on the table editing page.
@@ -119,7 +119,7 @@ In order to prevent the execution of the TokenTransfer contract from within anot
     }
     }
     
-The following checks are carried out in the conditions section of the TokenTransfer contract: the accounts involved in the transaction should exist, the amount of tokens to be transferred should be non-zero, the amount of transaction should be smaller or equal to the balance of the sender's account. The action section carries out the modification of values in the amount column of the sender's and receiver's accounts.
+The following checks are carried out in the conditions section of the TokenTransfer contract: the accounts involved in the transaction should exist, the amount of tokens to be transferred should be non-zero, the amount of the transaction should be smaller or equal to the balance of the sender's account. The action section carries out the modification of values in the amount column of the sender's and receiver's accounts.
 
 Token Sending Form
 -----------------
@@ -162,7 +162,7 @@ The token sending form contains fields to input the transaction amount and the r
       }
     }      
     
-We could use the Button function to directly call the TokenTransfer transfer contract and pass the current user's (sender) account address to it, but for the purpose of demonstration of the work of contracts with confirmation we'll create an intermediary user contract SendTokens. It is important to note, that since the names of data in the data section of the contract and the names of interface form fields are the same, we don't need to specify the Params parameters in the Button function.
+We could use the Button function to directly call the TokenTransfer transfer contract and pass the current user's (sender) account address to it, but for the purpose of demonstration of the work of contracts with confirmation we'll create an intermediary user contract SendTokens. It is important to note, that since the names of data in the data section of the contract and the names of the interface form fields are the same, we don't need to specify the Params parameters in the Button function.
 
 The form can be placed on any page in the software client. After the contract execution has ended, the user will stay on the current page (because we didn't specify a target page Page in the Button function).
 
