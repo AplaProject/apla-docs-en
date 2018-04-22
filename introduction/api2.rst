@@ -1,7 +1,7 @@
 ################################################################################
 REST API v2
 ################################################################################
-All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the platform. Thus, by using REST API developers can access any function of the platform without using the Molis software client.
+All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the platform. Thus, by using REST API, developers can access any function of the platform without using the Molis software client.
 
 Command calls are performed by addressing ``/api/v2/command/[param]``, where **command** is a command name, and **param** is an additional parameter (for example, the name of the resource to change or receive). Request parameters should be sent with ``Content-Type: x-www-form-urlencoded``. The server response will be sent in JSON format.
 
