@@ -266,8 +266,8 @@ Query
     
 Response
 
-* *amount* - account balance in minimum units (for example, qAPLA),
-* *money* - account balance in units (for example, APLA).
+* *amount* - account balance in minimum units,
+* *money* - account balance in units.
     
 Response Example
 
@@ -279,6 +279,8 @@ Response Example
         "amount": "123450000000000000000",
         "money": "123.45"
     }      
+    
+Errors: E_SERVER, E_INVALIDWALLET
     
 ********************************************************************************
 Work with Ecosystems
@@ -457,7 +459,7 @@ Response Example
     
     Ошибки: *E_VDE* 
     
-    table/{name}
+table/{name}
 ==============================
 **GET**/ Returns information about the requested table in the current ecosystem.
 
@@ -769,7 +771,7 @@ Response Example
         "active": true
     }      
     
-contract/{name}
+prepare/name
 ==============================
 **POST**/ Calls a smart contract with the specified name **{name}**. Prior to that you should call the ``prepare/{name}`` command (POST) and sign the returned *forsign* field. In case of successful execution, a transaction hash is returned, which can be used to obtain a block number in case of success or an error text otherwise.
 
@@ -942,3 +944,60 @@ Reply example
     {
         "hash" : "67afbc435634.....",
     }
+
+maxblockid
+==============================
+**GET**/ Returns the highest block ID on the current node. 
+
+Request
+
+.. code:: 
+ 
+    GET
+    /api/v2/maxblockid
+
+Reply
+
+* *max_block_id* - highest block id on the current node.
+
+Reply Example
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "max_block_id" : 341,
+    }
+
+Error message: *E_NOTFOUND*
+
+block/{id}
+==============================
+**GET**/ Returns information on the block with the specified ID.
+
+Request
+
+* *id* - id of the requested block.
+
+.. code:: 
+    
+    POST
+    /api/v2/block/32
+
+Reply
+
+* *hash* - hash of the block.
+* *ecosystem_id* - ecosystem id.
+* *key_id* - key which signed the block.
+* *time* - block generation timestamp.
+* *tx_count* - number of transactions in the block.
+* *rollbacks_hash* - hash of rollbacks, created by transactions in the block.
+
+Reply Example
+
+Error messages: *E_NOTFOUND*
+
+ 
+
+
