@@ -873,7 +873,6 @@ Response Example
         "result": ""
     }      
 
-
 content/{menu|page}/{name}
 ==============================
 **POST**/ Returns a JSON representation of the code of the specified page or menu named **{name}**, which is the result of processing by the template engine. The query can have additional parameters, which can be used in the template engine. If the page or menu can't be found, the 404 error is returned.
@@ -883,6 +882,7 @@ Request
 * *menu|page* - *page* or *menu* to recieve the page or menu,
 * *name* - the name or menu of the page,
 *[lang]* - either lcid or a two-letter language code can be specified to address the corresponding language resources. For example, *en,ru,fr,en-US,en-GB*. If, for example, the *en-US* resource will not be found, the *en* resources will be used instead of the missing *en-US* ones,
+* *[app_id]* - application ID. Passed together with lang, because the functions that work with the language in the template engine don’t automatically recognize the AppID. Should be passed as a number,
 * *[vde]* - specify *true*, if you recieve data from the page or menu in VDE. Otherwise, you do not need to specify this parameter.
 
 .. code:: 
@@ -913,6 +913,79 @@ Response example
     }      
 
 Errors: *E_NOTFOUND*
+
+content/source/{name}
+==============================
+**POST**/ Returns a JSON-representation of the **{name}** page code without executing any functions or receiving any data. The returned tree corresponds to the page template and can be used in the visual designer. If the page or the menu are not found, a 404 error is returned.
+ 
+Request
+ 
+* *name* – name of the requested page,
+* *[vde]* - *true* should be set to true, if the page or menu is requested from VDE; otherwise, this parameter should not be specified.
+
+Response
+
+.. code:: 
+    
+    POST
+    /api/v2/content/source/default
+
+Response
+
+* *tree* - JSON object tree.
+ 
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "tree": {"type":"......", 
+              "children": [
+                   {...},
+                   {...}
+              ]
+        },
+    }      
+ 
+Errors: E_NOTFOUND, E_SERVER
+
+
+content
+==============================
+**POST**/ Returns a JSON-representation of the page source code from the **template** parameter. If the additional parameter **source** is specified as true or 1, the JSON-representation will be returned without execution of functions and without receiving data. The returned tree corresponds to the sent template and can be used in the visual designer.
+ 
+Request
+ 
+* *template* –page template source code to be processed,
+* *[source]* – if set to true or 1, the tree will be returned without execution of functions and without receiving  data.
+ 
+.. code:: 
+    
+    POST
+    /api/v2/content
+
+Response
+ 
+* *tree* – JSON object tree.
+
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "tree": {"type":"......", 
+              "children": [
+                   {...},
+                   {...}
+              ]
+        },
+    }      
+
+ERRORS: *E_NOTFOUND, E_SERVER*
 
 node/{name}
 ==============================
