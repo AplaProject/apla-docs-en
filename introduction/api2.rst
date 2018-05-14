@@ -726,15 +726,14 @@ Response Example
       ]
     }   
 
-
 contract/{name}
 ==============================
-**GET**/ Provides information about smart contract **{name}**. By default, the smart contract is searched for in the current ecosystem.
+**GET**/ Returns information about the {name} smart contract. By default, the smart contract will be searched for in the current ecosystem.
 
 Response
 
-* *name* - smart contract name,
-* *[vde]* - specify *true*, if you need to recieve the information about the contract from VDE, in the other case you don't need to specify this parameter.
+* *name* – contract name,
+* *[vde]* – set this parameter to true in case you request information about a contract from VDE, otherwise don't specify this parameter
 
 .. code:: 
     
@@ -771,34 +770,34 @@ Response Example
         "active": true
     }      
     
-prepare/name
+contract/{request_id}
 ==============================
-**POST**/ Calls a smart contract with the specified name **{name}**. Prior to that you should call the ``prepare/{name}`` command (POST) and sign the returned *forsign* field. In case of successful execution, a transaction hash is returned, which can be used to obtain a block number in case of success or an error text otherwise.
-
-Query
-
-* *name* - name of the contract to call, if the contract is called from another ecosystem, then the full name with ecosystem ID should be specified (*@1MainContract*),
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for not bound contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same,
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling contracts not bound to the account,
-* *[payover]* - for contracts not bound to the account, an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
-* parameters, required for this contract,
-* *signature* - hex signature of the *forsign* value, which was obtained from prepare,
+**POST**/ Returns a smart contract based on the request identifier **{request_id}**. Before doing this, you should use the ``prepare/{name}`` (POST) command and sign the returned field *forsign*. The request with the **{request_id}** identifier is stored on server for 1 minute. If the contract is not executed within this minute, the request will be removed. In case of successful execution, the transaction hash is returned, which can be then used to receive the block number. Otherwise, an error message is returned.
+ 
+Request
+ 
+* *request_id* – identifier of the request that was received from prepare,
+* *[token_ecosystem]* – for contracts that are not bound to a wallet, you can specify which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same,
+* *[max_sum]* – when calling contracts that are not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract,
+* *[payover]* – for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment,
+* *[data]* – parameters sent to the contract,
+* *signature* - hex signature of the forsign value, received from prepare,
 * *time* - time, returned by prepare,
-* *pubkey* - hex public key of the contract signer, note, that if the public key is already stored in the keys table of the current ecosystem, it is not necessary to pass it,
-* *[vde]* - specify *true*, if you call smart-contract from VDE params, in the other case you don't need to specify this parameter.
-
+* *pubkey* - hex of the contract signer's public key; it should be noted, that if the public key is already stored in the keys table of the current ecosystem, you don't need to send it,
+* *[vde]* – should be set to true, if the smart contract is requested from VDE; otherwise, you don't need to specify this parameter.
+ 
 .. code:: 
  
     POST
-    /api/v2/contract/mycontract
-    signature - hex signature
-    time – time, returned by prepare
+    /api/v2/contract/5c273816-134e-4a50-89b2-8d2b3d5ba562
+    signature - hex подпись
+    time - время, возвращенное prepare
 
 Response
 
-* *hash* - hex hash of the sent transaction.
+* *hash* - hex хэш отправленной транзакции.
 
-Response Example
+Response example
 
 .. code:: 
 
@@ -807,28 +806,31 @@ Response Example
     {
         "hash" : "67afbc435634.....",
     }
+
+ERRORS: *E_CONTRACT, E_EMPTYPUBLIC, E_EMPTYSIGN, E_NOTFOUNDREQUEST*
+
     
-    
-prepare/{name}
+prepare/name
 ==============================
-**POST**/ Sends a request to get a string to sign the specified contract. Here, **{name}** is the name of the transaction for which the string for signing should be returned. This string will be returned in the forsign parameter. Also, returned is the time parameter, which needs to be passed together with the signature. 
+**POST**/ Sends a request to receive a string to sign the specified contract. The **{name}** should state the name of transaction for which the string for signature should be returned. The forsign parameter returns a string, which should be signed. Also, returned are the request_id and time parameters, which should be transferred along with the signature.
+ 
+Request
+ 
+* *name* – contract name; if another ecosystem's contract is executed, its full name should be specified (@1MainContract).
+* *[token_ecosystem]* – for contracts that are not bound to a wallet, you can specify the which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same,
+* *[max_sum]* - when calling a contract that is not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract,
+* *[payover]* - for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment,
+* *[vde]* - should be set to true, if the smart contract is requested from a VDE; otherwise, you don't need to specify this parameter.
+* *[data]* – parameters sent to the contract,
 
-Query
-
-* *name* - contract name, if the contract is called from another ecosystem, then the full name should be specified (``@1MainContract``),
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for the contracts not bound to the account. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling not bound contracts,
-* *[payover]* - for not bound contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
-* *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter,
-* parameters transferred to the contract.
-
-.. code:: 
+.. code::
     
     POST
     /api/v2/prepare/mycontract
 
 Response
 
+* *request_id* - the identifier of the request to be transmitted,
 * *forsign* - string to be signed,
 * *time* - time information, which needs to be sent together with the contract.
 
@@ -839,9 +841,12 @@ Response Example
     200 (OK)
     Content-Type: application/json
     {
+        "request_id": "5c273816-134e-4a50-89b2-8d2b3d5ba562",
         "time": 423523768,
         "forsign": "......", 
-    }     
+    }
+
+Errors: *E_CONTRACT*    
     
 txstatus/{hash}
 ==============================
