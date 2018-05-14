@@ -202,6 +202,36 @@ In order for the user to see the money transfer confirmation upon the *TokenTran
 When sending a *MyTest* contract, the additional confirmation of the money transfer to the indicated account will be requested from user. If other values, such as ``TokenTransfer(“Recipient,Amount,Signature”,$Recipient, $Amount+10, $Signature)``, are listed in the enclosed contract, the invalid signature error will occur.
 
 ********************************************************************************
+File Upload
+********************************************************************************
+To upload files from ``multipart/form-data`` forms, the contract fields with type ``bytes`` and tag ``file`` should be used. Example:
+
+.. code:: js
+
+    contract Upload {
+        data {
+            File bytes "file"
+        }
+        ...
+    }
+ 
+For work with mime-type files, an additional parameter ``{Field}MimeType`` will be passed to the contract . Example:
+ 
+.. code:: js
+
+    contract Upload {
+        data {
+            File bytes "file"
+        }
+        action {
+            Println($FileMimeType)
+        }
+    }
+
+The `UploadBinary` system contract is intended to upload and store files.
+To request a download link for a file from the template designer, there is a special template designer function – `Binary`.
+
+********************************************************************************
 Contract Editor
 ********************************************************************************
 Contracts can be created and edited in a special editor which is a part of the Molis software client. Each new contract has a typical structure created in it by default with three sections: ``data, conditions, action``. The contracts editor helps to:
@@ -1242,3 +1272,18 @@ This contract changes the configuration of a task in cron for launch by timer. T
 * *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times),
 * *Till string* - an optional string with the time of task should be ended (this feature is not yet implemented),
 * *Conditions string* - new rights to modify the task.
+
+UploadBinary
+------------------------------
+
+The contract adds/rewrites a static file in X_binaries. When calling a contract via HTTP API, ``multipart/form-data`` should be used; the ``DataMimeType`` parameter will be used with the form data.
+ 
+Parameters:
+ 
+* *Data bytes "file"* - content of the static file,
+* *DataMimeType string "optional"* - mime type of the static file,
+ 
+If the DataMimeType is not passed, then ``application/octet-stream`` is used by default.
+If MemberID is not passed, then the static file is considered a system file.
+ 
+
