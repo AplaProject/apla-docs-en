@@ -177,7 +177,7 @@ Errors: *E_SERVER, E_TOKEN, E_REFRESHTOKEN*
 
 signtest
 ==============================
-**POST**/ Signs a string with the specified private key. It should be used only for API testing, because normally the private key should not be sent to the sever. The private key can be found in the directory where the server was launched.
+**POST**/ This command signs the string with the specified private key. It should be used only for API-testing purposes, since in actual operation private keys should not be passed to the server. The private key can be found in the directory from which the server is launched. If the signature is formed for subsequent transfer to /login, then the LOGINforsign string should be passed instead of forsign.
 
 .. code:: 
     
@@ -246,6 +246,25 @@ Response Example
     }      
     
     Errors: *E_SERVER, E_INSTALLED, E_DBNIL* 
+    
+version
+==============================
+**GET**/ Returns the current server version.
+ 
+Request
+
+.. code:: 
+
+    GET
+    /api/v2/version
+    
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    "0.1.6"
 
 ********************************************************************************
 Data Request Functions
@@ -333,6 +352,84 @@ Response Example
     }     
     
 Errors: *E_VDECREATED*
+
+appparams
+==============================
+ **GET**/ Returns a list of application parameters in the current or specified ecosystem.
+ 
+ Request
+ 
+ * *[appid]* - application identifier,
+ * *[ecosystem]* - ecosystem ID; if not specified, the current ecosystem's parameters will be returned,
+ * *[names]* - list of received parameters; a list of parameter names separated by commas can be specified, for example: ``/api/v2/appparams/1?names=name,mypar``.
+
+Response
+ 
+ * *list* - an array, where each element contains the following parameters:
+ 
+   * *name* - parameter name,
+   * *value* - parameter value,
+   * *conditions* - permissions to change a parameter.
+ 
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "list": [{ 
+            "name": "name",
+            "value": "MyState",
+            "conditions": "true",
+        }, 
+        { 
+            "name": "mypar",
+            "value": "My value",
+            "conditions": "true",
+        }, 
+        ]
+    }      
+
+Errors: *E_ECOSYSTEM*
+
+appparam/{appid}/{name}
+==============================
+ **GET**/ Returns information about the **{name}** parameter of the **{appid}** application in the current or specified ecosystem. 
+ 
+* *appid* - application ID,
+* *name* - name of the requested parameter,
+* *[ecosystem]* - ecosystem ID (optional parameter). By default, the current ecosystem will be considered.
+ 
+ Request
+ 
+.. code:: 
+    
+    GET
+    /api/v2/{appid}/{appid}/{name}[?ecosystem=1]
+    
+ Response   
+     
+ * *id* - parameter identifier,
+ * *name* - parameter name,
+ * *value* - parameter value,
+ * *conditions* - conditions to change a parameter.
+     
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "id": "10",
+        "name": "par",
+        "value": "My value",
+        "conditions": "true"
+    }      
+ 
+Errors: *E_ECOSYSTEM,E_PARAMNOTFOUND*
+
 
 ecosystemparams
 ==============================
@@ -663,6 +760,42 @@ Reply Example
             }
         ]
     }
+
+interface/{page|menu|block}/{name}
+==================================
+GET/ Searches the current ecosystem and returns a record from the selected table (page, menu or block) with the specified name.
+ 
+.. code:: 
+    
+    GET
+    /api/v2/interface/page/default_page 
+ 
+Request
+ 
+* *name* – name of the record in the specified table,
+* *[vde]* – should be set to true, if the record is requested from a table on VDE; otherwise, this parameter should not be specified.
+ 
+Response
+ 
+* *id* – identifier of the record,
+* *name* – name of the record,
+* *other* columns of the table.
+
+Response Examples
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "id": "1",
+        "name": "default_page",
+	"value": "P(Page content)",
+	"default_menu": "default_menu",
+	"validate_count": 1
+    }   
+
+Errors: *E_QUERY*, *E_NOTFOUND* 
 
 ********************************************************************************
 Functions for Work with Contracts
