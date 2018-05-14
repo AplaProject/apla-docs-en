@@ -998,6 +998,51 @@ Reply Example
 
 Error messages: *E_NOTFOUND*
 
+avatar/{ecosystem}/{member}
+==============================
+**GET**/ Returns user's avatar (available without login)
  
+Request
+ 
+* *ecosystem* - user's ecosystem ID
+* *member* - user ID 
+ 
+.. code:: 
+    
+    GET
+    /api/v2/avatar/1/7136200061669836581
+
+Response
+ 
+Header Content-Type with the image type 
+Image in the body 
+ 
+Response Example 
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: image/png  
+
+Errors: *E_NOTFOUND* *E_SERVER*
+
+config/centrifugo
+==============================
+**GET**/ Returns centrifugo's host and port (available without login)
+ 
+Request
+
+.. code:: 
+    
+    GET
+    /api/v2/config/centrifugo
+
+Response
+
+String http://127.0.0.1:8000 in the response body 
+ 
+Errors: *E_SERVER*
+ 
+
 
 
