@@ -366,10 +366,9 @@ appparams
 Response
  
  * *list* - an array, where each element contains the following parameters:
- 
-   * *name* - parameter name,
-   * *value* - parameter value,
-   * *conditions* - permissions to change a parameter.
+ * *name* - parameter name,
+ * *value* - parameter value,
+ * *conditions* - permissions to change a parameter.
  
 Response Example
 
