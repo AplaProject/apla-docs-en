@@ -1172,7 +1172,8 @@ This contract adds language resources in the current ecosystem. Permissions to a
 Parameters
 
 * *Name string* - name of the language resource in Latin script, 
-* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``.
+* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``,
+* *AppID int* - application ID.
 
 EditLang
 ------------------------------
@@ -1180,8 +1181,10 @@ This contract updates the language resource in the current ecosystem. Permission
 
 Parameters
 
+* *Id int*- language resource ID,
 * *Name string* - name of the language resource,
-* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``.
+* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``,
+* *AppID int* - application ID.
  
 NewSign
 ------------------------------
