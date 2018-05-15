@@ -7,7 +7,7 @@ Smart-contracts
 
 A smart contract (hereinafter, "contract") is a basic element of applications, which performs a single action (typically, makes a record in a database table), initiated from the user interface by a user or by another contract. All operations with data in applications are formed as a system of contracts, interacting with each other through database tables or by call functions in a contract body.
 
-Contracts are written using an original (developed by the team of platform developers) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. 
+Contracts are written using an original (developed by the team of platform developers) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for the implementation of data processing algorithms and operations with the database. 
 
 Contracts can be edited, but only if editing was not forbidden by way of putting false in the contract editing rights. Operations with data in the blockchain are performed by the most up-to-date (current) version of the contract. The complete history of changes made to contracts is stored in the blockchain and available from the software client.
 
@@ -41,7 +41,7 @@ Contract structure:
 Data section
 ==============================
 The contract input data, as well as the parameters of the form for the reception of the data are described in the **data** section. 
-The data are listed line by line: first, the variable name is specified (only variables, but not arrays are transferred), then the type and the parameters for building of the interface form are indicated optionally through a gap in double quotation marks:
+The data are listed line by line: first, the variable name is specified (only variables, but not arrays are transferred), then the type and the parameters for the building of the interface form are indicated optionally through a gap in double quotation marks:
 
 * *hidden* - hidden element of the form,
 * *optional* - form element without obligatory filling in,
@@ -69,7 +69,8 @@ The data are listed line by line: first, the variable name is specified (only va
     
 Conditions section
 ==============================
-Validation of the data obtained is performed in the section. The following commands are used to warn of the presence of errors: ``error``, ``warning``, ``info``. In fact, all they generate is an error that stops the contract operation, but displays different messages in the interface: *critical error*, *warning*, and *informative error*. For instance, 
+Validation of the data obtained is performed in the Conditions section. The following commands are used to warn of the presence of errors: ``error``, ``warning``, ``info``. In fact, all three of them generate an error that stops the contract operation, but each of them displays a different message in the interface: *critical error*, *warning*, and *informative error*. For instance, 
+
 
 .. code:: js
 
@@ -107,7 +108,7 @@ A contract can access predefined variables that contain data about the transacti
 * ``$key_id`` – ID of the account that signed the transaction; the value will be zero for VDE contracts,
 * ``$wallet_block`` – address of the node that formed the block, in which this transaction is included,
 * ``$block_time`` – time, when the block with the transaction containing the current contract was formed.
-* ``$original_contract`` - name of the contract, which was initially called for transaction processing. If this variable is an empty string, it means that the contract was called in the process of verification of a condition. To check whether this contract was called by another contract or directly from a transaction, the values of **$original_contract** and **$this_contract**. If they are equal, it means that the contract was called from the transaction.
+* ``$original_contract`` - name of the contract, which was initially called for transaction processing. If this variable is an empty string, it means that the contract was called in the process of verification of a condition. To check whether this contract was called by another contract or directly from a transaction, the values of **$original_contract** and **$this_contract** are to be compared. If they are equal, it means that the contract was called from the transaction.
 * ``$this_contract`` - name of the currently executed contract.  
 
 Predefined variables are accessible not only in contracts, but also in Permissions fields, (where conditions for access to application elements are defined), where they are used in construction of logical expressions. When used in Permissions fields, variables related to block formation (``$time``, ``$block``, etc.) always equal zero.
