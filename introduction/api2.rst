@@ -1,7 +1,7 @@
 ################################################################################
 REST API v2
 ################################################################################
-All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the platform. Thus, by using REST API developers can access any function of the platform without using the Molis software client.
+All functions, available from the Molis software client, including authentication, receipt of data about ecosystems, error handling, operations with database tables, interface pages, and execution of contracts (network transactions) are available though REST API of the platform. Thus, by using REST API, developers can access any function of the platform without using the Molis software client.
 
 Command calls are performed by addressing ``/api/v2/command/[param]``, where **command** is a command name, and **param** is an additional parameter (for example, the name of the resource to change or receive). Request parameters should be sent with ``Content-Type: x-www-form-urlencoded``. The server response will be sent in JSON format.
 
@@ -177,7 +177,7 @@ Errors: *E_SERVER, E_TOKEN, E_REFRESHTOKEN*
 
 signtest
 ==============================
-**POST**/ Signs a string with the specified private key. It should be used only for API testing, because normally the private key should not be sent to the sever. The private key can be found in the directory where the server was launched.
+**POST**/ This command signs the string with the specified private key. It should be used only for API-testing purposes, since in actual operation private keys should not be passed to the server. The private key can be found in the directory from which the server is launched. If the signature is formed for subsequent transfer to /login, then the LOGINforsign string should be passed instead of forsign.
 
 .. code:: 
     
@@ -246,6 +246,25 @@ Response Example
     }      
     
     Errors: *E_SERVER, E_INSTALLED, E_DBNIL* 
+    
+version
+==============================
+**GET**/ Returns the current server version.
+ 
+Request
+
+.. code:: 
+
+    GET
+    /api/v2/version
+    
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    "0.1.6"
 
 ********************************************************************************
 Data Request Functions
@@ -266,8 +285,8 @@ Query
     
 Response
 
-* *amount* - account balance in minimum units (for example, qAPLA),
-* *money* - account balance in units (for example, APLA).
+* *amount* - account balance in minimum units,
+* *money* - account balance in units.
     
 Response Example
 
@@ -279,6 +298,8 @@ Response Example
         "amount": "123450000000000000000",
         "money": "123.45"
     }      
+    
+Errors: E_SERVER, E_INVALIDWALLET
     
 ********************************************************************************
 Work with Ecosystems
@@ -331,6 +352,83 @@ Response Example
     }     
     
 Errors: *E_VDECREATED*
+
+appparams
+==============================
+ **GET**/ Returns a list of application parameters in the current or specified ecosystem.
+ 
+ Request
+ 
+ * *[appid]* - application identifier,
+ * *[ecosystem]* - ecosystem ID; if not specified, the current ecosystem's parameters will be returned,
+ * *[names]* - list of received parameters; a list of parameter names separated by commas can be specified, for example: ``/api/v2/appparams/1?names=name,mypar``.
+
+Response
+ 
+ * *list* - an array, where each element contains the following parameters:
+ * *name* - parameter name,
+ * *value* - parameter value,
+ * *conditions* - permissions to change a parameter.
+ 
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "list": [{ 
+            "name": "name",
+            "value": "MyState",
+            "conditions": "true",
+        }, 
+        { 
+            "name": "mypar",
+            "value": "My value",
+            "conditions": "true",
+        }, 
+        ]
+    }      
+
+Errors: *E_ECOSYSTEM*
+
+appparam/{appid}/{name}
+==============================
+ **GET**/ Returns information about the **{name}** parameter of the **{appid}** application in the current or specified ecosystem. 
+ 
+* *appid* - application ID,
+* *name* - name of the requested parameter,
+* *[ecosystem]* - ecosystem ID (optional parameter). By default, the current ecosystem will be considered.
+ 
+ Request
+ 
+.. code:: 
+    
+    GET
+    /api/v2/{appid}/{appid}/{name}[?ecosystem=1]
+    
+ Response   
+     
+ * *id* - parameter identifier,
+ * *name* - parameter name,
+ * *value* - parameter value,
+ * *conditions* - conditions to change a parameter.
+     
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "id": "10",
+        "name": "par",
+        "value": "My value",
+        "conditions": "true"
+    }      
+ 
+Errors: *E_ECOSYSTEM,E_PARAMNOTFOUND*
+
 
 ecosystemparams
 ==============================
@@ -457,7 +555,7 @@ Response Example
     
     Ошибки: *E_VDE* 
     
-    table/{name}
+table/{name}
 ==============================
 **GET**/ Returns information about the requested table in the current ecosystem.
 
@@ -662,6 +760,42 @@ Reply Example
         ]
     }
 
+interface/{page|menu|block}/{name}
+==================================
+GET/ Searches the current ecosystem and returns a record from the selected table (page, menu or block) with the specified name.
+ 
+.. code:: 
+    
+    GET
+    /api/v2/interface/page/default_page 
+ 
+Request
+ 
+* *name* – name of the record in the specified table,
+* *[vde]* – should be set to true, if the record is requested from a table on VDE; otherwise, this parameter should not be specified.
+ 
+Response
+ 
+* *id* – identifier of the record,
+* *name* – name of the record,
+* *other* columns of the table.
+
+Response Examples
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "id": "1",
+        "name": "default_page",
+	"value": "P(Page content)",
+	"default_menu": "default_menu",
+	"validate_count": 1
+    }   
+
+Errors: *E_QUERY*, *E_NOTFOUND* 
+
 ********************************************************************************
 Functions for Work with Contracts
 ********************************************************************************
@@ -724,15 +858,14 @@ Response Example
       ]
     }   
 
-
 contract/{name}
 ==============================
-**GET**/ Provides information about smart contract **{name}**. By default, the smart contract is searched for in the current ecosystem.
+**GET**/ Returns information about the {name} smart contract. By default, the smart contract will be searched for in the current ecosystem.
 
 Response
 
-* *name* - smart contract name,
-* *[vde]* - specify *true*, if you need to recieve the information about the contract from VDE, in the other case you don't need to specify this parameter.
+* *name* – contract name,
+* *[vde]* – set this parameter to true in case you request information about a contract from VDE, otherwise don't specify this parameter
 
 .. code:: 
     
@@ -769,34 +902,34 @@ Response Example
         "active": true
     }      
     
-contract/{name}
+contract/{request_id}
 ==============================
-**POST**/ Calls a smart contract with the specified name **{name}**. Prior to that you should call the ``prepare/{name}`` command (POST) and sign the returned *forsign* field. In case of successful execution, a transaction hash is returned, which can be used to obtain a block number in case of success or an error text otherwise.
-
-Query
-
-* *name* - name of the contract to call, if the contract is called from another ecosystem, then the full name with ecosystem ID should be specified (*@1MainContract*),
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for not bound contracts. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same,
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling contracts not bound to the account,
-* *[payover]* - for contracts not bound to the account, an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
-* parameters, required for this contract,
-* *signature* - hex signature of the *forsign* value, which was obtained from prepare,
+**POST**/ Returns a smart contract based on the request identifier **{request_id}**. Before doing this, you should use the ``prepare/{name}`` (POST) command and sign the returned field *forsign*. The request with the **{request_id}** identifier is stored on server for 1 minute. If the contract is not executed within this minute, the request will be removed. In case of successful execution, the transaction hash is returned, which can be then used to receive the block number. Otherwise, an error message is returned.
+ 
+Request
+ 
+* *request_id* – identifier of the request that was received from prepare,
+* *[token_ecosystem]* – for contracts that are not bound to a wallet, you can specify which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same,
+* *[max_sum]* – when calling contracts that are not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract,
+* *[payover]* – for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment,
+* *[data]* – parameters sent to the contract,
+* *signature* - hex signature of the forsign value, received from prepare,
 * *time* - time, returned by prepare,
-* *pubkey* - hex public key of the contract signer, note, that if the public key is already stored in the keys table of the current ecosystem, it is not necessary to pass it,
-* *[vde]* - specify *true*, if you call smart-contract from VDE params, in the other case you don't need to specify this parameter.
-
+* *pubkey* - hex of the contract signer's public key; it should be noted, that if the public key is already stored in the keys table of the current ecosystem, you don't need to send it,
+* *[vde]* – should be set to true, if the smart contract is requested from VDE; otherwise, you don't need to specify this parameter.
+ 
 .. code:: 
  
     POST
-    /api/v2/contract/mycontract
-    signature - hex signature
-    time – time, returned by prepare
+    /api/v2/contract/5c273816-134e-4a50-89b2-8d2b3d5ba562
+    signature - hex подпись
+    time - время, возвращенное prepare
 
 Response
 
-* *hash* - hex hash of the sent transaction.
+* *hash* - hex хэш отправленной транзакции.
 
-Response Example
+Response example
 
 .. code:: 
 
@@ -805,28 +938,31 @@ Response Example
     {
         "hash" : "67afbc435634.....",
     }
+
+ERRORS: *E_CONTRACT, E_EMPTYPUBLIC, E_EMPTYSIGN, E_NOTFOUNDREQUEST*
+
     
-    
-prepare/{name}
+prepare/name
 ==============================
-**POST**/ Sends a request to get a string to sign the specified contract. Here, **{name}** is the name of the transaction for which the string for signing should be returned. This string will be returned in the forsign parameter. Also, returned is the time parameter, which needs to be passed together with the signature. 
+**POST**/ Sends a request to receive a string to sign the specified contract. The **{name}** should state the name of transaction for which the string for signature should be returned. The forsign parameter returns a string, which should be signed. Also, returned are the request_id and time parameters, which should be transferred along with the signature.
+ 
+Request
+ 
+* *name* – contract name; if another ecosystem's contract is executed, its full name should be specified (@1MainContract).
+* *[token_ecosystem]* – for contracts that are not bound to a wallet, you can specify the which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same,
+* *[max_sum]* - when calling a contract that is not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract,
+* *[payover]* - for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment,
+* *[vde]* - should be set to true, if the smart contract is requested from a VDE; otherwise, you don't need to specify this parameter.
+* *[data]* – parameters sent to the contract,
 
-Query
-
-* *name* - contract name, if the contract is called from another ecosystem, then the full name should be specified (``@1MainContract``),
-* *[token_ecosystem]* - the identifier of the ecosystem, which currency will be used to pay for the contract, can be specified for the contracts not bound to the account. In this case the account and the public key in the *token_ecosystem* and the current ecosystem should be the same.
-* *[max_sum]* - the maximum amount, which can be spent on the execution of the contract, can be specified when calling not bound contracts,
-* *[payover]* - for not bound contracts an extra payment for urgency can be specified – this will be the extra added to the fuel_rate when calculating the payment,
-* *[vde]* - specify *true*, if you call smart-contract from VDE params. In the other case you don't need to specify this parameter,
-* parameters transferred to the contract.
-
-.. code:: 
+.. code::
     
     POST
     /api/v2/prepare/mycontract
 
 Response
 
+* *request_id* - the identifier of the request to be transmitted,
 * *forsign* - string to be signed,
 * *time* - time information, which needs to be sent together with the contract.
 
@@ -837,9 +973,12 @@ Response Example
     200 (OK)
     Content-Type: application/json
     {
+        "request_id": "5c273816-134e-4a50-89b2-8d2b3d5ba562",
         "time": 423523768,
         "forsign": "......", 
-    }     
+    }
+
+Errors: *E_CONTRACT*    
     
 txstatus/{hash}
 ==============================
@@ -871,7 +1010,6 @@ Response Example
         "result": ""
     }      
 
-
 content/{menu|page}/{name}
 ==============================
 **POST**/ Returns a JSON representation of the code of the specified page or menu named **{name}**, which is the result of processing by the template engine. The query can have additional parameters, which can be used in the template engine. If the page or menu can't be found, the 404 error is returned.
@@ -881,6 +1019,7 @@ Request
 * *menu|page* - *page* or *menu* to recieve the page or menu,
 * *name* - the name or menu of the page,
 *[lang]* - either lcid or a two-letter language code can be specified to address the corresponding language resources. For example, *en,ru,fr,en-US,en-GB*. If, for example, the *en-US* resource will not be found, the *en* resources will be used instead of the missing *en-US* ones,
+* *[app_id]* - application ID. Passed together with lang, because the functions that work with the language in the template engine don’t automatically recognize the AppID. Should be passed as a number,
 * *[vde]* - specify *true*, if you recieve data from the page or menu in VDE. Otherwise, you do not need to specify this parameter.
 
 .. code:: 
@@ -912,6 +1051,79 @@ Response example
 
 Errors: *E_NOTFOUND*
 
+content/source/{name}
+==============================
+**POST**/ Returns a JSON-representation of the **{name}** page code without executing any functions or receiving any data. The returned tree corresponds to the page template and can be used in the visual designer. If the page or the menu are not found, a 404 error is returned.
+ 
+Request
+ 
+* *name* – name of the requested page,
+* *[vde]* - *true* should be set to true, if the page or menu is requested from VDE; otherwise, this parameter should not be specified.
+
+Response
+
+.. code:: 
+    
+    POST
+    /api/v2/content/source/default
+
+Response
+
+* *tree* - JSON object tree.
+ 
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "tree": {"type":"......", 
+              "children": [
+                   {...},
+                   {...}
+              ]
+        },
+    }      
+ 
+Errors: E_NOTFOUND, E_SERVER
+
+
+content
+==============================
+**POST**/ Returns a JSON-representation of the page source code from the **template** parameter. If the additional parameter **source** is specified as true or 1, the JSON-representation will be returned without execution of functions and without receiving data. The returned tree corresponds to the sent template and can be used in the visual designer.
+ 
+Request
+ 
+* *template* –page template source code to be processed,
+* *[source]* – if set to true or 1, the tree will be returned without execution of functions and without receiving  data.
+ 
+.. code:: 
+    
+    POST
+    /api/v2/content
+
+Response
+ 
+* *tree* – JSON object tree.
+
+Response Example
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "tree": {"type":"......", 
+              "children": [
+                   {...},
+                   {...}
+              ]
+        },
+    }      
+
+ERRORS: *E_NOTFOUND, E_SERVER*
+
 node/{name}
 ==============================
 **POST** Calls the **{name}** smart contract on behalf of a node. Used for calling smart contracts from VDE contracts though the **HTTPRequest** function. Since in this case the contract can't be signed with an account key, it will be signed with the node's private key. All other parameters are similar to those when sending a contract. The called contract should be bound to an account, because the node's private key account does not have enough funds to execute the contract. If the contract is called from a VDE contract, then the authorization token **$auth_token** should be passed to **HTTPRequest**.
@@ -942,3 +1154,105 @@ Reply example
     {
         "hash" : "67afbc435634.....",
     }
+
+maxblockid
+==============================
+**GET**/ Returns the highest block ID on the current node. 
+
+Request
+
+.. code:: 
+ 
+    GET
+    /api/v2/maxblockid
+
+Reply
+
+* *max_block_id* - highest block id on the current node.
+
+Reply Example
+
+.. code:: 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "max_block_id" : 341,
+    }
+
+Error message: *E_NOTFOUND*
+
+block/{id}
+==============================
+**GET**/ Returns information on the block with the specified ID.
+
+Request
+
+* *id* - id of the requested block.
+
+.. code:: 
+    
+    POST
+    /api/v2/block/32
+
+Reply
+
+* *hash* - hash of the block.
+* *ecosystem_id* - ecosystem id.
+* *key_id* - key which signed the block.
+* *time* - block generation timestamp.
+* *tx_count* - number of transactions in the block.
+* *rollbacks_hash* - hash of rollbacks, created by transactions in the block.
+
+Reply Example
+
+Error messages: *E_NOTFOUND*
+
+avatar/{ecosystem}/{member}
+==============================
+**GET**/ Returns user's avatar (available without login)
+ 
+Request
+ 
+* *ecosystem* - user's ecosystem ID
+* *member* - user ID 
+ 
+.. code:: 
+    
+    GET
+    /api/v2/avatar/1/7136200061669836581
+
+Response
+ 
+Header Content-Type with the image type 
+Image in the body 
+ 
+Response Example 
+
+.. code:: 
+    
+    200 (OK)
+    Content-Type: image/png  
+
+Errors: *E_NOTFOUND* *E_SERVER*
+
+config/centrifugo
+==============================
+**GET**/ Returns centrifugo's host and port (available without login)
+ 
+Request
+
+.. code:: 
+    
+    GET
+    /api/v2/config/centrifugo
+
+Response
+
+String http://127.0.0.1:8000 in the response body 
+ 
+Errors: *E_SERVER*
+ 
+
+
+

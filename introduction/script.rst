@@ -69,7 +69,8 @@ The data are listed line by line: first, the variable name is specified (only va
     
 Conditions section
 ==============================
-Validation of the data obtained is performed in the conditions section. The following commands are used to warn of the presence of errors: ``error``, ``warning``, ``info``. In fact, all they generate an error that stops the contract operation, but display different messages in the interface: *critical error*, *warning*, and *informative error*. For instance, 
+Validation of the data obtained is performed in the Conditions section. The following commands are used to warn of the presence of errors: ``error``, ``warning``, ``info``. In fact, all three of them generate an error that stops the contract operation, but each of them displays a different message in the interface: *critical error*, *warning*, and *informative error*. For instance, 
+
 
 .. code:: js
 
@@ -80,7 +81,7 @@ Validation of the data obtained is performed in the conditions section. The foll
         warning Sprintf("You don't have enough money: %v < %v", money, limit)
   }
   if idexist > 0 {
-        info "You have been already registered"
+        info "You have already been registered"
   }
   
 Action section
@@ -155,7 +156,7 @@ Let's suppose there is a TokenTransfer Contract *TokenTransfer*:
         ...
     }
 
-If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the account 12345. In such a case the user who signs an external contract will remain not in the know of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
+If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the account 12345. In such a case the user who signs an external contract will remain unaware of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
 
 1. Adding a field with the name **Signature** with the ``optional`` and ``hidden`` parameters in the *data* section of the *TokenTransfer* contract, which allow not to require the additional signature in the direct calling of the contract, since there will be the signature in the **Signature** field so far.
 
@@ -176,10 +177,10 @@ If in a contract launched by the user the string ``TokenTransfer("Recipient,Amou
 •	field names whose values will be displayed to the user, and their text description,
 •	text to be displayed upon confirmation.
   
-In the current example it will be enough specifying two fields **Receipient** and **Amount**:
+In the current example it will be enough specifying two fields **Recipient** and **Amount**:
 
 * **Title**: Are you agree to send money this recipient?
-* **Parameter**: Receipient Text: Account ID
+* **Parameter**: Recipient Text: Account ID
 * **Parameter**: Amount Text: Amount (qEGS)
 
 Now, if inserting the ``TokenTransfer(“Recipient, Amount”, 12345, 100)`` contract calling in, the system error ``“Signature is not defined”`` will be displayed. If the contract is called in as follow: ``TokenTransfer("Recipient, Amount, Signature", 12345, 100, "xxx...xxxxx")``, the system error will occur upon signature verification. Upon the contract calling in, the following information is verified: *time of the initial transaction, user ID, the value of the fields specified in the signatures table*, and it is impossible to forge the signature.
@@ -200,6 +201,36 @@ In order for the user to see the money transfer confirmation upon the *TokenTran
     }
 
 When sending a *MyTest* contract, the additional confirmation of the money transfer to the indicated account will be requested from user. If other values, such as ``TokenTransfer(“Recipient,Amount,Signature”,$Recipient, $Amount+10, $Signature)``, are listed in the enclosed contract, the invalid signature error will occur.
+
+********************************************************************************
+File Upload
+********************************************************************************
+To upload files from ``multipart/form-data`` forms, the contract fields with type ``bytes`` and tag ``file`` should be used. Example:
+
+.. code:: js
+
+    contract Upload {
+        data {
+            File bytes "file"
+        }
+        ...
+    }
+ 
+For work with mime-type files, an additional parameter ``{Field}MimeType`` will be passed to the contract . Example:
+ 
+.. code:: js
+
+    contract Upload {
+        data {
+            File bytes "file"
+        }
+        action {
+            Println($FileMimeType)
+        }
+    }
+
+The `UploadBinary` system contract is intended to upload and store files.
+To request a download link for a file from the template designer, there is a special template designer function – `Binary`.
 
 ********************************************************************************
 Contract Editor
@@ -1172,7 +1203,8 @@ This contract adds language resources in the current ecosystem. Permissions to a
 Parameters
 
 * *Name string* - name of the language resource in Latin script, 
-* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``.
+* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``,
+* *AppID int* - application ID.
 
 EditLang
 ------------------------------
@@ -1180,8 +1212,10 @@ This contract updates the language resource in the current ecosystem. Permission
 
 Parameters
 
+* *Id int*- language resource ID,
 * *Name string* - name of the language resource,
-* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``.
+* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``,
+* *AppID int* - application ID.
  
 NewSign
 ------------------------------
@@ -1239,3 +1273,18 @@ This contract changes the configuration of a task in cron for launch by timer. T
 * *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times),
 * *Till string* - an optional string with the time of task should be ended (this feature is not yet implemented),
 * *Conditions string* - new rights to modify the task.
+
+UploadBinary
+------------------------------
+
+The contract adds/rewrites a static file in X_binaries. When calling a contract via HTTP API, ``multipart/form-data`` should be used; the ``DataMimeType`` parameter will be used with the form data.
+ 
+Parameters:
+ 
+* *Data bytes "file"* - content of the static file,
+* *DataMimeType string "optional"* - mime type of the static file,
+ 
+If the DataMimeType is not passed, then ``application/octet-stream`` is used by default.
+If MemberID is not passed, then the static file is considered a system file.
+ 
+
