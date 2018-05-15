@@ -69,7 +69,7 @@ The data are listed line by line: first, the variable name is specified (only va
     
 Conditions section
 ==============================
-Validation of the data obtained is performed in the section. The following commands are used to warn of the presence of errors: ``error``, ``warning``, ``info``. In fact, all they generate an error that stops the contract operation, but display different messages in the interface: *critical error*, *warning*, and *informative error*. For instance, 
+Validation of the data obtained is performed in the section. The following commands are used to warn of the presence of errors: ``error``, ``warning``, ``info``. In fact, all they generate is an error that stops the contract operation, but displays different messages in the interface: *critical error*, *warning*, and *informative error*. For instance, 
 
 .. code:: js
 
@@ -80,7 +80,7 @@ Validation of the data obtained is performed in the section. The following comma
         warning Sprintf("You don't have enough money: %v < %v", money, limit)
   }
   if idexist > 0 {
-        info "You have been already registered"
+        info "You have already been registered"
   }
   
 Action section
@@ -155,7 +155,7 @@ Let's suppose there is a TokenTransfer Contract *TokenTransfer*:
         ...
     }
 
-If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the account 12345. In such a case the user who signs an external contract will remain not in the know of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
+If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the account 12345. In such a case the user who signs an external contract will remain unaware of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
 
 1. Adding a field with the name **Signature** with the ``optional`` and ``hidden`` parameters in the *data* section of the *TokenTransfer* contract, which allow not to require the additional signature in the direct calling of the contract, since there will be the signature in the **Signature** field so far.
 
@@ -176,10 +176,10 @@ If in a contract launched by the user the string ``TokenTransfer("Recipient,Amou
 •	field names whose values will be displayed to the user, and their text description,
 •	text to be displayed upon confirmation.
   
-In the current example it will be enough specifying two fields **Receipient** and **Amount**:
+In the current example it will be enough specifying two fields **Recipient** and **Amount**:
 
 * **Title**: Are you agree to send money this recipient?
-* **Parameter**: Receipient Text: Account ID
+* **Parameter**: Recipient Text: Account ID
 * **Parameter**: Amount Text: Amount (qEGS)
 
 Now, if inserting the ``TokenTransfer(“Recipient, Amount”, 12345, 100)`` contract calling in, the system error ``“Signature is not defined”`` will be displayed. If the contract is called in as follow: ``TokenTransfer("Recipient, Amount, Signature", 12345, 100, "xxx...xxxxx")``, the system error will occur upon signature verification. Upon the contract calling in, the following information is verified: *time of the initial transaction, user ID, the value of the fields specified in the signatures table*, and it is impossible to forge the signature.
