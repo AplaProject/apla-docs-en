@@ -1021,8 +1021,8 @@ Editing the contract in the current ecosystem.
 Parameters
       
 * *Id int* - ID of the contract to be edited,
-* *Value string* - text of the contract or contracts,
-* *Conditions string* - rights for contract change.
+* *Value string "optional"* - text of the contract or contracts,
+* *Conditions string "optional"* - rights for contract change.
 
 ActivateContract
 ------------------------------
@@ -1078,7 +1078,7 @@ This contract changes an existing menu in the current ecosystem.
 Parameters
 
 * *Id int* - ID of the menu to be changed,
-* *Value string* - new text of menu,
+* *Value string "optional"* - new text of menu,
 * *Title string "optional"* - menu header,
 * *Conditions string* - new rights for page change.
 
@@ -1107,9 +1107,9 @@ This contract changes an existing page in the current ecosystem.
 Parameters
 
 * *Id int* - ID of the page to be changed,
-* *Value string* - new text of the page,
-* *Menu string* - name of the new menu on the page,
-* *Conditions string* - new rights for page change.
+* *Value string "optional"* - new text of the page,
+* *Menu string "optional"* - name of the new menu on the page,
+* *Conditions string "optional"* - new rights for page change.
 
 AppendPage
 ------------------------------
