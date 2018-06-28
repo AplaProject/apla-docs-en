@@ -87,18 +87,18 @@ Platform's Database
 ==========================
 The platform's unified database, copies of which are stored and maintained up-to-date on every full node of the network, is used for storing large volumes of data (registers) and quick retrieval of data by contracts and interfaces. In the formation of a new block and its addition to the blockchain, all full nodes of the platform carry out a simultaneous update of database tables. Thus, the database stores the current (up-to-date) state of the blockchain, which ensures the equivalence of data on all full nodes and unambiguousness of contract execution on any Validating Node. When a new full node is added to the network, the up-to-date status of its database is reached by way of subsequent execution of all transactions recorded in the blocks of the blockchain. 
 
-Currently, the Genesis platform uses PostgreSQL as its database management system. 
+Currently, the platform uses PostgreSQL as its database management system. 
 
 ********************************************************************************
 Platform's Ecosystems
 ********************************************************************************
-The data space of the Genesis platform is divided into many relatively independent clusters – *ecosystems*, in which the activities of the network's users are implemented. An Genesis ecosystem is an autonomous software environment that consists of a certain number of applications and users, who create these applications and work with them. Any holder of an Genesis account can create a new ecosystem.
+The data space of the platform is divided into many relatively independent clusters – *ecosystems*, in which the activities of the network's users are implemented. An platform ecosystem is an autonomous software environment that consists of a certain number of applications and users, who create these applications and work with them. Any holder of an platform account can create a new ecosystem.
 
 The software basis of an ecosystem is a collection of applications, which are systems of interfaces, contracts, and database tables. The specific ecosystem to which application elements belong is indicated by prefixes in their name (for example, @1name), where the ecosystem's ID is indicated after the “@” sign. When addressing application elements within the current ecosystem, the prefix can be omitted. 
 
 The Molis software client provides access to database management tools, contracts editor, interface editor, and other functions required for the creation of applications in an ecosystem, without resorting to any additional software modules. 
 
-A person can become a user of the Genesis platform only after receiving a private key for accessing one of the ecosystems (by default, ecosystem #1). A user can be a member of any number of ecosystems. Switching between ecosystems is carried out using a specialized menu of the software client.
+A person can become a user of the platform only after receiving a private key for accessing one of the ecosystems (by default, ecosystem #1). A user can be a member of any number of ecosystems. Switching between ecosystems is carried out using a specialized menu of the software client.
 
 Integrated Development Environment
 ==========================
@@ -111,13 +111,13 @@ The Molis software client includes a full-scale integrated development environme
 -	Language resource editor,
 -	Application import / export service.
 
-Applications on Genesis 
+Applications on the platform 
 ==========================
-An application on the Genesis platform is a system of tables, contracts and interfaces with configured access rights. Such applications perform useful functions or implement various services. 
+An application on the platform is a system of tables, contracts and interfaces with configured access rights. Such applications perform useful functions or implement various services. 
 
 Each ecosystems creates its own set of tables for development of applications. This, however, does not exclude the possibility of accessing tables from other ecosystems by specifying those ecosystems' prefixes in table names. Tables are not in any way bound (nor belong) to specific contracts, and can be used by all applications. The permissions for entering data into tables are set by way of configuring the access rights. Specialized contracts – smart laws – can be used for rights management. 
 
-It should be noted, that the design and creation of applications on Genesis does not require the software developers to know the structure of the network and its protocols, nor to understand the algorithm of blockchain formation and synchronization of databases on full nodes. Work in the Molis software client, including the creation of application elements, reading data from tables, execution of contracts and displaying results on the screen, looks and feels like operations with modules of a software environment on a local computer.
+It should be noted, that the design and creation of applications on the platform does not require the software developers to know the structure of the network and its protocols, nor to understand the algorithm of blockchain formation and synchronization of databases on full nodes. Work in the Molis software client, including the creation of application elements, reading data from tables, execution of contracts and displaying results on the screen, looks and feels like operations with modules of a software environment on a local computer.
 
 Ecosystem's Tables
 ==========================
@@ -153,7 +153,7 @@ In order to retrieve values of certain ecosystem parameters, both the contracts 
 
 Parameters of the Platform Ecosystem
 --------------------------
-All parameters of the Genesis blockchain platform are stored in the parameters table of the platform configuration ecosystem. These are the following parameters:
+All parameters of the blockchain platform are stored in the parameters table of the platform configuration ecosystem. These are the following parameters:
 
 -	Time period for creation of a block by a Validating Node,
 -	Source codes of pages, contracts, tables, and menus of new ecosystems,
@@ -168,9 +168,9 @@ Managing the parameters of the platform configuration ecosystem on the program l
 ********************************************************************************
 Access Rights Control Mechanism 
 ********************************************************************************
-Genesis has a multi-level access rights management system. Access rights can be configured to create and change any element of an application: contracts, database tables, interface pages, and ecosystem parameters. Permissions to change access rights can be configured as well.
+The platform has a multi-level access rights management system. Access rights can be configured to create and change any element of an application: contracts, database tables, interface pages, and ecosystem parameters. Permissions to change access rights can be configured as well.
 
-By default, all rights in an Genesis ecosystem are managed by its founder (this is defined in the MainCondition contract, which every ecosystem has by default). However, after specialized smart laws are created, access rights control can be transferred to all ecosystem members or a group of such members.
+By default, all rights in an platform ecosystem are managed by its founder (this is defined in the MainCondition contract, which every ecosystem has by default). However, after specialized smart laws are created, access rights control can be transferred to all ecosystem members or a group of such members.
 
 Controlled Operations
 ==========================
@@ -203,7 +203,7 @@ To resolve conflict situations or those critical for the operation of an ecosyst
 Virtual Dedicated Ecosystems
 ********************************************************************************
 
-Genesis allows for creation of Virtual Dedicated Ecosystems (VDE), which have the full set of functions of standard ecosystems, but work outside the blockchain. In VDE full-scale applications can be created using the contract and template languages, database tables and other software client functions. Contracts from blockchain ecosystems can be called using API.
+The platform allows for creation of Virtual Dedicated Ecosystems (VDE), which have the full set of functions of standard ecosystems, but work outside the blockchain. In VDE full-scale applications can be created using the contract and template languages, database tables and other software client functions. Contracts from blockchain ecosystems can be called using API.
 
 Requests to Web-Resources
 ==========================
