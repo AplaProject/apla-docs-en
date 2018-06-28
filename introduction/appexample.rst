@@ -1,12 +1,12 @@
 ################################################################################
-Applications on Apla
+Applications on Platform
 ################################################################################
 
 .. contents::
   :local:
   :depth: 3
   
-An application on Apla is a system of contracts, tables and interfaces that performs a certain function or provides a dedicated service. An application is not a autonomous program module - the only thing that unites the application elements is the performance of certain functions and exchange data. The boundaries of an application are not always strictly defined, since its elements can be simultaneously used in multiple applications.  
+An application on platform is a system of contracts, tables and interfaces that performs a certain function or provides a dedicated service. An application is not a autonomous program module - the only thing that unites the application elements is the performance of certain functions and exchange data. The boundaries of an application are not always strictly defined, since its elements can be simultaneously used in multiple applications.  
 
 The following is a typical functional fragment of an application:
 
