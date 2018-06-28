@@ -12,18 +12,18 @@ Distinctive features
 
 The blockchain platform is developed for building digital ecosystems. The platform includes an integrated application development environment with a multi-level system of access rights to data, interfaces and smart contracts. The platform is built based on software developed by EGAAS Corporation (EGAAS S.A.).
 
-In terms of its structure and functioning, Genesis is fundamentally different from most of the existing blockchain platforms: 
+In terms of its structure and functioning, the platform is fundamentally different from most of the existing blockchain platforms: 
 
 * The development and use of blockchain applications is carried out in autonomous software environments , called *ecosystems*. Every ecosystem has its own membership rules, initially established by the ecosystem founder. 
 * Activities in ecosystems are based on creating *registers* and recording/modifying the data involved using *smart contracts*, whereas in most other blockchain platforms activities are based on exchanging transactions or messages between accounts. 
 * Management of access permissions to registers, and relation management between ecosystem members are regulated by a set of rules called *smart laws*.
 
 ********************************************************************************
-Genesis Blockchain Platform
+The Blockchain Platform
 ********************************************************************************
 Network
 ==========================
-The Genesis blockchain platform is built based on a peer-to-peer network. Full nodes of the network store the up-to-date version of the blockchain and the database, in which the current state of the platform is recorded. The network users receive data by requesting it from databases of full nodes using the software client (or REST AP commands). New data is sent to the network in the form of transactions signed by users. Such transactions are in essence commands for modification of information in the database. Transactions are aggregated in blocks, which are then added to the blockchain on the network nodes. After a new block is added to the blockchain, each full node processes the transactions in this block, thus making changes to data in its database accordingly.
+The platform blockchain platform is built based on a peer-to-peer network. Full nodes of the network store the up-to-date version of the blockchain and the database, in which the current state of the platform is recorded. The network users receive data by requesting it from databases of full nodes using the software client (or REST AP commands). New data is sent to the network in the form of transactions signed by users. Such transactions are in essence commands for modification of information in the database. Transactions are aggregated in blocks, which are then added to the blockchain on the network nodes. After a new block is added to the blockchain, each full node processes the transactions in this block, thus making changes to data in its database accordingly.
 
 Validating Nodes
 ==========================
