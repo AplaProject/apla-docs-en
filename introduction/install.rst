@@ -2,4 +2,4 @@
 Installation and configuration
 ################################################################################
 
-This section discusses the installation and configuration of Apla.
+This section discusses the installation and configuration of the platform.
