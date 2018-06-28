@@ -8,7 +8,7 @@ The API allows creating private keys (wallets) on request to receive funds and t
 Startup parameters
 ********************************************************************************
 
-In order to work with this API, you need to specify the following parameters when starting Apla.
+In order to work with this API, you need to specify the following parameters when starting the platform.
 
 **-boltDir** - a directory where the file containing private keys will be created and stored. NoSQL database BoltDB is used to store the keys. The file is named *exchangeapi.db*. If the parameter is not specified, the file will be created in the current directory.
 
@@ -16,13 +16,13 @@ In order to work with this API, you need to specify the following parameters whe
       
       -boltDir=/home/temp
       
-**-boltPsw**  - password for encrypting private keys when writing to the database. The API will not work if the password was not specified at startup. The password specified at first startup should be specified at subsequent startups. Don’t forget the password because it is not saved anywhere. If you specify an incorrect password or you enter the word "console" as a password, then you will be prompted to enter the password in the console after running Apla. Also, if the password has already been set but not specified in the command line parameter, it will be requested for in the console.
+**-boltPsw**  - password for encrypting private keys when writing to the database. The API will not work if the password was not specified at startup. The password specified at first startup should be specified at subsequent startups. Don’t forget the password because it is not saved anywhere. If you specify an incorrect password or you enter the word "console" as a password, then you will be prompted to enter the password in the console after running the platform. Also, if the password has already been set but not specified in the command line parameter, it will be requested for in the console.
 
 .. code:: 
 
       -boltPsw=mypass344
       
-**-apiToken**  - this parameter specifies the token that will need to be passed when making a request to the API. The token specified will be saved, and can be omitted in subsequent startups. If this parameter has not been specified, then you will be able to call API commands without specifying the token parameter. If you'll need to change the token, you should start Apla with a new value in this parameter.
+**-apiToken**  - this parameter specifies the token that will need to be passed when making a request to the API. The token specified will be saved, and can be omitted in subsequent startups. If this parameter has not been specified, then you will be able to call API commands without specifying the token parameter. If you'll need to change the token, you should start the platform with a new value in this parameter.
 
 .. code:: 
 
