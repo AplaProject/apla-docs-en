@@ -63,6 +63,7 @@ The most important element of an application is the system for the management of
 
 1. Permission to call a specific contract by the current user. This permission can be configured in the ``conditions`` section of the contract by using a logical expression in the ``If`` statement, or with nested contracts; for example, *MainConditions* or *RoleConditions*, where typical rights or user role rights are defined.
 
+
 2. Current user's permission to change (using the contracts) values in table columns, to add rows and columns to tables. Permissions can be set using the ``ContractConditions`` function in Permissions fields of table columns and in the *Write permissions / Insert / Update / New column* field on the table editing page.
 The conditions specified in the  Update  field specify the rights to change all columns of the table in general, the conditions in the fields  Permissions  impose additional restrictions for each column separately.
 
