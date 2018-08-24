@@ -68,7 +68,7 @@ Contents
    introduction/appexample.rst
    introduction/vm.rst
    introduction/install.rst
-   introduction/tools.rst
+   tools/tools.rst
 
 .. toctree::
    :maxdepth: 2
