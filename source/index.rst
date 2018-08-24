@@ -52,25 +52,39 @@ At the same time, the procedure of source code refactoring was launched: the cod
 Genesis
 ^^^^^^^
 
-By the end of 2017 it became obvious that the platform was ready to compete head-on with existing public blockchain networks, including Ethereum, NEO, etc. All of the previous hard work and success has given rise to a new project based on the platform. Its name is **Genesis**. The team is planning to launch this project without the use of a typical ICO. Instead, we're distributing tokens directly to programmers - namely GitHub users.
+By the end of 2017 it became obvious that the platform was ready to compete head-on with existing public blockchain networks, including Ethereum, NEO, etc. All of the previous hard work and success has given rise to a new project based on the platform. Its name is **Genesis**. The team is planning to launch this project without the use of a typical ICO. Instead, we're distributing tokens directly to programmers, namely GitHub users.
 
 
 Contents
 ========
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
+   :caption: Guides
 
    introduction/what-is-Apla.rst
    introduction/script.rst
    introduction/templates2.rst
    introduction/appexample.rst
-   introduction/api2.rst
    introduction/vm.rst
-   introduction/exchangeapi.rst
    introduction/install.rst
-   introduction/alphabetical_index.rst
+   introduction/tools.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API 
+
+   introduction/api2.rst
+   introduction/exchangeapi.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Extras
+
    introduction/faq.rst
+   introduction/mobile.rst
+   introduction/contractsignatures.rst
    introduction/thesaurus.rst
+
    
 
