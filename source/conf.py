@@ -172,7 +172,8 @@ source_suffix = ['.rst', '.md']
 # Options for todo extension
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+todo_include_todos = False
+todo_emit_warnings = False
 
 
 # -- L10n configuration -------------------------------------------------
