@@ -70,6 +70,8 @@ exclude_patterns = []
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# Whether parentheses must be added to :func: directive output
+add_function_parentheses = False
 
 # -- Options for HTML output -------------------------------------------------
 
