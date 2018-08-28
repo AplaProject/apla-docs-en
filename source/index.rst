@@ -12,7 +12,7 @@ Public blockchain platform for building digital ecosystems
 About this documentation
 ------------------------
 
-This documentation contains the description of |project_name|, a public blockchain platform for building digital ecosystems.
+This documentation contains the description of |platform|, a public blockchain platform for building digital ecosystems.
 
 This documentation includes the up-to-date descriptions of the platform's function and is constantly updated whenever changes are made or new functions are added.
 
@@ -20,7 +20,7 @@ This documentation includes the up-to-date descriptions of the platform's functi
 History of DayLight, eGaaS, Apla, and Genesis
 ---------------------------------------------
 
-|project_name| is based on the source code of the blockchain created for the DCoin cryptocurrency, written in 2011 by the DCoin project founder.
+|platform| is based on the source code of the blockchain created for the DCoin cryptocurrency, written in 2011 by the DCoin project founder.
 
 
 DayLight

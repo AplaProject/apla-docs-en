@@ -186,12 +186,12 @@ language = 'en'
 
 # -- Prolog substitutions (available on all pages)
 
-project_name = 'Genesis'
+platform = 'Genesis'
 
 rst_prolog = """
-.. |project_name| replace:: {0}
+.. |platform| replace:: {0}
 """.format(
-project_name,
+platform,
 )
 
 
