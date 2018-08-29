@@ -60,6 +60,12 @@ Contents
 
 .. toctree::
    :maxdepth: 2
+   :caption: Concepts
+
+   concepts/thesaurus.rst
+
+.. toctree::
+   :maxdepth: 2
    :caption: Guides
 
    introduction/what-is-Apla.rst
@@ -85,7 +91,7 @@ Contents
    introduction/faq.rst
    introduction/mobile.rst
    introduction/contractsignatures.rst
-   introduction/thesaurus.rst
+   
 
    
 .. todolist::
