@@ -72,9 +72,9 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: API 
+   :caption: Reference
 
-   introduction/api2.rst
+   reference/api2.rst
    introduction/exchangeapi.rst
 
 .. toctree::
