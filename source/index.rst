@@ -75,7 +75,6 @@ Contents
    :caption: Reference
 
    reference/api2.rst
-   introduction/exchangeapi.rst
 
 .. toctree::
    :maxdepth: 2
