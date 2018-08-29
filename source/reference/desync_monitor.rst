@@ -1,5 +1,5 @@
 ######################################################################
-Synchronization Monitoring 
+Synchronization Monitoring Tool
 ######################################################################
 
 A special tool that allows to verify that the databases on specified nodes are synchronized.

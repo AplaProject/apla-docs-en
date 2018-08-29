@@ -68,13 +68,15 @@ Contents
    introduction/appexample.rst
    introduction/vm.rst
    introduction/install.rst
-   tools/tools.rst
+   
 
 .. toctree::
    :maxdepth: 2
    :caption: Reference
 
    reference/api2.rst
+   reference/update_client.rst
+   reference/desync_monitor.rst
 
 .. toctree::
    :maxdepth: 2
