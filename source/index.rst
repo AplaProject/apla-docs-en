@@ -62,13 +62,15 @@ Contents
    :maxdepth: 2
    :caption: Concepts
 
+   concepts/about-the-platform.rst
+   concepts/faq.rst
    concepts/thesaurus.rst
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Guides
 
-   introduction/what-is-Apla.rst
    introduction/script.rst
    introduction/templates2.rst
    introduction/appexample.rst
@@ -84,11 +86,11 @@ Contents
    reference/update_client.rst
    reference/desync_monitor.rst
 
+
 .. toctree::
    :maxdepth: 2
    :caption: Extras
 
-   introduction/faq.rst
    introduction/mobile.rst
    introduction/contractsignatures.rst
    
