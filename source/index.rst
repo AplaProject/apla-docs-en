@@ -76,7 +76,6 @@ Contents
    introduction/appexample.rst
    introduction/vm.rst
    
-   
 
 .. toctree::
    :maxdepth: 2
@@ -85,7 +84,7 @@ Contents
    reference/api2.rst
    reference/update_client.rst
    reference/desync_monitor.rst
-
+   reference/mobile.rst
 
 .. toctree::
    :maxdepth: 2
@@ -98,7 +97,6 @@ Contents
    :maxdepth: 2
    :caption: Extras
 
-   introduction/mobile.rst
    introduction/contractsignatures.rst
    
  
