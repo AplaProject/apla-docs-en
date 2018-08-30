@@ -71,20 +71,22 @@ Contents
    :maxdepth: 2
    :caption: Guides
 
-   introduction/script.rst
-   introduction/templates2.rst
-   introduction/appexample.rst
-   introduction/vm.rst
-   
+   topics/script.rst
+   topics/contractsignatures.rst
+   topics/templates2.rst
+   topics/appexample.rst
+   topics/vm.rst
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Reference
 
    reference/api2.rst
+   reference/mobile.rst
    reference/update_client.rst
    reference/desync_monitor.rst
-   reference/mobile.rst
+
 
 .. toctree::
    :maxdepth: 2
@@ -92,12 +94,5 @@ Contents
 
    howtos/install.rst
 
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Extras
-
-   introduction/contractsignatures.rst
-   
  
 .. todolist::
