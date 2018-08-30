@@ -75,7 +75,7 @@ Contents
    introduction/templates2.rst
    introduction/appexample.rst
    introduction/vm.rst
-   introduction/install.rst
+   
    
 
 .. toctree::
@@ -89,11 +89,17 @@ Contents
 
 .. toctree::
    :maxdepth: 2
+   :caption: HOWTOs
+
+   howtos/install.rst
+
+
+.. toctree::
+   :maxdepth: 2
    :caption: Extras
 
    introduction/mobile.rst
    introduction/contractsignatures.rst
    
-
-   
+ 
 .. todolist::
