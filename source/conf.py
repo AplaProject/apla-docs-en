@@ -161,28 +161,11 @@ texinfo_documents = [
 
 # -- Extension configuration -------------------------------------------------
 
-# Local markdown support
-
-from recommonmark.parser import CommonMarkParser
-
-source_parsers = {
-    '.md': CommonMarkParser,
-}
-
-source_suffix = ['.rst', '.md']
-
 # Options for todo extension
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 todo_emit_warnings = False
-
-
-# -- L10n configuration -------------------------------------------------
-
-language = 'en'
-#language = 'ru'
-
 
 # -- Prolog substitutions (available on all pages)
 
