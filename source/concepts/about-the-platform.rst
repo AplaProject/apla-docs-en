@@ -10,7 +10,7 @@ General information
 Distinctive features
 ********************************************************************************
 
-The blockchain platform is developed for building digital ecosystems. The platform includes an integrated application development environment with a multi-level system of access rights to data, interfaces and smart contracts. The platform is built based on software developed by EGAAS Corporation (EGAAS S.A.).
+The blockchain platform is developed for building digital ecosystems. The platform includes an integrated application development environment with a multi-level system of access rights to data, interfaces and smart contracts. The platform is built based on software copyrighted by EGAAS S.A., the Luxembourg corporation.
 
 In terms of its structure and functioning, the platform is fundamentally different from most of the existing blockchain platforms: 
 
