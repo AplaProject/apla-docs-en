@@ -13,7 +13,7 @@ FAQ
  -	Ecosystems – autonomous software environments for the creation of blockchain applications and user interactions with them;
  - 	Legal system – a set of regulations, codified in smart laws (specialized smart contracts), which regulate relations between the platform users, define the protocol parameters changing procedures, that are used to solve problems.
 4.	Does the Genesis platform have its own cryptocurrency? 
- -	Yes, the Genesis platform uses special Genesis (GEN) tokens. Ecosystems can issue tokens of their own.
+ -	No, the Genesis platform does not have any cryptocurrencies.
 5.	What is a validating node?
  -	A validating node is a network node that is authorized to check transactions and create blocks.
 6.	Who can maintain a validating node?
