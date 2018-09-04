@@ -38,6 +38,13 @@ Contents
 
 .. toctree::
    :maxdepth: 2
+   :caption: Tutorials
+
+   tutorials/app_tutorial.rst
+
+
+.. toctree::
+   :maxdepth: 2
    :caption: Guides
 
    topics/script.rst
