@@ -1,28 +1,21 @@
 Application Development Tutorial
 ================================
 
-This tutorial explains how to write a simple application for |platform| blockchain platform.
+This tutorial explains how to write a simple application for |platform|.
 
 
 The goal
 --------
 
-The goal of this tutorial is to create an application for |platform| blockchain platform that can:
-
-.. todo::
-    
-    Populate this list
-
-* TBD
-* TBD
-
+The goal of this tutorial is to create a basic application for |platform|. 
 
 The application starts simple and grows in complexity as tutorial progresses.
+
+The final version of app stores simple messages (strings) on the blockchain with a timestamp and message sender's account identifier. A user can access the list of messages and add new messages via app's user interface. The app can be accessed from the ecosystem menu.
 
 .. todo::
     
     This tutorial must explain basic access permissions for apps and for tables (what is MainCondition and how to change it).
-
 
 
 Part 1: The environment
@@ -92,7 +85,7 @@ Genesis apps are a combination of contracts, tables, and user interfaces.
 
 * User interfaces
 
-    User interfaces are UI layouts that will be displayed to the user by Molis. 
+    User interfaces are UI layouts that will be displayed to users by Molis. 
 
     The interfaces are written in :doc:`Protypo language </topics/templates2>`. Molis provides a visual editor for constructing interfaces.
 
@@ -102,7 +95,7 @@ Contract code sections
 
 Contract code is written in :doc:`Simvolio language </topics/script>`.
 
-Every contract consists of three sections:
+Every contract has three sections: 
 
 .. describe:: data
 
@@ -125,10 +118,25 @@ The architecture of genesis apps is designed to be modular. Contracts, tables, a
 For example, if you change the contract code, you must make a transaction that introduces the contract code change. After the transaction is validated and included in the blockchain, the new contract code becomes available to all nodes in the blockchain network. Same principle applies to tables and data stored in them, and to user interfaces.
 
 .. todo::
+
     Illustration needed. Modules available to many apps and to each other.
 
 
-Part 3: Hello, World
+Resource Access
+^^^^^^^^^^^^^^^
+
+An app is the collection of its resources: contracts, pages, and tables. All the resources of all the apps are available inside the ecosystem. One resource can be used by many apps and resources. Resources do not need to belong to the same app to be accessible.
+
+For example, a dashboard page can use many tables that store information about ecosystem members and business processes; a high-level contract can update several tables that are used by ecosystem apps.
+
+.. todo::
+
+    Fix this after access rights chapter is written.
+
+Access to resources is managed with access rights, which are implemented with contracts.
+
+
+Part 3: The contract
 --------------------
 
 You now have your blockchain network of five nodes and a basic understanding of what is an app. Your first application will start as a simple Hello, World application.
@@ -167,6 +175,10 @@ To create a new app:
             Explain what these conditions are (link).
 
     #. Your app will appear in the list of apps. Click *select* to make it active.
+
+        .. note::
+        
+            Selecting apps in the *Admin* tab makes it easier to navigate resources related to the selected app. It has no effect on the ecosystem. All ecosystem apps will still be available, no matter which one is selected.
 
 
 New table
@@ -526,15 +538,13 @@ The app provides a way to add new messages from the UI, one message at the time.
 The menu
 ^^^^^^^^
 
-Now that the app has a page, it's time to add a simple menu item that will open this page. 
+|platform| menus are linked to pages. For example, the ecosystem menu that is displayed on the *Home* tab is linked to the ``default_page`` page. 
 
-Because each ecosystem can have many apps, this menu item must be added to the ecosystem's menu. This way other members of the ecosystem can access the page and view the messages.
+Because the tutorial app is small (just one page), there is no need to create an individual menu for it. A new menu item in the default menu will suffice.
 
 .. note::
-
-    In |platform|, an app is the collection of its resources: contracts, pages, and tables. All the resources of all the apps are available inside the ecosystem. One resource can be used by many apps and resources. Resources do not need to belong to the same app to be accessible.
-
-    For example, a dashboard page can use many tables that store information about ecosystem members and business processes; a high-level contract can update several tables that are used by ecosystem apps.
+    
+    You can define what menu is displayed for the page by editing page properties in *Admin* > *Resources* > *Pages*. For example, if your app has several pages, you may want to create a menu to navigate between these pages and assign it to all pages of your app.
 
 
 Add a menu item
@@ -643,30 +653,138 @@ Modify the :ref:`DBFind <DBFind_templates>` function call again. This time it mu
         DBFind(Name: testtable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_offset#)
 
 
-Buttons
-"""""""
+Navigation buttons
+""""""""""""""""""
 
 :ref:`Buttons <Button>` in Protypo can invoke contracts and open pages, depending on the arguments.
 
 If you haven't already done so, open the page in the editor, and delete the existing *More* button.
 
-Afterwards, locate the :ref:`Div` function call that defines the footer, ``Div(Class: panel-footer text-right)``. Add the button code to it. 
+Afterwards, locate the :ref:`Div` function call that defines the footer, ``Div(Class: panel-footer text-right)``. Add the button code to it.
+
+    .. code-block:: js
+
+        Div(Class: panel-footer text-right) {
+
+        }
 
 The *Previous* button will be displayed only if there is at least one step to go back to. The new offset for the page, ``offset_previous`` is calculated when the button is added. Parameters are passed to the reopened page in the ``PageParams`` parameter.
 
     .. code-block:: js
 
-    If(#table_offset# >= 25) {
-        SetVar(offset_previous, Calculate(#table_offset# - 25))
-        Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_offset=#offset_previous#")
-    }
+        If(#table_offset# >= 25) {
+            SetVar(offset_previous, Calculate(#table_offset# - 25))
+            Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_offset=#offset_previous#")
+        }
 
 
 The *Next* button will be displayed only if the total record count is more than what is displayed on the page. The new offset for the page, ``offset_next`` is calculated when the button is added. Parameters are passed to the reopened page in the ``PageParams`` parameter.
 
     .. code-block:: js
 
-  If(#record_count# >= Calculate(#table_offset# + 25)) {
-    SetVar(offset_next, Calculate(#table_offset# + 25))
-    Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_offset=#offset_next#")
-  }
+        If(#record_count# >= Calculate(#table_offset# + 25)) {
+            SetVar(offset_next, Calculate(#table_offset# + 25))
+            Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_offset=#offset_next#")
+        }
+
+After the buttons are added, save the page and test it from the *Home* > *Messages* menu item.
+
+
+Sending messages
+^^^^^^^^^^^^^^^^
+
+In Protypo, contracts are activated with buttons. 
+
+The :func:`Button` function has two arguments for contracts:
+
+.. describe:: Contract
+
+    Name of the contract that must be activated.
+
+.. describe:: Params
+
+    Input parameters for the contract.
+
+
+Form
+""""
+
+To send data to contracts, add a form to the app's page. This form must have an input field for the message, and a button that will activate the AppContract contract.
+
+Below is an example of such form. It is enclosed in its own :func:`Div`. Place it after the Div that holds the table.
+
+The :func:`Input` field of this form has a defined name, ``message_input``. This name is used by the button to send ``Message`` parameter value to the contract. Finally, :func:`Val` function is used to obtain the value of the input field.
+
+.. code-block:: js
+
+    Div(Class: panel panel-primary) {
+      Form() {
+            Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
+            Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)")
+      }
+    }
+
+
+Page refresh
+""""""""""""
+
+One final functionality that must be implemented is the automatic update of the table located on the page. When a user sends a new message, it must be displayed in the table.
+
+You can implement this by making the *Send* button also reopen the current page. The ``#table_offset#`` parameter must be passed to the page without changes.
+
+Add ``Page`` and ``PageParams`` arguments to *Send* button code like demonstrated below.
+
+.. code-block:: js
+
+    Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_offset=#table_offset#")
+
+
+Full page code
+^^^^^^^^^^^^^^
+
+This part introduced many changes to the application page template. Below is the full code for the app page.
+
+.. code-block:: js
+
+    If(GetVar(table_offset)){
+    }.Else{
+        SetVar(table_offset, 0)
+    }
+
+    DBFind(Name: testtable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_offset#)
+
+    Div(Class: panel panel-primary) {
+     Div(Class: panel-heading, Body: Table block)
+     Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
+     Div(Class: panel-footer text-right) {
+
+      If(#table_offset# >= 25) {
+        SetVar(offset_previous, Calculate(#table_offset# - 25))
+        Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_offset=#offset_previous#")
+      }
+      
+      If(#record_count# >= Calculate(#table_offset# + 25)) {
+        SetVar(offset_next, Calculate(#table_offset# + 25))
+        Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_offset=#offset_next#")
+      }
+
+     }
+    }
+
+    Div(Class: panel panel-primary) {
+      Form() {
+            Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
+            Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_offset=#table_offset#")
+      }
+    } 
+
+
+Conclusion
+----------
+
+This tutorial stops at the point where you have the basic application for your ecosystem. It doesn't explain other important topics for application developers like layout styles, access rights management and interaction between apps and resources. Please consult the rest of the documentation for more information about these advanced topics.
+
+.. todo::
+
+    Redirect to content focus for app developers (/topics).
+
