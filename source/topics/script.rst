@@ -95,6 +95,7 @@ The action section contains the contract's main program code that retrieves addi
 		DBUpdate("keys", $recipient,"+amount,pub", $amount, $Pub)
 	}
 
+.. _simvolio-predefined-values:
 
 Variables in the contract
 ==============================
@@ -102,7 +103,7 @@ Contract input data, declared in the data section, is passed to other sections t
 
 A contract can access predefined variables that contain data about the transaction, from which this contract was called.
 
-* ``$time` – transaction time, int,
+* ``$time`` – transaction time, int,
 * ``$ecosystem_id`` – ecosystem ID, int,
 * ``$block`` – number of the block, in which this transaction is included, int,
 * ``$key_id`` – ID of the account that signed the transaction; the value will be zero for VDE contracts,
