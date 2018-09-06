@@ -52,9 +52,9 @@ For installation instructions, see the `quick-start readme <quick-start-readme>`
 Molis
 ^^^^^
 
-For this tutorial, you'll be writing contract code, page template code, and performing all other actions in the :ref:`Molis client <molis>`. Molis also provides a way to retrieve, save, and execute contract code on the blockchain, manage data structures (tables), assign access rights, and create applications.
+For this tutorial, you'll be writing contract code, page template code, and performing all other actions in the Molis client. Molis also provides a way to retrieve, save, and execute contract code on the blockchain, manage data structures (tables), assign access rights, and create applications.
 
-The "root" account for |platform| ecosystems is called :ref:`founder's account <ecosystem_roles>`. By default, this account has access to all operations. You must use this account to introduce major changes to the ecosystem, such as creating new apps and tables.
+The "root" account for |platform| ecosystems is called *founder's account*. By default, this account has access to all operations. You must use this account to introduce major changes to the ecosystem, such as creating new apps and tables.
 
 To login to Molis with founder's account: 
 
@@ -808,7 +808,7 @@ This part introduced many changes to the application page template. Below is the
 Conclusion
 ----------
 
-This tutorial stops at the point where you have the basic application for your ecosystem. It doesn't explain other important topics for application developers like layout styles, access rights management and interaction between apps and resources. Please consult the rest of the documentation for more information about these advanced topics.
+This tutorial stops at the point where you have the basic application for your ecosystem. It doesn't explain other important topics for application developers like layout styles, access rights management and interaction between apps and resources. Please consult the rest of the documentation for more information about these advanced topics. 
 
 .. todo::
 
