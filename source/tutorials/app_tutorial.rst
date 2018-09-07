@@ -28,7 +28,7 @@ The goal of this tutorial is to create an application for |platform|.
 
 The application starts simple and grows in complexity as the tutorial progresses.
 
-The final version of the app stores simple messages (strings) on the blockchain with a timestamp and a message sender's account identifier. A user can access the list of messages and add new messages from the app's page. The app's page can be accessed from the ecosystem menu.
+The final version of the app stores simple messages (strings) in a table with a timestamp and a message sender's account identifier. A user can access the list of messages and add new messages from the app's page. The app's page can be accessed from the ecosystem menu.
 
 .. todo::
     
@@ -47,16 +47,89 @@ This tutorial uses |platform| `quick start <quick-start>`_. The quick start prov
 For installation instructions, see the `quick-start readme <quick-start-readme>`_ on GitHub.
 
 
-.. _founder-login:
-
 Molis
 ^^^^^
 
-For this tutorial, you'll be writing contract code, page template code, and performing all other actions in the Molis client. Molis also provides a way to retrieve, save, and execute contract code on the blockchain, manage data structures (tables), assign access rights, and create applications.
+Molis is a single unified client for |platform|. Molis provides funcionality for all user and ecosystem roles. Application developers develop and test applications in Molis. Ecosystem administrators use Molis to manage ecosystems. Users can interact with ecosystem apps via Molis.
 
-The "root" account for |platform| ecosystems is called *founder's account*. By default, this account has access to all operations. You must use this account to introduce major changes to the ecosystem, such as creating new apps and tables.
+For this tutorial, you'll be writing contract code, page template code, and performing all other actions in the Molis client. Molis also provides a way to retrieve, save, and execute contract code, manage data structures (tables), assign access rights, and create applications.
 
-To login to Molis with founder's account: 
+Molis client is installed as a part of quick-start. Each node has its own Molis client instance.
+
+
+Part 2: What is an app
+----------------------
+
+
+App components
+^^^^^^^^^^^^^^
+
+|platform| apps are a combination of their *resources*: contracts, tables, and user interfaces. United into a single app, resources usually implement a certain functionality or a business process. An app and all its resources (except data stored in tables) can be exported and imported to other ecosystems.
+
+
+* Contracts
+
+    Contracts are like functions. They take input parameters, validate these parameters, and perform defined actions.
+
+    Contracts are written in :doc:`Simvolio language</topics/script>`.
+
+
+* Tables
+
+    Tables hold information that is used by contracts and user interfaces.
+
+    Tables are regular database tables: you can query, update, and insert. These actions are performed with three :doc:`Simvolio language</topics/script>` functions: :func:`DBFind`, :func:`DBInsert`, and :func:`DBUpdate`.
+
+
+* User interfaces
+
+    User interfaces are pages and menus that will be displayed to users by Molis. 
+
+    The interfaces are written in :doc:`Protypo language </topics/templates2>`. Molis provides a visual editor for constructing interfaces.
+
+
+The blockchain
+^^^^^^^^^^^^^^
+
+All operations with contracts, tables, and interfaces are stored in the blockchain. A transaction is created for an operation. This transaction is then validated and executed in a virtual machine on all blockchain network nodes. Thus the state of resources is the same for all network nodes.
+
+For example, if you change the contract code and save the changes, Molis creates a transaction that introduces the contract code change. After the transaction is validated and included in the blockchain, the new contract code becomes available to all nodes in the network. Same principle applies to tables and data stored in them, and to user interfaces.
+
+
+Resource Access
+^^^^^^^^^^^^^^^
+
+The architecture of |platform| apps is designed to be modular. Contracts, tables, and interfaces can be used by many different apps. 
+
+An app is a collection of its resources: contracts, pages, and tables. All resources of all apps within one ecosystem are available to each other. One resource can be used by many apps. Resources do not need to belong to a same app to be accessible.
+
+For example, a dashboard page can use many tables that store information about ecosystem members and business processes; a contract can update several tables that are used by many ecosystem apps.
+
+.. todo::
+
+    Fix this after access rights chapter is written.
+
+Access to resources is managed with access rights, which are implemented with contracts.
+
+
+Part 3: The contract
+--------------------
+
+You now have your network of five nodes and a basic understanding of what is an app and how apps work. Your first application will start as a simple "Hello, World!" application.
+
+
+The spec
+^^^^^^^^
+
+The application stores a single string in a table. It doesn't have any user interface.
+
+
+Founder's account
+^^^^^^^^^^^^^^^^^
+
+The "root" privileges for an ecosystem are available to accounts with the *Admin* role. By default, this role has access to all operations. In a new ecosystem, Admin role is assigned to the *founder's account*. You must use this account to introduce major changes to the ecosystem, such as creating new apps and tables.
+
+To login to the ecosystem with founder's account: 
 
     #. Make sure that quick-start is running. See `quick-start documentation <quick-start-readme>`_ for more information.
 
@@ -69,84 +142,13 @@ To login to Molis with founder's account:
         Password for all accounts is |pass_quickstart|.
 
 
-
-Part 2: What is an app
-----------------------
-
-
-App components
-^^^^^^^^^^^^^^
-
-|platform| apps are a combination of contracts, tables, and user interfaces.
-
-* Contracts
-
-    Contracts are like functions. They take input parameters, validate these parameters, and perform defined actions.
-
-    Contracts are written in :doc:`Simvolio language</topics/script>` and are stored on the blockchain.
-
-
-* Tables
-
-    Tables hold information that is used by contracts and user interfaces.
-
-    Just like with regular database tables, you can query, update, and insert. These actions are performed with three :doc:`Simvolio language</topics/script>` functions: :func:`DBFind`, :func:`DBInsert`, and :func:`DBUpdate`.
-
-
-* User interfaces
-
-    User interfaces are pages and menus that will be displayed to users by Molis. 
-
-    The interfaces are written in :doc:`Protypo language </topics/templates2>`. Molis provides a visual editor for constructing interfaces.
-
-
-Modularity
-^^^^^^^^^^
-
-The architecture of |platform| apps is designed to be modular. Contracts, tables, and interfaces are stored in the blockchain and can be used by many different apps. 
-
-For example, if you change the contract code, you must make a transaction that introduces the contract code change. After the transaction is validated and included in the blockchain, the new contract code becomes available to all nodes in the network. Same principle applies to tables and data stored in them, and to user interfaces.
-
-.. todo::
-
-    Illustration needed.
-
-
-Resource Access
-^^^^^^^^^^^^^^^
-
-An app is a collection of its resources: contracts, pages, and tables. All resources of all  apps within one ecosystem are available to each other. One resource can be used by many apps. Resources do not need to belong to a same app to be accessible.
-
-For example, a dashboard page can use many tables that store information about ecosystem members and business processes; a high-level contract can update several tables that are used by many ecosystem apps.
-
-.. todo::
-
-    Fix this after access rights chapter is written.
-
-Access to resources is managed with access rights, which are implemented with contracts.
-
-
-Part 3: The contract
---------------------
-
-You now have your blockchain network of five nodes and a basic understanding of what is an app and how apps work. Your first application will start as a simple "Hello, World!" application.
-
-
-The spec
-^^^^^^^^
-
-The application stores a single string on the blockchain. It doesn't have any user interface but uses a table to store the string.
-
-
 New app
 ^^^^^^^
 
-|platform| apps are created via transactions. By default, only ecosystem's founder can create an app. You can create new apps from Molis.
+Once you are logged as ecosystem's founder, you can create a new app.
 
 
 To create a new app:
-
-    #. :ref:`Login as the founder <founder-login>`. 
 
     #. Go to the *Admin* tab.
 
@@ -271,7 +273,7 @@ To start, give a name to your contract.
 Data section
 """"""""""""
 
-Fill the ``data`` section. The app must write strings to the blockchain, so a ``string`` type variable is needed.
+Fill the ``data`` section. The app must write strings to the table, so a ``string`` type variable is needed.
 
 In the example below, ``Message`` is the name of the variable, ``string`` is its type.
 
@@ -285,7 +287,7 @@ In the example below, ``Message`` is the name of the variable, ``string`` is its
 Condition section
 """""""""""""""""
 
-Fill the ``conditions`` section. The single validation condition is that the specified string must not be empty. 
+Fill the ``conditions`` section. The single validation condition is that the specified string must not be empty. If ``Message`` length is ``0``, the contract will generate an alert with the defined message upon execution.
 
 .. code-block:: js
 
@@ -341,7 +343,7 @@ The contract is ready for testing:
 
     #. In the Editor menu, click *Save*.
 
-        This updates the contract code on the blockchain.
+        This updates the contract code. The updated version becomes available to all the network nodes.
 
     #. In the Editor menu, click *Execute*.
 
@@ -377,7 +379,7 @@ After the contract is working, it's time to expand it into something more useful
 The spec
 ^^^^^^^^
 
-The app stores strings on the blockchain, like entries in a log. Every string has an author and a timestamp. 
+The app stores strings in a table, like entries in a log. Every string has an author and a timestamp. 
 
 A user can view the stored list of strings from the application page, which is a simple table at this point.
 
@@ -407,13 +409,9 @@ Updated contract
 
 Update the contract code to handle author IDs and timestamps. 
 
-Author IDs are identifers of the ecosystem accounts. Timestamps are the date and time of the transaction in the Unix time format.
+Author IDs are identifers of the ecosystem accounts. Timestamps are the date and time of the contract execution in the Unix time format.
 
-Both of these values are provided by the :ref:`predefined values <simvolio-predefined-values>`. Since there is no need to input or validate the predefined values, changes are needed only in the action section.
-
-
-Action section
-""""""""""""""
+Both of these values are provided by the :ref:`predefined variables <simvolio-predefined-variables>`. Since there is no need to input or validate the predefined variables, changes are needed only in the action section.
 
 Change the contract so that the author's ID and the timestamp are written to the table when a message is added. The author's ID is defined by ``$key_id``, the timestamp is defined by ``$time``.
 
@@ -480,7 +478,7 @@ At the moment, the page template does nothing. Change the code, so that the page
 
 #. To request data from a table, use the :func:`DBFind` function. 
 
-    The function call in the following exaple gets data from the ``apptable`` table, puts it into the ``src_table`` source, and orders it by the timestamp field. The ``src_table`` source is later used as a source of data for the displayed table.
+    The function call in the following exaple gets data from the ``apptable`` table, puts it into the ``src_table`` source, and orders it by the timestamp field. The ``src_table`` source is later used as a source of data for the table view on the page.
 
     .. code-block:: js
 
@@ -540,9 +538,9 @@ In this part, you'll be finalizing the app, so it looks and behaves like an actu
 The spec
 ^^^^^^^^
 
-The app stores messages on the blockchain, like entries in a log. Every message has an author and a timestamp. 
+The app stores messages in a table, like entries in a log. Every message has an author and a timestamp. 
 
-A user can view the stored messages by opening the application page from the ecosystem menu. The default view holds 25 mesages and provides a way to browse more.
+A user can view the stored messages by opening the application page from the ecosystem menu. The default table view holds 25 mesages and provides a way to browse more.
 
 A user can add new messages from the UI page, one message at a time.
 
@@ -550,7 +548,7 @@ A user can add new messages from the UI page, one message at a time.
 The menu
 ^^^^^^^^
 
-The menus are always linked to pages. For example, the ecosystem menu that is displayed on the *Home* tab is linked to the ``default_page`` page.
+A page is always linked to a menu. For example, the the ``default_page`` page that is displayed on the *Home* tab is linked to the default ecosystem menu, ``default_menu``.
 
 Because the tutorial app is small (just one page), there is no need to create an individual menu for it. A new menu item in the default menu will be enough.
 
@@ -607,20 +605,52 @@ Check that the new menu item works:
     The app's page will open.
 
 
+
+Sending messages
+^^^^^^^^^^^^^^^^
+
+Buttons in Protypo can execute contracts and open pages, depending on the arguments.
+
+The :func:`Button` function has two arguments for contracts:
+
+* ``Contract``
+
+    Name of the contract that must be activated.
+
+* ``Params``
+
+    Input parameters for the contract.
+
+
+Form
+""""
+
+To send data to contracts, add a form to the app's page. This form must have an input field for the message, and a button that will activate the AppContract contract.
+
+Below is an example of such form. It is enclosed in its own :func:`Div`. Place it after the Div element that holds the table view. The :func:`Input` field of this form has a defined name, ``message_input``. This name is used by the button to send ``Message`` parameter value to the contract. Finally, :func:`Val` function is used to obtain the value of the input field.
+
+.. code-block:: default
+
+    Div(Class: panel panel-primary) {
+      Form() {
+            Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
+            Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)")
+      }
+    }
+
+Test this new functionality by sending messages. You may notice that the table doesn't refresh when a new message is sent. This is addressed :ref:`later in this tutorial <page-refresh>`.
+
+
 Table navigation
 ^^^^^^^^^^^^^^^^
 
-The default table can show only 25 first entries. Add a simple navigation that will allow users to navigate all table entries.
-
-.. note::
-
-    To have more than 25 messages, you can add extra table entries by executing the contract several times with different values.
+The default table view on the page will display only 25 first entries. Add a simple navigation that will allow users to navigate all table entries.
 
 
 Navigation buttons
 """"""""""""""""""
 
-The table navigation will use two buttons. Each button will reload the app's page and pass parameters to it.
+The navigation will use two buttons. Each button will reload the app's page and pass parameters to it.
 
 
     * *Previous* button will show previous 25 entries. If there are no additional entries, the button will not be displayed.
@@ -631,11 +661,11 @@ The table navigation will use two buttons. Each button will reload the app's pag
 Variables
 """""""""
 
-This navigation requires two variables to store the table state: 
+This navigation requires two variables to store the table view state: 
 
-    * ``#table_offset#``
+    * ``#table_view_offset#``
 
-        This variable stores the current table offset.
+        This variable stores the current table view offset.
 
         Navigation buttons will pass this as a parameter when reloading the page.
 
@@ -659,28 +689,28 @@ To calculate ``#record_count#``, modify the existing :func:`DBFind` function cal
 Table offset
 """"""""""""
 
-The table offset must be passed to the page when it is opened. If ``#table_offset#`` is not passed, it is assumed to be ``0``.
+The table view offset must be passed to the page when it is opened. If ``#table_view_offset#`` is not passed, it is assumed to be ``0``.
 
 Add the following code to the top of the page template. This code uses conditionals. :func:`GetVar` function checks if the variable is set. :func:`SetVar` function sets the variable.
 
     .. code-block:: default
 
-        If(GetVar(table_offset)){
+        If(GetVar(table_view_offset)){
         }.Else{
-            SetVar(table_offset, 0)
+            SetVar(table_view_offset, 0)
         }
 
-Modify the :func:`DBFind` function call again. This time it must use the new table offset. 
+Modify the :func:`DBFind` function call again. This time it must use the new table view offset. 
 
     .. code-block:: default
 
-        DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_offset#)
+        DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
 
 
 Button code
 """""""""""
 
-Buttons in Protypo can invoke contracts and open pages, depending on the arguments.
+Buttons in Protypo can execute contracts and open pages, depending on the arguments.
 
 If you haven't already done so, open the page in the editor, and delete the existing *More* button.
 
@@ -692,23 +722,23 @@ Afterwards, locate the :func:`Div` function call that defines the footer, ``Div(
 
         }
 
-The *Previous* button will be displayed only if there is at least one step to go back to. The new offset for the page, ``offset_previous`` is calculated when the button is added. Parameters are passed to the reopened page in the ``PageParams`` parameter.
+The *Previous* button will be displayed only if there is at least one step to go back to. The new table view offset for the page, ``offset_previous`` is calculated when the button is added. Parameters are passed to the reopened page in the ``PageParams`` parameter.
 
     .. code-block:: default
 
-        If(#table_offset# >= 25) {
-            SetVar(offset_previous, Calculate(#table_offset# - 25))
-            Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_offset=#offset_previous#")
+        If(#table_view_offset# >= 25) {
+            SetVar(offset_previous, Calculate(#table_view_offset# - 25))
+            Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_view_offset=#offset_previous#")
         }
 
 
-The *Next* button will be displayed only if the total record count is more than what is displayed on the page. The new offset for the page, ``offset_next`` is calculated when the button is added. Parameters are passed to the reopened page in the ``PageParams`` parameter.
+The *Next* button will be displayed only if the total record count is more than what is displayed on the page. The new table view offset for the page, ``offset_next`` is calculated when the button is added. Parameters are passed to the reopened page in the ``PageParams`` parameter.
 
     .. code-block:: default
 
-        If(#record_count# >= Calculate(#table_offset# + 25)) {
-            SetVar(offset_next, Calculate(#table_offset# + 25))
-            Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_offset=#offset_next#")
+        If(#record_count# >= Calculate(#table_view_offset# + 25)) {
+            SetVar(offset_next, Calculate(#table_view_offset# + 25))
+            Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_view_offset=#offset_next#")
         }
 
 
@@ -718,51 +748,20 @@ The *Next* button will be displayed only if the total record count is more than 
 After the buttons are added, save the page and test it from the *Home* > *Messages* menu item.
 
 
-Sending messages
-^^^^^^^^^^^^^^^^
-
-In Protypo, contracts are activated with buttons. 
-
-The :func:`Button` function has two arguments for contracts:
-
-* ``Contract``
-
-    Name of the contract that must be activated.
-
-* ``Params``
-
-    Input parameters for the contract.
-
-
-Form
-""""
-
-To send data to contracts, add a form to the app's page. This form must have an input field for the message, and a button that will activate the AppContract contract.
-
-Below is an example of such form. It is enclosed in its own :func:`Div`. Place it after the Div element that holds the table. The :func:`Input` field of this form has a defined name, ``message_input``. This name is used by the button to send ``Message`` parameter value to the contract. Finally, :func:`Val` function is used to obtain the value of the input field.
-
-.. code-block:: default
-
-    Div(Class: panel panel-primary) {
-      Form() {
-            Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
-            Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)")
-      }
-    }
-
+.. _page-refresh:
 
 Page refresh
 """"""""""""
 
 One final functionality that must be implemented is the automatic update of the table located on the page. When a user sends a new message, it must be displayed in the table.
 
-You can implement this by making the *Send* button re-open the current page in addition to executing the contract. The ``#table_offset#`` parameter must be passed to the page without changes.
+You can implement this by making the *Send* button re-open the current page in addition to executing the contract. The ``#table_view_offset#`` parameter must be passed to the page without changes.
 
 Add ``Page`` and ``PageParams`` arguments to *Send* button code like demonstrated below.
 
 .. code-block:: default
 
-    Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_offset=#table_offset#")
+    Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_view_offset=#table_view_offset#")
 
 
 Full page code
@@ -772,26 +771,26 @@ This part introduced many changes to the application page template. Below is the
 
 .. code-block:: default
 
-    If(GetVar(table_offset)){
+    If(GetVar(table_view_offset)){
     }.Else{
-        SetVar(table_offset, 0)
+        SetVar(table_view_offset, 0)
     }
 
-    DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_offset#)
+    DBFind(Name: apptable, Source: src_table).Columns(Columns: "author,timestamp,message").Order(timestamp).Count(record_count).Offset(#table_view_offset#)
 
     Div(Class: panel panel-primary) {
      Div(Class: panel-heading, Body: Table block)
      Table(Columns: "AUTHOR=author,TIME=timestamp,MESSAGE=message", Source: src_table)
      Div(Class: panel-footer text-right) {
 
-      If(#table_offset# >= 25) {
-        SetVar(offset_previous, Calculate(#table_offset# - 25))
-        Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_offset=#offset_previous#")
+      If(#table_view_offset# >= 25) {
+        SetVar(offset_previous, Calculate(#table_view_offset# - 25))
+        Button(Class: btn btn-primary, Body: Previous, Page: AppPage, PageParams:"table_view_offset=#offset_previous#")
       }
       
-      If(#record_count# >= Calculate(#table_offset# + 25)) {
-        SetVar(offset_next, Calculate(#table_offset# + 25))
-        Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_offset=#offset_next#")
+      If(#record_count# >= Calculate(#table_view_offset# + 25)) {
+        SetVar(offset_next, Calculate(#table_view_offset# + 25))
+        Button(Class: btn btn-primary, Body: Next, Page: AppPage, PageParams:"table_view_offset=#offset_next#")
       }
 
      }
@@ -800,7 +799,7 @@ This part introduced many changes to the application page template. Below is the
     Div(Class: panel panel-primary) {
       Form() {
             Input(Name: message_input, Class: form-control, Type: text, Placeholder: "Write a message...", )
-            Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_offset=#table_offset#")
+            Button(Class: btn btn-primary, Body: Send, Contract: AppContract, Params: "Message=Val(message_input)", Page:AppPage, PageParams:"table_view_offset=#table_view_offset#")
       }
     } 
 
