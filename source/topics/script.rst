@@ -95,7 +95,7 @@ The action section contains the contract's main program code that retrieves addi
 		DBUpdate("keys", $recipient,"+amount,pub", $amount, $Pub)
 	}
 
-.. _simvolio-predefined-values:
+.. _simvolio-predefined-variables:
 
 Variables in the contract
 ==============================
