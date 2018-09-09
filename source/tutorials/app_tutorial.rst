@@ -42,9 +42,9 @@ Part 1: The environment
 quick-start
 ^^^^^^^^^^^
 
-This tutorial uses |platform| `quick start <quick-start>`_. The quick start provides `docker`_ containers for five network nodes. Each node has its own backend, database, and client. The manage.sh script can be used to control the nodes.
+This tutorial uses |platform| https://github.com/GenesisKernel/quick-start. The quick start provides `docker`_ containers for five network nodes. Each node has its own backend, database, and client. The manage.sh script can be used to control the nodes.
 
-For installation instructions, see the `quick-start readme <quick-start-readme>`_ on GitHub.
+For installation instructions, see the https://github.com/GenesisKernel/quick-start/blob/master/README.md on GitHub.
 
 
 Molis
