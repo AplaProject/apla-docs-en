@@ -7,8 +7,8 @@
 .. _quick-start: https://github.com/GenesisKernel/quick-start
 .. .. _quick-start: https://github.com/AplaProject/quick-start
 
-.. _quick-start-readme: https://github.com/GenesisKernel/quick-start/blob/master/README.md
-.. .. _quick-start-readme: https://github.com/AplaProject/quick-start/blob/master/README.md
+.. _quick-start README: https://github.com/GenesisKernel/quick-start/blob/master/README.md
+.. .. _quick-start-README: https://github.com/AplaProject/quick-start/blob/master/README.md
 
 .. password for quick-start
 .. |pass_quickstart| replace:: ``genesis``
@@ -42,9 +42,9 @@ Part 1: The environment
 quick-start
 ^^^^^^^^^^^
 
-This tutorial uses |platform| https://github.com/GenesisKernel/quick-start. The quick start provides `docker`_ containers for five network nodes. Each node has its own backend, database, and client. The manage.sh script can be used to control the nodes.
+This tutorial uses |platform| `quick-start`_. The quick start provides `docker`_ containers for five network nodes. Each node has its own backend, database, and client. The manage.sh script can be used to control the nodes.
 
-For installation instructions, see the https://github.com/GenesisKernel/quick-start/blob/master/README.md on GitHub.
+For installation instructions, see the `quick-start README`_ on GitHub.
 
 
 Molis
@@ -131,7 +131,7 @@ The "root" privileges for an ecosystem are available to accounts with the *Admin
 
 To login to the ecosystem with founder's account: 
 
-    #. Make sure that quick-start is running. See `quick-start documentation <quick-start-readme>`_ for more information.
+    #. Make sure that quick-start is running. See `quick-start README`_ for more information.
 
     #. Run ``$ sudo ./manage.sh start-clients``
 
