@@ -1103,7 +1103,7 @@ Parameters
 
 * *Name string* - parameter name,
 * *Value string* - parameter value,
-* *Conditions string - rights for parameter change.
+* *Conditions string* - rights for parameter change.
 
 EditParameter
 -------------
@@ -1320,7 +1320,7 @@ Parameters
 Import 
 ------
 
-This contract imports data from a *. sim file into the ecosystem.
+This contract imports data from a \*.sim file into the ecosystem.
 
 Parameters
 
