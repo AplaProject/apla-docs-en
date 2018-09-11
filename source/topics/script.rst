@@ -257,9 +257,11 @@ Contracts in the platform are written using an original (developed by the platfo
 - Operations with strings.
 
 Basic elements and constructions of the language
-==============================
+================================================
+
 Data Types and Variables
-------------------------------
+------------------------
+
 Data type should be defined for every variable. In obvious cases, data types are converted automatically. The following data types can be used:
 
 * ``bool`` - Boolean, can be true or false,
@@ -420,9 +422,11 @@ It should be kept in mind that these variables are available not only in the fun
 The value that needs to be returned from the contract should be assigned to a predefined variable ``$result``.
 
 Retrieving values from the database
-==============================
+===================================
+
 DBFind(table string) [.Columns(columns string)] [.Where(where string, params ...)] [.WhereId(id int)] [.Order(order string)] [.Limit(limit int)] [.Offset(offset int)] [.Ecosystem(ecosystemid int)] array
-------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 The Function receives data from a database table in accordance with the request specified. Returned is an *array* comprised of *map* associative arrays.
 
 * *table* - table name,
@@ -452,7 +456,8 @@ The Function receives data from a database table in accordance with the request 
    }
 
 DBRow(table string) [.Columns(columns string)] [.Where(where string, params ...)] [.WhereId(id int)] [.Order(order string)] [.Ecosystem(ecosystemid int)] map
-------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 The function returns an associative array *map* with data obtained from a database table in accordance with the specified query.
 
  * *table* - table name,
@@ -469,7 +474,7 @@ The function returns an associative array *map* with data obtained from a databa
    Println(map)
     
 EcosysParam(name string) string
-------------------------------
+-------------------------------
 The function returns the value of a specified parameter from the ecosystem settings (*parameters* table).
 
 * *name* - name of the received parameter,
@@ -480,7 +485,7 @@ The function returns the value of a specified parameter from the ecosystem setti
     Println( EcosysParam("gov_account"))
 
 LangRes(label string, lang string) string
-------------------------------
+-----------------------------------------
 This function returns a language resource with name label for language lang, specified as a two-character code, for instance, *en, fr, ru*; if there is no language resource for a selected language, the result will be returned in English.
 
 * *label* - language resource name,
@@ -492,9 +497,11 @@ This function returns a language resource with name label for language lang, spe
     error LangRes("problems", "de")
                      	
 Changing values in tables
-==============================
+=========================
+
 DBInsert(table string, params string, val ...) int
-------------------------------
+--------------------------------------------------
+
 The function adds a record to a specified *table* and returns the **id** of the inserted record.
 
 * *tblname*  – name of the table in the database,
@@ -506,7 +513,8 @@ The function adds a record to a specified *table* and returns the **id** of the 
     DBInsert("mytable", "name,amount", "John Dow", 100)
 
 DBUpdate(tblname string, id int, params string, val...)
-------------------------------
+-------------------------------------------------------
+
 The function changes the column values in the table in the record with a specified **id**. If a record with this identifier does not exist, the operation will result with an error.
   
 * *tblname*  – name of the table in the database,
@@ -519,7 +527,8 @@ The function changes the column values in the table in the record with a specifi
     DBUpdate("mytable", myid, "name,amount", "John Dow", 100)
 
 DBUpdateExt(tblname string, column string, value (int|string), params string, val ...)
-------------------------------
+--------------------------------------------------------------------------------------
+
 The function updates columns in a record whose column has a specified value. The table should have an index for a specified column.
 
 * *tblname*  – name of the table in the database,
@@ -533,9 +542,11 @@ The function updates columns in a record whose column has a specified value. The
     DBUpdateExt("mytable", "address", addr, "name,amount", "John Dow", 100)
     
 Array operations
-==============================
+================
+
 Join(in array, sep string) string
-------------------------------
+---------------------------------
+
 This function merges the elements of the *in* array into a string with the specified *sep* separator.
 
 * *in* - is the name of the *array* type array, the elements of which you want to merge,
@@ -549,7 +560,8 @@ This function merges the elements of the *in* array into a string with the speci
     val = Join(myarr, ",")
 
 Split(in string, sep string) array
-------------------------------
+----------------------------------
+
 This function splits the *in* string into elements using *sep* as a separator, and puts them into an array.
 
 * *in* is the initial string,
@@ -561,7 +573,8 @@ This function splits the *in* string into elements using *sep* as a separator, a
     myarr = Split("first,second,third", ",")
 
 Len(val array) int
-------------------------------
+------------------
+
 This function returns the number of elements in the specified array.
 
 * *val* - an array of the *array* type.
@@ -573,7 +586,8 @@ This function returns the number of elements in the specified array.
     }
 
 Row(list array) map
-------------------------------
+-------------------
+
 This function returns the first *map* associative array from the *list* array. If the *list* is empty, then the result will be an empty *map*. This function is mostly used with the DBFind function. The *list* parameter should not be specified in this case. 
 
 * *list* - a map array, returned by the **DBFind** function.
@@ -585,7 +599,8 @@ This function returns the first *map* associative array from the *list* array. I
    Println(ret)
 
 One(list array, column string) string
-------------------------------
+-------------------------------------
+
 The function returns the value of the *column* key from the first associative array in the *list* array. If the *list* list is empty, then nil is returned. This function is mostly used with the DBFind function. The *list* parameter should not be specified in this case. 
 
 * *list* - a map array, returned by the **DBFind** function,
@@ -600,9 +615,11 @@ The function returns the value of the *column* key from the first associative ar
    }
 
 Operations with contracts and conditions
-==============================
+========================================
+
 CallContract(name string, params map)
-------------------------------
+-------------------------------------
+
 The function calls a contract by its name. All the parameters specified in the section *data* of the contract should be listed in the transmitted array. The function returns the value that was assigned to **$result**  variable in the contract.
 
 * *name*  - name of the contract being called,
@@ -615,7 +632,8 @@ The function calls a contract by its name. All the parameters specified in the s
     CallContract("MyContract", par)
 
 ContractAccess(name string, [name string]) bool
-------------------------------
+-----------------------------------------------
+
 The function checks whether the name of the executed contract matches with one of the names listed in the parameters. Typically used to control access of contracts to tables. The function is specified in the *Permissions* fields when editing table columns or in the *Insert* and *New Column* fields in the *Table permission* section.
 
 * *name* – contract name.
@@ -626,7 +644,8 @@ The function checks whether the name of the executed contract matches with one o
     ContractAccess("MyContract","SimpleContract") 
     
 ContractConditions(name string, [name string]) bool
-------------------------------
+---------------------------------------------------
+
 The function calls the **conditions** section from contracts with specified names. For such contracts, the *data* block must be empty. If the conditions *conditions* is executed without errors, then *true* is returned. If an error is generated during execution, the parent contract will also end with this error. This function is usually used to control access of contracts to tables and can be called in the *Permissions* fields when editing system table.
 
 * *name* – contract name.
@@ -636,7 +655,8 @@ The function calls the **conditions** section from contracts with specified name
     ContractConditions("MainCondition")  
 
 EvalCondition(tablename string, name string, condfield string) 
-------------------------------
+--------------------------------------------------------------
+
 Function takes from the *tablename* table the value of the *condfield* field from the record with the *’name’* field, which is equal to the *name* parameter and checks if the condition from the field *condfield* is made. 
 
 * *tablename* - name of the table,
@@ -649,28 +669,31 @@ Function takes from the *tablename* table the value of the *condfield* field fro
     
 GetContractById(id int) string
 ------------------------------
+
 The function returns the contract name by its identifier. If the contract can't be found, an empty string will be returned.
 
  * *id* - a contract identifier in the *contracts* table.
 
 .. code:: js
 
-    var id int
-    id = GetContractById(`NewBlock`)  
+    var name string
+    name = GetContractById($IdContract)  
     
 GetContractByName(name string) int
------------------------------- 
+----------------------------------
+
 The function returns a contract identifier in the *contracts* by its name. If the contract does not exist, a zero value will be returned.
 
  * *name* - a contract identifier in the *contracts* table.
 
 .. code:: js
 
-    var name string
-    name = GetContractByName($IdContract) 
+    var id int
+    id = GetContractByName(`NewBlock`) 
 
 ValidateCondition(condition string, state int) 
-------------------------------
+----------------------------------------------
+
 The function tries to compile the condition specified in the *condition* parameter. If a mistake occurs during the compilation process, the mistake will be generated and the calling contract will complete is’s job. This function is designed to check the correctness of the conditions when they change.
 
 * *condition* - verifiable condition,
@@ -682,9 +705,11 @@ The function tries to compile the condition specified in the *condition* paramet
     
 
 Operations with account addresses
-==============================
+=================================
+
 AddressToId(address string) int
-------------------------------
+-------------------------------
+
 Function returns the the identification number of the citizen by the string value of the address of his account. If the wrong adress is specified, then 0 returns. 
 
 * *address* - the account adress in the format XXXX-...-XXXX or in the form of number.
@@ -694,7 +719,8 @@ Function returns the the identification number of the citizen by the string valu
     wallet = AddressToId($Recipient)
     
 IdToAddress(id int) string
-------------------------------
+--------------------------
+
 Returns the address of a account based on its ID number. If a wrong ID is specified, returned is 'invalid'.
 
 * *id* - ID, numerical.
@@ -705,7 +731,8 @@ Returns the address of a account based on its ID number. If a wrong ID is specif
     
 
 PubToID(hexkey string) int
-------------------------------
+--------------------------
+
 The function returns the account address by the public key in hexadecimal encoding.
 
 * *hexkey* - public key in hexadecimal form.
@@ -717,9 +744,10 @@ The function returns the account address by the public key in hexadecimal encodi
 
 
 Operations with values of variables
-==============================
+===================================
+
 Float(val int|string) float
-------------------------------
+---------------------------
 The function converts an integer *int* or *string* to a floating-point number.
 
 * *val* - an integer or string.
@@ -729,7 +757,7 @@ The function converts an integer *int* or *string* to a floating-point number.
     val = Float("567.989") + Float(232)
 
 HexToBytes(hexdata string) bytes
-------------------------------
+--------------------------------
 The function converts a string with hexadecimal encoding to a *bytes* value (sequence of bytes).
 
 * *hexdata* – a string containing a hexadecimal notation.
@@ -740,7 +768,8 @@ The function converts a string with hexadecimal encoding to a *bytes* value (seq
     val = HexToBytes("34fe4501a4d80094")
        
 Random(min int, max int) int
-------------------------------
+----------------------------
+
 This function returns a random number in the range between min and max (min <= result < max). Both min and max should be positive numbers.
 
 * *min* is the minimum value for the random number,
@@ -751,7 +780,8 @@ This function returns a random number in the range between min and max (min <= r
     i = Random(10,5000)
    
 Int(val string) int
-------------------------------
+-------------------
+
 The function converts a string value to an integer.
 
 * *val*  – a string containing a number.
@@ -763,7 +793,8 @@ The function converts a string value to an integer.
     
 
 Sha256(val string) string
-------------------------------
+-------------------------
+
 The function returns **SHA256** hash of a specified string.
 
 * *val* - incoming line for which the **Sha256** hash should be calculated.
@@ -774,7 +805,8 @@ The function returns **SHA256** hash of a specified string.
     sha = Sha256("Test message")
 
 Str(val int|float) string
-------------------------------
+-------------------------
+
 The function converts a numeric *int* or *float* value to a string.
 
 * *val* - an integer or a floating-point number.
@@ -785,7 +817,8 @@ The function converts a numeric *int* or *float* value to a string.
     val = Str(myfloat)
 
 UpdateLang(name string, trans string)
-------------------------------
+-------------------------------------
+
 Function updates the language source in the memory. Is used in the transactions that change language sources.
 
 * *name* - name of the language source,
@@ -796,9 +829,11 @@ Function updates the language source in the memory. Is used in the transactions 
     UpdateLang($Name, $Trans)
 
 Operations with string values
-==============================
+=============================
+
 HasPrefix(s string, prefix string) bool
-------------------------------
+---------------------------------------
+
 Function returns true, if the string bigins from the specified substring *prefix*.
 
 * *s* - checked string,
@@ -811,7 +846,8 @@ Function returns true, if the string bigins from the specified substring *prefix
     }
 
 Contains(s string, substr string) bool
-------------------------------
+--------------------------------------
+
 Returnes true if the string *s* containts the substring *substr*.
 
 * *s* - checked string,
@@ -824,7 +860,8 @@ Returnes true if the string *s* containts the substring *substr*.
     }    
 
 Replace(s string, old string, new string) string
-------------------------------
+------------------------------------------------
+
 Function replaces in the *s* string all cccurrences of the *old* string to *new* string and returnes the result.  
 
 * *s* - source string,
@@ -836,7 +873,8 @@ Function replaces in the *s* string all cccurrences of the *old* string to *new*
     s = Replace($Name, `me`, `you`)
     
 Size(val string) int
-------------------------------
+--------------------
+
 The function returns the size of the specified string.
 
 * *val* - the string for which we have to calculate the size.
@@ -847,7 +885,8 @@ The function returns the size of the specified string.
     len = Size($Name) 
  
 Sprintf(pattern string, val ...) string
-------------------------------
+---------------------------------------
+
 The function forms a string based on specified template and parameters, you can use ``%d`` (number), ``%s`` (string), ``%f`` (float), ``%v`` (for any types).
 
 * *pattern*  - a template for forming a string.
@@ -857,7 +896,8 @@ The function forms a string based on specified template and parameters, you can 
     out = Sprintf("%s=%d", mypar, 6448)
 
 Substr(s string, offset int, length int) string
-------------------------------
+-----------------------------------------------
+
 Function returns the substring from the specified string starting from the offset *offset* (calculating from the 0) and with length *length*. In case of not correct offsets or length the empty column is returned. If the sum of offset and *length* is more than string size, then the substring will be returned from the offset to the end of the string.
 
 * *val* - string,
@@ -870,10 +910,11 @@ Function returns the substring from the specified string starting from the offse
     s = Substr($Name, 1, 10)
 
 Operations with system parameters
-==============================
+=================================
 
 SysParamString(name string) string
-------------------------------
+----------------------------------
+
 The function returns the value of the specified system parameter.
 
 * *name* - parameter name.
@@ -883,7 +924,7 @@ The function returns the value of the specified system parameter.
     url = SysParamString(`blockchain_url`)
 
 SysParamInt(name string) int
-------------------------------
+----------------------------
 The function returns the value of the specified system parameter in the form of a number.
 
 * *name* - parameter name.
@@ -893,7 +934,8 @@ The function returns the value of the specified system parameter in the form of 
     maxcol = SysParam(`max_columns`)
 
 DBUpdateSysParam(name, value, conditions string)
-------------------------------
+------------------------------------------------
+
 The function updates the value and the condition of the system parameter. If you do not need to change the value or condition, then specify an empty string in the corresponding parameter.
 
 * *name* - parameter name,
@@ -905,7 +947,7 @@ The function updates the value and the condition of the system parameter. If you
     DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
     
 Using JSON in PostgreSQL queries
-==============================
+================================
 
 **JSON** type can be specified as column type. In this case, use the following syntax: **columnname->fieldname** to address record fields. The obtained value will be recorded in the column with name **columnname.fieldname**. Syntax **columnname->fieldname** can be used in parameters *Columns,One,Where* when using **DBFind**.
 
@@ -922,7 +964,8 @@ Using JSON in PostgreSQL queries
 	
 
 Date/time operations in PostgreSQL queries
-==============================
+==========================================
+
 Functions do not allow direct possibilities to select, update, etc.. but they allow you to use the capabilities and functions of PostgreSQL when you get values and a description of the where conditions  in the samples. This includes, among other things, the functions for working with dates and time. For example, you need to compare the column *date_column* and the current time. If  *date_column* has the  type timestamp, then the expression will be the following ``date_column> now ()``. And if *date_column* stores time in Unix format as a number, then the expression will be ``to_timestamp (date_column)> now ()``.
 
 .. code:: js
@@ -948,11 +991,13 @@ If you have a string value of time and you need to write it in a field with the 
 
 
 Functions for VDE
-==============================
+=================
+
 The following functions can be used only in Virtual Dedicated Ecosystems (VDE) contracts.
 
 HTTPRequest(url string, method string, heads map, pars map) string
-------------------------------
+------------------------------------------------------------------
+
 This function sends an HTTP request to a specified address.
 
 * *url* - address, to which the request will be sent,
@@ -970,7 +1015,8 @@ This function sends an HTTP request to a specified address.
 	json = JSONToMap(ret)
 
 HTTPPostJSON(url string, heads map, pars string) string
-------------------------------
+-------------------------------------------------------
+
 This function is similar to the *HTTPRequest* function, but it sends a *POST* request and parameters are passed in one string.
 
 * *url* - address, to which the request will be sent,
@@ -991,15 +1037,18 @@ System Contracts
 System contracts are created by default during product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, ``@1NewContract``.
 
 List of System Contracts
-==============================
+========================
+
 NewEcosystem
-------------------------------
+------------
+
 This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. Parameters:
    
 * *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
 
 MoneyTransfer
-------------------------------
+-------------
+
 This contract transfers money from the current account in the current ecosystem to a specified account. Parameters:
 
 * *Recipient string* - recipient's account in any format – a number or ``XXXX-....-XXXX``,
@@ -1007,7 +1056,8 @@ This contract transfers money from the current account in the current ecosystem 
 * *Comment   string "optional"* - comments.
 
 NewContract
-------------------------------
+-----------
+
 This contract creates a new contract in the current ecosystem. Parameters:
 
 * *Value string* - text of the contract,there should be only one contract on the upper level,
@@ -1016,7 +1066,8 @@ This contract creates a new contract in the current ecosystem. Parameters:
 * *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
 
 EditContract
-------------------------------
+------------
+
 Editing the contract in the current ecosystem.
 
 Parameters
@@ -1026,7 +1077,8 @@ Parameters
 * *Conditions string "optional"* - rights for contract change.
 
 ActivateContract
-------------------------------
+----------------
+
 Binding of a contract to the account in the current ecosystem. Contracts can be tied only from the account, which was specified when the contract was created. After the contract is tied, this account will pay for execution of this contract.
 
 Parameters
@@ -1034,7 +1086,8 @@ Parameters
 * *Id int* - ID of the contract to activate.
 
 DeactivateContract
-------------------------------
+------------------
+
 Unbinds a contract from an account in the current ecosystem. Only the account which the contract is currently bound to can unbind it. After the contract is unbound, its execution will be paid by a user that executes it.
  
  Parameters
@@ -1042,17 +1095,19 @@ Unbinds a contract from an account in the current ecosystem. Only the account wh
 * *Id int* - identifier of the tied contract.
 
 NewParameter
-------------------------------
+------------
+
 This contract adds a new parameter to the current ecosystem. 
 
 Parameters
 
 * *Name string* - parameter name,
 * *Value string* - parameter value,
-* *Conditions string - rights for parameter change.
+* *Conditions string* - rights for parameter change.
 
 EditParameter
-------------------------------
+-------------
+
 This contract changes an existing parameter in the current ecosystem.
 
 Parameters
@@ -1062,7 +1117,8 @@ Parameters
 * *Conditions string* - new condition for parameter change.
 
 NewMenu
-------------------------------
+-------
+
 This contract adds a new menu in the current ecosystem.
 
 Parameters
@@ -1073,7 +1129,8 @@ Parameters
 * *Conditions string* - rights for menu change.
 
 EditMenu
-------------------------------
+--------
+
 This contract changes an existing menu in the current ecosystem.
 
 Parameters
@@ -1084,7 +1141,8 @@ Parameters
 * *Conditions string* - new rights for page change.
 
 AppendMenu
-------------------------------
+----------
+
 This contract adds text to an existing menu in the current ecosystem.
 
 Parameters
@@ -1093,7 +1151,8 @@ Parameters
 * *Value string* - text to be added.
 
 NewPage
-------------------------------
+-------
+
 This contract adds a new page in the current ecosystem. Parameters:
 
 * *Name string* - page name,
@@ -1102,7 +1161,8 @@ This contract adds a new page in the current ecosystem. Parameters:
 * *Conditions string* - rights for change.
 
 EditPage
-------------------------------
+--------
+
 This contract changes an existing page in the current ecosystem.
 
 Parameters
@@ -1113,7 +1173,8 @@ Parameters
 * *Conditions string "optional"* - new rights for page change.
 
 AppendPage
-------------------------------
+----------
+
 The contract adds text to an existing page in the current ecosystem.
 
 Parameters
@@ -1122,7 +1183,8 @@ Parameters
 * *Value string* - text that needs to be added to the page.
 
 NewBlock
-------------------------------
+--------
+
 This contract adds a new page block with a template to the current ecosystem. 
 
 Parameters
@@ -1132,7 +1194,8 @@ Parameters
 * *Conditions string* - rights for block change.
 
 EditBlock
-------------------------------
+---------
+
 This contract changes an existing block in the current ecosystem.
 
 Parameters
@@ -1142,7 +1205,8 @@ Parameters
 * *Conditions string* - new rights for change.
 
 NewTable
-------------------------------
+--------
+
 This contract adds a new table in the current ecosystem. 
 
 Parameters
@@ -1163,7 +1227,8 @@ Parameters
   * *update* - rights to change rights.
 
 EditTable
-------------------------------
+---------
+
 This contract changes access permissions to tables in the current ecosystem. 
 
 Parameters 
@@ -1176,7 +1241,8 @@ Parameters
   * *update* - condition to change data.   
 
 NewColumn
-------------------------------
+---------
+
 This contract adds a new column to a table in the current ecosystem. 
 
 Parameters
@@ -1188,7 +1254,8 @@ Parameters
 * *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
 
 EditColumn
-------------------------------
+----------
+
 This contract changes the rights to change a table column in the current ecosystem. 
 
 Parameters
@@ -1198,7 +1265,8 @@ Parameters
 * *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``.
 
 NewLang
-------------------------------
+-------
+
 This contract adds language resources in the current ecosystem. Permissions to add resources are set in the *changing_language* parameter in the ecosystem configuration. 
 
 Parameters
@@ -1208,7 +1276,8 @@ Parameters
 * *AppID int* - application ID.
 
 EditLang
-------------------------------
+--------
+
 This contract updates the language resource in the current ecosystem. Permissions to make changes are set in the *changing_language* parameter in the ecosystem configuration. 
 
 Parameters
@@ -1219,7 +1288,8 @@ Parameters
 * *AppID int* - application ID.
  
 NewSign
-------------------------------
+-------
+
 This contract adds the signature confirmation requirement for a contract in the current ecosystem.
 
 Parameters
@@ -1237,7 +1307,8 @@ Example of *Value*
 ``{"title": "Would you like to sign?", "params":[{"name": "Recipient", "text": "Wallet"},{"name": "Amount", "text": "Amount(EGS)"}]}`` 
 
 EditSign
-------------------------------
+--------
+
 The contract updates the parameters of a contract with a signature in the current ecosystem. 
 
 Parameters
@@ -1247,15 +1318,17 @@ Parameters
  * *Conditions string* - new condition for changing the signature parameters.
 
 Import 
-------------------------------
-This contract imports data from a *. sim file into the ecosystem.
+------
+
+This contract imports data from a \*.sim file into the ecosystem.
 
 Parameters
 
 * *Data string* - data to be imported in text format; this data is the result of export from an ecosystem to a .sim file.
 
 NewCron
-------------------------------
+-------
+
 The contract adds a new task in cron to be launched by timer. The contract is available only in VDE systems. Parameters:
 
 * *Cron string* - a string that defines the launch of the contract by timer in the *cron* format,
@@ -1265,7 +1338,8 @@ The contract adds a new task in cron to be launched by timer. The contract is av
 * *Conditions string* - rights to modify the task.
 
 EditCron
-------------------------------
+--------
+
 This contract changes the configuration of a task in cron for launch by timer. The contract is available only in VDE systems. Parameters:
 
 * *Id int* - task ID,
@@ -1276,7 +1350,7 @@ This contract changes the configuration of a task in cron for launch by timer. T
 * *Conditions string* - new rights to modify the task.
 
 UploadBinary
-------------------------------
+------------
 
 The contract adds/rewrites a static file in X_binaries. When calling a contract via HTTP API, ``multipart/form-data`` should be used; the ``DataMimeType`` parameter will be used with the form data.
  
