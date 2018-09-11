@@ -655,8 +655,8 @@ The function returns the contract name by its identifier. If the contract can't 
 
 .. code:: js
 
-    var id int
-    id = GetContractById(`NewBlock`)  
+    var name string
+    name = GetContractById($IdContract)  
     
 GetContractByName(name string) int
 ------------------------------ 
@@ -666,8 +666,8 @@ The function returns a contract identifier in the *contracts* by its name. If th
 
 .. code:: js
 
-    var name string
-    name = GetContractByName($IdContract) 
+    var id int
+    id = GetContractByName(`NewBlock`) 
 
 ValidateCondition(condition string, state int) 
 ------------------------------
