@@ -482,11 +482,9 @@ extend_cost_len
 extend_cost_new_state
 ---------------------
     
-    TBD
+    This parameter is deprecated. 
 
-    .. todo::
-
-        Described as NewState function cost in source, but there is no such function.
+    Use :ref:`extend_cost_create_ecosystem` instead.
 
 
 .. _extend_cost_perm_column:
