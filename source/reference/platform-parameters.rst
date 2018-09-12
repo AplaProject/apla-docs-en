@@ -146,6 +146,8 @@ Operation costs:
 - :ref:`extend_cost_compile_contract`
 - :ref:`extend_cost_contains`
 - :ref:`extend_cost_contracts_list`
+- :ref:`extend_cost_contract_by_name`
+- :ref:`extend_cost_contract_by_id`
 - :ref:`extend_cost_create_column`
 - :ref:`extend_cost_create_ecosystem`
 - :ref:`extend_cost_create_table`
@@ -291,205 +293,304 @@ ecosystem_price
 
 extend_cost_activate
 --------------------
-    TBD
+    
+    Fuel cost of :func:`Activate` function call.
+
 
 .. _extend_cost_address_to_id:
 
 extend_cost_address_to_id
 -------------------------
-    TBD
+    
+    Fuel cost of :func:`AddressToId` function call.
+
 
 .. _extend_cost_column_condition:
 
 extend_cost_column_condition
 ----------------------------
-    TBD
+    
+    Fuel cost of :func:`ColumnCondition` function call.
+
 
 .. _extend_cost_compile_contract:
 
 extend_cost_compile_contract
 ----------------------------
-    TBD
+    
+    Fuel cost of :func:`CompileContract` function call.
+
 
 .. _extend_cost_contains:
 
 extend_cost_contains
 --------------------
-    TBD
+    
+    Fuel cost of :func:`Contains` function call.
+
 
 .. _extend_cost_contracts_list:
 
 extend_cost_contracts_list
 --------------------------
-    TBD
+    
+    Fuel cost of :func:`ContractsList` function call.
+
+
+.. _extend_cost_contract_by_name:
+
+extend_cost_contract_by_name
+----------------------------
+    
+    Fuel cost of :func:`GetContractByName` function call.
+
+    .. todo::
+
+        In source, not in the product
+
+
+.. _extend_cost_contract_by_id:
+
+extend_cost_contract_by_id
+--------------------------
+
+    Fuel cost of :func:`GetContractById` function call.
+    
+    .. todo::
+
+        In source, not in the product
+
 
 .. _extend_cost_create_column:
 
 extend_cost_create_column
 -------------------------
-    TBD
+    
+    Fuel cost of :func:`CreateColumn` function call.
+
 
 .. _extend_cost_create_ecosystem:
 
 extend_cost_create_ecosystem
 ----------------------------
-    TBD
+    
+    Fuel cost of :func:`CreateEcosystem` function call.
+
 
 .. _extend_cost_create_table:
 
 extend_cost_create_table
 ------------------------
-    TBD
+    
+    Fuel cost of :func:`CreateTable` function call.
+
+    .. todo::
+
+        How it works with table_price?
+
 
 .. _extend_cost_deactivate:
 
 extend_cost_deactivate
 ----------------------
-    TBD
+    
+    Fuel cost of :func:`Deactivate` function call.
+
 
 .. _extend_cost_ecosys_param:
 
 extend_cost_ecosys_param
 ------------------------
-    TBD
+    
+    Fuel cost of :func:`EcosysParam` function call.
+
 
 .. _extend_cost_eval:
 
 extend_cost_eval
 ----------------
-    TBD
+    
+    Fuel cost of :func:`Eval` function call.
+
 
 .. _extend_cost_eval_condition:
 
 extend_cost_eval_condition
 --------------------------
-    TBD
+    
+    Fuel cost of :func:`EvalCondition` function call.
+
 
 .. _extend_cost_flush_contract:
 
 extend_cost_flush_contract
 --------------------------
-    TBD
+    
+    Fuel cost of :func:`FlushContract` function call.
+
 
 .. _extend_cost_has_prefix:
 
 extend_cost_has_prefix
 ----------------------
-    TBD
+    
+    Fuel cost of :func:`HasPrefix` function call.
+
 
 .. _extend_cost_id_to_address:
 
 extend_cost_id_to_address
 -------------------------
-    TBD
+    
+    Fuel cost of :func:`IdToAddress` function call.
+
 
 .. _extend_cost_is_object:
 
 extend_cost_is_object
 ---------------------
-    TBD
+    
+    Fuel cost of :func:`IsObject` function call.
+
 
 .. _extend_cost_join:
 
 extend_cost_join
 ----------------
-    TBD
+    
+    Fuel cost of :func:`Join` function call.
+
 
 .. _extend_cost_json_to_map:
 
 extend_cost_json_to_map
 -----------------------
-    TBD
+    
+    Fuel cost of :func:`JSONToMap` function call.
+
 
 .. _extend_cost_len:
 
 extend_cost_len
 ---------------
-    TBD
+    
+    Fuel cost of :func:`Len` function call.
+
 
 .. _extend_cost_new_state:
 
 extend_cost_new_state
 ---------------------
+    
     TBD
+
+    .. todo::
+
+        Described as NewState function cost in source, but there is no such function.
+
 
 .. _extend_cost_perm_column:
 
 extend_cost_perm_column
 -----------------------
-    TBD
+    
+    Fuel cost of :func:`PermColumn` function call.
+
 
 .. _extend_cost_perm_table:
 
 extend_cost_perm_table
 ----------------------
-    TBD
+    
+    Fuel cost of :func:`PermTable` function call.
+
 
 .. _extend_cost_pub_to_id:
 
 extend_cost_pub_to_id
 ---------------------
-    TBD
+    
+    Fuel cost of :func:`PubToID` function call.
+
 
 .. _extend_cost_replace:
 
 extend_cost_replace
 -------------------
-    TBD
+    
+    Fuel cost of :func:`Replace` function call.
+
 
 .. _extend_cost_sha256:
 
 extend_cost_sha256
 ------------------
-    TBD
+    
+    Fuel cost of :func:`Sha256` function call.
+    
 
 .. _extend_cost_size:
 
 extend_cost_size
 ----------------
-    TBD
+    
+    Fuel cost of :func:`Size` function call.
+    
 
 .. _extend_cost_substr:
 
 extend_cost_substr
 ------------------
-    TBD
+    
+    Fuel cost of :func:`Substr` function call.
+
 
 .. _extend_cost_sys_fuel:
 
 extend_cost_sys_fuel
 --------------------
-    TBD
+    
+    Fuel cost of :func:`SysFuel` function call.
+
 
 .. _extend_cost_sys_param_int:
 
 extend_cost_sys_param_int
 -------------------------
-    TBD
+    
+    Fuel cost of :func:`SysParamInt` function call.
+
 
 .. _extend_cost_sys_param_string:
 
 extend_cost_sys_param_string
 ----------------------------
-    TBD
+    
+    Fuel cost of :func:`SysParamString` function call.
+    
 
 .. _extend_cost_table_conditions:
 
 extend_cost_table_conditions
 ----------------------------
-    TBD
+    
+    Fuel cost of :func:`TableConditions` function call.
+    
 
 .. _extend_cost_update_lang:
 
 extend_cost_update_lang
 -----------------------
-    TBD
+    
+    Fuel cost of :func:`UpdateLang` function call.
+
 
 .. _extend_cost_validate_condition:
 
 extend_cost_validate_condition
 ------------------------------
-    TBD
+    
+    Fuel cost of :func:`ValidateCondition` function call.
 
 
 .. _fuel_rate:
@@ -497,9 +598,14 @@ extend_cost_validate_condition
 fuel_rate
 ---------
 
-    TBD
+    Exchange rate for fuel.
 
-    // FuelRate is the rate
+
+    .. todo::
+
+        Check if true:
+
+        token_cost = fuel_cost \* fuel_rate
 
 
 .. _full_nodes:
@@ -732,6 +838,7 @@ rb_blocks_1
         
         // RbBlocks1 rollback from queue_bocks
 
+
 .. _size_fuel:
 
 size_fuel
@@ -742,6 +849,7 @@ size_fuel
     .. todo::
 
         found in source, not in product
+
 
 .. _table_price:
 
