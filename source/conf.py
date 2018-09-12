@@ -180,6 +180,7 @@ platform,
 
 # -- Ifconfig conditionals
 
+# .. ifconfig:: if_project in ('apla', 'genesis')
 if_project = 'genesis'
 
 def setup(app):

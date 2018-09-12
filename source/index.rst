@@ -12,16 +12,28 @@ Public blockchain platform for building digital ecosystems
 About this documentation
 ------------------------
 
-This documentation contains the description of GenesisKernel platform, a public blockchain platform for building digital ecosystems.
+.. ifconfig:: if_project in ('genesis')
 
-This documentation includes the up-to-date descriptions of the platform's function and is constantly updated whenever changes are made or new functions are added.
+   This documentation contains the description of GenesisKernel platform, a public blockchain platform for building digital ecosystems.
+
+.. ifconfig:: if_project in ('apla')
+
+   This documentation contains the description of the Apla blockchain platform based on the source code of GenesisKernel blockchain.
 
 
+About the platform
+^^^^^^^^^^^^^^^^^^
 
-Genesis
-^^^^^^^
+.. ifconfig:: if_project in ('apla')
 
-By the end of 2017 it became obvious that the platform was ready to compete head-on with existing public blockchain networks, including Ethereum, NEO, etc. All of the previous hard work and success has given rise to a new project based on the platform. Its name is **Genesis**. The team is planning to launch this project without any issue of tokens. 
+   Apla blockchain is a secure, simple and compliant blockchain infrastructure for a fast-growing global collaborative economy segment. Small and medium sized enterprises will benefit from reducing operational costs and go-to-market time, fundraising solutions at an early development stage, automation of business processes, integrated settlement system, anti-money laundering compliant infrastructure, trustless cooperation, business scalability and global reach of their products and services to end customers. A detailed description of the Apla platform can be found in the Apla White Paper (www.apla.io)
+
+   The use of the Apla platform, including the license terms, is subject to the terms and conditions set forth in the Apla legal documentation that can be downloaded from the www.apla.io website. 
+
+
+.. ifconfig:: if_project in ('genesis')
+   
+   By the end of 2017 it became obvious that the platform was ready to compete head-on with existing public blockchain networks, including Ethereum, NEO, etc. All of the previous hard work and success has given rise to a new project based on the platform. Its name is **Genesis**. The team is planning to launch this project without any issue of tokens. 
 
 
 Contents
@@ -34,6 +46,13 @@ Contents
    concepts/about-the-platform.rst
    concepts/faq.rst
    concepts/thesaurus.rst
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorials
+
+   tutorials/app_tutorial.rst
 
 
 .. toctree::
