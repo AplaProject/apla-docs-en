@@ -64,6 +64,7 @@ Contents
    topics/templates2.rst
    topics/appexample.rst
    topics/vm.rst
+   topics/daemons.rst
 
 
 .. toctree::
