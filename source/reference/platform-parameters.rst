@@ -1,3 +1,10 @@
+.. -- Conditionals Genesis / Apla -------------------------------------------------
+
+.. token naming
+.. |tokens| replace:: tokens
+.. .. |tokens| replace:: APL tokens
+
+
 Platform parameters
 ###################
 
@@ -46,22 +53,23 @@ Node ban:
 - :ref:`local_node_ban_time`
 
 
-User interfaces
----------------
+Updates and downloads
+---------------------
 
-Default pages and menus: 
+- :ref:`new_version_url`
+- :ref:`blockchain_url`
+
+
+New ecosystems
+--------------
+
+Pages and menus: 
 
 - :ref:`default_ecosystem_page`
 
-.. todo::
-
-    Following params have no description
-
 - :ref:`default_ecosystem_menu`
 
-.. todo::
-
-    Not sure what it does and if it belongs here
+Default contract: 
 
 - :ref:`default_ecosystem_contract`
 
@@ -74,6 +82,7 @@ Table limits:
 - :ref:`max_columns`
 - :ref:`max_indexes`
 
+
 Block generation
 ----------------
 
@@ -82,63 +91,54 @@ Time limits:
 - :ref:`gap_between_blocks`
 - :ref:`max_block_generation_time`
 
-Transaction limits: 
+Transaction number limits: 
 
 - :ref:`max_tx_count`
 - :ref:`max_block_user_tx`
-- :ref:`max_tx_size`
 
 Size limits: 
 
+- :ref:`max_tx_size`
 - :ref:`max_block_size`
 - :ref:`max_forsign_size`
 
-Rewards and commissions: 
+Fuel limits: 
+
+- :ref:`max_fuel_block`
+- :ref:`max_fuel_tx`
+
+Block rollback: 
+
+- :ref:`rb_blocks_1`
+
+
+Fuel and currencies
+-------------------
+
+Rewards and commission: 
 
 - :ref:`block_reward`
 - :ref:`commission_wallet`
 - :ref:`commission_size`
 
-Rollback: 
-
-- :ref:`rb_blocks_1`
-
-Blockchain downloads: 
-
-- :ref:`blockchain_url`
-
-.. todo::
-
-    Following params have no description
-
-- :ref:`new_version_url`
-
-
-Fuel
-----
-
-Fuel parameters: 
+Fuel units exchange: 
 
 - :ref:`fuel_rate`
-- :ref:`max_fuel_block`
-- :ref:`max_fuel_tx`
+
+Prices for data: 
+
 - :ref:`size_fuel`
 
-Prices for elements: 
+Prices for new elements: 
 
 - :ref:`ecosystem_price`
-
-.. todo::
-
-    Following params have no description
-
 - :ref:`column_price`
 - :ref:`contract_price`
 - :ref:`menu_price`
 - :ref:`page_price`
 - :ref:`table_price`
 
-Operation costs: 
+Prices for operations: 
 
 - :ref:`extend_cost_activate`
 - :ref:`extend_cost_address_to_id`
@@ -186,13 +186,11 @@ Platform parameters
 block_reward
 ------------
 
-    Value of reward that is awarded on block generation to the node that generated the block.
+    Amount of |tokens| that is awarded to the node that generated a block.
 
+    An account that receives the reward is specified in the :ref:`full_nodes` parameter.
 
-    .. todo::
-
-        Where this is paid from? Measurement units?
-        Where to this is awarded?
+    This parameter is measured in |tokens|.
 
 
 .. _blockchain_url:
@@ -212,20 +210,21 @@ column_price
 
     Fuel cost for creating a new table column.
 
-.. _commission_size:
+    This parameter defines additional fuel cost of the ``@1NewColumn`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
 
+    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
+
+
+.. _commission_size:
 
 commission_size
 ---------------
     
-    Commission size, in percents.
+    Commission percent.
 
-    This commission is collected for all operations and transferred to the account specified in the :ref:`commission_wallet` parameter.
+    This amount of commission is collected from the total contract cost. Commission is applied to the total contract cost in |tokens|.
 
-
-    .. todo::
-
-        Check that it really works like so. What operations have commission?
+    Tokens are transferred to the account specified in the :ref:`commission_wallet` parameter.
 
 
 .. _commission_wallet:
@@ -245,17 +244,19 @@ contract_price
 
     Fuel cost for creating a new contract.
 
+    This parameter defines additional fuel cost of the ``@1NewContract`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
+
+    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
+
 
 .. _default_ecosystem_contract:
 
 default_ecosystem_contract
 --------------------------
 
-    Source code of the default ecosystem contract.
+    Source code of the default contract for a new ecosystem.
 
-    .. todo::
-
-        What this contract does?
+    This contract provides access rights to the ecosystem founder.
 
 
 .. _default_ecosystem_menu:
@@ -263,7 +264,7 @@ default_ecosystem_contract
 default_ecosystem_menu
 ----------------------
 
-    Source code of the default ecosystem menu.
+    Source code of the default menu for a new ecosystem.
 
 
 .. _default_ecosystem_page:
@@ -271,14 +272,7 @@ default_ecosystem_menu
 default_ecosystem_page
 ----------------------
 
-    Source code of the default ecosystem page.
-
-    .. todo::
-
-        Default page for all new ecosystems OR page for default ecosystem?
-
-        Same for  default_ecosystem_menu and default_ecosystem_contract.
-
+    Source code of the default page for a new ecosystem.
 
 
 .. _ecosystem_price:
@@ -287,6 +281,10 @@ ecosystem_price
 ---------------
 
     Fuel cost for creating a new ecosystem.
+
+    This parameter defines additional fuel cost of the ``@1NewEcosystem`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
+
+    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
 
 
 .. _extend_cost_activate:
@@ -344,10 +342,6 @@ extend_cost_contract_by_name
     
     Fuel cost of :func:`GetContractByName` function call.
 
-    .. todo::
-
-        In source, not in the product
-
 
 .. _extend_cost_contract_by_id:
 
@@ -355,10 +349,6 @@ extend_cost_contract_by_id
 --------------------------
 
     Fuel cost of :func:`GetContractById` function call.
-    
-    .. todo::
-
-        In source, not in the product
 
 
 .. _extend_cost_create_column:
@@ -383,10 +373,6 @@ extend_cost_create_table
 ------------------------
     
     Fuel cost of :func:`CreateTable` function call.
-
-    .. todo::
-
-        How it works with table_price?
 
 
 .. _extend_cost_deactivate:
@@ -596,14 +582,25 @@ extend_cost_validate_condition
 fuel_rate
 ---------
 
-    Exchange rate for fuel.
+    Exchange rate for tokens of different ecosystems to fuel units.
 
+    Format for this parameter is:
 
-    .. todo::
+        ``[["ecosystem_id", "token_to_fuel_rate"], ["ecosystem_id2", "token_to_fuel_rate2"], ...]``
+        
+        - ``ecosystem_id`` 
 
-        Check if true:
+            Ecosystem identifier.
 
-        token_cost = fuel_cost \* fuel_rate
+        - ``token_to_fuel_rate`` 
+
+            Exchange rate of tokens to fuel units.
+
+    Example:
+
+        ``[["1","1000000000000000"], ["2", "1000"]]'``
+
+        One token from ecosystem 1 is exchanged to 1000000000000000 fuel units. One token from ecosystem 2 is exchanged to 1000 fuel units.
 
 
 .. _full_nodes:
@@ -613,15 +610,23 @@ full_nodes
     
     List of validating nodes of the blockchain network.
 
-    Format:
+    Format for this parameter is:
 
-        ``[["host1:port","-1222","nodepub1"], ["host2:ip","-1222","nodepub2"]]``
+        ``[["host:port","wallet_id","node_pub"], ["host2:port2","wallet_id2","node_pub2"]]``
 
-        ``host1:port`` is the address of the host where transactions and new blocks are sent; this address can also be used to receive the full blockchain starting from the first block.
+        - ``host:port``
 
-        ``-1222`` is the account identifier that receives the commission; if this account oes not exist, the commission is not collected.
+            Address and port of the node host.
 
-        ``nodepub1`` public key of the node; this key is required to check block signatures.
+            Transactions and new blocks are sent to this host. This address can also be used to obtain the full blockchain starting from the first block.
+
+        - ``wallet_id``
+
+            Wallet (account identifier) that receives rewards for generating new blocks and processing transactions. 
+
+        - ``node_pub``
+
+            Public key of the node. This key is used to check block signatures.
 
 
 .. _gap_between_blocks:
@@ -629,20 +634,25 @@ full_nodes
 gap_between_blocks
 ------------------
 
-    Amount of time, in seconds, allotted to the validating node to create a new block.
+    Amount of time, in seconds, that a node can use to create a new block.
 
-    Minimum value for this parameter is ``1`` (1  second).
+    This parameter is a network parameter. All nodes in the network use it to determine when to generate new blocks. If a node did not create a block in this time period, the turn passes to the next node in a list of validating nodes.
+
+    Minimum value for this parameter is ``1`` (one second).
+
+    .. todo::
+
+        How it works with max_block_generation_time?
+
 
 .. _incorrect_blocks_per_day:
 
 incorrect_blocks_per_day
 ------------------------
 
-    Amount of incorrect blocks per day that a node may generate before it is banned.
+    Amount of incorrect blocks per day that a node may generate before it is banned from the network.
 
-    .. todo::
-
-        How global ban works?
+    When more than half of nodes in a network have received this amount of incorrect blocks from a certain  node, this node is banned from the network for :ref:`node_ban_time` amount of time. 
 
 
 .. _local_node_ban_time:
@@ -651,10 +661,8 @@ local_node_ban_time
 -------------------
 
     Local ban period for nodes, in ms.
-    
-    .. todo::
 
-        How local ban works?
+    When a node receives an incorrect block from another node, it bans the sender node locally for this amount of time.
 
 
 .. _max_block_generation_time:
@@ -662,7 +670,11 @@ local_node_ban_time
 max_block_generation_time
 -------------------------
 
-    Maximum amount of time, in ms, allowed for block generation.
+    Maximum amount of time that a node may spend to generate a block, in ms.
+
+    .. todo::
+
+        How it works with gap_between_blocks?
 
 
 .. _max_block_size:
@@ -670,11 +682,7 @@ max_block_generation_time
 max_block_size
 --------------
 
-    Maximum block size.
-
-    .. todo::
-
-        Size in bytes?
+    Maximum block size, in bytes.
 
 
 .. _max_block_user_tx:
@@ -682,11 +690,7 @@ max_block_size
 max_block_user_tx
 -----------------
 
-    Maximum number of user transactions in one block.
-
-    .. todo::
-
-        What's non-user transactions?
+    Maximum number of transactions in one block that belong to one account.
 
 
 .. _max_columns:
@@ -696,9 +700,7 @@ max_columns
 
     Maximum number of columns in tables.
 
-    .. todo::
-
-        preset id column included?
+    The predefined ``id`` column is not included in this maximum.
 
 
 .. _max_forsign_size:
@@ -706,13 +708,11 @@ max_columns
 max_forsign_size
 ----------------
 
-    TBD
+    Maximum size, in bytes, of a forsign (string to be signed) generated for a transaction.
 
     .. todo::
 
-        What is forsign? Some part of transaction for signature?
-
-        // MaxForsignSize is the maximum size of the forsign of transaction
+        Better explain what a forsign is.
 
 
 .. _max_fuel_block:
@@ -720,13 +720,7 @@ max_forsign_size
 max_fuel_block
 --------------
 
-    Maximum amount of fuel that can be used in a single block.
-
-    .. todo::
-
-        How it works?
-
-        // MaxBlockFuel is the maximum fuel of the block
+    Maximum total fuel cost of a single block.
 
 
 .. _max_fuel_tx:
@@ -734,13 +728,7 @@ max_fuel_block
 max_fuel_tx
 -----------
 
-    Maximum amonut of fuel that can be used in a single transaction.
-
-    .. todo::
-
-        How it works?
-
-        // MaxTxFuel is the maximum fuel of the transaction
+    Maximum total fuel cost of a single transaction.
 
 
 .. _max_indexes:
@@ -758,21 +746,13 @@ max_tx_count
 
     Maimum number of transactions in a single block.
 
-    .. todo::
-
-        Check that this is true.
-
 
 .. _max_tx_size:
 
 max_tx_size
 -----------
 
-    Maximum transaction size.
-
-    .. todo::
-
-        Measurement units?
+    Maximum transaction size, in bytes.
 
 
 .. _menu_price:
@@ -782,29 +762,28 @@ menu_price
 
     Fuel cost for creating a new menu.
 
+    This parameter defines additional fuel cost of the ``@1NewMenu`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
+
+    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
+
 
 .. _new_version_url:
 
 new_version_url
 ---------------
 
-    TBD
-
-    .. todo::
-
-        Version of what?
+    This parameter is deprecated.
 
 
 .. _node_ban_time:
+
 
 node_ban_time
 -------------
 
     Global ban period for nodes, in ms.
-    
-    .. todo::
 
-        How global ban works?
+    When more than half of nodes in a network have received :ref:`incorrect_blocks_per_day` amount of blocks from a certain node, this node is banned from the network for the specified amount of time. 
 
 
 .. _number_of_nodes:
@@ -814,27 +793,24 @@ number_of_nodes
 
     Maximum number of validating nodes in the :ref:`full_nodes` parameter.
 
-.. _page_price:
 
+.. _page_price:
 
 page_price
 ----------
 
     Fuel cost for creating a new page.
 
-.. _rb_blocks_1:
+    This parameter defines additional fuel cost of the ``@1NewPage`` contract. When this contract is executed, fuel costs for functions in this contract are also counted and added to the total cost.
 
+    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
+
+.. _rb_blocks_1:
 
 rb_blocks_1
 -----------
 
-    TBD
-
-    .. todo::
-
-        What this parameter does?
-        
-        // RbBlocks1 rollback from queue_bocks
+    Number of blocks that can be rolled back in case when a fork is detected in the blockchain.
 
 
 .. _size_fuel:
@@ -842,11 +818,9 @@ rb_blocks_1
 size_fuel
 ---------
 
-    Fuel cost of 1024 bytes of the transaction data.
+    Fuel cost taken per 1024 bytes of data passed to a transaction.
 
-    .. todo::
-
-        found in source, not in product
+    This parameter is measured in fuel units.
 
 
 .. _table_price:
@@ -855,3 +829,7 @@ table_price
 -----------
 
     Fuel cost for creating a new table.
+
+    This parameter defines additional fuel cost of the ``@1NewTable`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
+
+    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
