@@ -598,7 +598,7 @@ fuel_rate
 
     Example:
 
-        ``[["1","1000000000000000"], ["2", "1000"]]'``
+        ``[["1","1000000000000000"], ["2", "1000"]]``
 
         One token from ecosystem 1 is exchanged to 1000000000000000 fuel units. One token from ecosystem 2 is exchanged to 1000 fuel units.
 
