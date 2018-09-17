@@ -519,6 +519,28 @@ Displays the value of a system parameter from the system_parameters table.
 
      Address(SysParam(founder_account))
 
+
+TransactionInfo(Hash)
+---------------------
+
+The function searches a transaction by the specified hash and returns information about the executed contract and its parameters.
+
+* *hash* - transaction hash in a hex string format.
+
+The function returns a string in the json format: 
+
+  ``{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}``
+
+Above,  
+  * *contract* - contract name
+  * *params* - parameters passed to the contract
+  * *block* - block ID where this transaction was processed.
+
+.. code:: js
+
+    P(TransactionInfo(#hash#))
+
+
 Elements of data formatting
 ============================== 
 Div(Class, Body) [.Style(Style)]
