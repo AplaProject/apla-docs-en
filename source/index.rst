@@ -71,7 +71,6 @@ Contents
    :caption: Reference
 
    reference/api2.rst
-   reference/mobile.rst
    reference/update_client.rst
    reference/desync_monitor.rst
 
