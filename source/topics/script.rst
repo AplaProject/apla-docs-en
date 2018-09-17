@@ -691,6 +691,30 @@ The function returns a contract identifier in the *contracts* by its name. If th
     var id int
     id = GetContractByName(`NewBlock`) 
 
+
+TransactionInfo(hash: string)
+-----------------------------
+
+The function searches a transaction by the specified hash and returns information about the executed contract and its parameters.
+
+* *hash* - transaction hash in a hex string format.
+
+The function returns a string in the json format: 
+
+  ``{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}``
+
+Above,  
+  * *contract* - contract name
+  * *params* - parameters passed to the contract
+  * *block* - block ID where this transaction was processed.
+
+
+.. code:: js
+
+    var out map
+    out = JSONDecode(TransactionInfo(hash))
+
+
 ValidateCondition(condition string, state int) 
 ----------------------------------------------
 
