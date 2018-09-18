@@ -98,7 +98,7 @@ If a parameter contains a comma, it should be enclosed in quotes marks (back quo
       
 If you put a parameter in quotes, but a parameter itself includes quotes, then you can use different type of quotes or double them in the text.
       
-      .. code:: js
+.. code:: js
 
       MyFunc("parameter number 1, ""the second part of first"" paremeter")
       MyFunc(`parameter number 1, "the second part of first" paremeter`)
@@ -139,7 +139,7 @@ To define nested elements, which are described in the *Body* parameter, the foll
       
 If you need to specify the same function a number of times in a row, you can use points instead of writing the function name every time. For example, the following lines are equal:
      
-     .. code:: js
+.. code:: js
 
      Span(Item 1)Span(Item 2)Span(Item 3)
      Span(Item 1).(Item 2).(Item 3)
