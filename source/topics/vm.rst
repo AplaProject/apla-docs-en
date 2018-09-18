@@ -38,7 +38,7 @@ A virtual machine is a tree of **Block** type objects. In fact, a block is an in
     
 Сreates a block with a function that includes a block with *if* statement, which, in turn, has a block with *while* statement in it.
     
-    .. code:: 
+.. code:: 
 
     type Block struct {
         Objects map[string]*ObjInfo
@@ -290,12 +290,12 @@ Next, we must initialize all the variables that are defined in this block with i
       
 Since our functions’ variables are also variables, we need to take them from the last elements of the stack in the same order as they are described in the function itself.
 
-.. code:: 
+.. code::
 
-   if block.Type == ObjFunc && vkey < len(block.Info.(*FuncInfo).Params) {
-      value = rt.stack[start-len(block.Info.(*FuncInfo).Params)+vkey]
-   } else {
-   
+    if block.Type == ObjFunc && vkey < len(block.Info.(*FuncInfo).Params) {
+      value = rt.stack[start-len(block.Info.(*FuncInfo).Params)+vkey]
+    } else {
+
 Here we initialize local variables with initial values.
 
 .. code:: 
@@ -359,13 +359,13 @@ In case of a successful exit from the executed function, we add the return value
 .. code:: 
 
    if last.Block.Type == ObjFunc {
-       for count := len(last.Block.Info.(*FuncInfo).Results); count > 0; count-- {
-          rt.stack[start] = rt.stack[len(rt.stack)-count]
-          start++
-      }
-     status = statusNormal
-   } else {
-   
+      for count := len(last.Block.Info.(*FuncInfo).Results); count > 0; count-- {
+        rt.stack[start] = rt.stack[len(rt.stack)-count]
+        start++
+      }
+      status = statusNormal
+    } else {
+
 As you can see, if that is not a function that we perform, then we do not restore the stack state, but we exit the function as is. The thing is that loops and conditional constructions already executed inside a function are also the bytecode block.
 
 .. code:: 
@@ -402,9 +402,9 @@ We have the so-called **Auto** parameters. Typically, this is the first paramete
 .. code:: 
 
   if isauto, ok := ext.AutoPars[fobj.In(i).String()]; ok {
-     data.Auto[i] = isauto
-  }
-  
+    data.Auto[i] = isauto
+  }
+
 We fill in the information about the parameters:
 
 .. code:: 
@@ -617,9 +617,9 @@ For example, we have the main state and the incoming character /.
 
 **push** gives the command to remember it in a separate stack, and **next** – go to the next character, while we change the state to **solidus**. After that, take the next character and look at the **solidus** state.
 
-If we have/or * – then we go into the comment state, so they start with // or / *. It is clear that for each comment there are different subsequent states, since they end in different symbols.
+If we have / or \* – then we go into the comment state, so they start with // or /\*. It is clear that for each comment there are different subsequent states, since they end in different symbols.
 
-And if we have the following character not/and not *, then we record everything put in our stack (/) as a token with oper type, clear the stack and return to the main state.
+And if we have the following character not/and not \*, then we record everything put in our stack (/) as a token with oper type, clear the stack and return to the main state.
 
 This module changes this state tree into a numeric array and writes it to the *lex_table.go file*.
 
