@@ -1,14 +1,13 @@
-################################################################################
 Compiler and virtual machine
-################################################################################
+############################
 
 This section reviews the code organization in the packages/script directory, which refers to program compilation and the operation of the Simvolio language virtual machine. The documentation is intended primarily for developers.
 
 The work with contracts is organized as follows: contracts and functions are written using the Simvolio language and stored in the contracts tables in ecosystems. When the program starts, it reads the source code from the database and compiles it into bytecode. When adding or changing contracts and writing them to the blockchain, the updated data is compiled and the corresponding virtual machine bytecode is added/updated. The bytecode is not physically saved anywhere, so when you exit the program and start again, the compilation happens anew. A virtual machine is a set of objects – contracts, functions, types, etc. The entire source code described in the contracts table for all ecosystems is compiled in strict sequence into one virtual machine and the state of the virtual machine is the same on all nodes. When you call a contract, the virtual machine does not change its state in any way. Any execution of a contract or a function call occurs on a separate runtime stack that is created with each external call. Each ecosystem can have a so-called virtual ecosystem that works with its tables outside the blockchain, within one node, and cannot directly affect the blockchain or other virtual ecosystems. In this case, a node hosting such a virtual ecosystem compiles its contracts and creates its own virtual machine for it.
 
-********************************************************************************
 Virtual machine
-********************************************************************************
+===============
+
 Let us review how the virtual machine is organized in memory.
 
 .. code:: 
@@ -173,8 +172,9 @@ The matching parameters are the same as for the **FuncInfo** structure.
 
 For **ObjExtend** objects, the **Value** field contains a string with the name of the variable or the function.
 
+
 Virtual machine commands
-============================
+------------------------
 
 The identifiers of the virtual machine commands are described in the *cmds_list.go file*. The bytecode is a sequence of **ByteCode** type structures.
 
@@ -405,7 +405,7 @@ We have the so-called **Auto** parameters. Typically, this is the first paramete
      data.Auto[i] = isauto
   }
   
-We fill in the information about the parameters
+We fill in the information about the parameters:
 
 .. code:: 
 
@@ -428,9 +428,9 @@ Adding a function to the root Objects will allow the compiler to find them later
         }
     }
     
-************************************************************
+
 Compilation
-************************************************************    
+===========
    
 The functions located in the *compile.go* file are responsible for the compilation of the array of tokens obtained from the lexical analyzer. The compilation can be conditionally divided into two levels. At the top level, we process functions, contracts, blocks of code, conditional statements and loop statements, variable definitions, and so on. At the lower level, we compile expressions that are inside of code blocks or conditions in a loop and a conditional statement. In the beginning, let us consider a simpler lower level.
 Translating expressions into a bytecode is done in the **compileEval** function. Since we have a virtual machine working with a stack, it is necessary to translate the usual infix record of expressions into a postfix notation or a reverse Polish notation. For example, 1 +2 should be converted to 12+, then you put 1 and 2 to the stack, and then we apply the addition operation for the last two elements in the stack and write the result to the stack. The translation algorithm itself can be found on the Internet – for example, https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/. The global variable *opers = map [uint32] operPrior* contains the priorities of the operations that are necessary when translating into the reverse Polish notation. The following variables are defined at the beginning of the function:
@@ -584,9 +584,9 @@ The **fNameBlock** function is used for contracts and functions (including those
     
 Besides the **CompileBlock** function, you should also mention the **FlushBlock** function. The matter is that the tree of blocks is built independent of the existing virtual machine. More precisely, we take information about the functions and contracts existing in a virtual machine, but we gather the compiled blocks into a separate tree. Otherwise, if an error occurs during compilation, we will have to roll back the state of the virtual machine to the previous state. Therefore, we compile the tree separately, but have to call the **FlushContract** function after the compilation is successful. This function adds our finished block tree to the current virtual machine. At this point, the compilation stage is considered complete.
   
-*******************************************************************
+
 Lexical analysis
-*******************************************************************    
+================
 
 The lexical analyzer processes the incoming string and forms a sequence of tokens of the following types:
 
@@ -686,9 +686,9 @@ Remaining is to review the flags that are used in the parsing:
 * **pop** – the receipt of the token is completed. As a rule, with this flag we have an identifier-type of the parsed token,
 * **skip** – this flag is used to exclude a character from parsing. For example, the control slashes in the string are *\n \r \"*. They are automatically replaced at the stage of this lexical analysis.
 
-*******************************************************************
+
 Simvolio language
-*******************************************************************
+=================
     
 <decimal digit> ::= „0“ | „1“ | „2“ | „3“ | „4“ | „5“ | „6“ | „7“ | „8“ | „9
 
@@ -710,7 +710,7 @@ Simvolio language
 
 <end of line> := 0x0D 0x0A
 
-<special character> ::= „!“ | „»“ | „$“ | „““ | „(„ | „)“ | „*“ | „+“ | „,“ | „-„ | „.“ | „/“ | „<“ | „=“ | „>“ | „[„ | „“ | „]“ | „_“ | „|“ | „}“ | „{„ | <tab> | <space> | <end of line>
+<special character> ::= „!“ | „»“ | „$“ | „““ | „(„ | „)“ | „\*“ | „+“ | „,“ | „-„ | „.“ | „/“ | „<“ | „=“ | „>“ | „[„ | „“ | „]“ | „_“ | „|“ | „}“ | „{„ | <tab> | <space> | <end of line>
 
 <symbol> ::= <decimal digit> | <letter> | <special character>
 
@@ -732,7 +732,7 @@ Simvolio language
 
 <unary operator> ::= „-„
 
-<binary operator> ::= „==“ | „!=“ | „>“ | „<“ | „<=“ | „>=“ | „&&“ | „||“ | „*“ | „/“ | „+“ | „-„
+<binary operator> ::= „==“ | „!=“ | „>“ | „<“ | „<=“ | „>=“ | „&&“ | „||“ | „\*“ | „/“ | „+“ | „-„
 
 <operator> ::= < assignment operator > | < unary operator > | <binary operator>
 
