@@ -32,27 +32,39 @@ In |platform|, the blockchain and the blockchain network are hidden from ecosyst
 App developers
 --------------
 
-In technical terms, the *global state* is a set of data. |platform|'s implementation of its global state is a database. Applications written by app developers interact with this database in a usual way: by querying, inserting, and updating the database tables. 
+In technical terms, the *global state* is a set of data. |platform|'s implementation of its global state is a database. From the app developer standpoint, applications interact with this database by querying, inserting, and updating the database tables.
 
-|platform| applications are a collection of contracts and pages that interact with tables. Under the hood, contracts are converted into transactions, validated, and written to the blockchain. This leads to changes in the global state, the database. For an app developer, however, a contract is a function. When it is executed, data is written to the database. A page is also a set of functions. Some of them display page elements, other fetch data from the database. No knowledge of transactions, block generation or consensus algorithms is required from an application developer to work with |platform| blockchain.
+|platform| applications are a collection of contracts and pages that interact with tables. 
+
+Under the hood, contracts are executed by writing transactions to the blockchain. These transactions invoke contract code, which is executed by the blockchain network nodes, which leads to changes in the global state, the database. For an app developer, a contract is a function. When it is executed, data is written to the database. Pages are like scripts. Page code is a set of :doc:`Protypo </topics/templates2>` functions. Some of these functions display page elements, other fetch data from the database. No knowledge of transactions, block generation or consensus algorithms is required from an application developer to work with |platform| blockchain.
 
 
 Ecosystem members
 -----------------
 
-Ecosystem members are regular users of |platform|. They interact with the *global state* via apps written by app developers.
+In |platform|, apps written by app developers work inside autonomous software environments called *ecosystems*. An ecosystem typically serves a certain purpose and combines many apps created to support different aspects of this purpose.
 
-Regular users can view and modify the database from application pages, like they would do in a common web application: by filling forms, pressing buttons, and navigating pages.
+To get access to the apps of an ecosystem, a user must become an *ecosystem member*. One user can be a member of many ecosystems.
+
+Ecosystem members can view and modify the database from application pages, like they would do in a common web application: by filling forms, pressing buttons, and navigating pages.
 
 
-Some of these apps are *platform apps*, which are provided by |platform| developers. Platform apps are included in every ecosystem. They provide core functionality for managing ecosystems. Examples include apps that create new accounts, allow voting for ecosystem parameter changes, and allow token transfer between accounts.
+Ecosystem and platform apps
+---------------------------
 
-Other apps are *ecosystem apps*, that implement some certain functionality or business process specific to an ecosystem. Examples include apps for supply chain and accounting, banking, trading, and governance institutions.
+Apps can be divided by scope into *ecosystem apps* and *platform apps*.
+
+*Ecosystem apps* implement some certain functionality or business process specific to an ecosystem. An ecosystem app is available only in its ecosystem.
+
+*Platform apps* are available in all ecosystems. Any app can be developed as a platform app. |platform| developers provide platform apps that support core functionality for ecosystem governance, such as apps for votings, notifications, and ecosystem member roles management.
+
+.. todo::
+    
+    Move this to ecosystem intro
 
 
 Under the hood
 ==============
-
 
 The layers
 ----------
@@ -90,7 +102,7 @@ You can think of |platform| as having several layers:
 
 Thus, the top layer is connected to the bottom layer and the transaction flow goes in the opposite direction: 
 
-    - A user action in an app creates a transaction.
+    - A user action in the user interface creates a transaction.
 
     - The transaction gets included in a block.
 
@@ -120,6 +132,10 @@ Molis client:
 
     - Provides an IDE for app development.
 
+    - Stores private keys of user accounts and performs authorization.
+
+    - Requests app page data from the database, and displays app pages to users.
+
     - Sends transactions to the backend via :doc:`REST API</reference/api2>`. 
 
         Transactions are created automatically for user actions that require a transaction. For example, when an app developer executes a contract from the IDE, Molis converts this action into a transaction.
@@ -129,4 +145,10 @@ The backend:
 
     - Keeps the global state (the database) of the node.
     - Implements all |platform| blockchain protocols.
+    - Executes contract code in a :doc:`virtual machine </topics/vm>`.
+    - Executes page code in a :doc:`template engine </topics/templates2>`. The result is page data that can be used by Molis client.
     - Implements :doc:`REST API</reference/api2>`.
+
+.. todo::
+
+    Make the templates link refer to a more specific heading: Interface Template Engine.
