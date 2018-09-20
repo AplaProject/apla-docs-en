@@ -2,7 +2,7 @@
 
 .. backend binary name and GitHub link
 .. |backend| replace:: `go-genesis`_
-.. _go-genesis: https://github.com/GenesisKernel/go-genesis	
+.. _go-genesis: https://github.com/GenesisKernel/go-genesis 
 .. .. |backend| replace:: `go-apla`_
 .. .. _go-apla: https://github.com/AplaProject/go-apla
 
@@ -14,44 +14,482 @@ Backend daemons
 This document describes how |platform| nodes work from the technical standpoint.
 
 
-Backend structure
+About the backend
 =================
-
 
 |platform| backend, |backend| operates at every network node. 
 
-The backend supports the blockchain network: 
+The backend implements all |platform| blockchain protocols, keeps the node's database, executes contract and page code, and implements :doc:`REST API</reference/api2>`.
 
-- It receives transactions from clients and distributes these transactions to other nodes. 
-- It receives new blocks from other nodes, generates new blocks, synchronizes blockchain between nodes.
+The backend is written in Go. 
+
+About the daemons
+=================
+
+Backend daemons perform individual functions of the backend.
+
+.. todo::
+
+    Expand the explanation about daemons. Explain, how daemons work in general, and how hey interact together as a node.
+
+    Link to where sources are located, with explanation that implementation details are to be looked in the code.
 
 
-Daemons
+Full node daemons
+-----------------
+
+A *full node* (a node that can generate new blocks and send transactions) runs the following backend daemons:
+
+- :ref:`blockgenerator`
+
+    Generates new blocks.
+
+- :ref:`blockcollections`
+
+    Downloads new blocks from other nodes.
+
+- :ref:`confirmation`
+
+    Confirms that blocks present at the node are also present at the majority of other nodes.
+
+- :ref:`disseminator`
+
+    Distributes transactions and blocks to other full nodes.
+
+- :ref:`QueueParseBlock`
+
+    Downloads and parses new blocks from the block queue.
+
+    .. todo::
+
+        TBD
+
+- :ref:`QueueParseTx`
+
+    Parses transactions from the transaction queue.
+
+    .. todo::
+
+        TBD
+
+
+Regular node daemons
+--------------------
+
+A *regular node* (a node that only sends transactions) runs the following backend daemons:
+
+- :ref:`blockcollections`
+
+    Downloads new blocks from other nodes.
+
+- :ref:`Confirmation`
+
+    Confirms that blocks present at the node are also present at the majority of other nodes.
+
+- :ref:`Disseminator`
+
+    Distributes transactions to other full nodes.
+
+- :ref:`QueueParseTx`
+
+    Parses transactions from the transaction queue.
+
+    .. todo::
+
+        TBD
+
+
+.. _blockcollections:
+
+BlockCollections daemon
+=======================
+
+BlockCollections daemon downloads blocks and synchronizes the blockchain with other network nodes.
+
+
+First run
+---------
+
+On the first run, the BlockCollections daemon either downloads the full blockchain from an URL, or uses the hardcoded first block. The chosen action depends on the ecosystem configuration.
+
+.. todo::
+
+    The above behavior may have been changed already.
+
+    Check if it really is ecosystem config.
+
+
+Blockchain synchronization
+--------------------------
+
+BlockCollections daemon sends a request for the current block id to all full nodes.
+
+The node that returns the maximum current block number is considered to be the most actual node. The daemon downloads all blocks that aren't already known from this node.
+
+
+Fork detection
+--------------
+
+If a fork is detected in the blockchain, the daemon downloads all blocks up to the fork point.
+
+.. todo::
+
+    Add link to forks doc.
+
+
+Tables
+------
+
+BlockCollections daemon uses the following tables: 
+
+    - block_chain (writes received blocks)
+    - config
+    - full_nodes
+    - main_lock
+    - node_public_key
+    - transactions
+    - transactions_status
+    - info_block
+
+
+Database lock
+-------------
+
+Yes.
+
+
+Requests
+--------
+
+BlockCollections daemon makes the following requests to other daemons:
+
+- :ref:`type 10` to all full nodes (maximum block number).
+- :ref:`type 7` to a node with maximum block number (block data).
+
+.. _blockgenerator:
+
+BlockGenerator daemon
+=====================
+
+BlockGenerator daemon generates new blocks.
+
+
+Scheduling
+----------
+
+BlockGenerator daemon schedules new block generation by analyzing the newest block in the blockchain. 
+
+New block can be generated if the following conditions are true:
+
+- A node that generated the newest block is located next to the daemon's node in the list of validating nodes.
+
+
+- Minimum amount of time has passed since the newest block was generated.
+
+.. todo:: 
+
+    Link to system parameter, ids of nodes from ``full_nodes``. Check that it works like so.
+
+.. todo::
+
+    Link to system parameter, ``gap_between_blocks``. Check that it works like so.
+
+
+Block generation
+----------------
+
+When a new block is generated, the daemon includes all new transactions in it. These transactions can be received from other nodes (:ref:`disseminator`), or generated by daemon's node. The resulting block is saved in the local database.
+
+
+Tables
+------
+
+BlockGenerator daemon uses the following tables: 
+
+    - block_chain (saves new blocks)
+    - config
+    - system_recognized_states
+    - full_nodes
+    - main_lock
+    - node_public_key
+    - transactions
+    - transactions_status
+    - info_block
+    - incorrect_tx
+
+
+Database lock
+-------------
+
+Yes.
+
+
+Requests
+--------
+
+BlockGenerator daemon makes no requests to other daemons.
+
+
+.. _disseminator:
+
+Disseminator daemon
+===================
+
+Disseminator daemon sends transactions and blocks to full nodes.
+
+
+Regular node
+------------
+
+When working at a regular node, the daemon sends transactions generated by its node to all full nodes.
+
+
+Full node
+---------
+
+When working at a full node, the daemon sends hashes of generated blocks and transactions to all full nodes. 
+
+Disseminator daemons working at each of these full nodes then respond with a request for transactions that are unknown to their nodes. The daemon sends full transaction data in response.
+
+
+Tables
+------
+
+Disseminator daemon uses the following tables: 
+
+    - config
+    - system_recognized_states
+    - full_nodes
+    - transactions
+
+
+Database lock
+-------------
+
+No.
+
+
+Requests
+--------
+
+Disseminator daemon makes the following requests to other daemons:
+
+- :ref:`type 1` to full nodes (transaction and block hashes).
+- :ref:`type 2` to full nodes (transaction data).
+
+
+.. _confirmation:
+
+Confirmation daemon
+===================
+
+Confirmation daemon checks that all blocks from its node are present at the majority of other nodes.
+
+
+Block confirmation
+------------------
+
+A block is considered confirmed when a certain number of nodes in a network have confirmed this block.
+
+The daemon confirms all blocks, one by one, starting from the first block in the database that is not confirmed at the moment.
+
+Each block is confirmed in this way: 
+
+- Confirmation daemon sends a request to all full nodes. This request contrains the ID of the block that is being confirmed.
+
+- All full nodes respond with a hash of this block.
+
+- If a hash from a response matches the hash of the block present at daemon's node, then the confirmations counter is increased. If hashes don't match, the disconfirmations counter is increased. 
+
+.. todo:: 
+
+    Fix 'certain'. This is defined somewhere?
+
+    What next? Now this counters work from then on?
+
+Tables
+------
+
+Confirmation daemon uses the following tables: 
+
+    - confirmation
+    - info_block
+    - full_nodes
+
+
+Database lock
+-------------
+
+No.
+
+
+Requests
+--------
+
+Confirmation daemon makes the following requests to other daemons:
+
+- :ref:`type 4` to full nodes (block hash request).
+
+
+
+Tcpcerver protocol
+==================
+
+A TCP server (tcpserver) handles requests from BlockCollections, Disseminator and Confirmation daemons. This TCP cerver works at full nodes.
+
+Request types
+-------------
+
+Every request has a type definded by first two bytes of a request.
+
+
+.. _type 1:
+
+Type 1
+------
+
+Request sender
+"""""""""""""""
+
+:ref:`disseminator`.
+
+
+Request data
+""""""""""""
+
+Transaction and block hashes.
+
+
+Request handling
+""""""""""""""""
+
+Block hashes are added to blocks queue.
+
+Transaction hashes are analyzed and transactions that aren't already present at the node are selected.
+
+
+Response
+""""""""
+
+None. :ref:`type 2` requests are made after handling this request.
+
+
+.. _type 2:
+
+Type 2
+------
+
+Request sender
+""""""""""""""
+
+:ref:`disseminator`.
+
+
+Request data
+""""""""""""
+
+Transaction data, including data size.
+
+- *data_size* (4 bytes)
+
+    Size of the transaction data, in bytes.
+
+- *data* (data_size bytes)
+
+    Transaction data.
+
+
+Request handling
+""""""""""""""""
+
+Transaction is validated and added to the transactions queue.
+
+
+Response
+""""""""
+
+None.
+
+
+.. _type 4:
+
+Type 4
+------
+
+Request sender
+""""""""""""""
+
+:ref:`confirmation`.
+
+
+Request data
+""""""""""""
+
+Block ID.
+
+
+Response
+""""""""
+
+Block hash.
+
+If a block with this ID is not present, ``0`` value is returned.
+
+
+.. _type 7:
+
+Type 7
+------
+
+Request sender
+""""""""""""""
+
+:ref:`blockcollections`.
+
+
+Request data
+""""""""""""
+
+Block ID.
+
+    - *block_id* (4 bytes)
+
+
+Response
+""""""""
+
+Block data, including data size.
+
+- *data_size* (4 bytes)
+
+    Size of the block data, in bytes.
+
+- *data* (data_size bytes)
+
+    Block data.
+
+If a block with this ID is not present, connection is closed.
+
+.. _type 10:
+
+Type 10
 -------
 
-Backend daemons perform individual functions of the backend. A *full node* (a node that can generate new blocks) runs the following backend daemons:
+Request sender
+""""""""""""""
 
-- *BlockGenerator*
-
-	Generates new blocks
-
-- *BlockCollections*
-
-	Downloads new blocks from other nodes
-
-- *Confirmation*
-
-	Confirms that blocks present at the node are also present at the majority of other nodes.
-
-- *Disseminator*
-
-	Distributes transactions and blocks to other full nodes.
+:ref:`blockcollections`.
 
 
-- *QueueParseBlock*
+Request data
+""""""""""""
 
- 	Downloads and parses new blocks from the :ref:`block queue`.
+None.
 
-- *QueueParseTx* 
 
-	Parses transactions from the :ref:`transaction queue`.
+Response
+""""""""
+
+Block identifier.
+
+    - *block_id* (4 bytes)
