@@ -19,7 +19,7 @@ About the backend daemons
 
 |platform| backend is |backend|. It operates at every network node. Backend daemons perform individual functions of the backend, among them is supporting |platform| blockchain protocols. The daemons distribute blocks and transactions in the blockchain network, generate new blocks, validate received blocks and transactions, and resolve blockchain forks if they occur.
 
-    Expand the explanation about daemons. Explain, how daemons work in general, and how they interact together as a node.
+.. todo::
 
     Link to where sources are located, with explanation that implementation details are to be looked in the code.
 
@@ -47,19 +47,15 @@ A *full node* (a node that can generate new blocks and send transactions) runs t
 
 - QueueParserBlocks
 
-    Parses blocks from the block queue. Resolves forks.
+    Parses block hashes from the block queue.
 
     .. todo::
 
-    Add link to forks doc.
+        TBD - how the queue and the daemon work (similar to BlocksCollections, but takes max block id from the queue)
 
-- QueueParseTx
+- QueueParserTx
 
-    Parses transactions from the transaction queue. Resolves transaction loops.
-
-    .. todo::
-
-        Add link to transaction loop description.
+    Validates transactions from the transaction queue.
 
 - Notificator
 
@@ -79,22 +75,25 @@ A *regular node* (a node that only sends transactions) runs the following backen
 
     Downloads new blocks from other nodes.
 
-- :ref:`Confirmations`
+- :ref:`confirmations`
 
     Confirms that blocks present at the node are also present at the majority of other nodes.
 
-- :ref:`Disseminator`
+- :ref:`disseminator`
 
     Distributes transactions to other full nodes.
 
-- :ref:`QueueParserTx`
+- QueueParserTx
 
-    Parses transactions from the transaction queue.
+    Validates transactions from the transaction queue.
 
-    .. todo::
+- Notificator
 
-        TBD
+    Sends notifications to users.
 
+- Scheduler
+
+    Runs contracts on schedule.
 
 .. _blockcollections:
 
@@ -163,7 +162,6 @@ BlockCollections daemon uses the following tables:
     - transactions
     - transactions_status
     - info_block
-
 
 Database lock
 -------------
@@ -262,7 +260,7 @@ Full node
 
 When working at a full node, the daemon sends hashes of generated blocks and transactions to all full nodes. 
 
-Disseminator daemons working at each of these full nodes then respond with a request for transactions that are unknown to their nodes. The daemon sends full transaction data in response.
+The full nodes then respond with requests for transactions that are unknown to their nodes. The daemon sends full transaction data in response.
 
 
 Tables
@@ -288,7 +286,7 @@ Requests
 Disseminator daemon makes the following requests to other daemons:
 
 - :ref:`type 1` to full nodes (transaction and block hashes).
-- :ref:`type 2` to full nodes (transaction data).
+- :ref:`type 2` from full nodes (transaction data).
 
 
 .. _confirmations:
@@ -302,7 +300,11 @@ Confirmatios daemon checks that all blocks from its node are present at the majo
 Block confirmation
 ------------------
 
-A block is considered confirmed when a certain number of nodes in a network have confirmed this block.
+A block is considered confirmed when a number of nodes in a network have confirmed this block.
+
+.. todo:: 
+
+    Where this value is defined?
 
 The daemon confirms all blocks, one by one, starting from the first block in the database that is not confirmed at the moment.
 
@@ -315,8 +317,6 @@ Each block is confirmed in this way:
 - If a hash from a response matches the hash of the block present at daemon's node, then the confirmations counter is increased. If hashes don't match, the disconfirmations counter is increased. 
 
 .. todo:: 
-
-    Fix 'certain'. This is defined somewhere?
 
     What next? Now this counters work from then on?
 
@@ -365,7 +365,7 @@ Type 1
 Request sender
 """""""""""""""
 
-:ref:`disseminator`.
+:ref:`disseminator` sends this request.
 
 
 Request data
@@ -396,7 +396,7 @@ Type 2
 Request sender
 """"""""""""""
 
-:ref:`disseminator`.
+:ref:`disseminator` sends this request.
 
 
 Request data
@@ -433,7 +433,7 @@ Type 4
 Request sender
 """"""""""""""
 
-:ref:`confirmation`.
+:ref:`confirmations` sends this request.
 
 
 Request data
@@ -458,7 +458,7 @@ Type 7
 Request sender
 """"""""""""""
 
-:ref:`blockcollections`.
+:ref:`blockcollections` sends this request.
 
 
 Request data
@@ -492,7 +492,7 @@ Type 10
 Request sender
 """"""""""""""
 
-:ref:`blockcollections`.
+:ref:`blockcollections` sends this request.
 
 
 Request data
