@@ -11,26 +11,14 @@
 Backend daemons
 ###############
 
-This document describes how |platform| nodes work from the technical standpoint.
+This document describes how |platform| nodes interact from the technical standpoint.
 
 
-About the backend
-=================
-
-|platform| backend, |backend| operates at every network node. 
-
-The backend implements all |platform| blockchain protocols, keeps the node's database, executes contract and page code, and implements :doc:`REST API</reference/api2>`.
-
-The backend is written in Go. 
-
-About the daemons
-=================
-
-Backend daemons perform individual functions of the backend.
+|platform| backend, |backend| operates at every network node. Backend daemons perform individual functions of the backend.
 
 .. todo::
 
-    Expand the explanation about daemons. Explain, how daemons work in general, and how hey interact together as a node.
+    Expand the explanation about daemons. Explain, how daemons work in general, and how they interact together as a node.
 
     Link to where sources are located, with explanation that implementation details are to be looked in the code.
 
@@ -48,7 +36,7 @@ A *full node* (a node that can generate new blocks and send transactions) runs t
 
     Downloads new blocks from other nodes.
 
-- :ref:`confirmation`
+- :ref:`confirmations`
 
     Confirms that blocks present at the node are also present at the majority of other nodes.
 
@@ -56,21 +44,29 @@ A *full node* (a node that can generate new blocks and send transactions) runs t
 
     Distributes transactions and blocks to other full nodes.
 
-- :ref:`QueueParseBlock`
+- QueueParserBlocks
 
-    Downloads and parses new blocks from the block queue.
-
-    .. todo::
-
-        TBD
-
-- :ref:`QueueParseTx`
-
-    Parses transactions from the transaction queue.
+    Parses blocks from the block queue. Resolves forks.
 
     .. todo::
 
-        TBD
+    Add link to forks doc.
+
+- QueueParseTx
+
+    Parses transactions from the transaction queue. Resolves transaction loops.
+
+    .. todo::
+
+        Add link to transaction loop description.
+
+- Notificator
+
+    Sends notifications to users.
+
+- Scheduler
+
+    Runs contracts on schedule.
 
 
 Regular node daemons
@@ -82,7 +78,7 @@ A *regular node* (a node that only sends transactions) runs the following backen
 
     Downloads new blocks from other nodes.
 
-- :ref:`Confirmation`
+- :ref:`Confirmations`
 
     Confirms that blocks present at the node are also present at the majority of other nodes.
 
@@ -90,7 +86,7 @@ A *regular node* (a node that only sends transactions) runs the following backen
 
     Distributes transactions to other full nodes.
 
-- :ref:`QueueParseTx`
+- :ref:`QueueParserTx`
 
     Parses transactions from the transaction queue.
 
@@ -278,12 +274,12 @@ Disseminator daemon makes the following requests to other daemons:
 - :ref:`type 2` to full nodes (transaction data).
 
 
-.. _confirmation:
+.. _confirmations:
 
-Confirmation daemon
-===================
+Confirmations daemon
+====================
 
-Confirmation daemon checks that all blocks from its node are present at the majority of other nodes.
+Confirmatios daemon checks that all blocks from its node are present at the majority of other nodes.
 
 
 Block confirmation
@@ -295,7 +291,7 @@ The daemon confirms all blocks, one by one, starting from the first block in the
 
 Each block is confirmed in this way: 
 
-- Confirmation daemon sends a request to all full nodes. This request contrains the ID of the block that is being confirmed.
+- Confirmations daemon sends a request to all full nodes. This request contrains the ID of the block that is being confirmed.
 
 - All full nodes respond with a hash of this block.
 
@@ -310,7 +306,7 @@ Each block is confirmed in this way:
 Tables
 ------
 
-Confirmation daemon uses the following tables: 
+Confirmations daemon uses the following tables: 
 
     - confirmation
     - info_block
