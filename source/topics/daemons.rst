@@ -11,12 +11,13 @@
 Backend daemons
 ###############
 
-This document describes how |platform| nodes interact from the technical standpoint.
+This document describes how |platform| nodes interact with each other from the technical standpoint.
 
 
-|platform| backend, |backend| operates at every network node. Backend daemons perform individual functions of the backend.
+About the backend daemons
+=========================
 
-.. todo::
+|platform| backend is |backend|. It operates at every network node. Backend daemons perform individual functions of the backend, among them is supporting |platform| blockchain protocols. The daemons distribute blocks and transactions in the blockchain network, generate new blocks, validate received blocks and transactions, and resolve blockchain forks if they occur.
 
     Expand the explanation about daemons. Explain, how daemons work in general, and how they interact together as a node.
 
@@ -331,7 +332,8 @@ Confirmation daemon makes the following requests to other daemons:
 Tcpcerver protocol
 ==================
 
-A TCP server (tcpserver) handles requests from BlockCollections, Disseminator and Confirmation daemons. This TCP cerver works at full nodes.
+A TCP server (tcpserver) works at full nodes. The TCP server uses a binary protocol over TCP to handle requests from BlockCollections, Disseminator, and Confirmation daemons.
+
 
 Request types
 -------------
