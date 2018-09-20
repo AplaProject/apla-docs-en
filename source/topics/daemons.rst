@@ -107,7 +107,7 @@ BlockCollections daemon downloads blocks and synchronizes the blockchain with ot
 First run
 ---------
 
-On the first run, the BlockCollections daemon either downloads the full blockchain from an URL, or uses the hardcoded first block. The chosen action depends on the ecosystem configuration.
+On the first run, BlockCollections daemon either downloads the full blockchain from an URL, or uses the hardcoded first block. The chosen action depends on the ecosystem configuration.
 
 .. todo::
 
@@ -119,19 +119,35 @@ On the first run, the BlockCollections daemon either downloads the full blockcha
 Blockchain synchronization
 --------------------------
 
-BlockCollections daemon sends a request for the current block id to all full nodes.
-
-The node that returns the maximum current block number is considered to be the most actual node. The daemon downloads all blocks that aren't already known from this node.
+BlockCollections daemon synchronizes blockchain by determining the maximum block number in the blockchain network, requesting new blocks, and resolving forks in the blockchain.
 
 
-Fork detection
---------------
+Blockchain update check
+"""""""""""""""""""""""
 
-If a fork is detected in the blockchain, the daemon downloads all blocks up to the fork point.
+BlockCollections daemon sends a request for the current block ID to all full nodes.
+
+If the current block ID of the daemon's node is less than the current block ID of any node, then the blockchain is considered outdated.
+
+
+New blocks
+""""""""""
+
+The node that retured the maximum current block number is considered to be the most up-to-date node. 
+
+The daemon downloads all blocks that aren't already known from it.
+
+
+Fork resolution
+"""""""""""""""
+
+If a fork is detected in the blockchain, the daemon walks the fork backwards by downloading all blocks up to the common ancestor block.
+
+When the common ancestor block is found, the rollback is performed on the daemon's node blockchain, and correct blocks are added to the blockchain up to the newest block.
 
 .. todo::
 
-    Add link to forks doc.
+    Add link to fork detection and block rollback doc.
 
 
 Tables
