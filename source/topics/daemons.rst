@@ -17,7 +17,7 @@ This document describes how |platform| nodes interact with each other from the t
 About the backend daemons
 =========================
 
-|platform| backend is |backend|. It operates at every network node. Backend daemons perform individual functions of the backend, among them is supporting |platform| blockchain protocols. The daemons distribute blocks and transactions in the blockchain network, generate new blocks, validate received blocks and transactions, and resolve blockchain forks if they occur.
+|platform| backend is |backend|. It operates at every network node. Backend daemons perform individual functions of the backend and support |platform| blockchain protocols. The daemons distribute blocks and transactions in the blockchain network, generate new blocks, validate received blocks and transactions, and resolve blockchain forks if they occur.
 
 .. todo::
 
@@ -47,7 +47,7 @@ A *full node* (a node that can generate new blocks and send transactions) runs t
 
 - QueueParserBlocks
 
-    Parses block hashes from the block queue.
+    Processes blocks from the block queue.
 
     .. todo::
 
@@ -126,13 +126,13 @@ Blockchain update check
 
 BlockCollections daemon sends a request for the current block ID to all full nodes.
 
-If the current block ID of the daemon's node is less than the current block ID of any node, then the blockchain is considered outdated.
+If the current block ID of the daemon's node is less than the current block ID of any full node, then the blockchain is considered outdated.
 
 
-New blocks
-""""""""""
+Downloading new blocks
+""""""""""""""""""""""
 
-The node that retured the maximum current block number is considered to be the most up-to-date node. 
+The node that returned the maximum current block number is considered to be the most up-to-date node. 
 
 The daemon downloads all blocks that aren't already known from it.
 
@@ -193,7 +193,6 @@ BlockGenerator daemon schedules new block generation by analyzing the newest blo
 New block can be generated if the following conditions are true:
 
 - A node that generated the newest block is located next to the daemon's node in the list of validating nodes.
-
 
 - Minimum amount of time has passed since the newest block was generated.
 
@@ -294,7 +293,7 @@ Disseminator daemon makes the following requests to other daemons:
 Confirmations daemon
 ====================
 
-Confirmatios daemon checks that all blocks from its node are present at the majority of other nodes.
+Confirmations daemon checks that all blocks from its node are present at the majority of other nodes.
 
 
 Block confirmation
@@ -304,7 +303,7 @@ A block is considered confirmed when a number of nodes in a network have confirm
 
 .. todo:: 
 
-    Where this value is defined?
+    Where this value is defined? A: MIN_CONFIRMED_NODES in sources
 
 The daemon confirms all blocks, one by one, starting from the first block in the database that is not confirmed at the moment.
 
