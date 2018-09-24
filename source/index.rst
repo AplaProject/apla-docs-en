@@ -62,7 +62,6 @@ Contents
    :caption: Guides
 
    topics/script.rst
-   topics/contractsignatures.rst
    topics/templates2.rst
    topics/appexample.rst
    topics/vm.rst
