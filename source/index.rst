@@ -44,6 +44,8 @@ Contents
    :caption: Concepts
 
    concepts/about-the-platform.rst
+   concepts/blockchain-layers.rst
+   concepts/blockchain-basics.rst
    concepts/faq.rst
    concepts/thesaurus.rst
 
