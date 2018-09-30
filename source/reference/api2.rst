@@ -1009,7 +1009,59 @@ Response example
         ]
     }   
 
+
+sections[?limit=...&offset=...]
+-------------------------------
+
+**GET**/ Returns a list of records from the *sections* table of the current ecosystem. An offset and a record limit can be specified.
+
+If the *role_access* field contains a list of roles and the current role is not present in this field, then the record will not be returned. The *title* column data is replaced with language resources.
+
+Request
+"""""""
+
+* *[limit]* - maximum number of returned records (25 by default)
+* *[offset]* - offset for records (0 by default)
+
+.. code-block:: default
     
+    GET
+    /api/v2/sections
+
+
+Response
+""""""""
+
+* *count* - total number of records in the *sections* table
+* *list* - an array where each element contains all columns from the *sections* table.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": "2"
+        "list": [{
+            "id": "1",
+            "title": "Development",
+           "urlpage": "develop",
+           ...
+        },
+        ]
+    }
+
+
+Errors
+""""""
+
+*E_TABLENOTFOUND,E_VDE*    
+
+
+  
 row/{tablename}/{id}[?columns=]
 -------------------------------
 
