@@ -873,7 +873,7 @@ Returns a string value of exp/10^digit. If *digit* parameter is not specified, i
 
 .. code:: js
 
-    s = Money("123456723722323332", 0)
+    s = FormatMoney("123456723722323332", 0)
 
 
 Random(min int, max int) int
