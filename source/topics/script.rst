@@ -568,6 +568,31 @@ The function updates columns in a record whose column has a specified value. The
     DBUpdateExt("mytable", "address", addr, "name,amount", "John Dow", 100)
 
 
+DelColumn(tblname string, column string)
+""""""""""""""""""""""""""""""""""""""""
+
+Deletes a column in the specified table. The table must have no records in it.
+
+* *tblname*–name of the table in the database.
+* *column*–name of the column that must be deleted.
+
+.. code:: js
+
+    DelColumn("mytable", "mycolumn")
+
+
+DelTable(tblname string)
+""""""""""""""""""""""""
+
+Deletes the specified table. The table must have no records in it.
+
+* *tblname*–name of the table in the database.
+
+.. code:: js
+
+    DelTable("mytable")
+
+
 Array operations
 ----------------
 
