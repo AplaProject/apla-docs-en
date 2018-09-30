@@ -1010,8 +1010,8 @@ Response example
     }   
 
 
-sections[?limit=...&offset=...]
--------------------------------
+sections[?limit=...&offset=...&lang=]
+-------------------------------------
 
 **GET**/ Returns a list of records from the *sections* table of the current ecosystem. An offset and a record limit can be specified.
 
@@ -1022,6 +1022,8 @@ Request
 
 * *[limit]* - maximum number of returned records (25 by default)
 * *[offset]* - offset for records (0 by default)
+* *[lang]* - language code or lcid to enable language resources in this language. Examples: *en, ru, fr, en-US, en-GB*. If the specified language resource is not found (for example, *en-US*), it is searched in the language group (*en*).
+
 
 .. code-block:: default
     
