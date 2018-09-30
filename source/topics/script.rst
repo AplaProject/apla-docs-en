@@ -863,6 +863,19 @@ The function converts a string with hexadecimal encoding to a *bytes* value (seq
     val = HexToBytes("34fe4501a4d80094")
        
 
+FormatMoney(exp string, digit int)
+""""""""""""""""""""""""""""""""""
+
+Returns a string value of exp/10^digit. If *digit* parameter is not specified, it is taken from the **money_digit** ecosystem parameter.
+
+* *exp*–Numeric value as a string.
+* *digit*–Exponent of the base 10 in the expression exp/10^digit. This value can be positive or negative. Positive value determines the number of digits after the comma.
+
+.. code:: js
+
+    s = Money("123456723722323332", 0)
+
+
 Random(min int, max int) int
 """"""""""""""""""""""""""""
 
