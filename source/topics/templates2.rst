@@ -618,8 +618,8 @@ Elements of data formatting
 ---------------------------
 
 
-Div(Class, Body) [.Style(Style)]
-""""""""""""""""""""""""""""""""
+Div(Class, Body) [.Style(Style)] [.Show(Condition)] [.Hide(Condition)]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Creates a **div** HTML element.
 
@@ -628,11 +628,19 @@ Creates a **div** HTML element.
 
 **Style** - serves for specifying css styles,
 
-* *Style* - css styles.
+  * *Style* - css styles.
+
+**Show** - defines conditions to show this block.
+
+  * *Condition* - see below.
+
+**Hide** - defines conditions to hide this block.
+
+  * *Condition* - sequence of ``InputName=Value`` expressions. *Condition* is true when all expressions that it contains are true. An expression is true when ``InputName`` input has the ``Value`` text. If several *Show* or *Hide* calls are specified, then at least one of the *Condition* parameters must be true.
 
 .. code:: js
 
-      Div(class1 class2, This is a paragraph.)
+    Div(class1 class2, This is a paragraph.).Show(inp1=test,inp2=none)
 
 
 Em(Body, Class)
