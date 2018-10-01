@@ -235,8 +235,8 @@ Adds a button to the buttons panel. Creates **addtoolbutton** element.
       AddToolButton(Help, help, help_page) 
 
 
-Button(Body, Page, Class, Contract, Params, PageParams) [.Alert(Text,ConfirmButton,CancelButton,Icon)] [.Style(Style)]
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Button(Body, Page, Class, Contract, Params, PageParams) [.Alert(Text,ConfirmButton,CancelButton,Icon)] [.Style(Style)] [.ErrorRedirect(ErrorID,PageName,PageParams)]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Creates a **button** HTML element. This element creates a button, which sends a specified contract for execution.
 
@@ -249,14 +249,21 @@ Creates a **button** HTML element. This element creates a button, which sends a 
 
 **Alert** - displays a message.
 
-* *Text* - message text,
-* *ConfirmButton* - confirm button caption,
-* *CancelButton* - cancel button caption,
-* *Icon* - icon.
+  * *Text* - message text,
+  * *ConfirmButton* - confirm button caption,
+  * *CancelButton* - cancel button caption,
+  * *Icon* - icon.
 
 **Style** - serves for specifying css styles.
 
-* *Style* - css styles.
+  * *Style* - css styles.
+
+**ErrorRedirect** - specifies a redirect page. This redirect page is used when the *Throw* function generates an error during the contract execution. There may be several *ErrorRedirect* calls. As a result, an *errredir* attribute is returnes with *ErrorID* list of keys and parameters as values.
+
+  * *ErrorID* - error identifier
+  * *PageName* - name of the redirect page \
+  * *PageParams* - parameters passed to this page
+
 
 .. code:: js
 

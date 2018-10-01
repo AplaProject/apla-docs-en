@@ -780,7 +780,23 @@ Above,
     out = JSONDecode(TransactionInfo(hash))
 
 
-ValidateCondition(condition string, state int) 
+Throw(ErrorId: string, ErrDescription: string)
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Generates an error of type *exception*, but adds an *id* field to it.
+
+The result of such transaction has this format: ``{"type":"exception","error":"Error description","id":"Error ID"}``
+
+  * *ErrorId* - error identifier.
+  * *ErrDescription* - error description.
+
+.. code:: js
+
+    Throw("Problem", "There is a problem")
+
+
+
+ValidateCondition(condition string, state int)
 """"""""""""""""""""""""""""""""""""""""""""""
 
 The function tries to compile the condition specified in the *condition* parameter. If a mistake occurs during the compilation process, the mistake will be generated and the calling contract will complete is’s job. This function is designed to check the correctness of the conditions when they change.
