@@ -124,10 +124,6 @@ Error List
 
     This error means that you have encountered a bug that needs to be found and fixed. 
 
-.. describe:: E_REFRESHTOKEN
-
-    Refresh token is not valid.
-
 .. describe:: E_SERVER
 
     Server error. 
@@ -327,10 +323,6 @@ Response
 
     JWT token.
 
-* *refresh*
-
-    JWT token to extend the session. Must be sent in the **refresh** command.
-
 * *ecosystem*
 
     Ecosystem ID.
@@ -374,7 +366,6 @@ Response example
     Content-Type: application/json
     {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYT8fNGODp0Y"
-        "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........iOiI1Nzk3ODE3NjYwNDM2ODA5MzQ2Iiw"        
         "ecosystem":"1",
         "key_id":"12345",
         "address": "1234-....-3424"
@@ -384,64 +375,6 @@ Errors
 """"""
 
 *E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC* 
-
-    
-refresh
--------
-
-**POST**/ Issues new tokens and extends the user session. 
-
-In case of successful completion you need to send the token, which was received in response, in the *Authorization* header of all queries.
-
-
-Request
-"""""""
-
-.. code-block:: default
-
-    POST
-    /api/v2/refresh
-    
-
-* *[expire]*
-
-    Lifetime of the JWT token in seconds (36000 by default).
-
-* *token*
-
-    Refresh token from the previous **login** or **refresh** calls.
-
-
-Response
-""""""""
-
-* *token*
-
-    JWT token.
-
-* *refresh*
-
-    JWT token for session extension. Must be sent to the **refresh** command.
-
-
-Response example
-""""""""""""""""
-
-.. code-block:: default
-    
-    200 (OK)
-    Content-Type: application/json
-    {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYT8fNGODplQXbVu0Y"
-        "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........iOiI1Nzk3ODE3NjYwNDM2ODA5MzQ2Iiw"        
-    }     
-    
-
-Errors
-""""""
-
-*E_SERVER, E_TOKEN, E_REFRESHTOKEN* 
-
 
 
 Service Commands
