@@ -186,6 +186,8 @@ Requests that are not available in VDE.
 
 - txstatus
 - txstatusMultiple
+- txinfo
+- txinfoMultiple
 - appparam
 - appparams
 - history
@@ -1653,6 +1655,113 @@ Errors
 """"""
 
 *E_HASHWRONG, E_HASHNOTFOUND*
+
+
+txinfo/{hash}
+-------------
+
+**GET**/ Returns information about a transaction with a specified hash. Response contains the block number and amount of confirmations. As an option the corresponding contract name and its parameters can be returned.
+
+
+Request
+"""""""
+
+* *hash* - hash of a transaction.
+* *[contractinfo]* - contract information flag. To get information about the contract and parameters for this transaction, specify ``1``.
+
+.. code-block:: default 
+    
+    GET
+    /api/v2/txinfo/2353467abcd7436ef47438
+
+
+Response
+""""""""
+
+* *blockid* - number of the block where this transaction was included. If this value is ``0``, then a transaction with this hash was not found.
+* *confirm* - number of confirmations for this block.
+* *data* - if *contentinfo* is ``1``, then a json with contract information is returned in this parameter.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "blockid": "4235237",
+        "confirm": "10"
+    }      
+
+
+Errors
+""""""
+
+*E_HASHWRONG*
+
+
+txinfoMultiple/
+---------------
+
+**GET**/ Returns information about transactions with specified hashes.
+
+
+Request
+"""""""
+
+* *data* - json with a list of transaction hashes in hexadecimal string format.
+* *[contractinfo]* - contract information flag. To get information about the contract and parameters for this transaction, specify ``1``.
+
+.. code-block:: default 
+
+    {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
+
+.. code-block:: default 
+    
+    GET
+    /api/v2/txinfoMultiple/
+    
+
+Response
+""""""""
+
+* *results* - dictionary that has transaction hashes as keys and transaction information as values.
+
+        *hash* - hash of a transaction
+
+            * *blockid* - number of the block where this transaction was included. If this value is ``0``, then a transaction with this hash was not found.
+            * *confirm* - number of confirmations for this block.
+            * *data* - if *contentinfo* is ``1``, then a json with contract information is returned in this parameter.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+    
+    200 (OK)
+    Content-Type: application/json
+    {"results":
+      { 
+        "hash1": {
+             "blockid": "3123",
+             "confirm": "5",
+         },
+         "hash2": {
+              "blockid": "3124",
+              "confirm": "3",
+         }
+       }
+     }
+
+
+
+Errors
+""""""
+
+*E_HASHWRONG*
 
 
 content/{menu|page}/{name}
