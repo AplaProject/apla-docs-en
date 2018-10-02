@@ -181,7 +181,6 @@ Routes unavailable in VDE
 Requests that are not available in VDE.
 
 - txstatus
-- txstatusMultiple
 - txinfo
 - txinfoMultiple
 - appparam
@@ -1316,62 +1315,6 @@ Response example
         "result": ""
     }      
 
-
-Errors
-""""""
-
-*E_HASHWRONG, E_HASHNOTFOUND*
-
-
-txstatusMultiple/
------------------
-
-**GET**/ Returns a block number or an error of the sent transaction with given hashes. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
-
-Request
-"""""""
-
-* *data*–json with a list of transaction hashes.
-
-.. code-block:: default 
-
-     {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
-
-.. code-block:: default 
-    
-    GET
-    /api/v2/txstatusMultiple/
-    
-Response
-""""""""
-
-* *results*–a dictionary that contains transaction hashes as keys and check results as values.
-
-        *hash*–transaction hash
-
-                * *blockid*–number of the block in case the transaction has been processed successfully
-                * *result*–result of the transaction operation, returned through the **$result** variable
-                * *errmsg*–error message in case the transaction was refused.
-    
-Response example
-""""""""""""""""
-
-.. code-block:: default 
-    
-    200 (OK)
-    Content-Type: application/json
-    {"results":
-      { 
-        "hash1": {
-             "blockid": "3123",
-             "result": "",
-         },
-         "hash2": {
-              "blockid": "3124",
-              "result": "",
-         }
-       }
-     }
 
 Errors
 """"""
