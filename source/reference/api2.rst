@@ -94,7 +94,11 @@ Error List
 
 .. describe:: E_INVALIDWALLET
 
-    Wallet %s is not valid,
+    Wallet %s is not valid.
+
+.. describe:: E_LIMITTXSIZE
+
+    The size of transaction is too big.
 
 .. describe:: E_NOTFOUND
 
@@ -1279,7 +1283,55 @@ Response example
         "active": true
     }
 
-  
+
+sendTX
+------
+
+**POST**/ Accepts transactions passed in the parameters and adds them to the transaction queue. If the execution is successful, transaction hashes are returned. A hash of the transaction can be used to get the block number for the transaction, or an error message in case of an error.
+
+Request
+"""""""
+
+* *tx_key* - transaction contents. You can specify any name for this parameter. To specify several transactions, use different names.
+
+.. code-block:: default
+
+    POST
+    /api/v2/sendTx
+
+    Headers:
+    Content-Type: multipart/form-data
+
+    Parameters:
+    tx1 - contents of transaction 1
+    txN - contents of transaction N
+
+Response
+""""""""
+
+* *hashes* - dictionary with transaction hashes
+    * *tx1* - hex hash of transaction 1
+    * *txN* - hex hash of transaction N
+
+Response example
+""""""""""""""""
+
+.. code-block:: default
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "hashes": {
+            "tx1": "67afbc435634.....",
+            "txN": "89ce4498eaf7.....",
+    }
+
+Errors
+""""""
+
+*E_LIMITTXSIZE*
+
+
 txstatus/{hash}
 ---------------
 
