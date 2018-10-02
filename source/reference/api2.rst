@@ -1250,6 +1250,7 @@ Request
 Response
 """"""""
 
+* *id*–identifier of the contract in VM.
 * *name*–name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``
 * *active*–true if the contract is bound to the account and false otherwise,
 * *key_id*–contract owner's ID,
@@ -1258,9 +1259,8 @@ Response
 * *fields*–an array that contains information about every parameter in the **data** section of the contract and contains the following fields:
 
   * *name*–field name,
-  * *htmltype*–html type,
   * *type*–parameter type,
-  * *tags*–parameter tags.
+  * *optional*–parameter optionality flag, this value is ``true`` if a parameter is optional and ``false`` if it is mandatory.
     
 Response example
 """"""""""""""""
@@ -1271,9 +1271,10 @@ Response example
     Content-Type: application/json
     {
         "fields" : [
-            {"name":"amount", "htmltype":"textinput", "type":"int64", "tags": "optional"},
-            {"name":"name", "htmltype":"textinput", "type":"string" "tags": ""}
+            {"name":"amount", "type":"int", "optional": false},
+            {"name":"name", "type":"string", "optional": true}
         ],
+        "id": 150,
         "name": "@1mycontract",
         "tableid" : 10,
         "active": true
