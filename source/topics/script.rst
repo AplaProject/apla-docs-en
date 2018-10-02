@@ -11,6 +11,7 @@ Contracts are written using an original (developed by the team of platform devel
 
 Contracts can be edited, but only if editing was not forbidden by way of putting false in the contract editing rights. Operations with data in the blockchain are performed by the most up-to-date (current) version of the contract. The complete history of changes made to contracts is stored in the blockchain and available from the software client.
 
+
 Structure of the contract
 =========================
 
@@ -24,8 +25,8 @@ Contracts are declared with the contract keyword, followed by the new contract's
 
   contract MyContract {
       data {
-          FromId address
-          ToId   address
+          FromId int
+          ToId   int
           Amount money
       }
       func conditions {
@@ -42,31 +43,22 @@ Data section
 The contract input data, as well as the parameters of the form for the reception of the data are described in the **data** section. 
 The data are listed line by line: first, the variable name is specified (only variables, but not arrays are transferred), then the type and the parameters for the building of the interface form are indicated optionally through a gap in double quotation marks:
 
-* *hidden* - hidden element of the form,
 * *optional* - form element without obligatory filling in,
-* *date* - field of the date and time selection,
-* *polymap* - map with the selection of coordinates and areas,
-* *map* - map with the ability to mark the place,
-* *image* - images upload,
-* *text* - entry of the text of HTML-code in the textarea field,
-* *crypt:Field* - create and encrypt a private key for the destination specified in the *Field* field. If only ``crypt`` is specified, then the private key will be created for the user who signs the contract,
-* *address* - field for input of the account address,
-* *signature:contractname* - a line to display the contractname contract, which requires the signatures (it is discussed in detail in a special description section).
 
 .. code:: js
 
   contract my {
     data {
         Name string 
-        RequestId address
-        Photo bytes "image optional"
+        RequestId int
+        Photo file "optional"
         Amount money
-        Private bytes "crypt:RequestId"
+        Private bytes
     }
     ...
   }
 
-    
+
 Conditions section
 ------------------
 
