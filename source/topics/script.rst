@@ -568,6 +568,31 @@ The function updates columns in a record whose column has a specified value. The
     DBUpdateExt("mytable", "address", addr, "name,amount", "John Dow", 100)
 
 
+DelColumn(tblname string, column string)
+""""""""""""""""""""""""""""""""""""""""
+
+Deletes a column in the specified table. The table must have no records in it.
+
+* *tblname*–name of the table in the database.
+* *column*–name of the column that must be deleted.
+
+.. code:: js
+
+    DelColumn("mytable", "mycolumn")
+
+
+DelTable(tblname string)
+""""""""""""""""""""""""
+
+Deletes the specified table. The table must have no records in it.
+
+* *tblname*–name of the table in the database.
+
+.. code:: js
+
+    DelTable("mytable")
+
+
 Array operations
 ----------------
 
@@ -755,7 +780,23 @@ Above,
     out = JSONDecode(TransactionInfo(hash))
 
 
-ValidateCondition(condition string, state int) 
+Throw(ErrorId: string, ErrDescription: string)
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Generates an error of type *exception*, but adds an *id* field to it.
+
+The result of such transaction has this format: ``{"type":"exception","error":"Error description","id":"Error ID"}``
+
+  * *ErrorId* - error identifier.
+  * *ErrDescription* - error description.
+
+.. code:: js
+
+    Throw("Problem", "There is a problem")
+
+
+
+ValidateCondition(condition string, state int)
 """"""""""""""""""""""""""""""""""""""""""""""
 
 The function tries to compile the condition specified in the *condition* parameter. If a mistake occurs during the compilation process, the mistake will be generated and the calling contract will complete is’s job. This function is designed to check the correctness of the conditions when they change.
@@ -837,6 +878,19 @@ The function converts a string with hexadecimal encoding to a *bytes* value (seq
     var val bytes
     val = HexToBytes("34fe4501a4d80094")
        
+
+FormatMoney(exp string, digit int)
+""""""""""""""""""""""""""""""""""
+
+Returns a string value of exp/10^digit. If *digit* parameter is not specified, it is taken from the **money_digit** ecosystem parameter.
+
+* *exp*–Numeric value as a string.
+* *digit*–Exponent of the base 10 in the expression exp/10^digit. This value can be positive or negative. Positive value determines the number of digits after the comma.
+
+.. code:: js
+
+    s = FormatMoney("123456723722323332", 0)
+
 
 Random(min int, max int) int
 """"""""""""""""""""""""""""

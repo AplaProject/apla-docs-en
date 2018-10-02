@@ -124,10 +124,6 @@ Error List
 
     This error means that you have encountered a bug that needs to be found and fixed. 
 
-.. describe:: E_REFRESHTOKEN
-
-    Refresh token is not valid.
-
 .. describe:: E_SERVER
 
     Server error. 
@@ -186,6 +182,8 @@ Requests that are not available in VDE.
 
 - txstatus
 - txstatusMultiple
+- txinfo
+- txinfoMultiple
 - appparam
 - appparams
 - history
@@ -325,10 +323,6 @@ Response
 
     JWT token.
 
-* *refresh*
-
-    JWT token to extend the session. Must be sent in the **refresh** command.
-
 * *ecosystem*
 
     Ecosystem ID.
@@ -372,7 +366,6 @@ Response example
     Content-Type: application/json
     {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYT8fNGODp0Y"
-        "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........iOiI1Nzk3ODE3NjYwNDM2ODA5MzQ2Iiw"        
         "ecosystem":"1",
         "key_id":"12345",
         "address": "1234-....-3424"
@@ -382,64 +375,6 @@ Errors
 """"""
 
 *E_SERVER, E_UNKNOWNUID, E_SIGNATURE, E_STATELOGIN, E_EMPTYPUBLIC* 
-
-    
-refresh
--------
-
-**POST**/ Issues new tokens and extends the user session. 
-
-In case of successful completion you need to send the token, which was received in response, in the *Authorization* header of all queries.
-
-
-Request
-"""""""
-
-.. code-block:: default
-
-    POST
-    /api/v2/refresh
-    
-
-* *[expire]*
-
-    Lifetime of the JWT token in seconds (36000 by default).
-
-* *token*
-
-    Refresh token from the previous **login** or **refresh** calls.
-
-
-Response
-""""""""
-
-* *token*
-
-    JWT token.
-
-* *refresh*
-
-    JWT token for session extension. Must be sent to the **refresh** command.
-
-
-Response example
-""""""""""""""""
-
-.. code-block:: default
-    
-    200 (OK)
-    Content-Type: application/json
-    {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYT8fNGODplQXbVu0Y"
-        "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........iOiI1Nzk3ODE3NjYwNDM2ODA5MzQ2Iiw"        
-    }     
-    
-
-Errors
-""""""
-
-*E_SERVER, E_TOKEN, E_REFRESHTOKEN* 
-
 
 
 Service Commands
@@ -1009,7 +944,61 @@ Response example
         ]
     }   
 
+
+sections[?limit=...&offset=...&lang=]
+-------------------------------------
+
+**GET**/ Returns a list of records from the *sections* table of the current ecosystem. An offset and a record limit can be specified.
+
+If the *role_access* field contains a list of roles and the current role is not present in this field, then the record will not be returned. The *title* column data is replaced with language resources.
+
+Request
+"""""""
+
+* *[limit]* - maximum number of returned records (25 by default)
+* *[offset]* - offset for records (0 by default)
+* *[lang]* - language code or lcid to enable language resources in this language. Examples: *en, ru, fr, en-US, en-GB*. If the specified language resource is not found (for example, *en-US*), it is searched in the language group (*en*).
+
+
+.. code-block:: default
     
+    GET
+    /api/v2/sections
+
+
+Response
+""""""""
+
+* *count* - total number of records in the *sections* table
+* *list* - an array where each element contains all columns from the *sections* table.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": "2"
+        "list": [{
+            "id": "1",
+            "title": "Development",
+           "urlpage": "develop",
+           ...
+        },
+        ]
+    }
+
+
+Errors
+""""""
+
+*E_TABLENOTFOUND,E_VDE*    
+
+
+  
 row/{tablename}/{id}[?columns=]
 -------------------------------
 
@@ -1599,6 +1588,113 @@ Errors
 """"""
 
 *E_HASHWRONG, E_HASHNOTFOUND*
+
+
+txinfo/{hash}
+-------------
+
+**GET**/ Returns information about a transaction with a specified hash. Response contains the block number and amount of confirmations. As an option the corresponding contract name and its parameters can be returned.
+
+
+Request
+"""""""
+
+* *hash* - hash of a transaction.
+* *[contractinfo]* - contract information flag. To get information about the contract and parameters for this transaction, specify ``1``.
+
+.. code-block:: default 
+    
+    GET
+    /api/v2/txinfo/2353467abcd7436ef47438
+
+
+Response
+""""""""
+
+* *blockid* - number of the block where this transaction was included. If this value is ``0``, then a transaction with this hash was not found.
+* *confirm* - number of confirmations for this block.
+* *data* - if *contentinfo* is ``1``, then a json with contract information is returned in this parameter.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+    
+    200 (OK)
+    Content-Type: application/json
+    {
+        "blockid": "4235237",
+        "confirm": "10"
+    }      
+
+
+Errors
+""""""
+
+*E_HASHWRONG*
+
+
+txinfoMultiple/
+---------------
+
+**GET**/ Returns information about transactions with specified hashes.
+
+
+Request
+"""""""
+
+* *data* - json with a list of transaction hashes in hexadecimal string format.
+* *[contractinfo]* - contract information flag. To get information about the contract and parameters for this transaction, specify ``1``.
+
+.. code-block:: default 
+
+    {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
+
+.. code-block:: default 
+    
+    GET
+    /api/v2/txinfoMultiple/
+    
+
+Response
+""""""""
+
+* *results* - dictionary that has transaction hashes as keys and transaction information as values.
+
+        *hash* - hash of a transaction
+
+            * *blockid* - number of the block where this transaction was included. If this value is ``0``, then a transaction with this hash was not found.
+            * *confirm* - number of confirmations for this block.
+            * *data* - if *contentinfo* is ``1``, then a json with contract information is returned in this parameter.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+    
+    200 (OK)
+    Content-Type: application/json
+    {"results":
+      { 
+        "hash1": {
+             "blockid": "3123",
+             "confirm": "5",
+         },
+         "hash2": {
+              "blockid": "3124",
+              "confirm": "3",
+         }
+       }
+     }
+
+
+
+Errors
+""""""
+
+*E_HASHWRONG*
 
 
 content/{menu|page}/{name}

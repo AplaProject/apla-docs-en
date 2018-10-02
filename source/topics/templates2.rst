@@ -235,8 +235,8 @@ Adds a button to the buttons panel. Creates **addtoolbutton** element.
       AddToolButton(Help, help, help_page) 
 
 
-Button(Body, Page, Class, Contract, Params, PageParams) [.Alert(Text,ConfirmButton,CancelButton,Icon)] [.Style(Style)]
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Button(Body, Page, Class, Contract, Params, PageParams) [.Alert(Text,ConfirmButton,CancelButton,Icon)] [.Style(Style)] [.ErrorRedirect(ErrorID,PageName,PageParams)]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Creates a **button** HTML element. This element creates a button, which sends a specified contract for execution.
 
@@ -249,14 +249,21 @@ Creates a **button** HTML element. This element creates a button, which sends a 
 
 **Alert** - displays a message.
 
-* *Text* - message text,
-* *ConfirmButton* - confirm button caption,
-* *CancelButton* - cancel button caption,
-* *Icon* - icon.
+  * *Text* - message text,
+  * *ConfirmButton* - confirm button caption,
+  * *CancelButton* - cancel button caption,
+  * *Icon* - icon.
 
 **Style** - serves for specifying css styles.
 
-* *Style* - css styles.
+  * *Style* - css styles.
+
+**ErrorRedirect** - specifies a redirect page. This redirect page is used when the *Throw* function generates an error during the contract execution. There may be several *ErrorRedirect* calls. As a result, an *errredir* attribute is returnes with *ErrorID* list of keys and parameters as values.
+
+  * *ErrorID* - error identifier
+  * *PageName* - name of the redirect page
+  * *PageParams* - parameters passed to this page
+
 
 .. code:: js
 
@@ -618,8 +625,8 @@ Elements of data formatting
 ---------------------------
 
 
-Div(Class, Body) [.Style(Style)]
-""""""""""""""""""""""""""""""""
+Div(Class, Body) [.Style(Style)] [.Show(Condition)] [.Hide(Condition)]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Creates a **div** HTML element.
 
@@ -628,11 +635,19 @@ Creates a **div** HTML element.
 
 **Style** - serves for specifying css styles,
 
-* *Style* - css styles.
+  * *Style* - css styles.
+
+**Show** - defines conditions to show this block.
+
+  * *Condition* - see below.
+
+**Hide** - defines conditions to hide this block.
+
+  * *Condition* - sequence of ``InputName=Value`` expressions. *Condition* is true when all expressions that it contains are true. An expression is true when ``InputName`` input has the ``Value`` text. If several *Show* or *Hide* calls are specified, then at least one of the *Condition* parameters must be true.
 
 .. code:: js
 
-      Div(class1 class2, This is a paragraph.)
+    Div(class1 class2, This is a paragraph.).Show(inp1=test,inp2=none)
 
 
 Em(Body, Class)
