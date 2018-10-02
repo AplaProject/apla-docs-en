@@ -261,7 +261,7 @@ Creates a **button** HTML element. This element creates a button, which sends a 
 **ErrorRedirect** - specifies a redirect page. This redirect page is used when the *Throw* function generates an error during the contract execution. There may be several *ErrorRedirect* calls. As a result, an *errredir* attribute is returnes with *ErrorID* list of keys and parameters as values.
 
   * *ErrorID* - error identifier
-  * *PageName* - name of the redirect page \
+  * *PageName* - name of the redirect page
   * *PageParams* - parameters passed to this page
 
 
