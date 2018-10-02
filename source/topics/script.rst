@@ -1,6 +1,6 @@
-################################################################################
 Smart-contracts
-################################################################################
+###############
+
 .. contents::
   :local:
   :depth: 2
@@ -11,23 +11,22 @@ Contracts are written using an original (developed by the team of platform devel
 
 Contracts can be edited, but only if editing was not forbidden by way of putting false in the contract editing rights. Operations with data in the blockchain are performed by the most up-to-date (current) version of the contract. The complete history of changes made to contracts is stored in the blockchain and available from the software client.
 
-********************************************************************************
+
 Structure of the contract
-********************************************************************************
+=========================
+
 Contracts are declared with the contract keyword, followed by the new contract's name. The contract's body should be enclosed in curly brackets. Every contract consists of three sections:
 
-1. **data** - declares the input data (names and types of variables),
-2. **conditions** - verifies the correctness of input data,
-3. **action** - includes the actions performed by the contract.
-
-Contract structure:
+#. **data** - declares the input data (names and types of variables),
+#. **conditions** - verifies the correctness of input data,
+#. **action** - includes the actions performed by the contract.
 
 .. code:: js
 
   contract MyContract {
       data {
-          FromId address
-          ToId   address
+          FromId int
+          ToId   int
           Amount money
       }
       func conditions {
@@ -39,36 +38,30 @@ Contract structure:
   
 
 Data section
-==============================
+------------
+
 The contract input data, as well as the parameters of the form for the reception of the data are described in the **data** section. 
 The data are listed line by line: first, the variable name is specified (only variables, but not arrays are transferred), then the type and the parameters for the building of the interface form are indicated optionally through a gap in double quotation marks:
 
-* *hidden* - hidden element of the form,
 * *optional* - form element without obligatory filling in,
-* *date* - field of the date and time selection,
-* *polymap* - map with the selection of coordinates and areas,
-* *map* - map with the ability to mark the place,
-* *image* - images upload,
-* *text* - entry of the text of HTML-code in the textarea field,
-* *crypt:Field* - create and encrypt a private key for the destination specified in the *Field* field. If only ``crypt`` is specified, then the private key will be created for the user who signs the contract,
-* *address* - field for input of the account address,
-* *signature:contractname* - a line to display the contractname contract, which requires the signatures (it is discussed in detail in a special description section).
 
 .. code:: js
 
   contract my {
     data {
         Name string 
-        RequestId address
-        Photo bytes "image optional"
+        RequestId int
+        Photo file "optional"
         Amount money
-        Private bytes "crypt:RequestId"
+        Private bytes
     }
     ...
   }
-    
+
+
 Conditions section
-==============================
+------------------
+
 Validation of the data obtained is performed in the Conditions section. The following commands are used to warn of the presence of errors: ``error``, ``warning``, ``info``. In fact, all three of them generate an error that stops the contract operation, but each of them displays a different message in the interface: *critical error*, *warning*, and *informative error*. For instance, 
 
 
@@ -83,9 +76,11 @@ Validation of the data obtained is performed in the Conditions section. The foll
   if idexist > 0 {
         info "You have already been registered"
   }
+
   
 Action section
-==============================
+--------------
+
 The action section contains the contract's main program code that retrieves additional data and records the resulting values to database tables. For example,
 
 .. code:: js
@@ -95,10 +90,12 @@ The action section contains the contract's main program code that retrieves addi
 		DBUpdate("keys", $recipient,"+amount,pub", $amount, $Pub)
 	}
 
+
 .. _simvolio-predefined-variables:
 
 Variables in the contract
-==============================
+-------------------------
+
 Contract input data, declared in the data section, is passed to other sections though variables with the ``$`` sign followed by data names. The ``$`` sign can be used to declare additional variables; such variables will be considered global for this contract and all nested contracts.
 
 A contract can access predefined variables that contain data about the transaction, from which this contract was called.
@@ -135,107 +132,32 @@ Predefined variable $result is used to return a value from a nested contract.
     }
   }
   
-********************************************************************************
-Nested Contracts 
-********************************************************************************
+Nested Contracts
+================
+
 A nested contract can be called from the conditions and action sections of the enclosing contract. A nested contract can be called directly with parameters specified in parenthesis after its name (NameContract(Params)), or using the CallContract function, for which the contract name is passed using a string variable.
 
-********************************************************************************
-Contracts with signature
-********************************************************************************
-Since the language of contracts writing allows performing enclosed contracts, it is possible to fulfill such an enclosed contract without the knowledge of the user who has run the external contract that may lead to the user's signature of transactions unauthorized by it, let's say the transfer of money from its account.
 
-Let's suppose there is a TokenTransfer Contract *TokenTransfer*:
-
-.. code:: js
-
-    contract TokenTransfer {
-        data {
-          Recipient int
-          Amount    money
-        }
-        ...
-    }
-
-If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the account 12345. In such a case the user who signs an external contract will remain unaware of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
-
-1. Adding a field with the name **Signature** with the ``optional`` and ``hidden`` parameters in the *data* section of the *TokenTransfer* contract, which allow not to require the additional signature in the direct calling of the contract, since there will be the signature in the **Signature** field so far.
-
-.. code:: js
-
-    contract TokenTransfer {
-        data {
-          Recipient int
-          Amount    money
-          Signature string "optional hidden"
-        }
-        ...
-    }
-
-2. Adding in the *Signatures* table (on the page *Signatures* of platform client) the entry containing:
-
-•	*TokenTransfer* contract name,
-•	field names whose values will be displayed to the user, and their text description,
-•	text to be displayed upon confirmation.
-  
-In the current example it will be enough specifying two fields **Recipient** and **Amount**:
-
-* **Title**: Are you agree to send money this recipient?
-* **Parameter**: Recipient Text: Account ID
-* **Parameter**: Amount Text: Amount (qEGS)
-
-Now, if inserting the ``TokenTransfer(“Recipient, Amount”, 12345, 100)`` contract calling in, the system error ``“Signature is not defined”`` will be displayed. If the contract is called in as follow: ``TokenTransfer("Recipient, Amount, Signature", 12345, 100, "xxx...xxxxx")``, the system error will occur upon signature verification. Upon the contract calling in, the following information is verified: *time of the initial transaction, user ID, the value of the fields specified in the signatures table*, and it is impossible to forge the signature.
-
-In order for the user to see the money transfer confirmation upon the *TokenTransfer* contract calling in, it is necessary to add a field with an arbitrary name and the type ``string``, and with the optional parameter ``signature:contractname``. Upon calling in of the enclosed *TokenTransfer* contract, you just need to forward this parameter. It should also be borne in mind that the parameters for the secured contract calling in must also be described in the ``data`` section of the external contract (they may be hidden, but they will still be displayed upon confirmation). For instance,
-
-.. code:: js
-
-    contract MyTest {
-      data {
-          Recipient int "hidden"
-          Amount  money
-          Signature string "signature:TokenTransfer"
-      }
-      func action {
-          TokenTransfer("Recipient,Amount,Signature",$Recipient,$Amount,$Signature)
-      }
-    }
-
-When sending a *MyTest* contract, the additional confirmation of the money transfer to the indicated account will be requested from user. If other values, such as ``TokenTransfer(“Recipient,Amount,Signature”,$Recipient, $Amount+10, $Signature)``, are listed in the enclosed contract, the invalid signature error will occur.
-
-********************************************************************************
 File Upload
-********************************************************************************
-To upload files from ``multipart/form-data`` forms, the contract fields with type ``bytes`` and tag ``file`` should be used. Example:
+===========
+
+To upload files from ``multipart/form-data`` forms, the contract fields with type ``file`` must be used. Example:
 
 .. code:: js
 
     contract Upload {
         data {
-            File bytes "file"
+            File file
         }
         ...
-    }
- 
-For work with mime-type files, an additional parameter ``{Field}MimeType`` will be passed to the contract . Example:
- 
-.. code:: js
-
-    contract Upload {
-        data {
-            File bytes "file"
-        }
-        action {
-            Println($FileMimeType)
-        }
     }
 
 The `UploadBinary` system contract is intended to upload and store files.
 To request a download link for a file from the template designer, there is a special template designer function – `Binary`.
 
-********************************************************************************
 Contract Editor
-********************************************************************************
+===============
+
 Contracts can be created and edited in a special editor which is a part of the Molis software client. Each new contract has a typical structure created in it by default with three sections: ``data, conditions, action``. The contracts editor helps to:
 
 - Write the contract code (highlighting key words of the Simvolio language,
@@ -244,9 +166,10 @@ Contracts can be created and edited in a special editor which is a part of the M
 - Define permissions to edit the contract (typically, by specifying the contract name with the permissions stipulated in a special function ContractConditions or by way of direct indication of access conditions in the Change conditions field),
 - View the history of changes made to the contract with the option to restore previous versions.
 
-********************************************************************************
+
 Simvolio Contracts Language
-********************************************************************************
+===========================
+
 Contracts in the platform are written using an original (developed by the platform team) Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. The Simvolio language provides for:
 
 - Declaration of variables with different data types, as well as simple and associative arrays: var, array, map,
@@ -256,23 +179,28 @@ Contracts in the platform are written using an original (developed by the platfo
 - Conversion of variables,
 - Operations with strings.
 
+
 Basic elements and constructions of the language
-================================================
+------------------------------------------------
 
 Data Types and Variables
-------------------------
+""""""""""""""""""""""""
 
 Data type should be defined for every variable. In obvious cases, data types are converted automatically. The following data types can be used:
 
 * ``bool`` - Boolean, can be true or false,
 * ``bytes`` - a sequence of bytes,
 * ``int`` - a 64-bit integer,
-* ``address`` - a 64-bit unsigned integer,
 * ``array`` - an array of values of arbitrary types,
 * ``map`` - an associative array of values of arbitrary data types with string keys,
 * ``money`` - an integer of the big integer type; values are stored in the database without decimal points, which are added when displaying values in the user interface in accordance with the currency configuration settings,
 * ``float`` - a 64-bit number with a floating point,
-* ``string`` - a string; should be defined in double quotes or back quotes: "This is a string" or `This is a string`.
+* ``string`` - a string; should be defined in double quotes or back quotes: "This is a string" or \`This is a string\`.
+* ``file`` - associative array with a set of keys and values:
+  * ``Name`` - file name (``string`` type).
+  * ``MimeType`` - mime-type of the file (``string`` type)
+  * ``Body`` - file contents (``bytes`` type)
+
 
 All identifiers, including the names of variables, functions, contracts, etc. are case sensitive (MyFunc and myFunc are different names). 
 
@@ -290,8 +218,10 @@ Variables are declared with the **var** keyword, followed by names and types of 
       }
   }
 
+
 Arrays
-------------------------------
+""""""
+
 The language supports two array types: 
 
 * ``array`` - a simple array with numeric index starting from zero, 
@@ -313,8 +243,10 @@ When assigning and и retrieving array elements, index should be put in square b
     s = Sprintf("%v, %v, %v", myarr[0] + mymap["value"], myarr[1], mymap["param"])
     // s = 877, This is a line, Parameter 
 
+
 If and While Statements
-------------------------------
+"""""""""""""""""""""""
+
 The contract language supports the standard **if** conditional statement and the **while** loop, which can be used in functions and contracts. These statements can be nested in each other. 
 
 A keyword should be followed by a conditional statement. If the conditional statement returns a number, then it is considered as *false* when its value = zero. For example, *val == 0* is equivalent to *!val*, and *val != 0* is the same as just *val*. The **if** statement can have an **else** block, which executes in case the **if** conditional statement is false. The following comparison operators can be used in conditional statements: ``<, >, >=, <=, ==, !=``, as well as ``||`` (OR) and ``&&`` (AND).
@@ -346,7 +278,8 @@ Apart from conditional statements, the language supports standard arithmetic ope
 Variables of **string** and **bytes** types can be used as a condition. In this case, the condition will be true when the length of the string (bytes) is greater than zero, and false for an empty string.
 
 Functions
-------------------------------
+"""""""""
+
 Functions of the contracts language perform operations with data received in the data section of a contract: reading and writing database values, converting value types, and establishing connections between contracts.
 
 Functions are declared with the **func** keyword, followed by the function name and a list of parameters passed to it (with their types), all enclosed in curly brackets and separated by commas. After the closing curly bracket the data type of the value returned by the function should be stated. The function body should be enclosed in curly brackets. If a function does not have parameters, then the curly brackets are not necessary. To return a value from a function, the ``return`` keyword is used.
@@ -397,8 +330,10 @@ Let's consider a situation, where a function has many parameters, but we need on
        return DBFind("table").Columns("name").Where("id=?", 100).Limit(1)
     }
 
+
 Predefined values
-------------------------------
+"""""""""""""""""
+
 The following variables are available when executing a contract. 
 
 * ``$key_id`` - a numerical identifier (int64) of the account that signed the transaction,
@@ -421,11 +356,12 @@ It should be kept in mind that these variables are available not only in the fun
 
 The value that needs to be returned from the contract should be assigned to a predefined variable ``$result``.
 
+
 Retrieving values from the database
-===================================
+-----------------------------------
 
 DBFind(table string) [.Columns(columns string)] [.Where(where string, params ...)] [.WhereId(id int)] [.Order(order string)] [.Limit(limit int)] [.Offset(offset int)] [.Ecosystem(ecosystemid int)] array
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The Function receives data from a database table in accordance with the request specified. Returned is an *array* comprised of *map* associative arrays.
 
@@ -455,8 +391,9 @@ The Function receives data from a database table in accordance with the request 
    	Println(ret) 
    }
 
+
 DBRow(table string) [.Columns(columns string)] [.Where(where string, params ...)] [.WhereId(id int)] [.Order(order string)] [.Ecosystem(ecosystemid int)] map
--------------------------------------------------------------------------------------------------------------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The function returns an associative array *map* with data obtained from a database table in accordance with the specified query.
 
@@ -472,9 +409,11 @@ The function returns an associative array *map* with data obtained from a databa
    var ret map
    ret = DBRow("contracts").Columns("id,value").Where("id = ?", 1)
    Println(map)
-    
+
+
 EcosysParam(name string) string
--------------------------------
+"""""""""""""""""""""""""""""""
+
 The function returns the value of a specified parameter from the ecosystem settings (*parameters* table).
 
 * *name* - name of the received parameter,
@@ -484,8 +423,10 @@ The function returns the value of a specified parameter from the ecosystem setti
 
     Println( EcosysParam("gov_account"))
 
+
 LangRes(label string, lang string) string
------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""
+
 This function returns a language resource with name label for language lang, specified as a two-character code, for instance, *en, fr, ru*; if there is no language resource for a selected language, the result will be returned in English.
 
 * *label* - language resource name,
@@ -495,12 +436,14 @@ This function returns a language resource with name label for language lang, spe
 
     warning LangRes("confirm", $Lang)
     error LangRes("problems", "de")
-                     	
+
+                  	
 Changing values in tables
-=========================
+-------------------------
+
 
 DBInsert(table string, params string, val ...) int
---------------------------------------------------
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The function adds a record to a specified *table* and returns the **id** of the inserted record.
 
@@ -512,8 +455,9 @@ The function adds a record to a specified *table* and returns the **id** of the 
 
     DBInsert("mytable", "name,amount", "John Dow", 100)
 
+
 DBUpdate(tblname string, id int, params string, val...)
--------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The function changes the column values in the table in the record with a specified **id**. If a record with this identifier does not exist, the operation will result with an error.
   
@@ -526,8 +470,9 @@ The function changes the column values in the table in the record with a specifi
 
     DBUpdate("mytable", myid, "name,amount", "John Dow", 100)
 
+
 DBUpdateExt(tblname string, column string, value (int|string), params string, val ...)
---------------------------------------------------------------------------------------
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The function updates columns in a record whose column has a specified value. The table should have an index for a specified column.
 
@@ -540,12 +485,39 @@ The function updates columns in a record whose column has a specified value. The
 .. code:: js
 
     DBUpdateExt("mytable", "address", addr, "name,amount", "John Dow", 100)
-    
+
+
+DelColumn(tblname string, column string)
+""""""""""""""""""""""""""""""""""""""""
+
+Deletes a column in the specified table. The table must have no records in it.
+
+* *tblname*–name of the table in the database.
+* *column*–name of the column that must be deleted.
+
+.. code:: js
+
+    DelColumn("mytable", "mycolumn")
+
+
+DelTable(tblname string)
+""""""""""""""""""""""""
+
+Deletes the specified table. The table must have no records in it.
+
+* *tblname*–name of the table in the database.
+
+.. code:: js
+
+    DelTable("mytable")
+
+
 Array operations
-================
+----------------
+
 
 Join(in array, sep string) string
----------------------------------
+"""""""""""""""""""""""""""""""""
 
 This function merges the elements of the *in* array into a string with the specified *sep* separator.
 
@@ -559,8 +531,10 @@ This function merges the elements of the *in* array into a string with the speci
     myarr[1] = 10
     val = Join(myarr, ",")
 
+
+
 Split(in string, sep string) array
-----------------------------------
+""""""""""""""""""""""""""""""""""
 
 This function splits the *in* string into elements using *sep* as a separator, and puts them into an array.
 
@@ -572,8 +546,9 @@ This function splits the *in* string into elements using *sep* as a separator, a
     var myarr array
     myarr = Split("first,second,third", ",")
 
+
 Len(val array) int
-------------------
+""""""""""""""""""
 
 This function returns the number of elements in the specified array.
 
@@ -585,8 +560,9 @@ This function returns the number of elements in the specified array.
       ...
     }
 
+
 Row(list array) map
--------------------
+"""""""""""""""""""
 
 This function returns the first *map* associative array from the *list* array. If the *list* is empty, then the result will be an empty *map*. This function is mostly used with the DBFind function. The *list* parameter should not be specified in this case. 
 
@@ -598,8 +574,9 @@ This function returns the first *map* associative array from the *list* array. I
    ret = DBFind("contracts").Columns("id,value").WhereId(10).Row()
    Println(ret)
 
+
 One(list array, column string) string
--------------------------------------
+"""""""""""""""""""""""""""""""""""""
 
 The function returns the value of the *column* key from the first associative array in the *list* array. If the *list* list is empty, then nil is returned. This function is mostly used with the DBFind function. The *list* parameter should not be specified in this case. 
 
@@ -614,11 +591,13 @@ The function returns the value of the *column* key from the first associative ar
       Println(ret)
    }
 
+
 Operations with contracts and conditions
-========================================
+----------------------------------------
+
 
 CallContract(name string, params map)
--------------------------------------
+"""""""""""""""""""""""""""""""""""""
 
 The function calls a contract by its name. All the parameters specified in the section *data* of the contract should be listed in the transmitted array. The function returns the value that was assigned to **$result**  variable in the contract.
 
@@ -631,8 +610,9 @@ The function calls a contract by its name. All the parameters specified in the s
     par["Name"] = "My Name"
     CallContract("MyContract", par)
 
+
 ContractAccess(name string, [name string]) bool
------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""
 
 The function checks whether the name of the executed contract matches with one of the names listed in the parameters. Typically used to control access of contracts to tables. The function is specified in the *Permissions* fields when editing table columns or in the *Insert* and *New Column* fields in the *Table permission* section.
 
@@ -641,10 +621,11 @@ The function checks whether the name of the executed contract matches with one o
 .. code:: js
 
     ContractAccess("MyContract")  
-    ContractAccess("MyContract","SimpleContract") 
-    
+    ContractAccess("MyContract","SimpleContract")
+
+
 ContractConditions(name string, [name string]) bool
----------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The function calls the **conditions** section from contracts with specified names. For such contracts, the *data* block must be empty. If the conditions *conditions* is executed without errors, then *true* is returned. If an error is generated during execution, the parent contract will also end with this error. This function is usually used to control access of contracts to tables and can be called in the *Permissions* fields when editing system table.
 
@@ -654,8 +635,9 @@ The function calls the **conditions** section from contracts with specified name
 
     ContractConditions("MainCondition")  
 
+
 EvalCondition(tablename string, name string, condfield string) 
---------------------------------------------------------------
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Function takes from the *tablename* table the value of the *condfield* field from the record with the *’name’* field, which is equal to the *name* parameter and checks if the condition from the field *condfield* is made. 
 
@@ -666,9 +648,10 @@ Function takes from the *tablename* table the value of the *condfield* field fro
 .. code:: js
 
     EvalCondition(`menu`, $Name, `condition`)  
-    
+
+
 GetContractById(id int) string
-------------------------------
+""""""""""""""""""""""""""""""
 
 The function returns the contract name by its identifier. If the contract can't be found, an empty string will be returned.
 
@@ -678,9 +661,10 @@ The function returns the contract name by its identifier. If the contract can't 
 
     var name string
     name = GetContractById($IdContract)  
-    
+
+
 GetContractByName(name string) int
-----------------------------------
+""""""""""""""""""""""""""""""""""
 
 The function returns a contract identifier in the *contracts* by its name. If the contract does not exist, a zero value will be returned.
 
@@ -691,8 +675,48 @@ The function returns a contract identifier in the *contracts* by its name. If th
     var id int
     id = GetContractByName(`NewBlock`) 
 
-ValidateCondition(condition string, state int) 
-----------------------------------------------
+
+TransactionInfo(hash: string)
+"""""""""""""""""""""""""""""
+
+The function searches a transaction by the specified hash and returns information about the executed contract and its parameters.
+
+* *hash* - transaction hash in a hex string format.
+
+The function returns a string in the json format: 
+
+  ``{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}``
+
+Above,  
+  * *contract* - contract name
+  * *params* - parameters passed to the contract
+  * *block* - block ID where this transaction was processed.
+
+
+.. code:: js
+
+    var out map
+    out = JSONDecode(TransactionInfo(hash))
+
+
+Throw(ErrorId: string, ErrDescription: string)
+""""""""""""""""""""""""""""""""""""""""""""""
+
+Generates an error of type *exception*, but adds an *id* field to it.
+
+The result of such transaction has this format: ``{"type":"exception","error":"Error description","id":"Error ID"}``
+
+  * *ErrorId* - error identifier.
+  * *ErrDescription* - error description.
+
+.. code:: js
+
+    Throw("Problem", "There is a problem")
+
+
+
+ValidateCondition(condition string, state int)
+""""""""""""""""""""""""""""""""""""""""""""""
 
 The function tries to compile the condition specified in the *condition* parameter. If a mistake occurs during the compilation process, the mistake will be generated and the calling contract will complete is’s job. This function is designed to check the correctness of the conditions when they change.
 
@@ -705,10 +729,11 @@ The function tries to compile the condition specified in the *condition* paramet
     
 
 Operations with account addresses
-=================================
+---------------------------------
+
 
 AddressToId(address string) int
--------------------------------
+"""""""""""""""""""""""""""""""
 
 Function returns the the identification number of the citizen by the string value of the address of his account. If the wrong adress is specified, then 0 returns. 
 
@@ -718,8 +743,9 @@ Function returns the the identification number of the citizen by the string valu
 
     wallet = AddressToId($Recipient)
     
+
 IdToAddress(id int) string
---------------------------
+""""""""""""""""""""""""""
 
 Returns the address of a account based on its ID number. If a wrong ID is specified, returned is 'invalid'.
 
@@ -731,7 +757,7 @@ Returns the address of a account based on its ID number. If a wrong ID is specif
     
 
 PubToID(hexkey string) int
---------------------------
+""""""""""""""""""""""""""
 
 The function returns the account address by the public key in hexadecimal encoding.
 
@@ -744,10 +770,12 @@ The function returns the account address by the public key in hexadecimal encodi
 
 
 Operations with values of variables
-===================================
+-----------------------------------
+
 
 Float(val int|string) float
----------------------------
+"""""""""""""""""""""""""""
+
 The function converts an integer *int* or *string* to a floating-point number.
 
 * *val* - an integer or string.
@@ -756,8 +784,10 @@ The function converts an integer *int* or *string* to a floating-point number.
 
     val = Float("567.989") + Float(232)
 
+
 HexToBytes(hexdata string) bytes
---------------------------------
+""""""""""""""""""""""""""""""""
+
 The function converts a string with hexadecimal encoding to a *bytes* value (sequence of bytes).
 
 * *hexdata* – a string containing a hexadecimal notation.
@@ -767,8 +797,22 @@ The function converts a string with hexadecimal encoding to a *bytes* value (seq
     var val bytes
     val = HexToBytes("34fe4501a4d80094")
        
+
+FormatMoney(exp string, digit int)
+""""""""""""""""""""""""""""""""""
+
+Returns a string value of exp/10^digit. If *digit* parameter is not specified, it is taken from the **money_digit** ecosystem parameter.
+
+* *exp*–Numeric value as a string.
+* *digit*–Exponent of the base 10 in the expression exp/10^digit. This value can be positive or negative. Positive value determines the number of digits after the comma.
+
+.. code:: js
+
+    s = FormatMoney("123456723722323332", 0)
+
+
 Random(min int, max int) int
-----------------------------
+""""""""""""""""""""""""""""
 
 This function returns a random number in the range between min and max (min <= result < max). Both min and max should be positive numbers.
 
@@ -778,9 +822,10 @@ This function returns a random number in the range between min and max (min <= r
 .. code:: js
 
     i = Random(10,5000)
-   
+
+
 Int(val string) int
--------------------
+"""""""""""""""""""
 
 The function converts a string value to an integer.
 
@@ -790,10 +835,23 @@ The function converts a string value to an integer.
 
     mystr = "-37763499007332"
     val = Int(mystr)
-    
+
+
+Hash(val interface{}) string, error
+""""""""""""""""""""""""""""""""""""
+
+The function accepts a byte array or a string and returns a hash that was generated by system cryptoprovider.
+
+* *val* - a string or a byte array.
+
+.. code:: js
+
+    var hash string
+    hash = Hash("Test message")
+
 
 Sha256(val string) string
--------------------------
+"""""""""""""""""""""""""
 
 The function returns **SHA256** hash of a specified string.
 
@@ -804,8 +862,9 @@ The function returns **SHA256** hash of a specified string.
     var sha string
     sha = Sha256("Test message")
 
+
 Str(val int|float) string
--------------------------
+"""""""""""""""""""""""""
 
 The function converts a numeric *int* or *float* value to a string.
 
@@ -816,8 +875,9 @@ The function converts a numeric *int* or *float* value to a string.
     myfloat = 5.678
     val = Str(myfloat)
 
+
 UpdateLang(name string, trans string)
--------------------------------------
+"""""""""""""""""""""""""""""""""""""
 
 Function updates the language source in the memory. Is used in the transactions that change language sources.
 
@@ -828,11 +888,13 @@ Function updates the language source in the memory. Is used in the transactions 
 
     UpdateLang($Name, $Trans)
 
+
 Operations with string values
-=============================
+-----------------------------
+
 
 HasPrefix(s string, prefix string) bool
----------------------------------------
+"""""""""""""""""""""""""""""""""""""""
 
 Function returns true, if the string bigins from the specified substring *prefix*.
 
@@ -845,8 +907,9 @@ Function returns true, if the string bigins from the specified substring *prefix
     ...
     }
 
+
 Contains(s string, substr string) bool
---------------------------------------
+""""""""""""""""""""""""""""""""""""""
 
 Returnes true if the string *s* containts the substring *substr*.
 
@@ -859,8 +922,9 @@ Returnes true if the string *s* containts the substring *substr*.
     ...
     }    
 
+
 Replace(s string, old string, new string) string
-------------------------------------------------
+""""""""""""""""""""""""""""""""""""""""""""""""
 
 Function replaces in the *s* string all cccurrences of the *old* string to *new* string and returnes the result.  
 
@@ -872,8 +936,9 @@ Function replaces in the *s* string all cccurrences of the *old* string to *new*
 
     s = Replace($Name, `me`, `you`)
     
+
 Size(val string) int
---------------------
+""""""""""""""""""""
 
 The function returns the size of the specified string.
 
@@ -884,8 +949,9 @@ The function returns the size of the specified string.
     var len int
     len = Size($Name) 
  
+
 Sprintf(pattern string, val ...) string
----------------------------------------
+"""""""""""""""""""""""""""""""""""""""
 
 The function forms a string based on specified template and parameters, you can use ``%d`` (number), ``%s`` (string), ``%f`` (float), ``%v`` (for any types).
 
@@ -895,8 +961,9 @@ The function forms a string based on specified template and parameters, you can 
 
     out = Sprintf("%s=%d", mypar, 6448)
 
+
 Substr(s string, offset int, length int) string
------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""
 
 Function returns the substring from the specified string starting from the offset *offset* (calculating from the 0) and with length *length*. In case of not correct offsets or length the empty column is returned. If the sum of offset and *length* is more than string size, then the substring will be returned from the offset to the end of the string.
 
@@ -909,11 +976,13 @@ Function returns the substring from the specified string starting from the offse
     var s string
     s = Substr($Name, 1, 10)
 
+
 Operations with system parameters
-=================================
+---------------------------------
+
 
 SysParamString(name string) string
-----------------------------------
+""""""""""""""""""""""""""""""""""
 
 The function returns the value of the specified system parameter.
 
@@ -923,8 +992,10 @@ The function returns the value of the specified system parameter.
 
     url = SysParamString(`blockchain_url`)
 
+
 SysParamInt(name string) int
-----------------------------
+""""""""""""""""""""""""""""
+
 The function returns the value of the specified system parameter in the form of a number.
 
 * *name* - parameter name.
@@ -933,8 +1004,9 @@ The function returns the value of the specified system parameter in the form of 
 
     maxcol = SysParam(`max_columns`)
 
+
 DBUpdateSysParam(name, value, conditions string)
-------------------------------------------------
+""""""""""""""""""""""""""""""""""""""""""""""""
 
 The function updates the value and the condition of the system parameter. If you do not need to change the value or condition, then specify an empty string in the corresponding parameter.
 
@@ -946,8 +1018,9 @@ The function updates the value and the condition of the system parameter. If you
 
     DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
     
+
 Using JSON in PostgreSQL queries
-================================
+--------------------------------
 
 **JSON** type can be specified as column type. In this case, use the following syntax: **columnname->fieldname** to address record fields. The obtained value will be recorded in the column with name **columnname.fieldname**. Syntax **columnname->fieldname** can be used in parameters *Columns,One,Where* when using **DBFind**.
 
@@ -964,7 +1037,7 @@ Using JSON in PostgreSQL queries
 	
 
 Date/time operations in PostgreSQL queries
-==========================================
+------------------------------------------
 
 Functions do not allow direct possibilities to select, update, etc.. but they allow you to use the capabilities and functions of PostgreSQL when you get values and a description of the where conditions  in the samples. This includes, among other things, the functions for working with dates and time. For example, you need to compare the column *date_column* and the current time. If  *date_column* has the  type timestamp, then the expression will be the following ``date_column> now ()``. And if *date_column* stores time in Unix format as a number, then the expression will be ``to_timestamp (date_column)> now ()``.
 
@@ -991,12 +1064,12 @@ If you have a string value of time and you need to write it in a field with the 
 
 
 Functions for VDE
-=================
+-----------------
 
 The following functions can be used only in Virtual Dedicated Ecosystems (VDE) contracts.
 
 HTTPRequest(url string, method string, heads map, pars map) string
-------------------------------------------------------------------
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 This function sends an HTTP request to a specified address.
 
@@ -1015,7 +1088,7 @@ This function sends an HTTP request to a specified address.
 	json = JSONToMap(ret)
 
 HTTPPostJSON(url string, heads map, pars string) string
--------------------------------------------------------
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 This function is similar to the *HTTPRequest* function, but it sends a *POST* request and parameters are passed in one string.
 
@@ -1031,23 +1104,27 @@ This function is similar to the *HTTPRequest* function, but it sends a *POST* re
 	ret = HTTPPostJSON("http://localhost:7079/api/v2/content/page/default_page", heads, `{"vde":"true"}`)
 	json = JSONToMap(ret)
 
-************************************************
+
 System Contracts
-************************************************
+================
+
 System contracts are created by default during product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, ``@1NewContract``.
 
+
 List of System Contracts
-========================
+------------------------
+
 
 NewEcosystem
-------------
+""""""""""""
 
 This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. Parameters:
    
 * *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
 
+
 MoneyTransfer
--------------
+"""""""""""""
 
 This contract transfers money from the current account in the current ecosystem to a specified account. Parameters:
 
@@ -1055,8 +1132,9 @@ This contract transfers money from the current account in the current ecosystem 
 * *Amount    string* - transaction amount in qAPL,
 * *Comment   string "optional"* - comments.
 
+
 NewContract
------------
+"""""""""""
 
 This contract creates a new contract in the current ecosystem. Parameters:
 
@@ -1065,107 +1143,119 @@ This contract creates a new contract in the current ecosystem. Parameters:
 * *Wallet string "optional"* - identifier of user's id where contract should be tied,
 * *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
 
+
 EditContract
-------------
+""""""""""""
 
 Editing the contract in the current ecosystem.
 
-Parameters
+Parameters: 
       
 * *Id int* - ID of the contract to be edited,
 * *Value string "optional"* - text of the contract or contracts,
 * *Conditions string "optional"* - rights for contract change.
 
+
 ActivateContract
-----------------
+""""""""""""""""
 
 Binding of a contract to the account in the current ecosystem. Contracts can be tied only from the account, which was specified when the contract was created. After the contract is tied, this account will pay for execution of this contract.
 
-Parameters
+Parameters: 
       
 * *Id int* - ID of the contract to activate.
 
+
 DeactivateContract
-------------------
+""""""""""""""""""
 
 Unbinds a contract from an account in the current ecosystem. Only the account which the contract is currently bound to can unbind it. After the contract is unbound, its execution will be paid by a user that executes it.
  
- Parameters
+Parameters: 
  
 * *Id int* - identifier of the tied contract.
 
+
 NewParameter
-------------
+""""""""""""
 
 This contract adds a new parameter to the current ecosystem. 
 
-Parameters
+Parameters: 
 
 * *Name string* - parameter name,
 * *Value string* - parameter value,
 * *Conditions string* - rights for parameter change.
 
+
 EditParameter
--------------
+"""""""""""""
 
 This contract changes an existing parameter in the current ecosystem.
 
-Parameters
+Parameters: 
 
 * *Name string* - name of the parameter to be changed,
 * *Value string* - new value,
 * *Conditions string* - new condition for parameter change.
 
+
 NewMenu
--------
+"""""""
 
 This contract adds a new menu in the current ecosystem.
 
-Parameters
+Parameters: 
 
 * *Name string* - menu name,
 * *Value string* - menu text,
 * *Title string "optional"* - menu header,
 * *Conditions string* - rights for menu change.
 
+
 EditMenu
---------
+""""""""
 
 This contract changes an existing menu in the current ecosystem.
 
-Parameters
+Parameters: 
 
 * *Id int* - ID of the menu to be changed,
 * *Value string "optional"* - new text of menu,
 * *Title string "optional"* - menu header,
 * *Conditions string* - new rights for page change.
 
+
 AppendMenu
-----------
+""""""""""
 
 This contract adds text to an existing menu in the current ecosystem.
 
-Parameters
+Parameters: 
 
 * *Id int* - complemented menu identifier,
 * *Value string* - text to be added.
 
-NewPage
--------
 
-This contract adds a new page in the current ecosystem. Parameters:
+NewPage
+"""""""
+
+This contract adds a new page in the current ecosystem. 
+
+Parameters: 
 
 * *Name string* - page name,
 * *Value string* - page text,
 * *Menu string* - name of the menu, attached to this page,
 * *Conditions string* - rights for change.
 
+
 EditPage
---------
+""""""""
 
 This contract changes an existing page in the current ecosystem.
 
-Parameters
+Parameters: 
 
 * *Id int* - ID of the page to be changed,
 * *Value string "optional"* - new text of the page,
@@ -1173,28 +1263,30 @@ Parameters
 * *Conditions string "optional"* - new rights for page change.
 
 AppendPage
-----------
+""""""""""
 
 The contract adds text to an existing page in the current ecosystem.
 
-Parameters
+Parameters: 
 
 * *Id int* - ID of the page to be changed,
 * *Value string* - text that needs to be added to the page.
 
+
 NewBlock
---------
+""""""""
 
 This contract adds a new page block with a template to the current ecosystem. 
 
-Parameters
+Parameters: 
 
 * *Name string* - block name,
 * *Value string* - block text,
 * *Conditions string* - rights for block change.
 
+
 EditBlock
----------
+"""""""""
 
 This contract changes an existing block in the current ecosystem.
 
@@ -1204,12 +1296,13 @@ Parameters
 * *Value string* - new text of a block,
 * *Conditions string* - new rights for change.
 
+
 NewTable
---------
+""""""""
 
 This contract adds a new table in the current ecosystem. 
 
-Parameters
+Parameters: 
 
 * *Name string* - table name in Latin script, 
 * *Columns string* - array of columns in JSON format ``[{"name":"...", "type":"...","index": "0", "conditions":"..."},...]``, where
@@ -1226,12 +1319,13 @@ Parameters
   * *new_column* - rights to add columns,
   * *update* - rights to change rights.
 
+
 EditTable
----------
+"""""""""
 
 This contract changes access permissions to tables in the current ecosystem. 
 
-Parameters 
+Parameters: 
 
 * *Name string* - table name, 
 * *Permissions string* - access permissions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
@@ -1240,12 +1334,13 @@ Parameters
   * *new_column* - condition to add columns,
   * *update* - condition to change data.   
 
+
 NewColumn
----------
+"""""""""
 
 This contract adds a new column to a table in the current ecosystem. 
 
-Parameters
+Parameters: 
 
 * *TableName string* - table name in,
 * *Name* - column name in Latin script,
@@ -1253,46 +1348,49 @@ Parameters
 * *Index* - non-indexed field - "0"; create index - "1",
 * *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
 
+
 EditColumn
-----------
+""""""""""
 
 This contract changes the rights to change a table column in the current ecosystem. 
 
-Parameters
+Parameters: 
 
 * *TableName string* - table name in Latin script, 
 * *Name* - column name in Latin script,
 * *Permissions* - condition for changing data in a column; read access rights should be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``.
 
 NewLang
--------
+"""""""
 
 This contract adds language resources in the current ecosystem. Permissions to add resources are set in the *changing_language* parameter in the ecosystem configuration. 
 
-Parameters
+Parameters: 
 
 * *Name string* - name of the language resource in Latin script, 
 * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``,
 * *AppID int* - application ID.
 
+
 EditLang
---------
+""""""""
 
 This contract updates the language resource in the current ecosystem. Permissions to make changes are set in the *changing_language* parameter in the ecosystem configuration. 
 
-Parameters
+Parameters: 
 
 * *Id int*- language resource ID,
 * *Name string* - name of the language resource,
 * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``,
 * *AppID int* - application ID.
  
+
 NewSign
--------
+"""""""
 
 This contract adds the signature confirmation requirement for a contract in the current ecosystem.
 
-Parameters
+Parameters: 
 
 * *Name string* - name of the contract, where an additional signature confirmation will be required,
 * *Value string* - description of parameters in a JSON string, where
@@ -1302,32 +1400,35 @@ Parameters
     
 * *Conditions string* - condition for changing the parameters.
 
-Example of *Value*
+Example of *Value*: 
 
 ``{"title": "Would you like to sign?", "params":[{"name": "Recipient", "text": "Wallet"},{"name": "Amount", "text": "Amount(EGS)"}]}`` 
 
+
 EditSign
---------
+""""""""
 
 The contract updates the parameters of a contract with a signature in the current ecosystem. 
 
-Parameters
+Parameters: 
 
  * *Id int* - identifier of the signature to be changed,
  * *Value string* - a string containing new parameters,
  * *Conditions string* - new condition for changing the signature parameters.
 
+
 Import 
-------
+""""""
 
 This contract imports data from a \*.sim file into the ecosystem.
 
-Parameters
+Parameters: 
 
 * *Data string* - data to be imported in text format; this data is the result of export from an ecosystem to a .sim file.
 
+
 NewCron
--------
+"""""""
 
 The contract adds a new task in cron to be launched by timer. The contract is available only in VDE systems. Parameters:
 
@@ -1337,8 +1438,9 @@ The contract adds a new task in cron to be launched by timer. The contract is av
 * *Till string* - an optional string with the time when the task should be ended (this feature is not yet implemented),
 * *Conditions string* - rights to modify the task.
 
+
 EditCron
---------
+""""""""
 
 This contract changes the configuration of a task in cron for launch by timer. The contract is available only in VDE systems. Parameters:
 
@@ -1349,17 +1451,16 @@ This contract changes the configuration of a task in cron for launch by timer. T
 * *Till string* - an optional string with the time of task should be ended (this feature is not yet implemented),
 * *Conditions string* - new rights to modify the task.
 
+
 UploadBinary
-------------
+""""""""""""
 
 The contract adds/rewrites a static file in X_binaries. When calling a contract via HTTP API, ``multipart/form-data`` should be used; the ``DataMimeType`` parameter will be used with the form data.
  
-Parameters:
+Parameters: 
  
 * *Data bytes "file"* - content of the static file,
 * *DataMimeType string "optional"* - mime type of the static file,
  
 If the DataMimeType is not passed, then ``application/octet-stream`` is used by default.
 If MemberID is not passed, then the static file is considered a system file.
- 
-

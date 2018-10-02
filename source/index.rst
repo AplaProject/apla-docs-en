@@ -44,6 +44,8 @@ Contents
    :caption: Concepts
 
    concepts/about-the-platform.rst
+   concepts/blockchain-layers.rst
+   concepts/blockchain-basics.rst
    concepts/faq.rst
    concepts/thesaurus.rst
 
@@ -60,7 +62,6 @@ Contents
    :caption: Guides
 
    topics/script.rst
-   topics/contractsignatures.rst
    topics/templates2.rst
    topics/appexample.rst
    topics/vm.rst
@@ -71,7 +72,6 @@ Contents
    :caption: Reference
 
    reference/api2.rst
-   reference/mobile.rst
    reference/update_client.rst
    reference/desync_monitor.rst
 
