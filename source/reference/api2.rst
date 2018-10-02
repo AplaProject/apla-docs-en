@@ -1332,41 +1332,58 @@ Errors
 *E_LIMITTXSIZE*
 
 
-txstatus/{hash}
----------------
+txstatus
+--------
 
-**GET**/ Returns a block number or an error of the sent transaction with given hash. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
+**POST**/ Returns a block number or an error for a transaction with the specified hash. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
 
 Request
 """""""
 
-* *hash*–hash of the checked transaction.
+* *data*–json with a list of transaction hashes.
 
 .. code-block:: default 
     
-    GET
-    /api/v2/txstatus/2353467abcd7436ef47438
-     
+    {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
+
+.. code-block:: default 
+
+    POST
+    /api/v2/txstatus/
+
+
 Response
 """"""""
 
-* *blockid*–number of the block in case the transaction has been processed successfully
-* *result*–result of the transaction operation, returned through the **$result** variable
-* *errmsg*–error message in case the transaction was refused.
+* *results*–dictionary with transaction hashes as keys and transaction execution details as values.
 
+    *hash*–transaction hash
+
+        * *blockid*–number of the block if the transaction was processed successfully.
+
+        * *result*–result of the transaction operation returned through the **$result** variable.
+
+        * *errmsg*–error message if the transaction was refused.
 
 Response example
 """"""""""""""""
 
-.. code-block:: default 
-    
+.. code-block:: default
+
     200 (OK)
     Content-Type: application/json
-    {
-        "blockid": "4235237",
-        "result": ""
-    }      
-
+    {"results":
+      {
+        "hash1": {
+             "blockid": "3123",
+             "result": "",
+         },
+         "hash2": {
+              "blockid": "3124",
+              "result": "",
+         }
+       }
+     }
 
 Errors
 """"""
