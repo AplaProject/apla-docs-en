@@ -191,12 +191,16 @@ Data type should be defined for every variable. In obvious cases, data types are
 * ``bool`` - Boolean, can be true or false,
 * ``bytes`` - a sequence of bytes,
 * ``int`` - a 64-bit integer,
-* ``address`` - a 64-bit unsigned integer,
 * ``array`` - an array of values of arbitrary types,
 * ``map`` - an associative array of values of arbitrary data types with string keys,
 * ``money`` - an integer of the big integer type; values are stored in the database without decimal points, which are added when displaying values in the user interface in accordance with the currency configuration settings,
 * ``float`` - a 64-bit number with a floating point,
-* ``string`` - a string; should be defined in double quotes or back quotes: "This is a string" or `This is a string`.
+* ``string`` - a string; should be defined in double quotes or back quotes: "This is a string" or \`This is a string\`.
+* ``file`` - associative array with a set of keys and values:
+  * ``Name`` - file name (``string`` type).
+  * ``MimeType`` - mime-type of the file (``string`` type)
+  * ``Body`` - file contents (``bytes`` type)
+
 
 All identifiers, including the names of variables, functions, contracts, etc. are case sensitive (MyFunc and myFunc are different names). 
 
