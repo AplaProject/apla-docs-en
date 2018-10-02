@@ -11,6 +11,7 @@ Contracts are written using an original (developed by the team of platform devel
 
 Contracts can be edited, but only if editing was not forbidden by way of putting false in the contract editing rights. Operations with data in the blockchain are performed by the most up-to-date (current) version of the contract. The complete history of changes made to contracts is stored in the blockchain and available from the software client.
 
+
 Structure of the contract
 =========================
 
@@ -24,8 +25,8 @@ Contracts are declared with the contract keyword, followed by the new contract's
 
   contract MyContract {
       data {
-          FromId address
-          ToId   address
+          FromId int
+          ToId   int
           Amount money
       }
       func conditions {
@@ -42,31 +43,22 @@ Data section
 The contract input data, as well as the parameters of the form for the reception of the data are described in the **data** section. 
 The data are listed line by line: first, the variable name is specified (only variables, but not arrays are transferred), then the type and the parameters for the building of the interface form are indicated optionally through a gap in double quotation marks:
 
-* *hidden* - hidden element of the form,
 * *optional* - form element without obligatory filling in,
-* *date* - field of the date and time selection,
-* *polymap* - map with the selection of coordinates and areas,
-* *map* - map with the ability to mark the place,
-* *image* - images upload,
-* *text* - entry of the text of HTML-code in the textarea field,
-* *crypt:Field* - create and encrypt a private key for the destination specified in the *Field* field. If only ``crypt`` is specified, then the private key will be created for the user who signs the contract,
-* *address* - field for input of the account address,
-* *signature:contractname* - a line to display the contractname contract, which requires the signatures (it is discussed in detail in a special description section).
 
 .. code:: js
 
   contract my {
     data {
         Name string 
-        RequestId address
-        Photo bytes "image optional"
+        RequestId int
+        Photo file "optional"
         Amount money
-        Private bytes "crypt:RequestId"
+        Private bytes
     }
     ...
   }
 
-    
+
 Conditions section
 ------------------
 
@@ -146,95 +138,18 @@ Nested Contracts
 A nested contract can be called from the conditions and action sections of the enclosing contract. A nested contract can be called directly with parameters specified in parenthesis after its name (NameContract(Params)), or using the CallContract function, for which the contract name is passed using a string variable.
 
 
-Contracts with signature
-========================
-
-Since the language of contracts writing allows performing enclosed contracts, it is possible to fulfill such an enclosed contract without the knowledge of the user who has run the external contract that may lead to the user's signature of transactions unauthorized by it, let's say the transfer of money from its account.
-
-Let's suppose there is a TokenTransfer Contract *TokenTransfer*:
-
-.. code:: js
-
-    contract TokenTransfer {
-        data {
-          Recipient int
-          Amount    money
-        }
-        ...
-    }
-
-If in a contract launched by the user the string ``TokenTransfer("Recipient,Amount", 12345, 100)`` is inscribed, 100 coins will be transferred to the account 12345. In such a case the user who signs an external contract will remain unaware of the transaction. This situation may be excluded if the TokenTransfer contract requires the additional user's signature upon its calling in of contracts. To do this:
-
-1. Adding a field with the name **Signature** with the ``optional`` and ``hidden`` parameters in the *data* section of the *TokenTransfer* contract, which allow not to require the additional signature in the direct calling of the contract, since there will be the signature in the **Signature** field so far.
-
-.. code:: js
-
-    contract TokenTransfer {
-        data {
-          Recipient int
-          Amount    money
-          Signature string "optional hidden"
-        }
-        ...
-    }
-
-2. Adding in the *Signatures* table (on the page *Signatures* of platform client) the entry containing:
-
-*	*TokenTransfer* contract name,
-*	field names whose values will be displayed to the user, and their text description,
-*	text to be displayed upon confirmation.
-  
-In the current example it will be enough specifying two fields **Recipient** and **Amount**:
-
-* **Title**: Are you agree to send money this recipient?
-* **Parameter**: Recipient Text: Account ID
-* **Parameter**: Amount Text: Amount (qEGS)
-
-Now, if inserting the ``TokenTransfer(“Recipient, Amount”, 12345, 100)`` contract calling in, the system error ``“Signature is not defined”`` will be displayed. If the contract is called in as follow: ``TokenTransfer("Recipient, Amount, Signature", 12345, 100, "xxx...xxxxx")``, the system error will occur upon signature verification. Upon the contract calling in, the following information is verified: *time of the initial transaction, user ID, the value of the fields specified in the signatures table*, and it is impossible to forge the signature.
-
-In order for the user to see the money transfer confirmation upon the *TokenTransfer* contract calling in, it is necessary to add a field with an arbitrary name and the type ``string``, and with the optional parameter ``signature:contractname``. Upon calling in of the enclosed *TokenTransfer* contract, you just need to forward this parameter. It should also be borne in mind that the parameters for the secured contract calling in must also be described in the ``data`` section of the external contract (they may be hidden, but they will still be displayed upon confirmation). For instance,
-
-.. code:: js
-
-    contract MyTest {
-      data {
-          Recipient int "hidden"
-          Amount  money
-          Signature string "signature:TokenTransfer"
-      }
-      func action {
-          TokenTransfer("Recipient,Amount,Signature",$Recipient,$Amount,$Signature)
-      }
-    }
-
-When sending a *MyTest* contract, the additional confirmation of the money transfer to the indicated account will be requested from user. If other values, such as ``TokenTransfer(“Recipient,Amount,Signature”,$Recipient, $Amount+10, $Signature)``, are listed in the enclosed contract, the invalid signature error will occur.
-
-
 File Upload
 ===========
 
-To upload files from ``multipart/form-data`` forms, the contract fields with type ``bytes`` and tag ``file`` should be used. Example:
+To upload files from ``multipart/form-data`` forms, the contract fields with type ``file`` must be used. Example:
 
 .. code:: js
 
     contract Upload {
         data {
-            File bytes "file"
+            File file
         }
         ...
-    }
- 
-For work with mime-type files, an additional parameter ``{Field}MimeType`` will be passed to the contract . Example:
- 
-.. code:: js
-
-    contract Upload {
-        data {
-            File bytes "file"
-        }
-        action {
-            Println($FileMimeType)
-        }
     }
 
 The `UploadBinary` system contract is intended to upload and store files.
@@ -276,12 +191,16 @@ Data type should be defined for every variable. In obvious cases, data types are
 * ``bool`` - Boolean, can be true or false,
 * ``bytes`` - a sequence of bytes,
 * ``int`` - a 64-bit integer,
-* ``address`` - a 64-bit unsigned integer,
 * ``array`` - an array of values of arbitrary types,
 * ``map`` - an associative array of values of arbitrary data types with string keys,
 * ``money`` - an integer of the big integer type; values are stored in the database without decimal points, which are added when displaying values in the user interface in accordance with the currency configuration settings,
 * ``float`` - a 64-bit number with a floating point,
-* ``string`` - a string; should be defined in double quotes or back quotes: "This is a string" or `This is a string`.
+* ``string`` - a string; should be defined in double quotes or back quotes: "This is a string" or \`This is a string\`.
+* ``file`` - associative array with a set of keys and values:
+  * ``Name`` - file name (``string`` type).
+  * ``MimeType`` - mime-type of the file (``string`` type)
+  * ``Body`` - file contents (``bytes`` type)
+
 
 All identifiers, including the names of variables, functions, contracts, etc. are case sensitive (MyFunc and myFunc are different names). 
 

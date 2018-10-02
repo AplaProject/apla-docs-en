@@ -94,7 +94,11 @@ Error List
 
 .. describe:: E_INVALIDWALLET
 
-    Wallet %s is not valid,
+    Wallet %s is not valid.
+
+.. describe:: E_LIMITTXSIZE
+
+    The size of transaction is too big.
 
 .. describe:: E_NOTFOUND
 
@@ -181,7 +185,6 @@ Routes unavailable in VDE
 Requests that are not available in VDE.
 
 - txstatus
-- txstatusMultiple
 - txinfo
 - txinfoMultiple
 - appparam
@@ -1250,6 +1253,7 @@ Request
 Response
 """"""""
 
+* *id*–identifier of the contract in VM.
 * *name*–name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``
 * *active*–true if the contract is bound to the account and false otherwise,
 * *key_id*–contract owner's ID,
@@ -1258,9 +1262,8 @@ Response
 * *fields*–an array that contains information about every parameter in the **data** section of the contract and contains the following fields:
 
   * *name*–field name,
-  * *htmltype*–html type,
   * *type*–parameter type,
-  * *tags*–parameter tags.
+  * *optional*–parameter optionality flag, this value is ``true`` if a parameter is optional and ``false`` if it is mandatory.
     
 Response example
 """"""""""""""""
@@ -1271,273 +1274,68 @@ Response example
     Content-Type: application/json
     {
         "fields" : [
-            {"name":"amount", "htmltype":"textinput", "type":"int64", "tags": "optional"},
-            {"name":"name", "htmltype":"textinput", "type":"string" "tags": ""}
+            {"name":"amount", "type":"int", "optional": false},
+            {"name":"name", "type":"string", "optional": true}
         ],
+        "id": 150,
         "name": "@1mycontract",
         "tableid" : 10,
         "active": true
-    }      
-    
-contract/{request_id}
----------------------
-
-**POST**/ Returns a smart contract based on the request identifier **{request_id}**. Before doing this, you should use the ``prepare/{name}`` (POST) command and sign the returned *forsign* field. The request with the **{request_id}** identifier is stored on server for 1 minute. If the contract is not executed within this minute, the request will be removed. In case of successful execution, the transaction hash is returned, which can be then used to receive the block number. Otherwise, an error message is returned.
- 
-Request
-"""""""
- 
-* *request_id*–identifier of the request that was received from prepare,
-* *[token_ecosystem]*–for contracts that are not bound to a wallet, you can specify which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same,
-* *[max_sum]*–when calling contracts that are not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract,
-* *[payover]*–for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment,
-* *[data]*–parameters sent to the contract,
-* *signature*–hex signature of the forsign value, received from prepare,
-* *time*–time, returned by prepare,
-* *pubkey*–hex of the contract signer's public key; it should be noted, that if the public key is already stored in the keys table of the current ecosystem, you don't need to send it,
-* *[vde]*–should be set to true, if the smart contract is requested from VDE; otherwise, you don't need to specify this parameter.
- 
-.. code-block:: default 
- 
-    POST
-    /api/v2/contract/5c273816-134e-4a50-89b2-8d2b3d5ba562
-    signature - hex signature
-    time - time returned by prepare
-
-
-Response
-""""""""
-
-* *hash* - hex hash of the sent transaction.
-
-
-Response example
-""""""""""""""""
-
-.. code-block:: default 
-
-    200 (OK)
-    Content-Type: application/json
-    {
-        "hash" : "67afbc435634.....",
     }
 
-Errors
-""""""
 
-*E_CONTRACT, E_EMPTYPUBLIC, E_EMPTYSIGN, E_NOTFOUNDREQUEST*
+sendTX
+------
 
-
-contractMultiple/{request_id}
------------------------------
-
-**POST**/ Executres contracts for **{request_id}** request. The :ref:`prepareMultiple/{name} <preparemultiple>` (POST) request must be called before, and all strings in the *forsign* field must be signed. Server keeps the request with **{request_id}** identifier for 1 minute. If the contracts are not executed during this time, the request is deleted. After a successful execution of this request, hashes of transactions are returned. Using these hashes, information about contracts execution can be obtained. In case of a successful execution, the block identifier can be obtained. In case of an error, the error message can be obtained.
+**POST**/ Accepts transactions passed in the parameters and adds them to the transaction queue. If the execution is successful, transaction hashes are returned. A hash of the transaction can be used to get the block number for the transaction, or an error message in case of an error.
 
 Request
 """""""
 
-* *request_id*–identifier of a multi-request that was obtained from the prepareMultiple request.
-* *data*–json with the following fields:
- 
-    * *[token_ecosystem]*–for contracts that are not bound to a wallet, you can specify the which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same.
-    * *[max_sum]*–when calling a contract that is not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract.
-    * *[payover]*–for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment.
-    * parameters that are passed to the contract
-    * *signatures*–array of hex signatures of *forsign* strings that was received from prepareMultiple.
-    * *time*–time value returned by prepare.
-    * *[pubkey]*–hex public key of a user that signed the contract. If this public key is already stored in the ``keys`` table of this ecosystem, this parameter can be omitted.
-
-    .. code-block:: default 
-
-        {"time": 1234552 , "signatures": ["fgdazgdagdag", "agaaadg"]}
-
-    .. code-block:: default 
- 
-        POST
-        /api/v2/contract/5c273816-134e-4a50-89b2-8d2b3d5ba562
-        signatures - array of hex signatures
-        time - time returned by prepare
-
-Response
-""""""""
-
-* *hashes*–hex hashes of sent transactions.
-
-Response example
-""""""""""""""""
-
-.. code-block:: default 
-
-    200 (OK)
-    Content-Type: application/json
-    {
-        "hashes" : ["67afbc435634.....","67adab435634....."]
-    }
-
-Errors
-""""""
- 
-*E_CONTRACT, E_EMPTYPUBLIC, E_EMPTYSIGN, E_NOTFOUNDREQUEST*
-
-
-prepare/name
-------------
-
-**POST**/ Sends a request to receive a string to sign the specified contract. The **{name}** should state the name of transaction for which the string for signature should be returned. The forsign parameter returns a string, which should be signed. Also, returned are the request_id and time parameters, which should be transferred along with the signature.
- 
-Request
-"""""""
- 
-* *name*–contract name; if another ecosystem's contract is executed, its full name should be specified (@1MainContract).
-* *[token_ecosystem]*–for contracts that are not bound to a wallet, you can specify the which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same,
-* *[max_sum]*–when calling a contract that is not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract,
-* *[payover]*–for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment,
-* *[vde]*–should be set to true, if the smart contract is requested from a VDE; otherwise, you don't need to specify this parameter.
-* *[data]*–parameters sent to the contract.
+* *tx_key* - transaction contents. You can specify any name for this parameter. To specify several transactions, use different names.
 
 .. code-block:: default
-    
+
     POST
-    /api/v2/prepare/mycontract
+    /api/v2/sendTx
 
+    Headers:
+    Content-Type: multipart/form-data
+
+    Parameters:
+    tx1 - contents of transaction 1
+    txN - contents of transaction N
 
 Response
 """"""""
 
-* *request_id*–the identifier of the request to be transmitted.
-* *forsign*–string to be signed,
-* *time*–time information, which needs to be sent together with the contract.
-
+* *hashes* - dictionary with transaction hashes
+    * *tx1* - hex hash of transaction 1
+    * *txN* - hex hash of transaction N
 
 Response example
 """"""""""""""""
 
-.. code-block:: default 
-    
+.. code-block:: default
+
     200 (OK)
     Content-Type: application/json
     {
-        "request_id": "5c273816-134e-4a50-89b2-8d2b3d5ba562",
-        "time": 423523768,
-        "forsign": "......", 
+        "hashes": {
+            "tx1": "67afbc435634.....",
+            "txN": "89ce4498eaf7.....",
     }
 
 Errors
 """"""
 
-*E_CONTRACT*    
-
-.. _preparemultiple:
-
-prepareMultiple
----------------
-
-**POST**/ Sends a request to receive strings to sign for the specified contract. The strings to be signed are returned in the *forsign* parameter. The *request_id* and *time* parameters are also returned. These parameters must be passed along with the signature.
-
-Request
-"""""""
-
-* *data* - json with the following fields:
-
-    * *[token_ecosystem]*–for contracts that are not bound to a wallet, you can specify the which ecosystem’s currency will be used to pay for the contract; in this case the wallet and the public key of the token_ecosystem and the current ecosystem should be the same,
-    * *[max_sum]*–when calling a contract that is not bound to a wallet, you can specify the maximum amount that can be spent on execution of this contract,
-    * *[payover]*–for contracts that are not bound to a wallet you can specify additional payment for urgency – how much should be added to fuel_rate when calculating the payment,
-    * *[vde]*–should be set to true, if the smart contract is requested from a VDE; otherwise, you don't need to specify this parameter.
-    * *contracts*–array of objects where each object is a contract call with parameters:
-        * *contract*–contract name; if another ecosystem's contract is executed, its full name should be specified (``@1MainContract``).
-        * *params*– a dictionary of contract parameters. All values must be strings.
-
-.. code-block:: default 
-    
-    POST
-    /api/v2/prepareMultiple
-
-.. code-block:: default 
-
-    {
-      "token_ecosystem": "",
-      "max_sum":"",
-      "payover": "",
-      "signed_by": "",
-      "contracts": [
-        {"contract": "ContractOne", "params": {"Param1": "Value1", "Param2": "Value2"}},
-    {"contract": "ContractTwo", "params": {"Param11": "Value11", "Param21": "Value21"}}
-      ]
-    }
-
-Response
-""""""""
-
-* *request_id*–the identifier of the request to be transmitted.
-* *forsign*–strings to be signed, each string corresponds to a key from the dictionary that was passed in *params*.
-* *time*–time information, which needs to be sent together with the contract.
-
-Response example
-""""""""""""""""
-
-.. code-block:: default 
-    
-    200 (OK)
-    Content-Type: application/json
-    {
-        "request_id": "5c273816-134e-4a50-89b2-8d2b3d5ba562",
-        "time": 423523768,
-        "forsign": ["......", "......"]
-    }
+*E_LIMITTXSIZE*
 
 
-Errors
-""""""
+txstatus
+--------
 
-*E_CONTRACT*
-
-  
-txstatus/{hash}
----------------
-
-**GET**/ Returns a block number or an error of the sent transaction with given hash. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
-
-Request
-"""""""
-
-* *hash*–hash of the checked transaction.
-
-.. code-block:: default 
-    
-    GET
-    /api/v2/txstatus/2353467abcd7436ef47438
-     
-Response
-""""""""
-
-* *blockid*–number of the block in case the transaction has been processed successfully
-* *result*–result of the transaction operation, returned through the **$result** variable
-* *errmsg*–error message in case the transaction was refused.
-
-
-Response example
-""""""""""""""""
-
-.. code-block:: default 
-    
-    200 (OK)
-    Content-Type: application/json
-    {
-        "blockid": "4235237",
-        "result": ""
-    }      
-
-
-Errors
-""""""
-
-*E_HASHWRONG, E_HASHNOTFOUND*
-
-
-txstatusMultiple/
------------------
-
-**GET**/ Returns a block number or an error of the sent transaction with given hashes. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
+**POST**/ Returns a block number or an error for a transaction with the specified hash. If the returned values of *blockid* and *errmsg* are empty, then the transaction hasn't yet been included into a block.
 
 Request
 """""""
@@ -1545,34 +1343,37 @@ Request
 * *data*–json with a list of transaction hashes.
 
 .. code-block:: default 
-
-     {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
+    
+    {"hashes":["contract1hash", "contract2hash", "contract3hash"]}
 
 .. code-block:: default 
-    
-    GET
-    /api/v2/txstatusMultiple/
-    
+
+    POST
+    /api/v2/txstatus/
+
+
 Response
 """"""""
 
-* *results*–a dictionary that contains transaction hashes as keys and check results as values.
+* *results*–dictionary with transaction hashes as keys and transaction execution details as values.
 
-        *hash*–transaction hash
+    *hash*–transaction hash
 
-                * *blockid*–number of the block in case the transaction has been processed successfully
-                * *result*–result of the transaction operation, returned through the **$result** variable
-                * *errmsg*–error message in case the transaction was refused.
-    
+        * *blockid*–number of the block if the transaction was processed successfully.
+
+        * *result*–result of the transaction operation returned through the **$result** variable.
+
+        * *errmsg*–error message if the transaction was refused.
+
 Response example
 """"""""""""""""
 
-.. code-block:: default 
-    
+.. code-block:: default
+
     200 (OK)
     Content-Type: application/json
     {"results":
-      { 
+      {
         "hash1": {
              "blockid": "3123",
              "result": "",
