@@ -141,28 +141,15 @@ A nested contract can be called from the conditions and action sections of the e
 File Upload
 ===========
 
-To upload files from ``multipart/form-data`` forms, the contract fields with type ``bytes`` and tag ``file`` should be used. Example:
+To upload files from ``multipart/form-data`` forms, the contract fields with type ``file`` must be used. Example:
 
 .. code:: js
 
     contract Upload {
         data {
-            File bytes "file"
+            File file
         }
         ...
-    }
- 
-For work with mime-type files, an additional parameter ``{Field}MimeType`` will be passed to the contract . Example:
- 
-.. code:: js
-
-    contract Upload {
-        data {
-            File bytes "file"
-        }
-        action {
-            Println($FileMimeType)
-        }
     }
 
 The `UploadBinary` system contract is intended to upload and store files.
