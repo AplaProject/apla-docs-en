@@ -1369,7 +1369,7 @@ Parameters:
 
 * *Name string* - name of the language resource in Latin script, 
 * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``,
-* *AppID int* - application ID.
+* *[Lang string]* - optional parameter that specifies the language for error messages generated during the contract execution.
 
 
 EditLang
@@ -1382,7 +1382,7 @@ Parameters:
 * *Id int*- language resource ID,
 * *Name string* - name of the language resource,
 * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``,
-* *AppID int* - application ID.
+* *[Lang string]* - optional parameter that specifies the language for error messages generated during the contract execution.
  
 
 NewSign
