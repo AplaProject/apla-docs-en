@@ -129,41 +129,44 @@ Prices for new elements:
 
 Prices for operations:
 
-- :ref:`price_exec_bind_wallet`
-- :ref:`price_exec_address_to_id`
-- :ref:`price_exec_column_condition`
-- :ref:`price_exec_compile_contract`
-- :ref:`price_exec_contains`
-- :ref:`price_exec_contracts_list`
-- :ref:`price_exec_contract_by_name`
-- :ref:`price_exec_contract_by_id`
-- :ref:`price_exec_create_column`
-- :ref:`price_exec_create_ecosystem`
-- :ref:`price_exec_create_table`
-- :ref:`price_exec_unbind_wallet`
-- :ref:`price_exec_ecosys_param`
-- :ref:`price_exec_eval`
-- :ref:`price_exec_eval_condition`
-- :ref:`price_exec_flush_contract`
-- :ref:`price_exec_has_prefix`
-- :ref:`price_exec_id_to_address`
-- :ref:`price_exec_is_object`
-- :ref:`price_exec_join`
-- :ref:`price_exec_json_to_map`
-- :ref:`price_exec_len`
-- :ref:`price_exec_perm_column`
-- :ref:`price_exec_perm_table`
-- :ref:`price_exec_pub_to_id`
-- :ref:`price_exec_replace`
-- :ref:`price_exec_sha256`
-- :ref:`price_exec_size`
-- :ref:`price_exec_substr`
-- :ref:`price_exec_sys_fuel`
-- :ref:`price_exec_sys_param_int`
-- :ref:`price_exec_sys_param_string`
-- :ref:`price_exec_table_conditions`
-- :ref:`price_exec_update_lang`
-- :ref:`price_exec_validate_condition`
+.. hlist::
+    :columns: 2
+
+    - :ref:`price_exec_bind_wallet`
+    - :ref:`price_exec_address_to_id`
+    - :ref:`price_exec_column_condition`
+    - :ref:`price_exec_compile_contract`
+    - :ref:`price_exec_contains`
+    - :ref:`price_exec_contracts_list`
+    - :ref:`price_exec_contract_by_name`
+    - :ref:`price_exec_contract_by_id`
+    - :ref:`price_exec_create_column`
+    - :ref:`price_exec_create_ecosystem`
+    - :ref:`price_exec_create_table`
+    - :ref:`price_exec_unbind_wallet`
+    - :ref:`price_exec_ecosys_param`
+    - :ref:`price_exec_eval`
+    - :ref:`price_exec_eval_condition`
+    - :ref:`price_exec_flush_contract`
+    - :ref:`price_exec_has_prefix`
+    - :ref:`price_exec_id_to_address`
+    - :ref:`price_exec_is_object`
+    - :ref:`price_exec_join`
+    - :ref:`price_exec_json_to_map`
+    - :ref:`price_exec_len`
+    - :ref:`price_exec_perm_column`
+    - :ref:`price_exec_perm_table`
+    - :ref:`price_exec_pub_to_id`
+    - :ref:`price_exec_replace`
+    - :ref:`price_exec_sha256`
+    - :ref:`price_exec_size`
+    - :ref:`price_exec_substr`
+    - :ref:`price_exec_sys_fuel`
+    - :ref:`price_exec_sys_param_int`
+    - :ref:`price_exec_sys_param_string`
+    - :ref:`price_exec_table_conditions`
+    - :ref:`price_exec_update_lang`
+    - :ref:`price_exec_validate_condition`
 
 Deprecated
 ----------
