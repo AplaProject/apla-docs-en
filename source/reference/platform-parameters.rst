@@ -18,14 +18,14 @@ Platform parameters are configuration parameters for the blockchain platform. Th
 Where platform parameters are stored
 ------------------------------------
 
-Platform parameters are stored in the ``system_parameters`` table. 
+Platform parameters are stored in the ``system_parameters`` table.
 
 This table is available in the first (default) ecosystem that is created on the blockchain network.
 
 
 Changing platform parameters
 ----------------------------
- 
+
 Changes to platform parameters must be introduced as a result of voting.
 
 .. todo::
@@ -41,18 +41,18 @@ Platform parameters by purpose
 Blockchain network
 ------------------
 
-Nodes: 
+Nodes:
 
 - :ref:`full_nodes`
 - :ref:`number_of_nodes`
 
-Node ban: 
+Node ban:
 
 - :ref:`incorrect_blocks_per_day`
 - :ref:`node_ban_time`
 - :ref:`node_ban_time_local`
 
-Downloads: 
+Downloads:
 
 - :ref:`blockchain_url`
 
@@ -60,12 +60,12 @@ Downloads:
 New ecosystems
 --------------
 
-Default pages and menus: 
+Default pages and menus:
 
 - :ref:`default_ecosystem_page`
 - :ref:`default_ecosystem_menu`
 
-Default contract: 
+Default contract:
 
 - :ref:`default_ecosystem_contract`
 
@@ -73,7 +73,7 @@ Default contract:
 Database
 --------
 
-Table limits: 
+Table limits:
 
 - :ref:`max_columns`
 - :ref:`max_indexes`
@@ -82,28 +82,28 @@ Table limits:
 Block generation
 ----------------
 
-Time limits: 
+Time limits:
 
 - :ref:`gap_between_blocks`
 - :ref:`max_block_generation_time`
 
-Transaction number limits: 
+Transaction number limits:
 
 - :ref:`max_tx_block`
 - :ref:`max_tx_block_per_user`
 
-Size limits: 
+Size limits:
 
 - :ref:`max_tx_size`
 - :ref:`max_block_size`
 - :ref:`max_forsign_size`
 
-Fuel limits: 
+Fuel limits:
 
 - :ref:`max_fuel_block`
 - :ref:`max_fuel_tx`
 
-Block rollback: 
+Block rollback:
 
 - :ref:`rollback_blocks`
 
@@ -111,27 +111,27 @@ Block rollback:
 Fuel and currencies
 -------------------
 
-Rewards and commission: 
+Rewards and commission:
 
 - :ref:`block_reward`
 - :ref:`commission_wallet`
 - :ref:`commission_size`
 
-Fuel units exchange: 
+Fuel units exchange:
 
 - :ref:`fuel_rate`
 
-Prices for data: 
+Prices for data:
 
 - :ref:`price_tx_data`
 
-Prices for new elements: 
+Prices for new elements:
 
 - :ref:`price_create_contract`
 - :ref:`price_create_menu`
 - :ref:`price_create_page`
 
-Prices for operations: 
+Prices for operations:
 
 - :ref:`price_exec_bind_wallet`
 - :ref:`price_exec_address_to_id`
@@ -173,6 +173,7 @@ Prices for operations:
 Platform parameters
 ===================
 
+
 .. _block_reward:
 
 block_reward
@@ -189,16 +190,17 @@ block_reward
 
 blockchain_url
 --------------
-    
-    URL of the full blockchain file. 
+
+    URL of the full blockchain file.
 
     This URL can be used to download the blockchain instead of receiving it from nodes.
+
 
 .. _commission_size:
 
 commission_size
 ---------------
-    
+
     Commission percent.
 
     This amount of commission is collected from the total contract cost. Commission is applied to the total contract cost in |tokens|.
@@ -214,18 +216,6 @@ commission_wallet
     Account that collects commission for operations.
 
     Size of the commission is specified in the :ref:`commission_size` parameter.
-
-
-.. _price_create_contract:
-
-price_create_contract
----------------------
-
-    Fuel cost for creating a new contract.
-
-    This parameter defines additional fuel cost of the ``@1NewContract`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
-
-    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
 
 
 .. _default_ecosystem_contract:
@@ -254,286 +244,6 @@ default_ecosystem_page
     Source code of the default page for a new ecosystem.
 
 
-.. _price_exec_bind_wallet:
-
-price_exec_bind_wallet
-----------------------
-    
-    Fuel cost of :func:`Activate` function call.
-
-
-.. _price_exec_address_to_id:
-
-price_exec_address_to_id
-------------------------
-    
-    Fuel cost of :func:`AddressToId` function call.
-
-
-.. _price_exec_column_condition:
-
-price_exec_column_condition
----------------------------
-    
-    Fuel cost of :func:`ColumnCondition` function call.
-
-
-.. _price_exec_compile_contract:
-
-price_exec_compile_contract
----------------------------
-    
-    Fuel cost of :func:`CompileContract` function call.
-
-
-.. _price_exec_contains:
-
-price_exec_contains
--------------------
-    
-    Fuel cost of :func:`Contains` function call.
-
-
-.. _price_exec_contracts_list:
-
-price_exec_contracts_list
--------------------------
-    
-    Fuel cost of :func:`ContractsList` function call.
-
-
-.. _price_exec_contract_by_name:
-
-price_exec_contract_by_name
----------------------------
-    
-    Fuel cost of :func:`GetContractByName` function call.
-
-
-.. _price_exec_contract_by_id:
-
-price_exec_contract_by_id
--------------------------
-
-    Fuel cost of :func:`GetContractById` function call.
-
-
-.. _price_exec_create_column:
-
-price_exec_create_column
-------------------------
-    
-    Fuel cost of :func:`CreateColumn` function call.
-
-
-.. _price_exec_create_ecosystem:
-
-price_exec_create_ecosystem
----------------------------
-    
-    Fuel cost of :func:`CreateEcosystem` function call.
-
-
-.. _price_exec_create_table:
-
-price_exec_create_table
------------------------
-    
-    Fuel cost of :func:`CreateTable` function call.
-
-
-.. _price_exec_unbind_wallet:
-
-price_exec_unbind_wallet
-------------------------
-    
-    Fuel cost of :func:`Deactivate` function call.
-
-
-.. _price_exec_ecosys_param:
-
-price_exec_ecosys_param
------------------------
-    
-    Fuel cost of :func:`EcosysParam` function call.
-
-
-.. _price_exec_eval:
-
-price_exec_eval
----------------
-    
-    Fuel cost of :func:`Eval` function call.
-
-
-.. _price_exec_eval_condition:
-
-price_exec_eval_condition
--------------------------
-    
-    Fuel cost of :func:`EvalCondition` function call.
-
-
-.. _price_exec_flush_contract:
-
-price_exec_flush_contract
--------------------------
-    
-    Fuel cost of :func:`FlushContract` function call.
-
-
-.. _price_exec_has_prefix:
-
-price_exec_has_prefix
----------------------
-    
-    Fuel cost of :func:`HasPrefix` function call.
-
-
-.. _price_exec_id_to_address:
-
-price_exec_id_to_address
-------------------------
-    
-    Fuel cost of :func:`IdToAddress` function call.
-
-
-.. _price_exec_is_object:
-
-price_exec_is_object
---------------------
-    
-    Fuel cost of :func:`IsObject` function call.
-
-
-.. _price_exec_join:
-
-price_exec_join
-----------------
-    
-    Fuel cost of :func:`Join` function call.
-
-
-.. _price_exec_json_to_map:
-
-price_exec_json_to_map
-----------------------
-    
-    Fuel cost of :func:`JSONToMap` function call.
-
-
-.. _price_exec_len:
-
-price_exec_len
---------------
-    
-    Fuel cost of :func:`Len` function call.
-
-
-.. _price_exec_perm_column:
-
-price_exec_perm_column
-----------------------
-    
-    Fuel cost of :func:`PermColumn` function call.
-
-
-.. _price_exec_perm_table:
-
-price_exec_perm_table
----------------------
-    
-    Fuel cost of :func:`PermTable` function call.
-
-
-.. _price_exec_pub_to_id:
-
-price_exec_pub_to_id
---------------------
-    
-    Fuel cost of :func:`PubToID` function call.
-
-
-.. _price_exec_replace:
-
-price_exec_replace
-------------------
-    
-    Fuel cost of :func:`Replace` function call.
-
-
-.. _price_exec_sha256:
-
-price_exec_sha256
------------------
-    
-    Fuel cost of :func:`Sha256` function call.
-    
-
-.. _price_exec_size:
-
-price_exec_size
----------------
-    
-    Fuel cost of :func:`Size` function call.
-    
-
-.. _price_exec_substr:
-
-price_exec_substr
------------------
-    
-    Fuel cost of :func:`Substr` function call.
-
-
-.. _price_exec_sys_fuel:
-
-price_exec_sys_fuel
--------------------
-    
-    Fuel cost of :func:`SysFuel` function call.
-
-
-.. _price_exec_sys_param_int:
-
-price_exec_sys_param_int
-------------------------
-    
-    Fuel cost of :func:`SysParamInt` function call.
-
-
-.. _price_exec_sys_param_string:
-
-price_exec_sys_param_string
----------------------------
-    
-    Fuel cost of :func:`SysParamString` function call.
-    
-
-.. _price_exec_table_conditions:
-
-price_exec_table_conditions
----------------------------
-    
-    Fuel cost of :func:`TableConditions` function call.
-    
-
-.. _price_exec_update_lang:
-
-price_exec_update_lang
-----------------------
-    
-    Fuel cost of :func:`UpdateLang` function call.
-
-
-.. _price_exec_validate_condition:
-
-price_exec_validate_condition
------------------------------
-    
-    Fuel cost of :func:`ValidateCondition` function call.
-
-
 .. _fuel_rate:
 
 fuel_rate
@@ -544,12 +254,12 @@ fuel_rate
     Format for this parameter is:
 
         ``[["ecosystem_id", "token_to_fuel_rate"], ["ecosystem_id2", "token_to_fuel_rate2"], ...]``
-        
-        - ``ecosystem_id`` 
+
+        - ``ecosystem_id``
 
             Ecosystem identifier.
 
-        - ``token_to_fuel_rate`` 
+        - ``token_to_fuel_rate``
 
             Exchange rate of tokens to fuel units.
 
@@ -564,7 +274,7 @@ fuel_rate
 
 full_nodes
 ----------
-    
+
     List of validating nodes of the blockchain network.
 
     Format for this parameter is:
@@ -579,7 +289,7 @@ full_nodes
 
         - ``wallet_id``
 
-            Wallet (account identifier) that receives rewards for generating new blocks and processing transactions. 
+            Wallet (account identifier) that receives rewards for generating new blocks and processing transactions.
 
         - ``node_pub``
 
@@ -609,17 +319,7 @@ incorrect_blocks_per_day
 
     Amount of incorrect blocks per day that a node may generate before it is banned from the network.
 
-    When more than half of nodes in a network have received this amount of incorrect blocks from a certain  node, this node is banned from the network for :ref:`node_ban_time` amount of time. 
-
-
-.. _node_ban_time_local:
-
-node_ban_time_local
--------------------
-
-    Local ban period for nodes, in ms.
-
-    When a node receives an incorrect block from another node, it bans the sender node locally for this amount of time.
+    When more than half of nodes in a network have received this amount of incorrect blocks from a certain  node, this node is banned from the network for :ref:`node_ban_time` amount of time.
 
 
 .. _max_block_generation_time:
@@ -640,14 +340,6 @@ max_block_size
 --------------
 
     Maximum block size, in bytes.
-
-
-.. _max_tx_block_per_user:
-
-max_tx_block_per_user
----------------------
-
-    Maximum number of transactions in one block that belong to one account.
 
 
 .. _max_columns:
@@ -704,12 +396,60 @@ max_tx_block
     Maimum number of transactions in a single block.
 
 
+.. _max_tx_block_per_user:
+
+max_tx_block_per_user
+---------------------
+
+    Maximum number of transactions in one block that belong to one account.
+
+
 .. _max_tx_size:
 
 max_tx_size
 -----------
 
     Maximum transaction size, in bytes.
+
+
+.. _node_ban_time:
+
+node_ban_time
+-------------
+
+    Global ban period for nodes, in ms.
+
+    When more than half of nodes in a network have received :ref:`incorrect_blocks_per_day` amount of blocks from a certain node, this node is banned from the network for the specified amount of time.
+
+
+.. _node_ban_time_local:
+
+node_ban_time_local
+-------------------
+
+    Local ban period for nodes, in ms.
+
+    When a node receives an incorrect block from another node, it bans the sender node locally for this amount of time.
+
+
+.. _number_of_nodes:
+
+number_of_nodes
+---------------
+
+    Maximum number of validating nodes in the :ref:`full_nodes` parameter.
+
+
+.. _price_create_contract:
+
+price_create_contract
+---------------------
+
+    Fuel cost for creating a new contract.
+
+    This parameter defines additional fuel cost of the ``@1NewContract`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
+
+    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
 
 
 .. _price_create_menu:
@@ -724,24 +464,6 @@ price_create_menu
     This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
 
 
-.. _node_ban_time:
-
-node_ban_time
--------------
-
-    Global ban period for nodes, in ms.
-
-    When more than half of nodes in a network have received :ref:`incorrect_blocks_per_day` amount of blocks from a certain node, this node is banned from the network for the specified amount of time. 
-
-
-.. _number_of_nodes:
-
-number_of_nodes
----------------
-
-    Maximum number of validating nodes in the :ref:`full_nodes` parameter.
-
-
 .. _price_create_page:
 
 price_create_page
@@ -753,12 +475,285 @@ price_create_page
 
     This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
 
-.. _rollback_blocks:
 
-rollback_blocks
+.. _price_exec_address_to_id:
+
+price_exec_address_to_id
+------------------------
+
+    Fuel cost of :func:`AddressToId` function call.
+
+
+.. _price_exec_bind_wallet:
+
+price_exec_bind_wallet
+----------------------
+
+    Fuel cost of :func:`Activate` function call.
+
+
+.. _price_exec_column_condition:
+
+price_exec_column_condition
+---------------------------
+
+    Fuel cost of :func:`ColumnCondition` function call.
+
+
+.. _price_exec_compile_contract:
+
+price_exec_compile_contract
+---------------------------
+
+    Fuel cost of :func:`CompileContract` function call.
+
+
+.. _price_exec_contains:
+
+price_exec_contains
+-------------------
+
+    Fuel cost of :func:`Contains` function call.
+
+
+.. _price_exec_contract_by_id:
+
+price_exec_contract_by_id
+-------------------------
+
+    Fuel cost of :func:`GetContractById` function call.
+
+
+.. _price_exec_contract_by_name:
+
+price_exec_contract_by_name
+---------------------------
+
+    Fuel cost of :func:`GetContractByName` function call.
+
+
+.. _price_exec_contracts_list:
+
+price_exec_contracts_list
+-------------------------
+
+    Fuel cost of :func:`ContractsList` function call.
+
+
+.. _price_exec_create_column:
+
+price_exec_create_column
+------------------------
+
+    Fuel cost of :func:`CreateColumn` function call.
+
+
+.. _price_exec_create_ecosystem:
+
+price_exec_create_ecosystem
+---------------------------
+
+    Fuel cost of :func:`CreateEcosystem` function call.
+
+
+.. _price_exec_create_table:
+
+price_exec_create_table
+-----------------------
+
+    Fuel cost of :func:`CreateTable` function call.
+
+
+.. _price_exec_ecosys_param:
+
+price_exec_ecosys_param
+-----------------------
+
+    Fuel cost of :func:`EcosysParam` function call.
+
+
+.. _price_exec_eval:
+
+price_exec_eval
 ---------------
 
-    Number of blocks that can be rolled back in case when a fork is detected in the blockchain.
+    Fuel cost of :func:`Eval` function call.
+
+
+.. _price_exec_eval_condition:
+
+price_exec_eval_condition
+-------------------------
+
+    Fuel cost of :func:`EvalCondition` function call.
+
+
+.. _price_exec_flush_contract:
+
+price_exec_flush_contract
+-------------------------
+
+    Fuel cost of :func:`FlushContract` function call.
+
+
+.. _price_exec_has_prefix:
+
+price_exec_has_prefix
+---------------------
+
+    Fuel cost of :func:`HasPrefix` function call.
+
+
+.. _price_exec_id_to_address:
+
+price_exec_id_to_address
+------------------------
+
+    Fuel cost of :func:`IdToAddress` function call.
+
+
+.. _price_exec_is_object:
+
+price_exec_is_object
+--------------------
+
+    Fuel cost of :func:`IsObject` function call.
+
+
+.. _price_exec_join:
+
+price_exec_join
+----------------
+
+    Fuel cost of :func:`Join` function call.
+
+
+.. _price_exec_json_to_map:
+
+price_exec_json_to_map
+----------------------
+
+    Fuel cost of :func:`JSONToMap` function call.
+
+
+.. _price_exec_len:
+
+price_exec_len
+--------------
+
+    Fuel cost of :func:`Len` function call.
+
+
+.. _price_exec_perm_column:
+
+price_exec_perm_column
+----------------------
+
+    Fuel cost of :func:`PermColumn` function call.
+
+
+.. _price_exec_perm_table:
+
+price_exec_perm_table
+---------------------
+
+    Fuel cost of :func:`PermTable` function call.
+
+
+.. _price_exec_pub_to_id:
+
+price_exec_pub_to_id
+--------------------
+
+    Fuel cost of :func:`PubToID` function call.
+
+
+.. _price_exec_replace:
+
+price_exec_replace
+------------------
+
+    Fuel cost of :func:`Replace` function call.
+
+
+.. _price_exec_sha256:
+
+price_exec_sha256
+-----------------
+
+    Fuel cost of :func:`Sha256` function call.
+
+
+.. _price_exec_size:
+
+price_exec_size
+---------------
+
+    Fuel cost of :func:`Size` function call.
+
+
+.. _price_exec_substr:
+
+price_exec_substr
+-----------------
+
+    Fuel cost of :func:`Substr` function call.
+
+
+.. _price_exec_sys_fuel:
+
+price_exec_sys_fuel
+-------------------
+
+    Fuel cost of :func:`SysFuel` function call.
+
+
+.. _price_exec_sys_param_int:
+
+price_exec_sys_param_int
+------------------------
+
+    Fuel cost of :func:`SysParamInt` function call.
+
+
+.. _price_exec_sys_param_string:
+
+price_exec_sys_param_string
+---------------------------
+
+    Fuel cost of :func:`SysParamString` function call.
+
+
+.. _price_exec_table_conditions:
+
+price_exec_table_conditions
+---------------------------
+
+    Fuel cost of :func:`TableConditions` function call.
+
+
+.. _price_exec_unbind_wallet:
+
+price_exec_unbind_wallet
+------------------------
+
+    Fuel cost of :func:`Deactivate` function call.
+
+
+.. _price_exec_update_lang:
+
+price_exec_update_lang
+----------------------
+
+    Fuel cost of :func:`UpdateLang` function call.
+
+
+.. _price_exec_validate_condition:
+
+price_exec_validate_condition
+-----------------------------
+
+    Fuel cost of :func:`ValidateCondition` function call.
 
 
 .. _price_tx_data:
@@ -769,3 +764,11 @@ price_tx_data
     Fuel cost taken per 1024 bytes of data passed to a transaction.
 
     This parameter is measured in fuel units.
+
+
+.. _rollback_blocks:
+
+rollback_blocks
+---------------
+
+    Number of blocks that can be rolled back in case when a fork is detected in the blockchain.
