@@ -73,6 +73,7 @@ Contents
    :caption: Reference
 
    reference/api2.rst
+   reference/platform-parameters.rst
    reference/update_client.rst
    reference/desync_monitor.rst
 
