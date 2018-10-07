@@ -15,6 +15,7 @@ About platform parameters
 
 Platform parameters are configuration parameters for the blockchain platform. These parameters apply to the blockchain network and to all ecosystems in the network.
 
+
 Where platform parameters are stored
 ------------------------------------
 
@@ -50,13 +51,12 @@ Node ban:
 
 - :ref:`incorrect_blocks_per_day`
 - :ref:`node_ban_time`
-- :ref:`local_node_ban_time`
+- :ref:`node_ban_time_local`
 
 
 Updates and downloads
 ---------------------
 
-- :ref:`new_version_url`
 - :ref:`blockchain_url`
 
 
@@ -93,8 +93,8 @@ Time limits:
 
 Transaction number limits: 
 
-- :ref:`max_tx_count`
-- :ref:`max_block_user_tx`
+- :ref:`max_tx_block`
+- :ref:`max_tx_block_per_user`
 
 Size limits: 
 
@@ -109,7 +109,7 @@ Fuel limits:
 
 Block rollback: 
 
-- :ref:`rb_blocks_1`
+- :ref:`rollback_blocks`
 
 
 Fuel and currencies
@@ -127,55 +127,51 @@ Fuel units exchange:
 
 Prices for data: 
 
-- :ref:`size_fuel`
+- :ref:`price_tx_data`
 
 Prices for new elements: 
 
-- :ref:`ecosystem_price`
-- :ref:`column_price`
-- :ref:`contract_price`
-- :ref:`menu_price`
-- :ref:`page_price`
-- :ref:`table_price`
+- :ref:`price_create_contract`
+- :ref:`price_create_menu`
+- :ref:`price_create_page`
 
 Prices for operations: 
 
-- :ref:`extend_cost_activate`
-- :ref:`extend_cost_address_to_id`
-- :ref:`extend_cost_column_condition`
-- :ref:`extend_cost_compile_contract`
-- :ref:`extend_cost_contains`
-- :ref:`extend_cost_contracts_list`
-- :ref:`extend_cost_contract_by_name`
-- :ref:`extend_cost_contract_by_id`
-- :ref:`extend_cost_create_column`
-- :ref:`extend_cost_create_ecosystem`
-- :ref:`extend_cost_create_table`
-- :ref:`extend_cost_deactivate`
-- :ref:`extend_cost_ecosys_param`
-- :ref:`extend_cost_eval`
-- :ref:`extend_cost_eval_condition`
-- :ref:`extend_cost_flush_contract`
-- :ref:`extend_cost_has_prefix`
-- :ref:`extend_cost_id_to_address`
-- :ref:`extend_cost_is_object`
-- :ref:`extend_cost_join`
-- :ref:`extend_cost_json_to_map`
-- :ref:`extend_cost_len`
-- :ref:`extend_cost_new_state`
-- :ref:`extend_cost_perm_column`
-- :ref:`extend_cost_perm_table`
-- :ref:`extend_cost_pub_to_id`
-- :ref:`extend_cost_replace`
-- :ref:`extend_cost_sha256`
-- :ref:`extend_cost_size`
-- :ref:`extend_cost_substr`
-- :ref:`extend_cost_sys_fuel`
-- :ref:`extend_cost_sys_param_int`
-- :ref:`extend_cost_sys_param_string`
-- :ref:`extend_cost_table_conditions`
-- :ref:`extend_cost_update_lang`
-- :ref:`extend_cost_validate_condition`
+- :ref:`price_exec_bind_wallet`
+- :ref:`price_exec_address_to_id`
+- :ref:`price_exec_column_condition`
+- :ref:`price_exec_compile_contract`
+- :ref:`price_exec_contains`
+- :ref:`price_exec_contracts_list`
+- :ref:`price_exec_contract_by_name`
+- :ref:`price_exec_contract_by_id`
+- :ref:`price_exec_create_column`
+- :ref:`price_exec_create_ecosystem`
+- :ref:`price_exec_create_table`
+- :ref:`price_exec_unbind_wallet`
+- :ref:`price_exec_ecosys_param`
+- :ref:`price_exec_eval`
+- :ref:`price_exec_eval_condition`
+- :ref:`price_exec_flush_contract`
+- :ref:`price_exec_has_prefix`
+- :ref:`price_exec_id_to_address`
+- :ref:`price_exec_is_object`
+- :ref:`price_exec_join`
+- :ref:`price_exec_json_to_map`
+- :ref:`price_exec_len`
+- :ref:`price_exec_perm_column`
+- :ref:`price_exec_perm_table`
+- :ref:`price_exec_pub_to_id`
+- :ref:`price_exec_replace`
+- :ref:`price_exec_sha256`
+- :ref:`price_exec_size`
+- :ref:`price_exec_substr`
+- :ref:`price_exec_sys_fuel`
+- :ref:`price_exec_sys_param_int`
+- :ref:`price_exec_sys_param_string`
+- :ref:`price_exec_table_conditions`
+- :ref:`price_exec_update_lang`
+- :ref:`price_exec_validate_condition`
 
 
 Platform parameters
@@ -202,19 +198,6 @@ blockchain_url
 
     This URL can be used to download the blockchain instead of receiving it from nodes.
 
-
-.. _column_price:
-
-column_price
-------------
-
-    Fuel cost for creating a new table column.
-
-    This parameter defines additional fuel cost of the ``@1NewColumn`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
-
-    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
-
-
 .. _commission_size:
 
 commission_size
@@ -237,10 +220,10 @@ commission_wallet
     Size of the commission is specified in the :ref:`commission_size` parameter.
 
 
-.. _contract_price:
+.. _price_create_contract:
 
-contract_price
---------------
+price_create_contract
+---------------------
 
     Fuel cost for creating a new contract.
 
@@ -275,304 +258,282 @@ default_ecosystem_page
     Source code of the default page for a new ecosystem.
 
 
-.. _ecosystem_price:
+.. _price_exec_bind_wallet:
 
-ecosystem_price
----------------
-
-    Fuel cost for creating a new ecosystem.
-
-    This parameter defines additional fuel cost of the ``@1NewEcosystem`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
-
-    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
-
-
-.. _extend_cost_activate:
-
-extend_cost_activate
---------------------
+price_exec_bind_wallet
+----------------------
     
     Fuel cost of :func:`Activate` function call.
 
 
-.. _extend_cost_address_to_id:
+.. _price_exec_address_to_id:
 
-extend_cost_address_to_id
--------------------------
+price_exec_address_to_id
+------------------------
     
     Fuel cost of :func:`AddressToId` function call.
 
 
-.. _extend_cost_column_condition:
+.. _price_exec_column_condition:
 
-extend_cost_column_condition
-----------------------------
+price_exec_column_condition
+---------------------------
     
     Fuel cost of :func:`ColumnCondition` function call.
 
 
-.. _extend_cost_compile_contract:
+.. _price_exec_compile_contract:
 
-extend_cost_compile_contract
-----------------------------
+price_exec_compile_contract
+---------------------------
     
     Fuel cost of :func:`CompileContract` function call.
 
 
-.. _extend_cost_contains:
+.. _price_exec_contains:
 
-extend_cost_contains
---------------------
+price_exec_contains
+-------------------
     
     Fuel cost of :func:`Contains` function call.
 
 
-.. _extend_cost_contracts_list:
+.. _price_exec_contracts_list:
 
-extend_cost_contracts_list
---------------------------
+price_exec_contracts_list
+-------------------------
     
     Fuel cost of :func:`ContractsList` function call.
 
 
-.. _extend_cost_contract_by_name:
+.. _price_exec_contract_by_name:
 
-extend_cost_contract_by_name
-----------------------------
+price_exec_contract_by_name
+---------------------------
     
     Fuel cost of :func:`GetContractByName` function call.
 
 
-.. _extend_cost_contract_by_id:
+.. _price_exec_contract_by_id:
 
-extend_cost_contract_by_id
---------------------------
+price_exec_contract_by_id
+-------------------------
 
     Fuel cost of :func:`GetContractById` function call.
 
 
-.. _extend_cost_create_column:
+.. _price_exec_create_column:
 
-extend_cost_create_column
--------------------------
+price_exec_create_column
+------------------------
     
     Fuel cost of :func:`CreateColumn` function call.
 
 
-.. _extend_cost_create_ecosystem:
+.. _price_exec_create_ecosystem:
 
-extend_cost_create_ecosystem
-----------------------------
+price_exec_create_ecosystem
+---------------------------
     
     Fuel cost of :func:`CreateEcosystem` function call.
 
 
-.. _extend_cost_create_table:
+.. _price_exec_create_table:
 
-extend_cost_create_table
-------------------------
+price_exec_create_table
+-----------------------
     
     Fuel cost of :func:`CreateTable` function call.
 
 
-.. _extend_cost_deactivate:
+.. _price_exec_unbind_wallet:
 
-extend_cost_deactivate
-----------------------
+price_exec_unbind_wallet
+------------------------
     
     Fuel cost of :func:`Deactivate` function call.
 
 
-.. _extend_cost_ecosys_param:
+.. _price_exec_ecosys_param:
 
-extend_cost_ecosys_param
-------------------------
+price_exec_ecosys_param
+-----------------------
     
     Fuel cost of :func:`EcosysParam` function call.
 
 
-.. _extend_cost_eval:
+.. _price_exec_eval:
 
-extend_cost_eval
-----------------
+price_exec_eval
+---------------
     
     Fuel cost of :func:`Eval` function call.
 
 
-.. _extend_cost_eval_condition:
+.. _price_exec_eval_condition:
 
-extend_cost_eval_condition
---------------------------
+price_exec_eval_condition
+-------------------------
     
     Fuel cost of :func:`EvalCondition` function call.
 
 
-.. _extend_cost_flush_contract:
+.. _price_exec_flush_contract:
 
-extend_cost_flush_contract
---------------------------
+price_exec_flush_contract
+-------------------------
     
     Fuel cost of :func:`FlushContract` function call.
 
 
-.. _extend_cost_has_prefix:
+.. _price_exec_has_prefix:
 
-extend_cost_has_prefix
-----------------------
+price_exec_has_prefix
+---------------------
     
     Fuel cost of :func:`HasPrefix` function call.
 
 
-.. _extend_cost_id_to_address:
+.. _price_exec_id_to_address:
 
-extend_cost_id_to_address
--------------------------
+price_exec_id_to_address
+------------------------
     
     Fuel cost of :func:`IdToAddress` function call.
 
 
-.. _extend_cost_is_object:
+.. _price_exec_is_object:
 
-extend_cost_is_object
----------------------
+price_exec_is_object
+--------------------
     
     Fuel cost of :func:`IsObject` function call.
 
 
-.. _extend_cost_join:
+.. _price_exec_join:
 
-extend_cost_join
+price_exec_join
 ----------------
     
     Fuel cost of :func:`Join` function call.
 
 
-.. _extend_cost_json_to_map:
+.. _price_exec_json_to_map:
 
-extend_cost_json_to_map
------------------------
+price_exec_json_to_map
+----------------------
     
     Fuel cost of :func:`JSONToMap` function call.
 
 
-.. _extend_cost_len:
+.. _price_exec_len:
 
-extend_cost_len
----------------
+price_exec_len
+--------------
     
     Fuel cost of :func:`Len` function call.
 
 
-.. _extend_cost_new_state:
+.. _price_exec_perm_column:
 
-extend_cost_new_state
----------------------
-    
-    This parameter is deprecated. 
-
-    Use :ref:`extend_cost_create_ecosystem` instead.
-
-
-.. _extend_cost_perm_column:
-
-extend_cost_perm_column
------------------------
+price_exec_perm_column
+----------------------
     
     Fuel cost of :func:`PermColumn` function call.
 
 
-.. _extend_cost_perm_table:
+.. _price_exec_perm_table:
 
-extend_cost_perm_table
-----------------------
+price_exec_perm_table
+---------------------
     
     Fuel cost of :func:`PermTable` function call.
 
 
-.. _extend_cost_pub_to_id:
+.. _price_exec_pub_to_id:
 
-extend_cost_pub_to_id
----------------------
+price_exec_pub_to_id
+--------------------
     
     Fuel cost of :func:`PubToID` function call.
 
 
-.. _extend_cost_replace:
+.. _price_exec_replace:
 
-extend_cost_replace
--------------------
+price_exec_replace
+------------------
     
     Fuel cost of :func:`Replace` function call.
 
 
-.. _extend_cost_sha256:
+.. _price_exec_sha256:
 
-extend_cost_sha256
-------------------
+price_exec_sha256
+-----------------
     
     Fuel cost of :func:`Sha256` function call.
     
 
-.. _extend_cost_size:
+.. _price_exec_size:
 
-extend_cost_size
-----------------
+price_exec_size
+---------------
     
     Fuel cost of :func:`Size` function call.
     
 
-.. _extend_cost_substr:
+.. _price_exec_substr:
 
-extend_cost_substr
-------------------
+price_exec_substr
+-----------------
     
     Fuel cost of :func:`Substr` function call.
 
 
-.. _extend_cost_sys_fuel:
+.. _price_exec_sys_fuel:
 
-extend_cost_sys_fuel
---------------------
+price_exec_sys_fuel
+-------------------
     
     Fuel cost of :func:`SysFuel` function call.
 
 
-.. _extend_cost_sys_param_int:
+.. _price_exec_sys_param_int:
 
-extend_cost_sys_param_int
--------------------------
+price_exec_sys_param_int
+------------------------
     
     Fuel cost of :func:`SysParamInt` function call.
 
 
-.. _extend_cost_sys_param_string:
+.. _price_exec_sys_param_string:
 
-extend_cost_sys_param_string
-----------------------------
+price_exec_sys_param_string
+---------------------------
     
     Fuel cost of :func:`SysParamString` function call.
     
 
-.. _extend_cost_table_conditions:
+.. _price_exec_table_conditions:
 
-extend_cost_table_conditions
-----------------------------
+price_exec_table_conditions
+---------------------------
     
     Fuel cost of :func:`TableConditions` function call.
     
 
-.. _extend_cost_update_lang:
+.. _price_exec_update_lang:
 
-extend_cost_update_lang
------------------------
+price_exec_update_lang
+----------------------
     
     Fuel cost of :func:`UpdateLang` function call.
 
 
-.. _extend_cost_validate_condition:
+.. _price_exec_validate_condition:
 
-extend_cost_validate_condition
-------------------------------
+price_exec_validate_condition
+-----------------------------
     
     Fuel cost of :func:`ValidateCondition` function call.
 
@@ -655,9 +616,9 @@ incorrect_blocks_per_day
     When more than half of nodes in a network have received this amount of incorrect blocks from a certain  node, this node is banned from the network for :ref:`node_ban_time` amount of time. 
 
 
-.. _local_node_ban_time:
+.. _node_ban_time_local:
 
-local_node_ban_time
+node_ban_time_local
 -------------------
 
     Local ban period for nodes, in ms.
@@ -685,10 +646,10 @@ max_block_size
     Maximum block size, in bytes.
 
 
-.. _max_block_user_tx:
+.. _max_tx_block_per_user:
 
-max_block_user_tx
------------------
+max_tx_block_per_user
+---------------------
 
     Maximum number of transactions in one block that belong to one account.
 
@@ -739,9 +700,9 @@ max_indexes
     Maximum number of index fields in a table.
 
 
-.. _max_tx_count:
+.. _max_tx_block:
 
-max_tx_count
+max_tx_block
 ------------
 
     Maimum number of transactions in a single block.
@@ -755,10 +716,10 @@ max_tx_size
     Maximum transaction size, in bytes.
 
 
-.. _menu_price:
+.. _price_create_menu:
 
-menu_price
-----------
+price_create_menu
+-----------------
 
     Fuel cost for creating a new menu.
 
@@ -767,16 +728,7 @@ menu_price
     This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
 
 
-.. _new_version_url:
-
-new_version_url
----------------
-
-    This parameter is deprecated.
-
-
 .. _node_ban_time:
-
 
 node_ban_time
 -------------
@@ -794,10 +746,10 @@ number_of_nodes
     Maximum number of validating nodes in the :ref:`full_nodes` parameter.
 
 
-.. _page_price:
+.. _price_create_page:
 
-page_price
-----------
+price_create_page
+-----------------
 
     Fuel cost for creating a new page.
 
@@ -805,31 +757,19 @@ page_price
 
     This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
 
-.. _rb_blocks_1:
+.. _rollback_blocks:
 
-rb_blocks_1
------------
+rollback_blocks
+---------------
 
     Number of blocks that can be rolled back in case when a fork is detected in the blockchain.
 
 
-.. _size_fuel:
+.. _price_tx_data:
 
-size_fuel
----------
+price_tx_data
+-------------
 
     Fuel cost taken per 1024 bytes of data passed to a transaction.
 
     This parameter is measured in fuel units.
-
-
-.. _table_price:
-
-table_price
------------
-
-    Fuel cost for creating a new table.
-
-    This parameter defines additional fuel cost of the ``@1NewTable`` contract. When this contract is executed, fuel costs for executing functions in this contract are also counted and added to the total cost.
-
-    This parameter is measured in fuel units. Fuel units are exchanged to |tokens| using :ref:`fuel_rate`.
