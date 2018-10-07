@@ -52,10 +52,6 @@ Node ban:
 - :ref:`node_ban_time`
 - :ref:`node_ban_time_local`
 
-Downloads:
-
-- :ref:`blockchain_url`
-
 
 New ecosystems
 --------------
@@ -169,6 +165,12 @@ Prices for operations:
 - :ref:`price_exec_update_lang`
 - :ref:`price_exec_validate_condition`
 
+Deprecated
+----------
+
+Deprecated parameters:
+
+- :ref:`blockchain_url`
 
 Platform parameters
 ===================
@@ -191,9 +193,7 @@ block_reward
 blockchain_url
 --------------
 
-    URL of the full blockchain file.
-
-    This URL can be used to download the blockchain instead of receiving it from nodes.
+    This parameter is deprecated.
 
 
 .. _commission_size:
