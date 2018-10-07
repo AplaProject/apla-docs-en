@@ -12,7 +12,6 @@ Platform parameters
 About platform parameters
 =========================
 
-
 Platform parameters are configuration parameters for the blockchain platform. These parameters apply to the blockchain network and to all ecosystems in the network.
 
 
@@ -53,9 +52,7 @@ Node ban:
 - :ref:`node_ban_time`
 - :ref:`node_ban_time_local`
 
-
-Updates and downloads
----------------------
+Downloads: 
 
 - :ref:`blockchain_url`
 
@@ -63,10 +60,9 @@ Updates and downloads
 New ecosystems
 --------------
 
-Pages and menus: 
+Default pages and menus: 
 
 - :ref:`default_ecosystem_page`
-
 - :ref:`default_ecosystem_menu`
 
 Default contract: 
