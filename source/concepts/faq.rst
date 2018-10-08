@@ -1,17 +1,17 @@
 FAQ
 ###
 
-#. In a few words, how would you describe the Genesis platform?
+#. In a few words, how would you describe |platform|?
 
     - A blockchain platform, designed to build digital ecosystems on the basis of an integrated application development environment with a multi-level system for the management of access rights to data, interfaces and smart contracts.
 
-#. Does the Genesis platform work on the Bitcoin, Ethereum, or some other blockchain?
+#. Does |platform| platform work on the Bitcoin, Ethereum, or some other blockchain?
 
-    - No, the Genesis platform is built on the basis of being its own original blockchain.
+    - No, |platform| is built on the basis of being its own original blockchain.
 
-#. What are the main differences between the Genesis platform and other public blockchain platforms with built-in mechanisms for the execution of smart contracts, such as Ethereum, Qtum, and those still being designed, including Tezos and EOS?
+#. What are the main differences between |platform| and other public blockchain platforms with built-in mechanisms for the execution of smart contracts, such as Ethereum, Qtum, and those still being designed, including Tezos and EOS?
 
-    - The Genesis platform features unique functions that cannot be found in the aforementioned blockchain platforms: 
+    - |platform| features unique functions that cannot be found in the aforementioned blockchain platforms:
 
     - Integrated application development environment implemented in a single client software;
 
@@ -23,12 +23,18 @@ FAQ
 
     - Legal system – a set of regulations, codified in smart laws (specialized smart contracts), which regulate relations between the platform users, define the protocol parameters changing procedures, that are used to solve problems.
 
-#. Does the Genesis platform have its own cryptocurrency? 
+#. Does |platform| have its own cryptocurrency?
 
-    - No, the Genesis platform does not have any cryptocurrencies.
+.. ifconfig:: if_project in ('genesis')
+
+        - No, |platform| does not have any cryptocurrencies.
+
+.. ifconfig:: if_project in ('apla')
+
+        - Yes, |platform| uses its own tokens, APL.
 
 #. What is a validating node?
-    
+
     - A validating node is a network node that is authorized to check transactions and create blocks.
 
 #. Who can maintain a validating node?
@@ -37,7 +43,7 @@ FAQ
 
 #. What are platform ecosystems?
 
-    - Ecosystems are virtually autonomous software environments for the creation of blockchain applications and the user operations within them. 
+    - Ecosystems are virtually autonomous software environments for the creation of blockchain applications and the user operations within them.
 
 #. Who can create an ecosystem?
 
@@ -57,13 +63,13 @@ FAQ
 
 #. Which programming language is used for the creation of applications?
 
-    - Contracts are written using the Simvolio language, which was developed by the platform team (see contract language description). 
+    - Contracts are written using the Simvolio language, which was developed by the platform team (see contract language description).
 
-    - Interfaces are written using Protypo – an original interface template language (see template language description). 
+    - Interfaces are written using Protypo – an original interface template language (see template language description).
 
 #. Which software is used for creating applications and user interaction with them?
 
-    - Applications are written and executed in Molis – the single software client; no other software is required. 
+    - Applications are written and executed in Molis – the single software client; no other software is required.
 
 #. Can platform contracts access data using third-party API interfaces?
 
@@ -123,13 +129,13 @@ FAQ
 
 #. Who pays for the operation of applications?
 
-    - An account (binding account), which the tokens for payment of resources are debited from, is set by the contract creator on its activation. It can be defined using ecosystem's smart laws whether or not the ecosystem members will pay for work with the application, and if yes, than what way of payment it will be (contributions or otherwise). 
+    - An account (binding account), which the tokens for payment of resources are debited from, is set by the contract creator on its activation. It can be defined using ecosystem's smart laws whether or not the ecosystem members will pay for work with the application, and if yes, than what way of payment it will be (contributions or otherwise).
 
 #. How are applications within ecosystems protected from exploit of their vulnerabilities?
 
     -  The platform team understands that there is no way to completely avoid mistakes in the program code of applications, especially given that applications can be written by any user. That's why we decided to create a mechanism that eliminates the consequences of vulnerability exploitation. The platform has a legal system (a set of smart laws), that allow for stopping the operation of an attacking application and make a number of transactions for restoring to the status quo. The rights to execute such contracts and voting procedures to grant these rights are defined in the smart laws of the platform's legal system.
 
-#. Which new functions are planned to be implemented in the Genesis platform in the future?
+#. Which new functions are planned to be implemented in |platform| in the future?
 
     - Visual interface designer,
 
@@ -147,14 +153,14 @@ FAQ
 
     - Semantic reference (ontology) for the unification of operations within the data in the platform.
 
-#. Are there any proofs of the Genesis platform's operability?
+#. Are there any proofs of |platform| operability?
 
     - A number of proof of concept projects have been implemented on the platform during the last few months: a polling and voting system for a political party (Netherlands), new businesses registration (UAE), trading financial instruments (Luxembourg), register of property (India), and a contracts management system (UAE).
 
-#. Does the Genesis platform have any obvious drawbacks?
+#. Does |platform| have any obvious drawbacks?
 
-    - The biggest drawback of the platform, compared to, say, Ethereum, is that Genesis platform is just in the launch mode. But this drawback will transform into a big advantage over time.
+    - The biggest drawback of the platform, compared to, say, Ethereum, is that |platform| is just in the launch mode. But this drawback will transform into a big advantage over time.
 
-#. What does the future of the Genesis platform look like?
+#. What does the future of |platform| look like?
 
     - The Genesis platform was designed based on the assumption that the full effect of blockchain technology can only be achieved when all activities, operations, registers and contracts are on the same blockchain network. Just as there can't be many co-existing Internets, there ultimately can't be many co-existing blockchain networks. We see the Genesis platform as a unified platform, which in the future will run the operations of all governments in the world.
