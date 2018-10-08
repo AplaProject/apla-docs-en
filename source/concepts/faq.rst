@@ -13,15 +13,15 @@ FAQ
 
     - |platform| features unique functions that cannot be found in the aforementioned blockchain platforms:
 
-    - Integrated application development environment implemented in a single client software;
+        - Integrated application development environment implemented in a single client software;
 
-    - Specialized template language for the design of interfaces, harmonized with the contract-building language;
+        - Specialized template language for the design of interfaces, harmonized with the contract-building language;
 
-    - Multi-level system for the management of access rights to data, contracts, and interfaces where rights can be granted to persons, member roles, and contracts;
+        - Multi-level system for the management of access rights to data, contracts, and interfaces where rights can be granted to persons, member roles, and contracts;
 
-    - Ecosystems – autonomous software environments for the creation of blockchain applications and user interactions with them;
+        - Ecosystems – autonomous software environments for the creation of blockchain applications and user interactions with them;
 
-    - Legal system – a set of regulations, codified in smart laws (specialized smart contracts), which regulate relations between the platform users, define the protocol parameters changing procedures, that are used to solve problems.
+        - Legal system – a set of regulations, codified in smart laws (specialized smart contracts), which regulate relations between the platform users, define the protocol parameters changing procedures, that are used to solve problems.
 
 #. Does |platform| have its own cryptocurrency?
 
