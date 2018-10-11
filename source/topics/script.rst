@@ -298,9 +298,9 @@ Data type must be defined for every variable. In obvious cases, data types are c
 
         * ``Name`` - file name (``string`` type).
 
-        * ``MimeType`` - mime-type of the file (``string`` type)
+        * ``MimeType`` - mime-type of the file (``string`` type).
 
-        * ``Body`` - file contents (``bytes`` type)
+        * ``Body`` - file contents (``bytes`` type).
 
 
 All identifiers, including the names of variables, functions, contracts, etc. are case sensitive (MyFunc and myFunc are different names).
@@ -599,8 +599,43 @@ L10N:
     - :ref:`LangRes`
     - :ref:`UpdateLang`
 
+
+
 Simvolio functions reference
 ============================
+
+
+.. _AppParam:
+
+AppParam
+--------
+
+Returns the value of a specified application parameter (from the application parameters table *app_params*).
+
+
+Syntax
+""""""
+
+.. code-block:: text
+    
+    AppParam(app int, name string) string
+
+
+.. describe:: app
+
+    Application identifer.
+
+.. describe:: name
+
+    Application parameter name.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    Println( AppParam(1, "app_account"))
 
 
 .. _DBFind:
