@@ -13,8 +13,8 @@ Structure of the contract
 
 Contracts are declared with the contract keyword, followed by the new contract's name. The contract's body must be enclosed in curly brackets. Every contract consists of three sections:
 
-    #. **data** - declares the input data (names and types of variables),
-    #. **conditions** - verifies the correctness of input data,
+    #. **data** - declares the input data (names and types of variables).
+    #. **conditions** - verifies the correctness of input data.
     #. **action** - includes the actions performed by the contract.
 
 .. code:: js
@@ -97,11 +97,11 @@ Contract input data, declared in the data section, is passed to other sections t
 
 A contract can access predefined variables that contain data about the transaction, from which this contract was called.
 
-    * ``$time`` – transaction time, int,
+    * ``$time`` – transaction time, int.
 
-    * ``$ecosystem_id`` – ecosystem ID, int,
+    * ``$ecosystem_id`` – ecosystem ID, int.
 
-    * ``$block`` – number of the block, in which this transaction is included, int,
+    * ``$block`` – number of the block, in which this transaction is included, int.
 
     * ``$key_id`` – ID of the account that signed the transaction if the contract is outside of ecosystem with ``ecosystem_id == 0``.
 
@@ -111,18 +111,18 @@ A contract can access predefined variables that contain data about the transacti
 
             Check that this is still used.
 
-    * ``$type`` identifier of an external contract from where the current contract was called,
+    * ``$type`` identifier of an external contract from where the current contract was called.
 
         .. todo::
 
             Check that this is still used.
 
-    * ``$block_key_id`` – address of the node that formed the block, in which this transaction is included,
+    * ``$block_key_id`` – address of the node that formed the block, in which this transaction is included.
 
     * ``$block_time`` – time, when the block with the transaction containing the current contract was formed.
 
     * ``$original_contract`` – name of the contract, which was initially called for transaction processing. If this variable is an empty string, it means that the contract was called in the process of verification of a condition. To check whether this contract was called by another contract or directly from a transaction, the values of **$original_contract** and **$this_contract** are to be compared. If they are equal, it means that the contract was called from the transaction.
-    
+
     * ``$this_contract`` – name of the currently executed contract.
 
     * ``$guest_key`` – guest account ID.
@@ -207,7 +207,7 @@ Using JSON in PostgreSQL queries
     val = DBFind("mytable").Columns("myname,doc->type").WhereId($Id).One("doc->type")
     list = DBFind("mytable").Columns("myname,doc,doc->ind").Where("doc->ind = ?", "101")
     val = DBFind("mytable").WhereId($Id).One("doc->check")
-    
+
 
 Date/time operations in PostgreSQL queries
 ==========================================
@@ -247,13 +247,13 @@ Contract Editor
 
 Contracts can be created and edited in a special editor which is a part of the Molis software client. Each new contract has a typical structure created in it by default with three sections: ``data, conditions, action``. The contracts editor helps to:
 
-    - Write the contract code (highlighting key words of the Simvolio language,
+    - Write the contract code (highlighting key words of the Simvolio language.
 
-    - Format the contract source code,
+    - Format the contract source code.
 
-    - Bind the contract to an account, from which the payment for its execution will be charged,
+    - Bind the contract to an account, from which the payment for its execution will be charged.
 
-    - Define permissions to edit the contract (typically, by specifying the contract name with the permissions stipulated in a special function ContractConditions or by way of direct indication of access conditions in the Change conditions field),
+    - Define permissions to edit the contract (typically, by specifying the contract name with the permissions stipulated in a special function ContractConditions or by way of direct indication of access conditions in the Change conditions field).
 
     - View the history of changes made to the contract with the option to restore previous versions.
 
@@ -261,7 +261,7 @@ Contracts can be created and edited in a special editor which is a part of the M
 Simvolio Language
 #################
 
-|platform| contracts are written in a Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database. 
+|platform| contracts are written in a Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database.
 
 
 Basic elements and constructions of the language
@@ -273,22 +273,22 @@ Data Types and Variables
 
 Data type must be defined for every variable. In obvious cases, data types are converted automatically. The following data types can be used:
 
-    * ``bool`` - Boolean, can be true or false,
+    * ``bool`` - Boolean, can be true or false.
 
-    * ``bytes`` - a sequence of bytes,
+    * ``bytes`` - a sequence of bytes.
 
-    * ``int`` - a 64-bit integer,
+    * ``int`` - a 64-bit integer.
 
-    * ``array`` - an array of values of arbitrary types,
+    * ``array`` - an array of values of arbitrary types.
 
-    * ``map`` - an associative array of values of arbitrary data types with string keys,
+    * ``map`` - an associative array of values of arbitrary data types with string keys.
 
-    * ``money`` - an integer of the big integer type; values are stored in the database without decimal points, which are added when displaying values in the user interface in accordance with the currency configuration settings,
-    
-    * ``float`` - a 64-bit number with a floating point,
-    
+    * ``money`` - an integer of the big integer type; values are stored in the database without decimal points, which are added when displaying values in the user interface in accordance with the currency configuration settings.
+
+    * ``float`` - a 64-bit number with a floating point.
+
     * ``string`` - a string; must be defined in double quotes or back quotes: "This is a string" or \`This is a string\`.
-    
+
     * ``file`` - associative array with a set of keys and values:
 
         * ``Name`` - file name (``string`` type).
@@ -320,7 +320,7 @@ Arrays
 
 The language supports two array types:
 
-* ``array`` - a simple array with numeric index starting from zero,
+* ``array`` - a simple array with numeric index starting from zero.
 * ``map`` - an associative array with string keys.
 
 When assigning and и retrieving array elements, index must be put in square brackets.
@@ -381,7 +381,7 @@ If and While Statements
 
 The contract language supports the standard **if** conditional statement and the **while** loop, which can be used in functions and contracts. These statements can be nested in each other.
 
-A keyword must be followed by a conditional statement. If the conditional statement returns a number, then it is considered as *false* when its value = zero. 
+A keyword must be followed by a conditional statement. If the conditional statement returns a number, then it is considered as *false* when its value = zero.
 
 For example, *val == 0* is equivalent to *!val*, and *val != 0* is the same as just *val*. The **if** statement can have an **else** block, which executes in case the **if** conditional statement is false. The following comparison operators can be used in conditional statements: ``<, >, >=, <=, ==, !=``, as well as ``||`` (OR) and ``&&`` (AND).
 
@@ -602,16 +602,16 @@ Syntax
 
 .. code-block:: text
 
-    DBFind(table string) 
-        [.Columns(columns string)] 
-        [.Where(where string, params ...)] 
-        [.WhereId(id int)] 
-        [.Order(order string)] 
-        [.Limit(limit int)] 
-        [.Offset(offset int)] 
+    DBFind(table string)
+        [.Columns(columns string)]
+        [.Where(where string, params ...)]
+        [.WhereId(id int)]
+        [.Order(order string)]
+        [.Limit(limit int)]
+        [.Offset(offset int)]
         [.Ecosystem(ecosystemid int)] array
 
-.. describe:: table 
+.. describe:: table
 
     Table name.
 
@@ -621,7 +621,7 @@ Syntax
 
 .. describe:: where
 
-    Search condition. 
+    Search condition.
 
     For example, ``.Where("name = 'John'")`` or ``.Where("name = ?", "John")``.
 
@@ -643,7 +643,7 @@ Syntax
 
 .. describe:: ecosystemid
 
-    Ecosystem ID. 
+    Ecosystem ID.
 
     By default, values are taken from the table in the current ecosystem.
 
@@ -699,7 +699,7 @@ Syntax
 
 .. describe:: where
 
-    Search condition. 
+    Search condition.
 
     For example, ``.Where("name = 'John'")`` or ``.Where("name = ?", "John")``.
 
@@ -1028,7 +1028,7 @@ Syntax
 
 .. describe:: in
 
-     is the initial string,
+     is the initial string.
 
 .. describe:: sep
 
@@ -1124,7 +1124,7 @@ Syntax
 
 .. describe:: list
 
-     - a map array, returned by the **DBFind** function,
+     - a map array, returned by the **DBFind** function.
 
 .. describe:: column
 
@@ -1155,13 +1155,13 @@ Syntax
 """"""
 
 .. code-block:: text
-    
+
     CallContract(name string, params map)
 
 
 .. describe:: name
 
-    Name of the contract being called,
+    Name of the contract being called.
 
 .. describe:: params
 
@@ -1215,7 +1215,7 @@ Example
 ContractConditions
 ------------------
 
-Calls the **conditions** section from contracts with specified names. 
+Calls the **conditions** section from contracts with specified names.
 
 For such contracts, the *data* block must be empty. If the conditions *conditions* is executed without errors, then *true* is returned. If an error is generated during execution, the parent contract will also end with this error. This function is usually used to control access of contracts to tables and can be called in the *Permissions* fields when editing system table.
 
@@ -1353,7 +1353,7 @@ Syntax
 """"""
 
 .. code-block:: text
-    
+
     TransactionInfo(hash: string)
 
 
@@ -1413,7 +1413,7 @@ Syntax
 Results
 """""""
 
-The result of such transaction has this format: 
+The result of such transaction has this format:
 
 .. code-block:: json
 
@@ -1481,7 +1481,7 @@ Syntax
 """"""
 
 .. code-block:: text
-    
+
     AddressToId(address string) int
 
 
@@ -1571,7 +1571,7 @@ Syntax
 """"""
 
 .. code-block:: text
-    
+
     Float(val int|string) float
 
 
@@ -1993,7 +1993,7 @@ Sprintf
 
 The function creates a string based on the specified template and parameters.
 
-Available wildcards: 
+Available wildcards:
 
     * ``%d`` (number)
 
@@ -2001,7 +2001,7 @@ Available wildcards:
 
     * ``%f`` (float)
 
-    * ``%v`` (for any types).
+    * ``%v`` (for any types)
 
 Syntax
 """"""
@@ -2029,9 +2029,9 @@ Example
 Substr
 ------
 
-Returns the substring obtained from a specified string starting from the offset *offset* (calculating from 0) and with maximum length of *length*. 
+Returns the substring obtained from a specified string starting from the offset *offset* (calculating from 0) and with maximum length of *length*.
 
-In case of wrong offsets or length an empty string is returned. 
+In case of wrong offsets or length an empty string is returned.
 
 If the sum of the *offset* and *length* is more than string size, then the substring will be returned starting from the offset to the end of the string.
 
@@ -2144,7 +2144,7 @@ Syntax
 
 .. describe:: value
 
-    New value for the parameter,
+    New value for the parameter.
 
 .. describe:: conditions
 
@@ -2182,7 +2182,7 @@ Syntax
 
 .. describe:: url
 
-    Address, to which the request will be sent,
+    Address, to which the request will be sent.
 
 .. describe:: method
 
@@ -2259,6 +2259,7 @@ Example
     json = JSONToMap(ret)
 
 
+
 System Contracts
 ================
 
@@ -2272,30 +2273,36 @@ List of System Contracts
 NewEcosystem
 """"""""""""
 
-This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus. Parameters:
+This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus.
 
-* *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
+Parameters:
+
+    * *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
 
 
 MoneyTransfer
 """""""""""""
 
-This contract transfers money from the current account in the current ecosystem to a specified account. Parameters:
+This contract transfers money from the current account in the current ecosystem to a specified account.
 
-* *Recipient string* - recipient's account in any format – a number or ``XXXX-....-XXXX``,
-* *Amount    string* - transaction amount in qAPL,
-* *Comment   string "optional"* - comments.
+Parameters:
+
+    * *Recipient string* - recipient's account in any format – a number or ``XXXX-....-XXXX``.
+    * *Amount    string* - transaction amount in qAPL.
+    * *Comment   string "optional"* - comments.
 
 
 NewContract
 """""""""""
 
-This contract creates a new contract in the current ecosystem. Parameters:
+This contract creates a new contract in the current ecosystem.
 
-* *Value string* - text of the contract, there must be only one contract on the upper level,
-* *Conditions string* - contract change conditions,
-* *Wallet string "optional"* - identifier of user's id where contract must be tied,
-* *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
+Parameters:
+
+    * *Value string* - text of the contract, there must be only one contract on the upper level.
+    * *Conditions string* - contract change conditions.
+    * *Wallet string "optional"* - identifier of user's id where contract must be tied.
+    * *TokenEcosystem int "optional"* - identifier of the ecosystem, which currency will be used for transactions when the contract is activated.
 
 
 EditContract
@@ -2305,9 +2312,9 @@ Editing the contract in the current ecosystem.
 
 Parameters:
 
-* *Id int* - ID of the contract to be edited,
-* *Value string "optional"* - text of the contract or contracts,
-* *Conditions string "optional"* - rights for contract change.
+    * *Id int* - ID of the contract to be edited.
+    * *Value string "optional"* - text of the contract or contracts.
+    * *Conditions string "optional"* - rights for contract change.
 
 
 ActivateContract
@@ -2317,7 +2324,7 @@ Binding of a contract to the account in the current ecosystem. Contracts can be 
 
 Parameters:
 
-* *Id int* - ID of the contract to activate.
+    * *Id int* - ID of the contract to activate.
 
 
 DeactivateContract
@@ -2327,7 +2334,7 @@ Unbinds a contract from an account in the current ecosystem. Only the account wh
 
 Parameters:
 
-* *Id int* - identifier of the tied contract.
+    * *Id int* - identifier of the tied contract.
 
 
 NewParameter
@@ -2337,9 +2344,9 @@ This contract adds a new parameter to the current ecosystem.
 
 Parameters:
 
-* *Name string* - parameter name,
-* *Value string* - parameter value,
-* *Conditions string* - rights for parameter change.
+    * *Name string* - parameter name.
+    * *Value string* - parameter value.
+    * *Conditions string* - rights for parameter change.
 
 
 EditParameter
@@ -2349,9 +2356,9 @@ This contract changes an existing parameter in the current ecosystem.
 
 Parameters:
 
-* *Name string* - name of the parameter to be changed,
-* *Value string* - new value,
-* *Conditions string* - new condition for parameter change.
+    * *Name string* - name of the parameter to be changed.
+    * *Value string* - new value.
+    * *Conditions string* - new condition for parameter change.
 
 
 NewMenu
@@ -2361,10 +2368,10 @@ This contract adds a new menu in the current ecosystem.
 
 Parameters:
 
-* *Name string* - menu name,
-* *Value string* - menu text,
-* *Title string "optional"* - menu header,
-* *Conditions string* - rights for menu change.
+    * *Name string* - menu name.
+    * *Value string* - menu text.
+    * *Title string "optional"* - menu header.
+    * *Conditions string* - rights for menu change.
 
 
 EditMenu
@@ -2374,10 +2381,10 @@ This contract changes an existing menu in the current ecosystem.
 
 Parameters:
 
-* *Id int* - ID of the menu to be changed,
-* *Value string "optional"* - new text of menu,
-* *Title string "optional"* - menu header,
-* *Conditions string* - new rights for page change.
+    * *Id int* - ID of the menu to be changed.
+    * *Value string "optional"* - new text of menu.
+    * *Title string "optional"* - menu header.
+    * *Conditions string* - new rights for page change.
 
 
 AppendMenu
@@ -2387,8 +2394,8 @@ This contract adds text to an existing menu in the current ecosystem.
 
 Parameters:
 
-* *Id int* - complemented menu identifier,
-* *Value string* - text to be added.
+    * *Id int* - complemented menu identifier.
+    * *Value string* - text to be added.
 
 
 NewPage
@@ -2398,10 +2405,10 @@ This contract adds a new page in the current ecosystem.
 
 Parameters:
 
-* *Name string* - page name,
-* *Value string* - page text,
-* *Menu string* - name of the menu, attached to this page,
-* *Conditions string* - rights for change.
+    * *Name string* - page name.
+    * *Value string* - page text.
+    * *Menu string* - name of the menu, attached to this page.
+    * *Conditions string* - rights for change.
 
 
 EditPage
@@ -2411,10 +2418,10 @@ This contract changes an existing page in the current ecosystem.
 
 Parameters:
 
-* *Id int* - ID of the page to be changed,
-* *Value string "optional"* - new text of the page,
-* *Menu string "optional"* - name of the new menu on the page,
-* *Conditions string "optional"* - new rights for page change.
+    * *Id int* - ID of the page to be changed.
+    * *Value string "optional"* - new text of the page.
+    * *Menu string "optional"* - name of the new menu on the page.
+    * *Conditions string "optional"* - new rights for page change.
 
 AppendPage
 """"""""""
@@ -2423,8 +2430,8 @@ The contract adds text to an existing page in the current ecosystem.
 
 Parameters:
 
-* *Id int* - ID of the page to be changed,
-* *Value string* - text that needs to be added to the page.
+    * *Id int* - ID of the page to be changed.
+    * *Value string* - text that needs to be added to the page.
 
 
 NewBlock
@@ -2434,9 +2441,9 @@ This contract adds a new page block with a template to the current ecosystem.
 
 Parameters:
 
-* *Name string* - block name,
-* *Value string* - block text,
-* *Conditions string* - rights for block change.
+    * *Name string* - block name.
+    * *Value string* - block text.
+    * *Conditions string* - rights for block change.
 
 
 EditBlock
@@ -2446,9 +2453,9 @@ This contract changes an existing block in the current ecosystem.
 
 Parameters
 
-* *Id int* - ID of the block to be changed,
-* *Value string* - new text of a block,
-* *Conditions string* - new rights for change.
+    * *Id int* - ID of the block to be changed.
+    * *Value string* - new text of a block.
+    * *Conditions string* - new rights for change.
 
 
 NewTable
@@ -2458,20 +2465,20 @@ This contract adds a new table in the current ecosystem.
 
 Parameters:
 
-* *Name string* - table name in Latin script,
-* *Columns string* - array of columns in JSON format ``[{"name":"...", "type":"...","index": "0", "conditions":"..."},...]``, where
+    * *Name string* - table name in Latin script.
+    * *Columns string* - array of columns in JSON format ``[{"name":"...", "type":"...","index": "0", "conditions":"..."},...]``, where
 
-  * *name* - column name in Latin script,
-  * *type* - type ``varchar,bytea,number,datetime,money,text,double,character``,
-  * *index* - non-indexed field - "0"; create index - "1",
-  * *conditions* - condition for changing data in a column; read access rights must be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
+        * *name* - column name in Latin script.
+        * *type* - type ``varchar,bytea,number,datetime,money,text,double,character``.
+        * *index* - non-indexed field - "0"; create index - "1".
+        * *conditions* - condition for changing data in a column; read access rights must be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
 
 
-* *Permissions string* - access conditions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
+    * *Permissions string* - access conditions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
 
-  * *insert* - rights to insert records,
-  * *new_column* - rights to add columns,
-  * *update* - rights to change rights.
+        * *insert* - rights to insert records.
+        * *new_column* - rights to add columns.
+        * *update* - rights to change rights.
 
 
 EditTable
@@ -2481,12 +2488,12 @@ This contract changes access permissions to tables in the current ecosystem.
 
 Parameters:
 
-* *Name string* - table name,
-* *Permissions string* - access permissions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
+    * *Name string* - table name.
+    * *Permissions string* - access permissions in JSON format ``{"insert": "...", "new_column": "...", "update": "..."}``.
 
-  * *insert* - condition to insert records,
-  * *new_column* - condition to add columns,
-  * *update* - condition to change data.
+        * *insert* - condition to insert records.
+        * *new_column* - condition to add columns.
+        * *update* - condition to change data.
 
 
 NewColumn
@@ -2496,11 +2503,11 @@ This contract adds a new column to a table in the current ecosystem.
 
 Parameters:
 
-* *TableName string* - table name in,
-* *Name* - column name in Latin script,
-* *Type* - type ``varchar,bytea,number,money,datetime,text,double,character``,
-* *Index* - non-indexed field - "0"; create index - "1",
-* *Permissions* - condition for changing data in a column; read access rights must be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
+    * *TableName string* - table name in.
+    * *Name* - column name in Latin script.
+    * *Type* - type ``varchar,bytea,number,money,datetime,text,double,character``.
+    * *Index* - non-indexed field - "0"; create index - "1".
+    * *Permissions* - condition for changing data in a column; read access rights must be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``
 
 
 EditColumn
@@ -2510,9 +2517,9 @@ This contract changes the rights to change a table column in the current ecosyst
 
 Parameters:
 
-* *TableName string* - table name in Latin script,
-* *Name* - column name in Latin script,
-* *Permissions* - condition for changing data in a column; read access rights must be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``.
+    * *TableName string* - table name in Latin script.
+    * *Name* - column name in Latin script.
+    * *Permissions* - condition for changing data in a column; read access rights must be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``.
 
 NewLang
 """""""
@@ -2521,9 +2528,9 @@ This contract adds language resources in the current ecosystem. Permissions to a
 
 Parameters:
 
-* *Name string* - name of the language resource in Latin script,
-* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``,
-* *[Lang string]* - optional parameter that specifies the language for error messages generated during the contract execution.
+    * *Name string* - name of the language resource in Latin script.
+    * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example: ``{"en": "English text", "ru": "Английский текст"}``.
+    * *[Lang string]* - optional parameter that specifies the language for error messages generated during the contract execution.
 
 
 EditLang
@@ -2533,10 +2540,10 @@ This contract updates the language resource in the current ecosystem. Permission
 
 Parameters:
 
-* *Id int*- language resource ID,
-* *Name string* - name of the language resource,
-* *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``,
-* *[Lang string]* - optional parameter that specifies the language for error messages generated during the contract execution.
+    * *Id int*- language resource ID.
+    * *Name string* - name of the language resource.
+    * *Trans* - language resources as a string in JSON format with two-character language codes as keys and translated strings as values. For example ``{"en": "English text", "ru": "Английский текст"}``.
+    * *[Lang string]* - optional parameter that specifies the language for error messages generated during the contract execution.
 
 
 NewSign
@@ -2546,13 +2553,13 @@ This contract adds the signature confirmation requirement for a contract in the 
 
 Parameters:
 
-* *Name string* - name of the contract, where an additional signature confirmation will be required,
-* *Value string* - description of parameters in a JSON string, where
+    * *Name string* - name of the contract, where an additional signature confirmation will be required.
+    * *Value string* - description of parameters in a JSON string, where
 
-  * *title* - message text,
-  * *params* - array of parameters that are displayed to users, where **name** is the field name, and **text** is the parameter description.
+      * *title* - message text.
+      * *params* - array of parameters that are displayed to users, where **name** is the field name, and **text** is the parameter description.
 
-* *Conditions string* - condition for changing the parameters.
+    * *Conditions string* - condition for changing the parameters.
 
 Example of *Value*:
 
@@ -2566,9 +2573,9 @@ The contract updates the parameters of a contract with a signature in the curren
 
 Parameters:
 
- * *Id int* - identifier of the signature to be changed,
- * *Value string* - a string containing new parameters,
- * *Conditions string* - new condition for changing the signature parameters.
+     * *Id int* - identifier of the signature to be changed.
+     * *Value string* - a string containing new parameters.
+     * *Conditions string* - new condition for changing the signature parameters.
 
 
 Import
@@ -2578,7 +2585,7 @@ This contract imports data from a \*.sim file into the ecosystem.
 
 Parameters:
 
-* *Data string* - data to be imported in text format; this data is the result of export from an ecosystem to a .sim file.
+    * *Data string* - data to be imported in text format; this data is the result of export from an ecosystem to a .sim file.
 
 
 NewCron
@@ -2586,11 +2593,11 @@ NewCron
 
 The contract adds a new task in cron to be launched by timer. The contract is available only in VDE systems. Parameters:
 
-* *Cron string* - a string that defines the launch of the contract by timer in the *cron* format,
-* *Contract string* - name of the contract to launch in VDE; the contract must not have parameters in its ``data`` section,
-* *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times),
-* *Till string* - an optional string with the time when the task must be ended (this feature is not yet implemented),
-* *Conditions string* - rights to modify the task.
+    * *Cron string* - a string that defines the launch of the contract by timer in the *cron* format.
+    * *Contract string* - name of the contract to launch in VDE; the contract must not have parameters in its ``data`` section.
+    * *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times).
+    * *Till string* - an optional string with the time when the task must be ended (this feature is not yet implemented).
+    * *Conditions string* - rights to modify the task.
 
 
 EditCron
@@ -2598,12 +2605,12 @@ EditCron
 
 This contract changes the configuration of a task in cron for launch by timer. The contract is available only in VDE systems. Parameters:
 
-* *Id int* - task ID,
-* *Cron string* - a string that defines the launch of the contract by timer in the *cron* format; to disable a task, this parameter must be either an empty string or absent,
-* *Contract string* - name of the contract to launch in VDE; the contract must not have parameters in its data section,
-* *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times),
-* *Till string* - an optional string with the time of task must be ended (this feature is not yet implemented),
-* *Conditions string* - new rights to modify the task.
+    * *Id int* - task ID.
+    * *Cron string* - a string that defines the launch of the contract by timer in the *cron* format; to disable a task, this parameter must be either an empty string or absent.
+    * *Contract string* - name of the contract to launch in VDE; the contract must not have parameters in its data section.
+    * *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times).
+    * *Till string* - an optional string with the time of task must be ended (this feature is not yet implemented).
+    * *Conditions string* - new rights to modify the task.
 
 
 UploadBinary
@@ -2613,8 +2620,8 @@ The contract adds/rewrites a static file in X_binaries. When calling a contract 
 
 Parameters:
 
-* *Data bytes "file"* - content of the static file,
-* *DataMimeType string "optional"* - mime type of the static file,
+    * *Data bytes "file"* - content of the static file.
+    * *DataMimeType string "optional"* - mime type of the static file.
 
 If the DataMimeType is not passed, then ``application/octet-stream`` is used by default.
 If MemberID is not passed, then the static file is considered a system file.
