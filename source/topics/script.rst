@@ -236,6 +236,11 @@ If you have a string value of time and you need to write it in a field with the 
    DBInsert("mytable", "name,mytime", "John Dow", "timestamp " + $txtime )
 
 
+Following Simvolio functions work with date and time in SQL format:
+
+    - :ref:`BlockTime`
+    - :ref:`DateTime`
+    - :ref:`UnixDateTime`
 
 
 Contract Editor
@@ -570,6 +575,15 @@ Operations with system parameters:
     - :ref:`SysParamInt`
     - :ref:`DBUpdateSysParam`
 
+
+Operations with date and time in SQL format:
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`BlockTime`
+    - :ref:`DateTime`
+    - :ref:`UnixDateTime`
 
 Functions for VDE:
 
@@ -2258,6 +2272,80 @@ Example
     ret = HTTPPostJSON("http://localhost:7079/api/v2/content/page/default_page", heads, `{"vde":"true"}`)
     json = JSONToMap(ret)
 
+
+.. _BlockTime:
+
+BlockTime
+---------
+
+Returns generation time of a block in SQL format.
+
+Use this function instead of the ``NOW()`` function.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    BlockTime()
+
+
+Example
+"""""""
+
+.. code:: js
+
+    DBInsert(`mytable`, `created_at`, BlockTime())
+
+
+
+.. _DateTime:
+
+DateTime
+--------
+
+Converts unixtime to a string in the `YYYY-MM-DD HH\:MI\:SS` format.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    DateTime(unixtime int) string
+
+
+Example
+"""""""
+
+.. code:: js
+
+    DateTime(1532325250)
+
+
+.. _UnixDateTime:
+
+UnixDateTime
+------------
+
+Converts a string in the `YYYY-MM-DD HH\:MI\:SS` format to unixtime.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    UnixDateTime(datetime string) int
+
+
+Example
+"""""""
+
+.. code:: js
+
+    UnixDateTime("2018-07-20 14:23:10")
 
 
 System Contracts
