@@ -223,17 +223,17 @@ Consider the situation when we have a value in Unix format and we need to write 
 
 .. code:: js
 
-   DBInsert("mytable", "name,timestamp mytime", "John Dow", 146724678424 )
+   DBInsert("mytable", "name,timestamp mytime", "John Smith", 146724678424 )
 
 If you have a string value of time and you need to write it in a field with the type *timestamp*, in this case, **timestamp** must be specified before the value itself.
 
 .. code:: js
 
-   DBInsert("mytable", "name,mytime", "John Dow", "timestamp 2017-05-20 00:00:00" )
+   DBInsert("mytable", "name,mytime", "John Smith", "timestamp 2017-05-20 00:00:00" )
    var date string
    date = "2017-05-20 00:00:00"
-   DBInsert("mytable", "name,mytime", "John Dow", "timestamp " + date )
-   DBInsert("mytable", "name,mytime", "John Dow", "timestamp " + $txtime )
+   DBInsert("mytable", "name,mytime", "John Smith", "timestamp " + date )
+   DBInsert("mytable", "name,mytime", "John Smith", "timestamp " + $txtime )
 
 
 Following Simvolio functions work with date and time in SQL format:
@@ -263,8 +263,8 @@ Contracts can be created and edited in a special editor which is a part of the M
     - View the history of changes made to the contract with the option to restore previous versions.
 
 
-Simvolio Language
-#################
+Simvolio Contracts Language
+###########################
 
 |platform| contracts are written in a Turing-complete script language called Simvolio, with compilation into bytecode. The language includes a set of functions, operators and constructions that can be used for implementation of data processing algorithms and operations with the database.
 
@@ -481,9 +481,17 @@ Retrieving values from the database:
 .. hlist::
     :columns: 3
 
+    - :ref:`AppParam`
     - :ref:`DBFind`
     - :ref:`DBRow`
+    - :ref:`DBSelectMetrics`
     - :ref:`EcosysParam`
+    - :ref:`GetHistory`
+    - :ref:`GetHistoryRow`
+    - :ref:`GetColumnType`
+    - :ref:`GetDataFromXLSX`
+    - :ref:`GetRowsCountXLSX`
+    - :ref:`GetBlock`
     - :ref:`LangRes`
 
 
@@ -504,12 +512,14 @@ Array operations:
 .. hlist::
     :columns: 3
 
+    - :ref:`Append`
     - :ref:`Join`
     - :ref:`Split`
     - :ref:`Len`
     - :ref:`Row`
     - :ref:`One`
-
+    - :ref:`GetMapKeys`
+    - :ref:`SortedKeys`
 
 Operations with contracts and conditions:
 
@@ -521,6 +531,7 @@ Operations with contracts and conditions:
     - :ref:`ContractConditions`
     - :ref:`EvalCondition`
     - :ref:`GetContractById`
+    - :ref:`RoleAccess`
     - :ref:`GetContractByName`
     - :ref:`TransactionInfo`
     - :ref:`Throw`
@@ -542,6 +553,8 @@ Operations with values of variables:
 .. hlist::
     :columns: 3
 
+    - :ref:`DecodeBase64`
+    - :ref:`EncodeBase64`
     - :ref:`Float`
     - :ref:`HexToBytes`
     - :ref:`FormatMoney`
@@ -553,7 +566,13 @@ Operations with values of variables:
     - :ref:`UpdateLang`
 
 
-Operations with string values:
+Operations with JSON:
+
+    - :ref:`JSONEncode`
+    - :ref:`JSONEncodeIndent`
+    - :ref:`JSONDecode`
+
+Operations with strings:
 
 .. hlist::
     :columns: 3
@@ -564,17 +583,17 @@ Operations with string values:
     - :ref:`Size`
     - :ref:`Sprintf`
     - :ref:`Substr`
+    - :ref:`ToLower`
+    - :ref:`ToUpper`
+    - :ref:`TrimSpace`
 
-
-Operations with system parameters:
+Operations with bytes:
 
 .. hlist::
     :columns: 3
 
-    - :ref:`SysParamString`
-    - :ref:`SysParamInt`
-    - :ref:`DBUpdateSysParam`
-
+    - :ref:`StringToBytes`
+    - :ref:`BytesToString`
 
 Operations with date and time in SQL format:
 
@@ -585,20 +604,30 @@ Operations with date and time in SQL format:
     - :ref:`DateTime`
     - :ref:`UnixDateTime`
 
-Functions for VDE:
+Operations with system parameters:
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`SysParamString`
+    - :ref:`SysParamInt`
+    - :ref:`DBUpdateSysParam`
+    - :ref:`UpdateNotifications`
+    - :ref:`UpdateRolesNotifications`
+
+Functions for VDE mode:
 
     - :ref:`HTTPRequest`
     - :ref:`HTTPPostJSON`
 
 
-L10N:
+Functions for VDE Master mode:
 
-.. hlist::
-    :columns: 3
-
-    - :ref:`LangRes`
-    - :ref:`UpdateLang`
-
+    - :ref:`CreateVDE`
+    - :ref:`ListVDE`
+    - :ref:`RunVDE`
+    - :ref:`StopVDE`
+    - :ref:`RemoveVDE`
 
 
 Simvolio functions reference
@@ -643,8 +672,9 @@ Example
 DBFind
 ------
 
-Receives data from a database table in accordance with the request specified. Returs an *array* comprised of *map* associative arrays.
+Receives data from a database table in accordance with the specified request. 
 
+Returs an *array* comprised of *map* associative arrays that contain data from the database record. To get the first *map* element (first record from the request), use the ``.Row()`` tail function. To get a value from the first *map* element (a value from the specific column), use the ``.One(column string)``.
 
 Syntax
 """"""
@@ -652,8 +682,8 @@ Syntax
 .. code-block:: text
 
     DBFind(table string)
-        [.Columns(columns string)]
-        [.Where(where string, params ...)]
+        [.Columns(columns array|string)]
+        [.Where(where map)]
         [.WhereId(id int)]
         [.Order(order string)]
         [.Limit(limit int)]
@@ -668,11 +698,89 @@ Syntax
 
     List of returned columns. If not specified, all columns will be returned.
 
+    This value can be specified as an array or as a string with comma separators.
+
 .. describe:: where
 
     Search condition.
 
-    For example, ``.Where("name = 'John'")`` or ``.Where("name = ?", "John")``.
+    Example: ``.Where({name: "John"})`` or ``.Where({"id": {"$gte": 4}})``.
+
+    This parameter must contain an associative array with search conditions. This array may contain nested elements.
+
+    Following syntactic constructions are possible:
+
+    - ``{"field1": "value1", "field2" : "value2"}``
+
+        This is equivalent to ``field1 = "value1" AND field2 = "value2"``.
+
+    - ``{"field1": {"$eq":"value"}}``
+
+        This is equivalent to ``field = "value"``.
+
+    - ``{"field1": {"$neq": "value"}}``
+
+        This is equivalent to ``field != "value"``.
+
+
+    - ``{"field1: {"$in": [1,2,3]}``
+
+        This is equivalent to ``field IN (1,2,3)``.
+
+    - ``{"field1": {"$nin" : [1,2,3]}``
+
+        This is equivalent to ``field NOT IN (1,2,3)``.
+    
+    - ``{"field": {"$lt": 12}}``
+
+        This is equivalent to ``field < 12``.
+    
+    - ``{"field": {"$lte": 12}}``
+
+        This is equivalent to ``field <= 12``.
+    
+    - ``{"field": {"$gt": 12}}``
+
+        This is equivalent to ``field > 12``.
+    
+    - ``{"field": {"$gte": 12}}``
+
+        This is equivalent to ``field >= 12``.
+    
+    - ``{"$and": [<expr1>, <expr2>, <expr3>]}``
+
+        This is equivalent to ``expr1 AND expr2 AND expr3``.
+    
+    - ``{"$or": [<expr1>, <expr2>, <expr3>]}``
+
+        This is equivalent to ``expr1 OR expr2 OR expr3``.
+    
+    - ``{field: {"$like": "value"}}``
+
+        This is equivalent to ``field like '%value%'`` (substring search).
+    
+    - ``{field: {"$begin": "value"}}``
+
+        This is equivalent to ``field like 'value%'`` (begins with ``value``).
+    
+    - ``{field: {"$end": "value"}}``
+
+        This is equivalent to ``field like '%value'`` (ends with ``value``).
+    
+    - ``{field: "$isnull"}``
+
+        This is equivalent to ``field is null``.
+
+    Make sure that you don't overwrite associative array keys. For example, if you want to make the ``id>2 and id<5`` query, you cannot specify ``{id:{"$gt": 2}, id:{"$lt": 5}}``, because the first ``id`` element will be overwritten by the second one. Instead, you can use the following constructions:
+
+    .. code:: js
+
+        {id: [{"$gt": 2}, {"$lt": 5}]}
+
+    .. code:: js
+
+        {"$and": [{id:{"$gt": 2}}, {id:{"$lt": 5}}]}
+
 
 .. describe:: id
 
@@ -681,6 +789,12 @@ Syntax
 .. describe:: order
 
     A field that will be used for sorting. By default, values are sorted by *id*.
+
+    If sorting is done using only one field, then it can be specified as a string. Otherwise, pass an array of strings and objects:
+
+        Descending order: ``{"field": "-1"}``. Eqivalent of ``field desc``. 
+
+        Ascending order: ``{"field": "1"}``. Eqivalent of ``field asc``. 
 
 .. describe:: limit
 
@@ -714,7 +828,7 @@ Example
    var ret string
    ret = DBFind("contracts").Columns("id,value").WhereId(10).One("value")
    if ret != nil {
-   	Println(ret)
+    Println(ret)
    }
 
 
@@ -732,10 +846,10 @@ Syntax
 .. code-block:: text
 
     DBRow(table string)
-        [.Columns(columns string)]
-        [.Where(where string, params ...)]
+        [.Columns(columns array|string)]
+        [.Where(where map)]
         [.WhereId(id int)]
-        [.Order(order string)]
+        [.Order(order array|string)]
         [.Ecosystem(ecosystemid int)] map
 
 .. describe:: table
@@ -746,11 +860,15 @@ Syntax
 
     List of returned columns. If not specified, all columns will be returned.
 
+    This value can be specified as an array or as a string with comma separators.
+
 .. describe:: where
 
     Search condition.
 
-    For example, ``.Where("name = 'John'")`` or ``.Where("name = ?", "John")``.
+    Example: ``.Where({name: "John"})`` or ``.Where({"id": {"$gte": 4}})``.
+
+    For more information, see :ref:`DBFind`.
 
 .. describe:: id
 
@@ -760,9 +878,12 @@ Syntax
 
     A field that will be used for sorting. By default, values are sorted by *id*.
 
+    For more information, see :ref:`DBFind`.
+
+
 .. describe:: ecosystemid
 
-    By default, values are taken from the table in the current ecosystem.
+    Ecosystem identifier. By default, current ecosystem identifer.
 
 
 Example
@@ -771,8 +892,75 @@ Example
 .. code:: js
 
    var ret map
-   ret = DBRow("contracts").Columns("id,value").Where("id = ?", 1)
-   Println(map)
+   ret = DBRow("contracts").Columns(["id","value"]).Where({id: 1})
+   Println(ret)
+
+
+.. _DBSelectMetrics:
+
+DBSelectMetrics
+---------------
+
+Returns aggregated data for a metric.
+
+Metrics are updated each time 100 blocks are generated. Aggregated data is stored in 1-day periods.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    DBSelectMetrics(metric string, timeInterval string, aggregateFunc string) array
+
+
+.. describe:: metric
+
+    Metric name.
+
+    .. describe:: ecosystem_pages
+
+        Number of pages in ecosystems.
+
+        Returned values: *key* is an ecosystem ID, *value* is the number of pages in this ecosystem.
+
+    .. describe:: ecosystem_members
+
+        Number of members in ecosystems.
+
+        Returned values: *key* is an ecosystem ID, *value* is the number of members in this ecosystem.
+
+    .. describe:: ecosystem_tx
+
+        Number of transactions in ecosystems.
+
+        Returned values: *key* is an ecosystem ID, *value* is the number of transactions in this ecosystem.
+
+.. describe:: timeInterval
+
+    Time interval for aggregated metric data. Examples: ``1 day``, ``30 days``.
+
+.. describe:: aggregateFunc
+
+    Aggregation function. Examples: ``max``, ``min``, ``avg``.
+
+
+Example
+"""""""
+
+In the example below, ``row`` contains a map with ``key`` and ``value`` keys. The ``key`` key contains ecosystem IDs, the ``value`` key contains metric value. 
+
+.. code:: js
+
+   var rows array
+   rows = DBSelectMetrics("ecosystem_tx", "30 days", "avg")
+
+   var i int
+   while(i < Len(rows)) {
+      var row map
+      row = rows[i]
+      i = i + 1
+   }
 
 
 .. _EcosysParam:
@@ -806,6 +994,211 @@ Example
 .. code:: js
 
     Println( EcosysParam("gov_account"))
+
+
+.. _GetHistory:
+
+GetHistory
+----------
+
+Returns the history of changes of a record from the specified table.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetHistory(table string, id int) array
+
+.. describe:: table
+
+    Table name.
+
+.. describe:: id
+
+    Identifier of a record.
+
+
+Return value
+""""""""""""
+
+Return an array of associative arrays of *map* type. These arrays contain the history of changes of a record in the specified table.
+
+Each associative array contains fields of a record before the next change was made.
+
+The resulting list is sorted in the order from recent changes to earlier ones.
+
+The *id* field in the resulting table points to the id in the *rollback_tx* table. The *block_id* field contains the block number. The *block_time* field contains the block timestamp.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var list array
+    var item map
+    list = GetHistory("blocks", 1)
+    if Len(list) > 0 {
+       item = list[0]
+    }
+
+
+.. _GetHistoryRow:
+
+GetHistoryRow
+-------------
+
+Returns a single snapshot from the history of changes of a record in a specified table.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetHistoryRow(table string, id int, rollbackId int) map
+
+.. describe:: table
+
+    Table name.
+
+.. describe:: id
+
+    Record identifier.
+
+.. describe:: RollbackId
+
+    Identifier of the id record in the *rollback_tx* table.
+
+
+Return value
+""""""""""""
+
+Returns a single history record with the *rollbackId* identifier from the *rollback_tx* table.
+
+
+.. todo::
+
+    Add example.
+
+
+.. _GetColumnType:
+
+GetColumnType
+-------------
+
+Returns the type of a column in a specified table.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetColumnType(table, column string) string
+
+.. describe:: table
+
+    Table name.
+
+.. describe:: column
+
+    Column name.
+
+
+Returned value
+""""""""""""""
+
+Following column types can be returned: *text, varchar, number, money, double, bytes, json, datetime, double*.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var coltype string
+    coltype = GetColumnType("members", "member_name")
+
+.. _GetDataFromXLSX:
+
+GetDataFromXLSX
+---------------
+
+Returns data from XLSX spreadsheets.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetDataFromXLSX(binId int, line int, count int, sheet int) string
+
+.. describe:: binId
+
+    Identifier of an XLSX spreadsheet from the *binary* table.
+
+.. describe:: line
+
+    Spreadsheet line, starting from 0.
+
+.. describe:: count
+
+    Number of lines to return.
+
+.. describe:: sheet
+
+    List number in XLSX file, starting from 1.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var a array
+    a = GetDataFromXLSX(binid, 12, 10, 1)
+
+
+Returned value
+""""""""""""""
+
+Returned value is an array that contains arrays with spreadsheet cell data.
+
+
+.. _GetRowsCountXLSX:
+
+GetRowsCountXLSX
+----------------
+
+Returns the number of rows in a specified XLSX file.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetRowsCountXLSX(binId int, sheet int) int
+
+.. describe:: binId
+
+    Identifier of an XLSX spreadsheet from the *binary* table.
+
+.. describe:: sheet
+
+    List number in XLSX file, starting from 1.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var count int
+    count = GetRowsCountXLSX(binid, 1)
 
 
 .. _LangRes:
@@ -842,6 +1235,54 @@ Example
     error LangRes("problems", "de")
 
 
+.. _GetBlock:
+
+GetBlock
+--------
+
+Returns information about a block.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetBlock(blockID int64) map
+
+.. describe:: blockID
+
+    Block identifier.
+
+
+Returned value
+""""""""""""""
+
+Returned value is a *map* associative array that contains the following data:
+
+- *id*
+
+    Block identifier.
+
+- *time*
+
+    Block generation time, in unixtime format.
+
+- *key_id*
+
+    Node key of a node that generated the block.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   var b map
+   b = GetBlock(1)
+   Println(b)
+
+
 .. _DBInsert:
 
 DBInsert
@@ -855,7 +1296,7 @@ Syntax
 
 .. code-block:: text
 
-    DBInsert(table string, params string, val ...) int
+    DBInsert(table string, params map) int
 
 
 .. describe:: tblname
@@ -864,19 +1305,13 @@ Syntax
 
 .. describe:: params
 
-    List of comma-separated names of columns, where the values that are listed in **val** will be written.
-
-.. describe:: val
-
-    List of comma-separated values for the columns listed in **params**.
-
-    Values can be a string or a number.
+    Associative array where keys are field names and values are values to insert.
 
 
 Example
 """""""
 
-    DBInsert("mytable", "name,amount", "John Dow", 100)
+    DBInsert("mytable", {name: "John Smith", amount: 100})
 
 
 .. _DBUpdate:
@@ -892,7 +1327,7 @@ Syntax
 
 .. code-block:: text
 
-    DBUpdate(tblname string, id int, params string, val...)
+    DBUpdate(tblname string, id int, params map)
 
 
 .. describe:: tblname
@@ -905,11 +1340,7 @@ Syntax
 
 .. describe:: params
 
-    List of comma-separated names of the columns to be changed.
-
-.. describe:: val
-
-    List of values for a specified columns listed in **params**; can either be a string or a number.
+    Associative array where keys are field names and values are values to update.
 
 
 Example
@@ -917,7 +1348,7 @@ Example
 
 .. code:: js
 
-    DBUpdate("mytable", myid, "name,amount", "John Dow", 100)
+    DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 
 .. _DBUpdateExt:
@@ -933,8 +1364,7 @@ Syntax
 
 .. code-block:: text
 
-
-    DBUpdateExt(tblname string, column string, value (int|string), params string, val ...)
+    DBUpdateExt(tblname string, column string, value (int|string), params map)
 
 
 .. describe:: tblname
@@ -951,11 +1381,7 @@ Syntax
 
 .. describe:: params
 
-    List of comma-separated names of columns, where the values specified in **val** will be written.
-
-.. describe:: val
-
-    List of values for recording in the columns listed in **params**; can either be a string or a number.
+    Associative array where keys are field names and values are values to update.
 
 
 Example
@@ -963,7 +1389,7 @@ Example
 
 .. code:: js
 
-    DBUpdateExt("mytable", "address", addr, "name,amount", "John Dow", 100)
+    DBUpdateExt("mytable", "address", addr, {name: "John Smith", amount: 100})
 
 
 .. _DelColumn:
@@ -1021,6 +1447,39 @@ Example
 .. code:: js
 
     DelTable("mytable")
+
+
+.. _Append:
+
+Append
+------
+
+Inserts *val* of any *type* to an *src* array.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Append(src array, val anyType) array
+
+.. describe:: src
+
+    An array.
+
+.. describe:: val
+
+    Value to append.
+
+
+Example
+"""""""
+
+.. code:: js
+
+  var list array
+  list = Append(list, "new_val")
 
 
 .. _Join:
@@ -1190,6 +1649,71 @@ Example
    if ret != nil {
       Println(ret)
    }
+
+.. _GetMapKeys:
+
+GetMapKeys
+----------
+
+Returns an array of keys from the *val* associative array.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetMapKeys(val map) array
+
+
+.. describe:: val
+
+    An array.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   var val map
+   var arr array
+   val["k1"] = "v1"
+   val["k2"] = "v2"
+
+
+.. _SortedKeys:
+
+SortedKeys
+----------
+
+Returns a sorted array of keys from the *val* associative array.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    SortedKeys(val map) array
+
+
+.. describe:: val
+
+    An array.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   var val map
+   var arr array
+   val["k1"] = "v1"
+   val["k2"] = "v2"
+   arr = SortedKeys(val)
+
 
 .. _CallContract:
 
@@ -1389,6 +1913,36 @@ Example
     id = GetContractByName(`NewBlock`)
 
 
+.. _RoleAccess:
+
+RoleAccess
+----------
+
+Checks if the contract caller's role identifier matches one of the identifiers specified in parameters.
+
+Use this function to control contract access to tables and other data.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    RoleAccess(id int, [id int]) bool
+
+
+.. describe:: id
+
+    Role identifier.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    RoleAccess(1)
+    RoleAccess(1, 3)
+
 
 .. _TransactionInfo:
 
@@ -1456,7 +2010,15 @@ Syntax
 
 .. code-block:: text
 
-    Throw(ErrorId: string, ErrDescription: string)
+    Throw(ErrorId string, ErrDescription string)
+
+.. describe:: ErrorId
+
+    Error identifier.
+
+.. describe:: ErrDescription
+
+    Error description.
 
 
 Results
@@ -1467,14 +2029,6 @@ The result of such transaction has this format:
 .. code-block:: json
 
     {"type":"exception","error":"Error description","id":"Error ID"}
-
-.. describe:: ErrorId
-
-    Error identifier.
-
-.. describe:: ErrDescription
-
-    Error description.
 
 
 Example
@@ -1608,6 +2162,65 @@ Example
     wallet = PubToID("fa5e78.....34abd6")
 
 
+.. _DecodeBase64:
+
+DecodeBase64
+------------
+
+
+Decodes a string in base64 encoding.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    DecodeBase64(input string) string
+
+
+.. describe:: input
+
+    Input string in base64 encoding.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = DecodeBase64(mybase64)
+
+
+.. _EncodeBase64:
+
+EncodeBase64
+------------
+
+Encodes a string in base64 encoding and returns a string in the encoded format.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    EncodeBase64(input string) string
+
+.. describe:: input
+
+    Input string.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var base64str string
+    base64str = EncodeBase64("my text")
+
+
 .. _Float:
 
 Float
@@ -1622,7 +2235,6 @@ Syntax
 .. code-block:: text
 
     Float(val int|string) float
-
 
 .. describe:: val
 
@@ -1652,8 +2264,6 @@ Syntax
 .. code-block:: text
 
     HexToBytes(hexdata string) bytes
-
-
 
 
 .. describe:: hexdata
@@ -1886,6 +2496,104 @@ Example
     UpdateLang($Name, $Trans)
 
 
+.. _JSONEncode:
+
+JSONEncode
+----------
+
+Converts a number, a string, or an array to a string in JSON format.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    JSONEncode(src int|float|string|map|array) string
+
+
+.. describe:: src
+
+    Data to convert.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var mydata map
+    mydata["key"] = 1
+    var json string
+    json = JSONEncode(mydata)
+
+
+.. _JSONEncodeIndent:
+
+JSONEncodeIndent
+----------------
+
+Converts a number, a string, or an array to a string in JSON format with the specified indentation.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    JSONEncodeIndent(src int|float|string|map|array, indent string) string
+
+.. describe:: src
+
+    Data to convert.
+
+.. describe:: indent
+
+    String that will be used as indentation.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var mydata map
+    mydata["key"] = 1
+    var json string
+    json = JSONEncodeIndent(mydata, "\t")
+
+
+.. _JSONDecode:
+
+JSONDecode
+----------
+
+Converts a string in JSON format to a number, a string, or an array.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    JSONDecode(src string) int|float|string|map|array
+
+
+.. describe:: src
+
+    String with data in JSON format.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var mydata map
+    mydata = JSONDecode(`{"name": "John Smith", "company": "Smith's company"}`)
+
+
+
 .. _HasPrefix:
 
 HasPrefix
@@ -2070,9 +2778,6 @@ Example
 
     out = Sprintf("%s=%d", mypar, 6448)
 
-
-
-
 .. _Substr:
 
 Substr
@@ -2114,6 +2819,144 @@ Example
     var s string
     s = Substr($Name, 1, 10)
 
+
+.. _ToLower:
+
+ToLower
+-------
+
+Returns the specified string in a lower case.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ToLower(val string) string
+
+.. describe:: val
+
+    Input string.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = ToLower(val)
+
+
+.. _ToUpper:
+
+ToUpper
+-------
+
+Returns the specified string in an upper case.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ToUpper(val string) string
+
+.. describe:: val
+
+    Input string.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = ToUpper(val)
+
+
+.. _TrimSpace:
+
+TrimSpace
+---------
+
+Removes leading and trailing spaces, tab, and newline symbols from a string.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    TrimSpace(val string) string
+
+.. describe:: val
+
+    Input string.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = TrimSpace(val)
+
+
+.. _StringToBytes:
+
+StringToBytes
+-------------
+
+Converts a string to *bytes*.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    StringToBytes(src string) bytes
+
+.. describe:: src
+
+    Input string.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var b bytes
+    b = StringToBytes("my string")
+
+
+.. _BytesToString:
+
+BytesToString
+-------------
+
+Converts *bytes* to a string.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    BytesToString(src bytes) string
+
+.. describe:: src
+
+    Input string.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    var s string
+    s = BytesToString($Bytes)
 
 
 .. _SysParamString:
@@ -2206,6 +3049,76 @@ Example
 .. code:: js
 
     DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
+
+
+.. _UpdateNotifications:
+
+UpdateNotifications
+-------------------
+
+Obtains a list of notifications for the specified keys from the database, and sends the obtained notifications to Centrifugo.
+
+The list of notifications is taken from the blocks that are already processed.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    UpdateNotifications(ecosystemID int, keys int ...)
+
+
+.. describe:: ecosystemID
+
+    Ecosystem identifier.
+
+.. describe:: key
+
+    List of keys, separated by commas. As an alternative, you can specify one array with a list of keys.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    UpdateNotifications($ecosystem_id, $key_id, 23345355454, 35545454554)
+    UpdateNotifications(1, [$key_id, 23345355454, 35545454554] )
+
+
+.. _UpdateRolesNotifications:
+
+UpdateRolesNotifications
+------------------------
+
+Obtains a list of notifications for all keys with specified role identifiers from the database, and sends the obtained notifications to Centrifugo.
+
+The list of notifications is taken from the blocks that are already processed.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    UpdateRolesNotifications(ecosystemID int, roles int ...)
+
+.. describe:: ecosystemID
+
+    Ecosystem identifier.
+
+.. describe:: roles
+
+    List of role identifiers, separated by commas. As an alternative, you can specify one array with a list of keys.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    UpdateRolesNotifications(1, 1, 2)
 
 
 
@@ -2308,6 +3221,7 @@ Example
     json = JSONToMap(ret)
 
 
+
 .. _BlockTime:
 
 BlockTime
@@ -2317,7 +3231,6 @@ Returns generation time of a block in SQL format.
 
 Use this function instead of the ``NOW()`` function.
 
-
 Syntax
 """"""
 
@@ -2325,14 +3238,12 @@ Syntax
 
     BlockTime()
 
-
 Example
 """""""
 
 .. code:: js
 
     DBInsert(`mytable`, `created_at`, BlockTime())
-
 
 
 .. _DateTime:
@@ -2374,7 +3285,6 @@ Syntax
 
     UnixDateTime(datetime string) int
 
-
 Example
 """""""
 
@@ -2383,18 +3293,162 @@ Example
     UnixDateTime("2018-07-20 14:23:10")
 
 
+
+.. _CreateVDE:
+
+CreateVDE
+---------
+
+Creates a child VDE (Virtual Dedicated Ecosystem).
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    CreateVDE(VDEName string, DBUser string, DBPassword string, VDEAPIPort int)
+
+.. describe:: VDEName
+
+    Name for the created VDE.
+
+.. describe:: DBUser
+
+    Role name for the database.
+
+.. describe:: DBPassword
+
+    Password for this role.
+
+.. describe:: VDEAPIPort
+
+    Port for API requests.
+
+.. todo::
+
+    Add example.
+
+
+.. _ListVDE:
+
+ListVDE
+-------
+
+Returns a list of child VDEs ((Virtual Dedicated Ecosystems).
+
+This function can be used only in VDE Master mode.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ListVDE()
+
+Returned value
+""""""""""""""
+
+An associative array where keys are VDE names and values are process statuses.
+
+.. todo::
+
+    Add example.
+
+
+.. _RunVDE:
+
+RunVDE
+------
+
+Runs a process for a VDE.
+
+This function can be used only in VDE Master mode.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    RunVDE(VDEName string)
+
+.. describe:: VDEName
+
+    Name for a VDE.
+
+    Can contain only letters and numbers. Space symbols cannot be used.
+
+.. todo::
+
+    Add example.
+
+
+.. _StopVDE:
+
+StopVDE
+-------
+
+Stops the process of a specified VDE.
+
+This function can be used only in VDE Master mode.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    StopVDE(VDEName string)
+
+.. describe:: VDEName
+
+    Name for a VDE.
+
+    Can contain only letters and numbers. Space symbols cannot be used.
+
+.. todo::
+
+    Add example.
+
+
+.. _RemoveVDE:
+
+RemoveVDE
+---------
+
+Removes the process of the specified VDE. Stops and removes linked processes.
+
+.. todo::
+
+    Clarify about linked processes.
+
+This function can be used only in VDE Master mode.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    RemoveVDE(VDEName string)
+
+.. describe:: VDEName
+
+    Name for a VDE.
+
+    Can contain only letters and numbers. Space symbols cannot be used.
+
+.. todo::
+
+    Add example.
+
 System Contracts
 ================
 
 System contracts are created by default during product installation. All of these contracts are created in the first ecosystem, that's why you need to specify their full name to call them from other ecosystems, for instance, ``@1NewContract``.
 
 
-List of System Contracts
-------------------------
-
-
 NewEcosystem
-""""""""""""
+------------
 
 This contract creates a new ecosystem. To get an identifier of the newly created ecosystem, take the *result* field, which will return in txstatus.
 
@@ -2403,8 +3457,19 @@ Parameters:
     * *Name string "optional"* - name for the ecosystem. This parameter can be set and/or chanted later.
 
 
+EditEcosystemName
+-----------------
+
+This contract changes ecosystem name in the *1_ecosystems* table. This table exists only in the first ecosystem.
+
+Parameters:
+
+    * *SystemID* - код экосистемы, имя которой требуется изменить
+    * *NewName* - новое имя экосистемы
+
+
 MoneyTransfer
-"""""""""""""
+-------------
 
 This contract transfers money from the current account in the current ecosystem to a specified account.
 
@@ -2416,7 +3481,7 @@ Parameters:
 
 
 NewContract
-"""""""""""
+-----------
 
 This contract creates a new contract in the current ecosystem.
 
@@ -2429,9 +3494,9 @@ Parameters:
 
 
 EditContract
-""""""""""""
+------------
 
-Editing the contract in the current ecosystem.
+Edits the contract in the current ecosystem.
 
 Parameters:
 
@@ -2441,7 +3506,7 @@ Parameters:
 
 
 ActivateContract
-""""""""""""""""
+----------------
 
 Binding of a contract to the account in the current ecosystem. Contracts can be tied only from the account, which was specified when the contract was created. After the contract is tied, this account will pay for execution of this contract.
 
@@ -2451,7 +3516,7 @@ Parameters:
 
 
 DeactivateContract
-""""""""""""""""""
+------------------
 
 Unbinds a contract from an account in the current ecosystem. Only the account which the contract is currently bound to can unbind it. After the contract is unbound, its execution will be paid by a user that executes it.
 
@@ -2461,7 +3526,7 @@ Parameters:
 
 
 NewParameter
-""""""""""""
+------------
 
 This contract adds a new parameter to the current ecosystem.
 
@@ -2473,7 +3538,7 @@ Parameters:
 
 
 EditParameter
-"""""""""""""
+-------------
 
 This contract changes an existing parameter in the current ecosystem.
 
@@ -2485,7 +3550,7 @@ Parameters:
 
 
 NewMenu
-"""""""
+-------
 
 This contract adds a new menu in the current ecosystem.
 
@@ -2498,7 +3563,7 @@ Parameters:
 
 
 EditMenu
-""""""""
+--------
 
 This contract changes an existing menu in the current ecosystem.
 
@@ -2507,11 +3572,11 @@ Parameters:
     * *Id int* - ID of the menu to be changed.
     * *Value string "optional"* - new text of menu.
     * *Title string "optional"* - menu header.
-    * *Conditions string* - new rights for page change.
+    * *Conditions string "optional"* - new rights for page change.
 
 
 AppendMenu
-""""""""""
+----------
 
 This contract adds text to an existing menu in the current ecosystem.
 
@@ -2522,7 +3587,7 @@ Parameters:
 
 
 NewPage
-"""""""
+-------
 
 This contract adds a new page in the current ecosystem.
 
@@ -2531,11 +3596,13 @@ Parameters:
     * *Name string* - page name.
     * *Value string* - page text.
     * *Menu string* - name of the menu, attached to this page.
-    * *Conditions string* - rights for change.
+    * *Conditions string* - rights for changing this page.
+    * *ValidateCount int "optional"* - number of nodes that is required for page validation. If this parameter is not specified, then *min_page_validate_count* ecosystem parameter value is used. This value cannot be less than *min_page_validate_count* and greater than *max_page_validate_count*.
+    * *ValidateMode int "optional"* - mode of page validity checks. A value of 0 means that a page is checked upon loading the page. A value of 1 means that a page is checked upon loading and leaving the page.
 
 
 EditPage
-""""""""
+--------
 
 This contract changes an existing page in the current ecosystem.
 
@@ -2545,9 +3612,11 @@ Parameters:
     * *Value string "optional"* - new text of the page.
     * *Menu string "optional"* - name of the new menu on the page.
     * *Conditions string "optional"* - new rights for page change.
+    * *ValidateCount int "optional"* - number of nodes that is required for page validation. If this parameter is not specified, then *min_page_validate_count* ecosystem parameter value is used. This value cannot be less than *min_page_validate_count* and greater than *max_page_validate_count*.
+    * *ValidateMode string "optional"* - mode of page validity checks. A value of 0 means that a page is checked upon loading the page. A value of 1 means that a page is checked upon loading and leaving the page.
 
 AppendPage
-""""""""""
+----------
 
 The contract adds text to an existing page in the current ecosystem.
 
@@ -2558,7 +3627,7 @@ Parameters:
 
 
 NewBlock
-""""""""
+--------
 
 This contract adds a new page block with a template to the current ecosystem.
 
@@ -2570,7 +3639,7 @@ Parameters:
 
 
 EditBlock
-"""""""""
+---------
 
 This contract changes an existing block in the current ecosystem.
 
@@ -2582,7 +3651,7 @@ Parameters
 
 
 NewTable
-""""""""
+--------
 
 This contract adds a new table in the current ecosystem.
 
@@ -2605,7 +3674,7 @@ Parameters:
 
 
 EditTable
-"""""""""
+---------
 
 This contract changes access permissions to tables in the current ecosystem.
 
@@ -2620,7 +3689,7 @@ Parameters:
 
 
 NewColumn
-"""""""""
+---------
 
 This contract adds a new column to a table in the current ecosystem.
 
@@ -2634,7 +3703,7 @@ Parameters:
 
 
 EditColumn
-""""""""""
+----------
 
 This contract changes the rights to change a table column in the current ecosystem.
 
@@ -2645,7 +3714,7 @@ Parameters:
     * *Permissions* - condition for changing data in a column; read access rights must be specified in the JSON format. For example, ``{"update":"ContractConditions(`MainCondition`)", "read":"ContractConditions(`MainCondition`)"}``.
 
 NewLang
-"""""""
+-------
 
 This contract adds language resources in the current ecosystem. Permissions to add resources are set in the *changing_language* parameter in the ecosystem configuration.
 
@@ -2657,7 +3726,7 @@ Parameters:
 
 
 EditLang
-""""""""
+--------
 
 This contract updates the language resource in the current ecosystem. Permissions to make changes are set in the *changing_language* parameter in the ecosystem configuration.
 
@@ -2670,7 +3739,7 @@ Parameters:
 
 
 NewSign
-"""""""
+-------
 
 This contract adds the signature confirmation requirement for a contract in the current ecosystem.
 
@@ -2690,7 +3759,7 @@ Example of *Value*:
 
 
 EditSign
-""""""""
+--------
 
 The contract updates the parameters of a contract with a signature in the current ecosystem.
 
@@ -2702,7 +3771,7 @@ Parameters:
 
 
 Import
-""""""
+------
 
 This contract imports data from a \*.sim file into the ecosystem.
 
@@ -2712,9 +3781,11 @@ Parameters:
 
 
 NewCron
-"""""""
+-------
 
-The contract adds a new task in cron to be launched by timer. The contract is available only in VDE systems. Parameters:
+The contract adds a new task in cron to be launched by timer. The contract is available only in VDE systems. 
+
+Parameters:
 
     * *Cron string* - a string that defines the launch of the contract by timer in the *cron* format.
     * *Contract string* - name of the contract to launch in VDE; the contract must not have parameters in its ``data`` section.
@@ -2724,9 +3795,11 @@ The contract adds a new task in cron to be launched by timer. The contract is av
 
 
 EditCron
-""""""""
+--------
 
-This contract changes the configuration of a task in cron for launch by timer. The contract is available only in VDE systems. Parameters:
+This contract changes the configuration of a task in cron for launch by timer. The contract is available only in VDE systems. 
+
+Parameters:
 
     * *Id int* - task ID.
     * *Cron string* - a string that defines the launch of the contract by timer in the *cron* format; to disable a task, this parameter must be either an empty string or absent.
@@ -2735,16 +3808,73 @@ This contract changes the configuration of a task in cron for launch by timer. T
     * *Till string* - an optional string with the time of task must be ended (this feature is not yet implemented).
     * *Conditions string* - new rights to modify the task.
 
+NewAppParam
+-----------
+
+Adds a new app parameter to the current ecosystem.
+
+Parameters:
+
+    * *App int* - application identifier.
+    * *Name string* - parameter name.
+    * *Value string* - parameter value.
+    * *Conditions string* - rights to change the parameter.
+
+
+EditAppParam
+------------
+
+Changes an existing app parameter in the current ecosystem.
+
+Parameters:
+
+    * *Id int* - parameter indentifier.
+    * *Value string* - new value for the parameter.
+    * *Conditions string* - new rights to change the parameter.
+
+NewDelayedContract
+------------------
+
+Adds a new task to the delayed contract scheduler.
+
+The delayed contracts scheduler runs contracts that are required for the currently generated block.
+
+Parameters:
+
+    * *Contract string* - contract name.
+    * *EveryBlock int* - the contract will be executed every this amount of blocks.
+    * *Conditions string* - rights for changing the task.
+    * *BlockID int "optional"* - block number where the contract must be executed. If this value is not specified, then it is calculated automatically by adding *EveryBlock* to the current block number.
+    * *Limit int "optional"* - maximum number of task executions. If this value is not specified, then the task will be executed for an unlimited amount of time.
+
+EditDelayedContract
+-------------------
+
+Changes a task in the delayed contract scheduler.
+
+Parameters:
+
+    * *Id int* - task identifier.
+    * *Contract string* - contract name.
+    * *EveryBlock int* - the contract will be executed every this amount of blocks.
+    * *Conditions string* - rights for changing the task.
+    * *BlockID int "optional"* - block number where the contract must be executed. If this value is not specified, then it is calculated automatically by adding *EveryBlock* to the current block number.
+    * *Limit int "optional"* - maximum number of task executions. If this value is not specified, then the task will be executed for an unlimited amount of time.
+    * *Deleted int "optional"* - task toggle. A value of *1* disables the task. A value of *0* enables the task.
+
 
 UploadBinary
-""""""""""""
+------------
 
 The contract adds/rewrites a static file in X_binaries. When calling a contract via HTTP API, ``multipart/form-data`` must be used; the ``DataMimeType`` parameter will be used with the form data.
 
 Parameters:
 
+    * *Name string* - static file name.
     * *Data bytes "file"* - content of the static file.
     * *DataMimeType string "optional"* - mime type of the static file.
+    * *AppID int* - application identifier.
+    * *MemberID int "optional"* - ecosystem member identifier. Is 0 by default.
 
 If the DataMimeType is not passed, then ``application/octet-stream`` is used by default.
 If MemberID is not passed, then the static file is considered a system file.
