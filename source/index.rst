@@ -65,6 +65,7 @@ Contents
    topics/templates2.rst
    topics/appexample.rst
    topics/vm.rst
+   topics/daemons.rst
 
 
 .. toctree::
@@ -72,6 +73,8 @@ Contents
    :caption: Reference
 
    reference/api2.rst
+   reference/platform-parameters.rst
+   reference/backend-config.rst
    reference/update_client.rst
    reference/desync_monitor.rst
 
@@ -79,8 +82,6 @@ Contents
 .. toctree::
    :maxdepth: 2
    :caption: HOWTOs
-
-   howtos/install.rst
 
  
 .. todolist::
