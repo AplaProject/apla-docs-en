@@ -12,13 +12,13 @@ Interfaces building
 Integrated Development Environment of the Molis software client, which is created using the *JavaScript React library*, includes an interface editor and a virtual interface designer. Interface pages are the essential part of applications that provides for retrieval and display of data from database tables, creation of forms for receipt of user input data, passing data to contracts, and navigation between application pages. Interface pages, just as contracts, are stored in the blockchain, which ensures their protection from falsification when loading them in the software client.  
 
 
-Interface Template Engine
+Interface template engine
 -------------------------
 
 Interface elements (pages and menus) are formed on Validating Nodes in a so-called *template engine* from templates created by programmers in the interface editor of the Molis software client. All interface pages are built using the Protypo functional language developed by platform developers. Interfaces are requested from nodes on the network using the *content* API command. What the template engine sends as a reply to such request is not an HTML page, but a JSON code comprised of HTML tags that form a tree in accordance with the template structure. For testing purposes, a POST request can be sent to ``api/v2/content`` with the *template* parameter containing the name of a template to process.
 
 
-Creating Interface Templates
+Creating interface templates
 ----------------------------
 
 Interfaces can be created and edited using a specialized editor, available in the **Interface** section of administrative tools in Molis. The editor provides for:
@@ -31,25 +31,25 @@ Interfaces can be created and edited using a specialized editor, available in th
 - Page preview.
 
 
-Visual Interface Designer
+Visual interface designer
 """""""""""""""""""""""""
 
 Visual Interface Designer allows for creating page designs without resorting to the interface source code in Protypo language. The Designer allows for setting the positions of form elements and text on the page using drag-and-drop, as well as configuring sizes and design of page blocks. The Designer provides a set of ready-to-use blocks for displaying typical data models: panels with headers, forms, and information panels. The program logics (receipt of data and conditional constructs) can be added in the page editor after the page design is created. (In the future, we plan to create a full-scale visual interface editor.)
 
 
-Use of Styles
+Use of styles
 """""""""""""
 
 By default, interface pages are displayed using Angular Bootstrap Angle classes. If needed, users can create their own styles. Storage of styles is implemented using a special stylesheet parameter of the ecosystem configuration table. 
 
 
-Page Blocks
+Page blocks
 """""""""""
 
 To use typical code fragments on multiple interface pages there is an option to create page blocks and embed them in the interface code using the Insert command. Such blocks can be created and edited on the Interface page of the administrative section in Molis. For blocks, just as for pages, permissions for editing can be defined.
 
 
-Language Resources Editor
+Language resources editor
 """""""""""""""""""""""""
 
 The Molis software client includes a mechanism for interface localization using a special function of the Protypo template language – LangRes, which substitutes the language resource labels on the page with corresponding text lines in the language selected by the user in the software client (or browser for the web-version of the client). A shorter syntax $lable$ can be used instead of the LangRes function. Translation of messages in pop-up windows, initiated by contracts, is carried out by the LangRes function of the Simvolio language.
@@ -59,7 +59,7 @@ Language resources can be created and edited in the Language resources section o
 Rights to add and change language resources can be configured using the same way as for any other table in the languages table (Tables section of the Molis administrative tools). 
 
 
-Protypo Template Language
+Protypo template language
 =========================
 
 Protypo functions provide for implementation of the following operations:
@@ -79,8 +79,8 @@ Protypo functions provide for implementation of the following operations:
 - interface localization.
 
 
-Overview of the Template Language Protypo
------------------------------------------
+Overview of Protypo
+-------------------
 
 Page template language is a functional language that allows for calling functions using ``FuncName(parameters)``, and for nesting functions into each other. Parameters can be specified without quote marks. Unnecessary parameters can be dropped.
 
@@ -177,7 +177,7 @@ Additionally, the **Val** function allows for obtaining data from forms, which w
 * ``PageParams: "hello=Val(world)"`` - the page will receive the hello parameter with the value of the world form element.
 
 
-Calling Contracts
+Calling contracts
 """""""""""""""""
 
 Protypo implements contract calling by clicking on a button in a form (*Button* function). Once  this event is initiated, the data entered by the user in the fields of the interface forms is passed to the contract (if the names of form fields correspond to the names of variables in the data section of the called contract, data is transferred automatically). The Button function allows for opening a modal window for user verification of the contract execution (Alert), and initiation of redirect to a specified page after the successful execution of the contract, and passing certain parameters to this page.    
@@ -319,13 +319,12 @@ Operations with code
 Protypo functions reference
 ===========================
 
+.. _protypo-Address:
 
-.. _protypo-GetVar:
+Address
+-------
 
-GetVar
-------
-
-This function returns the value of the current variable if it exists, or returns an empty string if a variable with this name is not defined. An element with **getvar** name is created only when a tree for editing is requested. The difference between ``GetVar(varname)`` and ``#varname#`` is that in case *varname* does not exist, *GetVar* will return an empty string, whereas *#varname#* will be interpreted as a string value.
+This function returns the account address in the ``1234-5678-...-7990`` format given the numerical value of the address; if the address is not specified, the address of the current user will be taken as the argument. 
 
 
 Syntax
@@ -333,53 +332,22 @@ Syntax
 
 .. code-block:: text
 
-    GetVar(Name)
+    Address (account)
 
-.. describe:: GetVar
+.. describe:: Address
 
-    .. describe:: Name
+    .. describe:: account
 
-        Variable name.
+        Account identifier.
+
 
 Example
 """""""
 
 .. code:: js
 
-     If(GetVar(name)){#name#}.Else{Name is unknown}
+    Span(Your wallet: Address(#account#))
 
-
-.. _protypo-SetVar:
-
-SetVar
-------
-
-Assigns a *Value* to a *Name* variable.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    SetVar(Name, Value)
-
-.. describe:: SetVar
-
-    .. describe:: Name
-
-        Variable name.
-
-    .. describe:: Value
-
-        Value of the variable, which can contain a reference to another variable.
-
-Example
-"""""""
-
-.. code:: js
-
-     SetVar(name, John Smith).(out, I am #name#)
-     Span(#out#)      
 
 
 .. _protypo-AddToolButton:
@@ -438,6 +406,162 @@ Example
 .. code:: js
 
       AddToolButton(Help, help, help_page) 
+
+
+.. _protypo-And:
+
+And
+---
+
+This function returns the result of execution of the **and** logical operation with all parameters listed in parentheses and separated by commas. The parameter value will be ``false`` if it equals an empty string (``""``), zero or *false*. In all other cases the parameter value is ``true``. The function returns 1 if true or 0 in all other cases. The element named ``and`` is created only when a tree for editing is requested. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    And(parameters)
+
+
+Example
+"""""""
+
+.. code:: js
+
+      If(And(#myval1#,#myval2#), Span(OK))
+
+
+.. _protypo-AppParam:
+
+AppParam
+--------
+
+Outputs the value of an app parameter. The value is taken from the app_param table of the current ecosystem. If there is a language resource with the given name, then its value will be substituted automatically.
+
+.. todo::
+
+    Resulting or given name?
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    AppParam(App, Name, Index, Source) 
+
+.. describe:: AppParam
+ 
+    .. describe:: App
+
+        Application identifier.
+
+    .. describe:: Name
+
+        Parameter name.
+
+    .. describe:: Index
+
+        This parameter can be used when the parameter value is a list of items separated by commas.
+
+        Index of a parameter element, starting from 1.  For example if ``type = full,light`` then ``AppParam(1, type, 2)`` returns ``light``.
+
+        This parameter cannot be used with *Source* parameter.
+
+    .. describe:: Source
+
+        This parameter can be used when the parameter value is a list of items separated by commas.
+
+        Creates a *data* object. Elements of this object are values of the specified parameter. The object can be used as a data source in :ref:`protypo-Table` and :ref:`protypo-Select` functions.
+
+        This parameter cannot be used with *Index* parameter.
+
+Example
+"""""""
+
+.. code:: js
+
+     AppParam(1, type, Source: mytype)
+
+
+.. _protypo-ArrayToSource:
+
+ArrayToSource
+-------------
+
+Creates an **arraytosource** element and populates it with *key* - *value* pairs that were passed in a JSON array. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ArrayToSource(Source, Data)
+
+.. describe:: ArrayToSource
+    
+    .. describe:: Source
+
+        Data source name.
+
+    .. describe:: Data
+
+        A JSON array or a name of a variable (``#name#``) that holds a JSON array.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   ArrayToSource(src, #myjsonarr#)
+   ArrayToSource(dat, [1, 2, 3])
+
+.. _protypo-Binary:
+
+Binary
+------
+
+Returns a link to a static file that is stored in the *binaries* table.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
+ 
+.. describe:: Binary
+
+    .. describe:: Name
+
+        File name.
+
+    .. describe:: AppID
+
+        Application identifier.
+
+    .. describe:: MemberID
+
+        Account identifier. The default value is 0.
+
+    .. describe:: ID
+
+        Static file identifier.
+
+    .. describe:: ecosystem
+
+        Ecosystem identifier. If this parameter is not specified, binary file is requested from the current ecosystem.
+
+Example
+"""""""
+
+.. code:: js
+
+     Image(Src: Binary("my_image", 1))
+     Image(Src: Binary().ById(2))
+     Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
 
 
 .. _protypo-Button:
@@ -565,58 +689,6 @@ Example
       Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 
 
-.. _protypo-LinkPage:
-
-LinkPage
---------
-
-Creates a **linkpage** element – a link to a page.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    LinkPage(Body, Page, Class, PageParams)
-        [.Style(Style)]
-
-
-.. describe:: LinkPage
-
-    .. describe:: Body
-
-        Child elements or text.
-
-    .. describe:: Page
-
-        Page to redirect to.
-
-    .. describe:: Class
-
-        Classes for this button.
-
-    .. describe:: PageParams
-
-        Redirection parameters.
-
-
-.. describe:: Style
-
-    Specifies CSS styles.
-
-    .. describe:: Style
-
-        CSS styles
-
-Example
-"""""""
-
-.. code:: js
-
-      LinkPage(My Page, default_page, mybtn_class)
-
-
 .. _protypo-Calculate:
 
 Calculate
@@ -653,212 +725,6 @@ Example
     Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
     Calculate(10000-(34+5)\*#val#)
     Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)      
-
-
-.. _protypo-CmpTime:
-
-CmpTime
--------
-
-This function compares two time values in the same format.
-
-Supports unixtime, ``YYYY-MM-DD HH:MM:SS``, and any arbitrary format, if the sequence is followed from years to seconds, for example ``YYYYMMDD``). 
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    CmpTime(Time1, Time2)
-
-
-Return values
-"""""""""""""
-
-* **-1** - Time1 < Time2, 
-* **0** - Time1 = Time2, 
-* **1** - Time1 > Time2.
-
-
-Example
-"""""""
-
-.. code:: js
-
-     If(CmpTime(#time1#, #time2#)<0){...}
-
-
-.. _protypo-DateTime:
-
-DateTime
---------
-
-Displays time and date in the specified format. 
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    DateTime(DateTime, Format)
-
-.. describe:: DateTime
-
-    .. describe:: DateTime
-
-        Time and date in unix time or in a standard format ``2006-01-02T15:04:05``.
- 
-    .. describe:: Format
-
-        Format template: ``YY`` 2-digit year format, ``YYYY`` 4-digit year format, ``MM`` - month, ``DD`` - day, ``HH`` - hours, ``MM`` - minutes, ``SS`` – seconds. Example: ``YY/MM/DD HH:MM``. 
-
-        If the format is not specified, the *timeformat* parameter value set in the *languages* table will be used. If this parameter is absent, the ``YYYY-MM-DD HH:MI:SS`` format will be used instead.
-
-
-Example
-"""""""
-
- .. code:: js
-
-    DateTime(2017-11-07T17:51:08)
-    DateTime(#mytime#,HH:MI DD.MM.YYYY)
-
-
-.. _protypo-Now:
-
-Now
----
-
-This function returns the current time in the specified format, which by default is the UNIX format (number of seconds elapsed since January 1, 1970). If the requested time format is *datetime*, then date and time are shown as ``YYYY-MM-DD HH:MI:SS``. An interval can be specified in the second parameter (for instance, *+5 days*).
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Now(Format, Interval)
-
-.. describe:: Now
-
-    .. describe:: Format
-
-        Output format with a desired combination of ``YYYY, MM, DD, HH, MI, SS`` or *datetime*.
-
-    .. describe:: Interval
-
-        Time offset, backward or forward in time.
-
-        Example: ``+5 days``.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    Now()
-    Now(DD.MM.YYYY HH:MM)
-    Now(datetime,-3 hours)
-
-
-.. _protypo-Money:
-
-Money
------
-
-Returns a string value of ``exp/10^digit``. If *Digit* parameter is not specified, it is taken from the **money_digit** ecosystem parameter.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Money(Exp, Digit)
-
-
-.. describe:: Money
-
-    .. describe:: Exp
-
-        Numeric value as a string.
-
-    .. describe:: Digit
-
-        Exponent of the base 10 in the ``exp/10^digit`` expression. This value can be positive or negative. Positive value determines the number of digits after the comma.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    Money(Exp, Digit)
-
-
-.. _protypo-Code:
-
-Code
-----
-
-Creates a **code** element for displaying the specified code.
-
-This function replaces variables (e.g. ``#name#``) with their values. 
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Code(Text)
-
-.. describe:: Code
-
-    .. describe:: Text	
-
-        Source code.
-
-Example
-"""""""
-
-.. code:: js
-
-      Code( P(This is the first line.
-          Span(This is the second line.))
-      )  
-
-.. _protypo-CodeAsIs:
-
-CodeAsIs
---------
-
-Creates a **code** element for displaying the specified code.
-
-This function does not replace variables with their values. For example, ``#name#`` will be displayed as is. 
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    CodeAsIs(Text)
-
-.. describe:: CodeAsIs
-
-    .. describe:: Text  
-
-        Source code.
-
-Example
-"""""""
-
-.. code:: js
-
-      CodeAsIs( P(This is the #test1#.
-          Span(This is the #test2#.))
-      )
 
 
 .. _protypo-Chart:
@@ -911,358 +777,101 @@ Example
       Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Colors: "red, green")
 
 
-.. _protypo-ForList:
+.. _protypo-CmpTime:
 
-ForList
+CmpTime
 -------
 
-Displays a list of elements from the *Source* data source in the template format set out in *Body*, and creates the **forlist** element.
+This function compares two time values in the same format.
+
+Supports unixtime, ``YYYY-MM-DD HH:MM:SS``, and any arbitrary format, if the sequence is followed from years to seconds, for example ``YYYYMMDD``). 
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    ForList(Source, Index){Body}
+    CmpTime(Time1, Time2)
 
-.. describe:: ForList
 
-    .. describe:: Source
+Return values
+"""""""""""""
 
-        Data source from *DBFind* or *Data* functions.
+* ``-1`` - Time1 < Time2, 
+* ``0`` - Time1 = Time2, 
+* ``1`` - Time1 > Time2.
 
-    .. describe:: Index
 
-        Variable for the iteration counter. Count starts from 1.
-
-        This parameter is optional. If it is not specified, the iteration count value is written to the *[Source]_index* variable.
-
-    .. describe:: Body
-
-        A template to insert the elements in.
+Example
+"""""""
 
 .. code:: js
 
-      ForList(mysrc){Span(#mysrc_index#. #name#)}
+     If(CmpTime(#time1#, #time2#)<0){...}
 
 
-.. _protypo-Hint:
+.. _protypo-Code:
 
-Hint
+Code
 ----
 
-Creates a **hint** element to display hints.
+Creates a **code** element for displaying the specified code.
+
+This function replaces variables (e.g. ``#name#``) with their values. 
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    Hint(Icon,Title,Text)
+    Code(Text)
 
-.. describe:: Hint
+.. describe:: Code
 
-    .. describe:: Icon
+    .. describe:: Text  
 
-        Icon name.
-
-    .. describe:: Title
-
-        Hint title.
-
-    .. describe:: Text
-
-        Hint text.
+        Source code.
 
 Example
 """""""
 
 .. code:: js
 
-    Hint(myicon, My Header, This is a hint text)
+      Code( P(This is the first line.
+          Span(This is the second line.))
+      )  
 
 
-.. _protypo-Image:
+.. _protypo-CodeAsIs:
 
-Image
------
-
-Creates an **image** HTML element.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Image(Src, Alt, Class)
-        [.Style(Style)]
-
-.. describe:: Image
-
-    .. describe:: Src
-
-        Image source, file or ``data:...``.
-
-    .. describe:: Alt
-
-        Alternative text for the image.
-
-    .. describe:: Сlass
-
-        List of classes.
-
-.. todo::
-
-    Style not documented. What Class does?
-
-
-Example
-"""""""
-
-.. code:: js
-
-    Image(\images\myphoto.jpg)    
-
-
-.. _protypo-MenuGroup:
-
-MenuGroup
----------
-
-Creates a nested submenu in the menu and returns the **menugroup** element. The *name* parameter will also return the value of *Title* before replacement with language resources.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    MenuGroup(Title, Body, Icon)
-
-.. describe:: MenuGroup
-
-    .. describe:: Title
-
-        Menu item name.
-
-    .. describe:: Body
-
-        Child elements in submenu.
-
-    .. describe:: Icon
-
-        Icon.
-
-
-Example
-"""""""
-
-.. code:: js
-
-      MenuGroup(My Menu){
-          MenuItem(Interface, sys-interface)
-          MenuItem(Dahsboard, dashboard_default)
-      }
-
-
-.. _protypo-MenuItem:
-
-MenuItem
+CodeAsIs
 --------
 
-Creates a menu item and returns the **menuitem** element. 
+Creates a **code** element for displaying the specified code.
+
+This function does not replace variables with their values. For example, ``#name#`` will be displayed as is. 
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    MenuItem(Title, Page, Params, Icon, Vde)
+    CodeAsIs(Text)
 
-.. describe:: MenuItem
+.. describe:: CodeAsIs
 
-    .. describe:: Title
+    .. describe:: Text  
 
-        Menu item name.
-
-    .. describe:: Page
-
-        Page to redirect to.
-
-    .. describe:: Params
-
-        Parameters, passed to the page in the *var:value* format, separated by commas.
-
-    .. describe:: Icon
-
-        Icon.
-
-    .. describe:: Vde
-
-        This parameter that defines the transition to a virtual ecosystem. If ``Vde: true``, then the link redirects to VDE; if ``Vde: false``, then the link redirects to the blockchain; if the parameter was not specified, then it is defined based on where the menu was loaded.
-
+        Source code.
 
 Example
 """""""
 
 .. code:: js
 
-       MenuItem(Interface, interface)
-
-
-.. _protypo-QRcode:
-
-QRcode
-------
-
-Returns a *qrcode* element with a QR code for the specified text.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    QRcode(Text)
-
-.. describe:: QRcode
-
-    .. describe:: Text
-
-        Text for the QR code.
-
-Example
-"""""""
-
-.. code:: js
-
-     QRcode(#name#)
-
-
-.. _protypo-Table:
-
-Table
------
-
-Creates a **table** HTML element.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Table(Source, Columns)
-        [.Style(Style)]
-
-.. describe:: Table
-
-    .. describe:: Source
-
-        Data source name as specified, for example, in the *DBFind* command.
-
-    .. describe:: Columns
-
-        Headers and corresponding column names, as follows: ``Title1=column1,Title2=column2``.
-
-.. describe:: Style
-
-    Specifies CSS styles.
-
-    .. describe:: Style
-
-        CSS styles.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    DBFind(mytable, mysrc)
-    Table(mysrc,"ID=id,Name=name")
-
-
-.. _protypo-Address:
-
-Address
--------
-
-This function returns the account address in the ``1234-5678-...-7990`` format given the numerical value of the address; if the address is not specified, the address of the current user will be taken as the argument. 
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Address (account)
-
-.. describe:: Address
-
-    .. describe:: account
-
-        Account identifier.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    Span(Your wallet: Address(#account#))
-
-
-.. _protypo-AppParam:
-
-AppParam
---------
-
-Outputs the value of an app parameter. The value is taken from the app_param table of the current ecosystem. If there is a language resource with the given name, then its value will be substituted automatically.
-
-.. todo::
-
-    Resulting or given name?
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    AppParam(App, Name, Index, Source) 
-
-.. describe:: AppParam
- 
-    .. describe:: App
-
-        Application identifier.
-
-    .. describe:: Name
-
-        Parameter name.
-
-    .. describe:: Index
-
-        This parameter can be used when the parameter value is a list of items separated by commas.
-
-        Index of a parameter element, starting from 1.  For example if ``type = full,light`` then ``AppParam(1, type, 2)`` returns ``light``.
-
-        This parameter cannot be used with *Source* parameter.
-
-    .. describe:: Source
-
-        This parameter can be used when the parameter value is a list of items separated by commas.
-
-        Creates a *data* object. Elements of this object are values of the specified parameter. The object can be used as a data source in :ref:`protypo-Table` and :ref:`protypo-Select` functions.
-
-        This parameter cannot be used with *Index* parameter.
-
-Example
-"""""""
-
-.. code:: js
-
-     AppParam(1, type, Source: mytype)
-
+      CodeAsIs( P(This is the #test1#.
+          Span(This is the #test2#.))
+      )
 
 .. _protypo-Data:
 
@@ -1319,10 +928,47 @@ Example
 .. code:: js
 
     Data(mysrc,"id,name"){
-	"1",John Silver
-	2,"Mark, Smith"
-	3,"Unknown ""Person"""
+    "1",John Silver
+    2,"Mark, Smith"
+    3,"Unknown ""Person"""
      }.Custom(link){Button(Body: View, Class: btn btn-link, Page: user, PageParams: "id=#id#"}    
+
+
+.. _protypo-DateTime:
+
+DateTime
+--------
+
+Displays time and date in the specified format. 
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    DateTime(DateTime, Format)
+
+.. describe:: DateTime
+
+    .. describe:: DateTime
+
+        Time and date in unix time or in a standard format ``2006-01-02T15:04:05``.
+ 
+    .. describe:: Format
+
+        Format template: ``YY`` 2-digit year format, ``YYYY`` 4-digit year format, ``MM`` - month, ``DD`` - day, ``HH`` - hours, ``MM`` - minutes, ``SS`` – seconds. Example: ``YY/MM/DD HH:MM``. 
+
+        If the format is not specified, the *timeformat* parameter value set in the *languages* table will be used. If this parameter is absent, the ``YYYY-MM-DD HH:MI:SS`` format will be used instead.
+
+
+Example
+"""""""
+
+ .. code:: js
+
+    DateTime(2017-11-07T17:51:08)
+    DateTime(#mytime#,HH:MI DD.MM.YYYY)
 
 
 .. _protypo-DBFind:
@@ -1468,404 +1114,6 @@ Example
        Strong(Em(#name#))Div(myclass, #company#)
     }
 
-.. _protypo-EcosysParam:
-
-EcosysParam
------------
-
-This function gets a parameter value from the parameters table of the current ecosystem. If there is a language resource for the resulting name, it will be translated accordingly.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    EcosysParam(Name, Index, Source)
-
-.. describe:: EcosysParam
-
-    .. describe:: Name
-     
-        Parameter name.
-
-    .. describe:: Index
-
-        In cases where the requested parameter is a list of elements separated by commas, you can specify an index starting from 1. For example, if ``gender = male,female``, then ``EcosysParam(gender, 2)`` will return ``female``.
-
-        This parameter cannot be used with *Source* parameter.
-
-    .. describe:: Source
-
-        This parameter can be used when the parameter value is a list of items separated by commas.
-
-        Creates a *data* object. Elements of this object are values of the specified parameter. The object can be used as a data source in :ref:`protypo-Table` and :ref:`protypo-Select` functions.
-
-        This parameter cannot be used with *Index* parameter.
-
-.. code:: js
-
-     Address(EcosysParam(founder_account))
-     EcosysParam(gender, Source: mygender)
- 
-     EcosysParam(Name: gender_list, Source: src_gender)
-     Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
-
-
-.. _protypo-GetHistory:
-
-GetHistory
-----------
-
-Creates a **gethistory** element and popuates it with the history of changes of a record from the specified table. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
-
-The resulting list is sorted in the order from recent changes to earlier ones.
-
-The *id* field in the resulting table points to the id in the *rollback_tx* table. The *block_id* field contains the block number. The *block_time* field contains the block timestamp.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    GetHistory(Source, Name, Id, RollbackId)  
-
-.. describe:: GetHistory
-
-    .. describe:: Source
-
-        Name for the data source.
-
-    .. describe:: Name
-
-        Table name.
-
-    .. describe:: Id
-
-        Identifier of a record.
-
-    .. describe:: RollbackId
-
-        Optional parameter. If specified, only one record with the specified identifier will be returned from the *rollback_tx* table.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    GetHistory(blocks, BlockHistory, 1)
-
-.. _protypo-GetColumnType:
-
-GetColumnType
--------------
-
-Returns the type of a column in a specified table.
-
-Following column types can be returned: *text, varchar, number, money, double, bytes, json, datetime, double*.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    GetColumnType(Table, Column)
-
-
-.. describe:: GetColumnType
-
-    .. describe:: Table
-
-        Table name.
-
-    .. describe:: Column
-
-        Column name.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
-
-
-.. _protypo-JsonToSource:
-
-JsonToSource
-------------
-
-Creates a **jsontosource** element and populates it with *key* - *value* pairs that were passed in a JSON oblect. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
-
-The records in the resulting data is sorted by JSON keys, in alphabetical order. 
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    JsonToSource(Source, Data)
-
-
-.. describe:: JsonToSource
-    
-    .. describe:: Source
-
-        Data source name.
-
-    .. describe:: Data
-
-        A JSON oblect or a name of a variable (``#name#``)that holds a JSON array.
-
-
-Example
-"""""""
-
-.. code:: js
-
-   JsonToSource(src, #myjson#)
-   JsonToSource(dat, {"param":"value", "param2": "value 2"})
-
-.. _protypo-ArrayToSource:
-
-ArrayToSource
--------------
-
-Creates an **arraytosource** element and populates it with *key* - *value* pairs that were passed in a JSON array. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    ArrayToSource(Source, Data)
-
-.. describe:: ArrayToSource
-    
-    .. describe:: Source
-
-        Data source name.
-
-    .. describe:: Data
-
-        A JSON array or a name of a variable (``#name#``) that holds a JSON array.
-
-
-Example
-"""""""
-
-.. code:: js
-
-   ArrayToSource(src, #myjsonarr#)
-   ArrayToSource(dat, [1, 2, 3])
-
-
-.. _protypo-LangRes:
-
-LangRes
--------
-
-Returns a specified language resource. In case of request to a tree for editing it returns the **langres** element. A short notation in the ``$langres$`` format can be used.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-    
-    LangRes(Name, Lang)
-
-.. describe:: LangRes
-
-
-    .. describe:: Name
-
-        Name of language resource.
-
-    .. describe:: Lang
-
-        Two-character language identifier.
-
-        By default, the language defined in the *Accept-Language* request is returned. 
-
-        Lcid identifiers can be specified, for example, *en-US,en-GB*. In this case, if the requested values will not be found, for example, for *en-US*, then the language resource will be looked for in *en*.
-
-
-Example
-"""""""
-
-.. code:: js
-
-      LangRes(name)
-      LangRes(myres, fr)     
-
-
-.. _protypo-Range:
-
-Range
------
-
-Creates a **range** element and fills it with integer values from *From* to *To* (*To* is not included) with a *Step* step. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`). Values are written to the *id* column. If invalid parameters are specified, an empty *Source* is returned.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Range(Source,From,To,Step)
-
-.. describe:: Range
-
-    .. describe:: Source
-
-        Data source name.
-
-    .. describe:: From
-
-        Starting value (i = From).
-
-    .. describe:: To
-
-        End value (i < To).
-
-    .. describe:: Step
-
-        Value change step. If this parameter is not specified a value of 1 is used.
-
-
-Example
-"""""""
-
-.. code:: js
-
-     Range(my,0,5)
-     SetVar(from, 5).(to, -4).(step,-2)
-     Range(Source: neg, From: #from#, To: #to#, Step: #step#)
-
-
-.. _protypo-SysParam:
-
-SysParam
---------
-
-Displays the value of a system parameter from the system_parameters table. 
-
-
-Syntax
-""""""
-
-.. code-block:: text
-    
-    SysParam(Name) 
-
-.. describe:: SysParam
-
-    .. describe:: Name
-
-        Parameter name.
-
-
-Example
-"""""""
-
-.. code:: js
-
-     Address(SysParam(founder_account))
-
-
-.. _protypo-Binary:
-
-Binary
-------
-
-Returns a link to a static file that is stored in the *binaries* table.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
- 
-.. describe:: Binary
-
-    .. describe:: Name
-
-        File name.
-
-    .. describe:: AppID
-
-        Application identifier.
-
-    .. describe:: MemberID
-
-        Account identifier. The default value is 0.
-
-    .. describe:: ID
-
-        Static file identifier.
-
-    .. describe:: ecosystem
-
-        Ecosystem identifier. If this parameter is not specified, binary file is requested from the current ecosystem.
-
-Example
-"""""""
-
-.. code:: js
-
-     Image(Src: Binary("my_image", 1))
-     Image(Src: Binary().ById(2))
-     Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
-
-.. _protypo-TransactionInfo:
-
-TransactionInfo
----------------
-
-The function searches a transaction by the specified hash and returns information about the executed contract and its parameters.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    TransactionInfo(Hash)
-
-.. describe:: TransactionInfo
-
-
-    .. describe:: Hash
-
-        Transaction hash in a hex string format.
-
-
-Return value
-""""""""""""
-
-The function returns a string in the json format: 
-
-  ``{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}``
-
-Above,  
-
-  * *contract* - contract name
-  * *params* - parameters passed to the contract
-  * *block* - block ID where this transaction was processed.
-
-Example
-"""""""
-
-.. code:: js
-
-    P(TransactionInfo(#hash#))
-
 
 .. _protypo-Div:
 
@@ -1931,6 +1179,49 @@ Example
     Div(class1 class2, This is a paragraph.).Show(inp1=test,inp2=none)
 
 
+.. _protypo-EcosysParam:
+
+EcosysParam
+-----------
+
+This function gets a parameter value from the parameters table of the current ecosystem. If there is a language resource for the resulting name, it will be translated accordingly.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    EcosysParam(Name, Index, Source)
+
+.. describe:: EcosysParam
+
+    .. describe:: Name
+     
+        Parameter name.
+
+    .. describe:: Index
+
+        In cases where the requested parameter is a list of elements separated by commas, you can specify an index starting from 1. For example, if ``gender = male,female``, then ``EcosysParam(gender, 2)`` will return ``female``.
+
+        This parameter cannot be used with *Source* parameter.
+
+    .. describe:: Source
+
+        This parameter can be used when the parameter value is a list of items separated by commas.
+
+        Creates a *data* object. Elements of this object are values of the specified parameter. The object can be used as a data source in :ref:`protypo-Table` and :ref:`protypo-Select` functions.
+
+        This parameter cannot be used with *Index* parameter.
+
+.. code:: js
+
+     Address(EcosysParam(founder_account))
+     EcosysParam(gender, Source: mygender)
+ 
+     EcosysParam(Name: gender_list, Source: src_gender)
+     Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
+
+
 .. _protypo-Em:
 
 Em
@@ -1967,6 +1258,952 @@ Example
 .. code:: js
 
       This is an Em(important news).
+
+
+
+.. _protypo-ForList:
+
+ForList
+-------
+
+Displays a list of elements from the *Source* data source in the template format set out in *Body*, and creates the **forlist** element.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ForList(Source, Index){Body}
+
+.. describe:: ForList
+
+    .. describe:: Source
+
+        Data source from *DBFind* or *Data* functions.
+
+    .. describe:: Index
+
+        Variable for the iteration counter. Count starts from 1.
+
+        This parameter is optional. If it is not specified, the iteration count value is written to the *[Source]_index* variable.
+
+    .. describe:: Body
+
+        A template to insert the elements in.
+
+.. code:: js
+
+      ForList(mysrc){Span(#mysrc_index#. #name#)}
+
+
+.. _protypo-Form:
+
+Form
+----
+
+Creates a **form** HTML element.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Form(Class, Body) [.Style(Style)]
+
+
+.. describe:: Form
+
+    .. describe:: Body
+        
+        Child class or elements.
+    
+    .. describe:: Class
+    
+        Classes for this *form*.
+
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+
+Example
+"""""""
+
+.. code:: js
+
+      Form(class1 class2, Input(myid))
+
+
+.. _protypo-GetColumnType:
+
+GetColumnType
+-------------
+
+Returns the type of a column in a specified table.
+
+Following column types can be returned: *text, varchar, number, money, double, bytes, json, datetime, double*.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetColumnType(Table, Column)
+
+
+.. describe:: GetColumnType
+
+    .. describe:: Table
+
+        Table name.
+
+    .. describe:: Column
+
+        Column name.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
+
+
+.. _protypo-GetHistory:
+
+GetHistory
+----------
+
+Creates a **gethistory** element and popuates it with the history of changes of a record from the specified table. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
+
+The resulting list is sorted in the order from recent changes to earlier ones.
+
+The *id* field in the resulting table points to the id in the *rollback_tx* table. The *block_id* field contains the block number. The *block_time* field contains the block timestamp.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetHistory(Source, Name, Id, RollbackId)  
+
+.. describe:: GetHistory
+
+    .. describe:: Source
+
+        Name for the data source.
+
+    .. describe:: Name
+
+        Table name.
+
+    .. describe:: Id
+
+        Identifier of a record.
+
+    .. describe:: RollbackId
+
+        Optional parameter. If specified, only one record with the specified identifier will be returned from the *rollback_tx* table.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    GetHistory(blocks, BlockHistory, 1)
+
+
+.. _protypo-GetVar:
+
+GetVar
+------
+
+This function returns the value of the current variable if it exists, or returns an empty string if a variable with this name is not defined. An element with **getvar** name is created only when a tree for editing is requested. The difference between ``GetVar(varname)`` and ``#varname#`` is that in case *varname* does not exist, *GetVar* will return an empty string, whereas *#varname#* will be interpreted as a string value.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetVar(Name)
+
+.. describe:: GetVar
+
+    .. describe:: Name
+
+        Variable name.
+
+Example
+"""""""
+
+.. code:: js
+
+     If(GetVar(name)){#name#}.Else{Name is unknown}
+
+
+.. _protypo-Hint:
+
+Hint
+----
+
+Creates a **hint** element to display hints.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Hint(Icon,Title,Text)
+
+.. describe:: Hint
+
+    .. describe:: Icon
+
+        Icon name.
+
+    .. describe:: Title
+
+        Hint title.
+
+    .. describe:: Text
+
+        Hint text.
+
+Example
+"""""""
+
+.. code:: js
+
+    Hint(myicon, My Header, This is a hint text)
+
+
+.. _protypo-If:
+
+If
+--
+
+Conditional statement. 
+
+Child elements of the first *If* or *ElseIf* with fulfilled *Condition* are returned. Otherwise, child elements of *Else* are returned.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    If(Condition){ Body } 
+        [.ElseIf(Condition){ Body }]
+        [.Else{ Body }]
+
+.. describe:: If
+
+    .. describe:: Condition
+
+    A condition is considered to be not fulfilled if it equals an *empty string*, *0* or *false*. In all other cases the condition is considered fulfilled.
+
+    .. describe:: Body
+
+        Child elements.
+
+Example
+"""""""
+
+.. code:: js
+
+      If(#value#){
+         Span(Value)
+      }.ElseIf(#value2#){Span(Value 2)
+      }.ElseIf(#value3#){Span(Value 3)}.Else{
+         Span(Nothing)
+      }
+
+
+.. _protypo-Image:
+
+Image
+-----
+
+Creates an **image** HTML element.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Image(Src, Alt, Class)
+        [.Style(Style)]
+
+.. describe:: Image
+
+    .. describe:: Src
+
+        Image source, file or ``data:...``.
+
+    .. describe:: Alt
+
+        Alternative text for the image.
+
+    .. describe:: Сlass
+
+        List of classes.
+
+.. todo::
+
+    Style not documented. What Class does?
+
+
+Example
+"""""""
+
+.. code:: js
+
+    Image(\images\myphoto.jpg)    
+
+
+.. _protypo-ImageInput:
+
+ImageInput
+----------
+
+Creates an **imageinput** element for image upload. In the third parameter you can specify either image height or aspect ratio to apply: *1/2*, *2/1*, *3/4*, etc. The default width is 100 pixels with *1/1* aspect ratio.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ImageInput(Name, Width, Ratio, Format) 
+
+.. describe:: ImageInput
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Width
+
+        Width of the cropped image.
+
+    .. describe:: Ratio
+
+        Aspect ratio (width to height) or height of the image.
+
+    .. describe:: Format
+
+        Format of the uploaded image.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   ImageInput(avatar, 100, 2/1)
+
+
+.. _protypo-Include:
+
+Include
+-------
+
+Inserts a template with a specified name to the page code. 
+
+.. todo::
+
+    How this is used?
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Include(Name)
+
+.. describe:: Include
+
+    .. describe:: Name
+
+    Template name.
+
+
+Example
+"""""""
+
+.. code:: js
+
+      Div(myclass, Include(mywidget))
+      
+
+.. _protypo-Input:
+
+Input
+-----
+
+Creates an **input** HTML element.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Input(Name, Class, Placeholder, Type, Value, Disabled)
+        [.Validate(validation parameters)]
+        [.Style(Style)]
+
+.. describe:: Input
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Class
+
+        Classes for this *input*.
+
+    .. describe:: Placeholder
+
+        The *placeholder* element for this *input*.
+
+    .. describe:: Type
+
+        Type of the *input*.
+
+    .. describe:: Value
+
+        Element value.
+
+    .. describe:: Disabled
+
+        If the *input* is disabled or not.
+
+        .. todo::
+
+            Values? Like HTML?
+
+.. describe:: Validate
+
+    Validation parameters.
+
+    .. todo::
+
+        Syntax?
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+Example
+"""""""
+
+.. code:: js
+
+      Input(Name: name, Type: text, Placeholder: Enter your name)
+      Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
+
+
+
+.. _protypo-InputErr:
+
+InputErr
+--------
+
+Creates an **inputerr** element with validation error texts.
+
+.. todo::
+
+    How this is used?
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    InputErr(Name,validation errors)]
+
+.. describe:: InputErr
+
+    .. describe:: Name
+
+        Name of the corresponding :ref:`protypo-Input` element.
+
+    .. describe:: validation errors
+
+        One or more parameters for validation error messages.
+
+
+Example
+"""""""
+
+.. code:: js
+
+      InputErr(Name: name, 
+          minLength: Value is too short, 
+          maxLength: The length of the value must be less than 20 characters)
+      
+
+.. _protypo-InputMap:
+
+InputMap
+--------
+
+Creates a text input field for an address. Provides an ability to select coordinates on a map.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    InputMap(Name, Type, MapType, Value)
+
+.. describe:: InputMap
+
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Value
+
+        Default value.
+
+        This value is an object in the string format. For example, ``{"coords":[{"lat":number,"lng":number},]}`` or ``{"zoom":int, "center":{"lat":number,"lng":number}}``. The *address* field can be used to save the address value for cases when InputMap is created with a predefined *Value*, so that address field is not empty.
+
+    .. describe:: Type
+
+        Use ``polygon`` value for this parameter.
+
+    .. describe:: MapType
+
+        Map type.
+
+        This parameter can have the following values: ``hybrid``, ``roadmap``, ``satellite``, ``terrain``.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
+
+
+.. _protypo-JsonToSource:
+
+JsonToSource
+------------
+
+Creates a **jsontosource** element and populates it with *key* - *value* pairs that were passed in a JSON oblect. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
+
+The records in the resulting data is sorted by JSON keys, in alphabetical order. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    JsonToSource(Source, Data)
+
+
+.. describe:: JsonToSource
+    
+    .. describe:: Source
+
+        Data source name.
+
+    .. describe:: Data
+
+        A JSON oblect or a name of a variable (``#name#``)that holds a JSON array.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   JsonToSource(src, #myjson#)
+   JsonToSource(dat, {"param":"value", "param2": "value 2"})
+
+
+.. _protypo-Label:
+
+Label
+-----
+
+Creates a **label** HTML element.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Label(Body, Class, For)
+        [.Style(Style)]
+
+.. describe:: Label
+
+
+    .. describe:: Body
+
+        Child text or elements.
+
+    .. describe:: Class
+
+        Classes for this *label*.
+
+    .. describe:: For
+
+        This label's *for* value.
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+Example
+"""""""
+
+.. code:: js
+
+      Label(The first item).
+
+
+.. _protypo-LangRes:
+
+LangRes
+-------
+
+Returns a specified language resource. In case of request to a tree for editing it returns the **langres** element. A short notation in the ``$langres$`` format can be used.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+    
+    LangRes(Name, Lang)
+
+.. describe:: LangRes
+
+
+    .. describe:: Name
+
+        Name of language resource.
+
+    .. describe:: Lang
+
+        Two-character language identifier.
+
+        By default, the language defined in the *Accept-Language* request is returned. 
+
+        Lcid identifiers can be specified, for example, *en-US,en-GB*. In this case, if the requested values will not be found, for example, for *en-US*, then the language resource will be looked for in *en*.
+
+
+Example
+"""""""
+
+.. code:: js
+
+      LangRes(name)
+      LangRes(myres, fr)
+
+
+.. _protypo-LinkPage:
+
+LinkPage
+--------
+
+Creates a **linkpage** element – a link to a page.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    LinkPage(Body, Page, Class, PageParams)
+        [.Style(Style)]
+
+
+.. describe:: LinkPage
+
+    .. describe:: Body
+
+        Child elements or text.
+
+    .. describe:: Page
+
+        Page to redirect to.
+
+    .. describe:: Class
+
+        Classes for this button.
+
+    .. describe:: PageParams
+
+        Redirection parameters.
+
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles
+
+Example
+"""""""
+
+.. code:: js
+
+      LinkPage(My Page, default_page, mybtn_class)
+
+
+.. _protypo-Map:
+
+Map
+---
+
+Creates a visual representation of a map and displays coordinates in an arbitrary format.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Map(Hmap, MapType, Value)
+
+.. describe:: Map
+
+    .. describe:: Hmap
+
+        HTML element height on a page.
+
+        The default value is 100.
+
+    .. describe:: Value
+
+        Map value, an object in the string format.
+
+        For example: ``{"coords":[{"lat":number,"lng":number},]}`` or ``{"zoom":int, "center":{"lat":number,"lng":number}}``. If ``center`` is not specified, then map window will be automatically adjusted for the specified coordinates.
+
+    .. describe:: MapType
+
+        Map type.
+
+        This parameter can have the following values: ``hybrid``, ``roadmap``, ``satellite``, ``terrain``.
+
+
+Example
+"""""""
+
+.. code:: js
+
+      Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
+
+
+.. _protypo-MenuGroup:
+
+MenuGroup
+---------
+
+Creates a nested submenu in the menu and returns the **menugroup** element. The *name* parameter will also return the value of *Title* before replacement with language resources.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    MenuGroup(Title, Body, Icon)
+
+.. describe:: MenuGroup
+
+    .. describe:: Title
+
+        Menu item name.
+
+    .. describe:: Body
+
+        Child elements in submenu.
+
+    .. describe:: Icon
+
+        Icon.
+
+
+Example
+"""""""
+
+.. code:: js
+
+      MenuGroup(My Menu){
+          MenuItem(Interface, sys-interface)
+          MenuItem(Dahsboard, dashboard_default)
+      }
+
+
+.. _protypo-MenuItem:
+
+MenuItem
+--------
+
+Creates a menu item and returns the **menuitem** element. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    MenuItem(Title, Page, Params, Icon, Vde)
+
+.. describe:: MenuItem
+
+    .. describe:: Title
+
+        Menu item name.
+
+    .. describe:: Page
+
+        Page to redirect to.
+
+    .. describe:: Params
+
+        Parameters, passed to the page in the *var:value* format, separated by commas.
+
+    .. describe:: Icon
+
+        Icon.
+
+    .. describe:: Vde
+
+        This parameter that defines the transition to a virtual ecosystem. If ``Vde: true``, then the link redirects to VDE; if ``Vde: false``, then the link redirects to the blockchain; if the parameter was not specified, then it is defined based on where the menu was loaded.
+
+
+Example
+"""""""
+
+.. code:: js
+
+       MenuItem(Interface, interface)
+
+
+.. _protypo-Money:
+
+Money
+-----
+
+Returns a string value of ``exp/10^digit``. If *Digit* parameter is not specified, it is taken from the **money_digit** ecosystem parameter.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Money(Exp, Digit)
+
+
+.. describe:: Money
+
+    .. describe:: Exp
+
+        Numeric value as a string.
+
+    .. describe:: Digit
+
+        Exponent of the base 10 in the ``exp/10^digit`` expression. This value can be positive or negative. Positive value determines the number of digits after the comma.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    Money(Exp, Digit)
+
+
+.. _protypo-Now:
+
+Now
+---
+
+This function returns the current time in the specified format, which by default is the UNIX format (number of seconds elapsed since January 1, 1970). If the requested time format is *datetime*, then date and time are shown as ``YYYY-MM-DD HH:MI:SS``. An interval can be specified in the second parameter (for instance, *+5 days*).
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Now(Format, Interval)
+
+.. describe:: Now
+
+    .. describe:: Format
+
+        Output format with a desired combination of ``YYYY, MM, DD, HH, MI, SS`` or *datetime*.
+
+    .. describe:: Interval
+
+        Time offset, backward or forward in time.
+
+        Example: ``+5 days``.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    Now()
+    Now(DD.MM.YYYY HH:MM)
+    Now(datetime,-3 hours)
+
+
+.. _protypo-Or:
+
+Or
+--
+
+Returns a result of the **IF** logical operation with all parameters specified in parentheses and separated by commas. The parameter value is considered ``false`` if it equals an empty string (``""``), 0 or ``false``. In all other cases the parameter value is considered ``true``. The function returns 1 for true or 0 in all other cases. Element named **or** is created only when the tree for editing is requested. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Or(parameters)
+
+
+Example
+"""""""
+
+.. code:: js
+
+      If(Or(#myval1#,#myval2#), Span(OK))
 
 
 .. _protypo-P:
@@ -2013,6 +2250,219 @@ Example
         This is the second line.)
 
 
+.. _protypo-QRcode:
+
+QRcode
+------
+
+Returns a *qrcode* element with a QR code for the specified text.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    QRcode(Text)
+
+.. describe:: QRcode
+
+    .. describe:: Text
+
+        Text for the QR code.
+
+Example
+"""""""
+
+.. code:: js
+
+     QRcode(#name#)
+
+
+.. _protypo-RadioGroup:
+
+RadioGroup
+----------
+
+Creates a **radiogroup** element.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) 
+        [.Validate(validation parameters)] 
+        [.Style(Style)]
+
+.. describe:: RadioGroup
+
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Source
+
+        Data source name from :ref:`protypo-DBFind` or :ref:`protypo-Data` functions.
+
+    .. describe:: NameColumn
+
+        Column name to use as a source of element names.
+
+    .. describe:: ValueColumn
+
+        Column name to use as a source of element values. 
+
+        Columns created using :ref:`Custom <protypo-Data>` must not be used in this parameter.
+
+    .. describe:: Value
+
+        Default value.
+
+    .. describe:: Class
+
+        Classes for the element.
+
+.. describe:: Validate
+
+    Validation parameters.
+
+    .. todo::
+
+        Syntax?
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    DBFind(mytable, mysrc)
+    RadioGroup(mysrc, name)   
+
+
+.. _protypo-Range:
+
+Range
+-----
+
+Creates a **range** element and fills it with integer values from *From* to *To* (*To* is not included) with a *Step* step. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`). Values are written to the *id* column. If invalid parameters are specified, an empty *Source* is returned.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Range(Source,From,To,Step)
+
+.. describe:: Range
+
+    .. describe:: Source
+
+        Data source name.
+
+    .. describe:: From
+
+        Starting value (i = From).
+
+    .. describe:: To
+
+        End value (i < To).
+
+    .. describe:: Step
+
+        Value change step. If this parameter is not specified a value of 1 is used.
+
+
+Example
+"""""""
+
+.. code:: js
+
+     Range(my,0,5)
+     SetVar(from, 5).(to, -4).(step,-2)
+     Range(Source: neg, From: #from#, To: #to#, Step: #step#)
+
+
+.. _protypo-Select:
+
+Select
+------
+
+Creates a **select** HTML element.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Select(Name, Source, NameColumn, ValueColumn, Value, Class) 
+        [.Validate(validation parameters)]
+        [.Style(Style)]
+
+
+.. describe:: Select
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Source
+
+        Data source name from :ref:`protypo-DBFind` or :ref:`protypo-Data` functions.
+
+    .. describe:: NameColumn
+
+        Column name to use as a source of element names.
+
+    .. describe:: ValueColumn
+
+        Column name to use as a source of element values. 
+
+        Columns created using :ref:`Custom <protypo-Data>` must not be used in this parameter.
+
+    .. describe:: Value
+
+        Default value.
+
+    .. describe:: Class
+
+        Classes for the element.
+
+.. describe:: Validate
+
+    Validation parameters.
+
+    .. todo::
+
+        Syntax?
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+Example
+"""""""
+
+.. code:: js
+
+    DBFind(mytable, mysrc)
+    Select(mysrc, name) 
+
+
 .. _protypo-SetTitle:
 
 SetTitle
@@ -2038,53 +2488,41 @@ Example
 
 .. code:: js
 
-     SetTitle(My page)	
+     SetTitle(My page)
 
 
-.. _protypo-Label:
+.. _protypo-SetVar:
 
-Label
------
+SetVar
+------
 
-Creates a **label** HTML element.
+Assigns a *Value* to a *Name* variable.
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    Label(Body, Class, For)
-        [.Style(Style)]
+    SetVar(Name, Value)
 
-.. describe:: Label
+.. describe:: SetVar
 
+    .. describe:: Name
 
-    .. describe:: Body
+        Variable name.
 
-        Child text or elements.
+    .. describe:: Value
 
-    .. describe:: Class
-
-        Classes for this *label*.
-
-    .. describe:: For
-
-        This label's *for* value.
-
-.. describe:: Style
-
-    Specifies CSS styles.
-
-    .. describe:: Style
-
-        CSS styles.
+        Value of the variable, which can contain a reference to another variable.
 
 Example
 """""""
 
 .. code:: js
 
-      Label(The first item).	
+     SetVar(name, John Smith).(out, I am #name#)
+     Span(#out#)      
+
 
 .. _protypo-Span:
 
@@ -2159,82 +2597,26 @@ Example
       This is Strong(the first item, myclass1).
 
 
-.. _protypo-Form:
+.. _protypo-SysParam:
 
-Form
-----
+SysParam
+--------
 
-Creates a **form** HTML element.
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Form(Class, Body) [.Style(Style)]
-
-
-.. describe:: Form
-
-    .. describe:: Body
-        
-        Child class or elements.
-    
-    .. describe:: Class
-    
-        Classes for this *form*.
-
-
-.. describe:: Style
-
-    Specifies CSS styles.
-
-    .. describe:: Style
-
-        CSS styles.
-
-
-Example
-"""""""
-
-.. code:: js
-
-      Form(class1 class2, Input(myid))
-
-
-.. _protypo-ImageInput:
-
-ImageInput
-----------
-
-Creates an **imageinput** element for image upload. In the third parameter you can specify either image height or aspect ratio to apply: *1/2*, *2/1*, *3/4*, etc. The default width is 100 pixels with *1/1* aspect ratio.
+Displays the value of a system parameter from the system_parameters table. 
 
 
 Syntax
 """"""
 
 .. code-block:: text
+    
+    SysParam(Name) 
 
-    ImageInput(Name, Width, Ratio, Format) 
-
-.. describe:: ImageInput
+.. describe:: SysParam
 
     .. describe:: Name
 
-        Element name.
-
-    .. describe:: Width
-
-        Width of the cropped image.
-
-    .. describe:: Ratio
-
-        Aspect ratio (width to height) or height of the image.
-
-    .. describe:: Format
-
-        Format of the uploaded image.
+        Parameter name.
 
 
 Example
@@ -2242,173 +2624,33 @@ Example
 
 .. code:: js
 
-   ImageInput(avatar, 100, 2/1)    
+     Address(SysParam(founder_account))
 
 
-.. _protypo-Input:
+.. _protypo-Table:
 
-Input
+Table
 -----
 
-Creates an **input** HTML element.
+Creates a **table** HTML element.
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    Input(Name, Class, Placeholder, Type, Value, Disabled)
-        [.Validate(validation parameters)]
+    Table(Source, Columns)
         [.Style(Style)]
 
-.. describe:: Input
-
-    .. describe:: Name
-
-        Element name.
-
-    .. describe:: Class
-
-        Classes for this *input*.
-
-    .. describe:: Placeholder
-
-        The *placeholder* element for this *input*.
-
-    .. describe:: Type
-
-        Type of the *input*.
-
-    .. describe:: Value
-
-        Element value.
-
-    .. describe:: Disabled
-
-        If the *input* is disabled or not.
-
-        .. todo::
-
-            Values? Like HTML?
-
-.. describe:: Validate
-
-    Validation parameters.
-
-    .. todo::
-
-        Syntax?
-
-.. describe:: Style
-
-    Specifies CSS styles.
-
-    .. describe:: Style
-
-        CSS styles.
-
-Example
-"""""""
-
-.. code:: js
-
-      Input(Name: name, Type: text, Placeholder: Enter your name)
-      Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
-
-
-.. _protypo-InputErr:
-
-InputErr
---------
-
-Creates an **inputerr** element with validation error texts.
-
-.. todo::
-
-    How this is used?
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    InputErr(Name,validation errors)]
-
-.. describe:: InputErr
-
-    .. describe:: Name
-
-        Name of the corresponding :ref:`protypo-Input` element.
-
-    .. describe:: validation errors
-
-        One or more parameters for validation error messages.
-
-
-Example
-"""""""
-
-.. code:: js
-
-      InputErr(Name: name, 
-          minLength: Value is too short, 
-          maxLength: The length of the value must be less than 20 characters)
-	  
-
-
-.. _protypo-RadioGroup:
-
-RadioGroup
-----------
-
-Creates a **radiogroup** element.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) 
-        [.Validate(validation parameters)] 
-        [.Style(Style)]
-
-.. describe:: RadioGroup
-
-
-    .. describe:: Name
-
-        Element name.
+.. describe:: Table
 
     .. describe:: Source
 
-        Data source name from :ref:`protypo-DBFind` or :ref:`protypo-Data` functions.
+        Data source name as specified, for example, in the *DBFind* command.
 
-    .. describe:: NameColumn
+    .. describe:: Columns
 
-        Column name to use as a source of element names.
-
-    .. describe:: ValueColumn
-
-        Column name to use as a source of element values. 
-
-        Columns created using :ref:`Custom <protypo-Data>` must not be used in this parameter.
-
-    .. describe:: Value
-
-        Default value.
-
-    .. describe:: Class
-
-        Classes for the element.
-
-.. describe:: Validate
-
-    Validation parameters.
-
-    .. todo::
-
-        Syntax?
+        Headers and corresponding column names, as follows: ``Title1=column1,Title2=column2``.
 
 .. describe:: Style
 
@@ -2425,291 +2667,51 @@ Example
 .. code:: js
 
     DBFind(mytable, mysrc)
-    RadioGroup(mysrc, name)	  
+    Table(mysrc,"ID=id,Name=name")
 
 
+.. _protypo-TransactionInfo:
 
-.. _protypo-Select:
+TransactionInfo
+---------------
 
-Select
-------
-
-Creates a **select** HTML element.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Select(Name, Source, NameColumn, ValueColumn, Value, Class) 
-        [.Validate(validation parameters)]
-        [.Style(Style)]
-
-
-.. describe:: Select
-
-    .. describe:: Name
-
-        Element name.
-
-    .. describe:: Source
-
-        Data source name from :ref:`protypo-DBFind` or :ref:`protypo-Data` functions.
-
-    .. describe:: NameColumn
-
-        Column name to use as a source of element names.
-
-    .. describe:: ValueColumn
-
-        Column name to use as a source of element values. 
-
-        Columns created using :ref:`Custom <protypo-Data>` must not be used in this parameter.
-
-    .. describe:: Value
-
-        Default value.
-
-    .. describe:: Class
-
-        Classes for the element.
-
-.. describe:: Validate
-
-    Validation parameters.
-
-    .. todo::
-
-        Syntax?
-
-.. describe:: Style
-
-    Specifies CSS styles.
-
-    .. describe:: Style
-
-        CSS styles.
-
-Example
-"""""""
-
-.. code:: js
-
-    DBFind(mytable, mysrc)
-    Select(mysrc, name) 
-
-
-.. _protypo-InputMap:
-
-InputMap
---------
-
-Creates a text input field for an address. Provides an ability to select coordinates on a map.
+The function searches a transaction by the specified hash and returns information about the executed contract and its parameters.
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    InputMap(Name, Type, MapType, Value)
+    TransactionInfo(Hash)
 
-.. describe:: InputMap
+.. describe:: TransactionInfo
 
 
-    .. describe:: Name
+    .. describe:: Hash
 
-        Element name.
+        Transaction hash in a hex string format.
 
-    .. describe:: Value
 
-        Default value.
+Return value
+""""""""""""
 
-        This value is an object in the string format. For example, ``{"coords":[{"lat":number,"lng":number},]}`` or ``{"zoom":int, "center":{"lat":number,"lng":number}}``. The *address* field can be used to save the address value for cases when InputMap is created with a predefined *Value*, so that address field is not empty.
+The function returns a string in the json format: 
 
-    .. describe:: Type
+  ``{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}``
 
-        Use ``polygon`` value for this parameter.
+Above,  
 
-    .. describe:: MapType
-
-        Map type.
-
-        This parameter can have the following values: ``hybrid``, ``roadmap``, ``satellite``, ``terrain``.
-
+  * *contract* - contract name
+  * *params* - parameters passed to the contract
+  * *block* - block ID where this transaction was processed.
 
 Example
 """""""
 
 .. code:: js
 
-    InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
+    P(TransactionInfo(#hash#))
 
-
-.. _protypo-Map:
-
-Map
----
-
-Creates a visual representation of a map and displays coordinates in an arbitrary format.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Map(Hmap, MapType, Value)
-
-.. describe:: Map
-
-    .. describe:: Hmap
-
-        HTML element height on a page.
-
-        The default value is 100.
-
-    .. describe:: Value
-
-        Map value, an object in the string format.
-
-        For example: ``{"coords":[{"lat":number,"lng":number},]}`` or ``{"zoom":int, "center":{"lat":number,"lng":number}}``. If ``center`` is not specified, then map window will be automatically adjusted for the specified coordinates.
-
-    .. describe:: MapType
-
-        Map type.
-
-        This parameter can have the following values: ``hybrid``, ``roadmap``, ``satellite``, ``terrain``.
-
-
-Example
-"""""""
-
-.. code:: js
-
-      Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
-
-
-.. _protypo-If:
-
-If
---
-
-Conditional statement. 
-
-Child elements of the first *If* or *ElseIf* with fulfilled *Condition* are returned. Otherwise, child elements of *Else* are returned.
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    If(Condition){ Body } 
-        [.ElseIf(Condition){ Body }]
-        [.Else{ Body }]
-
-.. describe:: If
-
-    .. describe:: Condition
-
-    A condition is considered to be not fulfilled if it equals an *empty string*, *0* or *false*. In all other cases the condition is considered fulfilled.
-
-    .. describe:: Body
-
-        Child elements.
-
-Example
-"""""""
-
-.. code:: js
-
-      If(#value#){
-         Span(Value)
-      }.ElseIf(#value2#){Span(Value 2)
-      }.ElseIf(#value3#){Span(Value 3)}.Else{
-         Span(Nothing)
-      }
-
-
-.. _protypo-And:
-
-And
----
-
-This function returns the result of execution of the **and** logical operation with all parameters listed in parentheses and separated by commas. The parameter value will be ``false`` if it equals an empty string (``""``), zero or *false*. In all other cases the parameter value is ``true``. The function returns 1 if true or 0 in all other cases. The element named ``and`` is created only when a tree for editing is requested. 
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    And(parameters)
-
-
-Example
-"""""""
-
-.. code:: js
-
-      If(And(#myval1#,#myval2#), Span(OK))
-
-
-.. _protypo-Or:
-
-
-Or
---
-
-Returns a result of the **IF** logical operation with all parameters specified in parentheses and separated by commas. The parameter value is considered ``false`` if it equals an empty string (``""``), 0 or ``false``. In all other cases the parameter value is considered ``true``. The function returns 1 for true or 0 in all other cases. Element named **or** is created only when the tree for editing is requested. 
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Or(parameters)
-
-
-Example
-"""""""
-
-.. code:: js
-
-      If(Or(#myval1#,#myval2#), Span(OK))
-
-
-
-.. _protypo-Include:
-
-Include
--------
-
-Inserts a template with a specified name to the page code. 
-
-.. todo::
-
-    How this is used?
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Include(Name)
-
-.. describe:: Include
-
-    .. describe:: Name
-
-    Template name.
-
-
-Example
-"""""""
-
-.. code:: js
-
-      Div(myclass, Include(mywidget))
-      
 
 Styles for mobile app
 =====================
