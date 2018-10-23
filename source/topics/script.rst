@@ -238,9 +238,9 @@ If you have a string value of time and you need to write it in a field with the 
 
 Following Simvolio functions work with date and time in SQL format:
 
-    - :ref:`BlockTime`
-    - :ref:`DateTime`
-    - :ref:`UnixDateTime`
+    - :ref:`simvolio-BlockTime`
+    - :ref:`simvolio-DateTime`
+    - :ref:`simvolio-UnixDateTime`
 
 
 Contract Editor
@@ -481,18 +481,18 @@ Retrieving values from the database:
 .. hlist::
     :columns: 3
 
-    - :ref:`AppParam`
-    - :ref:`DBFind`
-    - :ref:`DBRow`
-    - :ref:`DBSelectMetrics`
-    - :ref:`EcosysParam`
-    - :ref:`GetHistory`
-    - :ref:`GetHistoryRow`
-    - :ref:`GetColumnType`
-    - :ref:`GetDataFromXLSX`
-    - :ref:`GetRowsCountXLSX`
-    - :ref:`GetBlock`
-    - :ref:`LangRes`
+    - :ref:`simvolio-AppParam`
+    - :ref:`simvolio-DBFind`
+    - :ref:`simvolio-DBRow`
+    - :ref:`simvolio-DBSelectMetrics`
+    - :ref:`simvolio-EcosysParam`
+    - :ref:`simvolio-GetHistory`
+    - :ref:`simvolio-GetHistoryRow`
+    - :ref:`simvolio-GetColumnType`
+    - :ref:`simvolio-GetDataFromXLSX`
+    - :ref:`simvolio-GetRowsCountXLSX`
+    - :ref:`simvolio-GetBlock`
+    - :ref:`simvolio-LangRes`
 
 
 Changing values in tables:
@@ -500,11 +500,11 @@ Changing values in tables:
 .. hlist::
     :columns: 3
 
-    - :ref:`DBInsert`
-    - :ref:`DBUpdate`
-    - :ref:`DBUpdateExt`
-    - :ref:`DelColumn`
-    - :ref:`DelTable`
+    - :ref:`simvolio-DBInsert`
+    - :ref:`simvolio-DBUpdate`
+    - :ref:`simvolio-DBUpdateExt`
+    - :ref:`simvolio-DelColumn`
+    - :ref:`simvolio-DelTable`
 
 
 Array operations:
@@ -512,30 +512,30 @@ Array operations:
 .. hlist::
     :columns: 3
 
-    - :ref:`Append`
-    - :ref:`Join`
-    - :ref:`Split`
-    - :ref:`Len`
-    - :ref:`Row`
-    - :ref:`One`
-    - :ref:`GetMapKeys`
-    - :ref:`SortedKeys`
+    - :ref:`simvolio-Append`
+    - :ref:`simvolio-Join`
+    - :ref:`simvolio-Split`
+    - :ref:`simvolio-Len`
+    - :ref:`simvolio-Row`
+    - :ref:`simvolio-One`
+    - :ref:`simvolio-GetMapKeys`
+    - :ref:`simvolio-SortedKeys`
 
 Operations with contracts and conditions:
 
 .. hlist::
     :columns: 3
 
-    - :ref:`CallContract`
-    - :ref:`ContractAccess`
-    - :ref:`ContractConditions`
-    - :ref:`EvalCondition`
-    - :ref:`GetContractById`
-    - :ref:`RoleAccess`
-    - :ref:`GetContractByName`
-    - :ref:`TransactionInfo`
-    - :ref:`Throw`
-    - :ref:`ValidateCondition`
+    - :ref:`simvolio-CallContract`
+    - :ref:`simvolio-ContractAccess`
+    - :ref:`simvolio-ContractConditions`
+    - :ref:`simvolio-EvalCondition`
+    - :ref:`simvolio-GetContractById`
+    - :ref:`simvolio-RoleAccess`
+    - :ref:`simvolio-GetContractByName`
+    - :ref:`simvolio-TransactionInfo`
+    - :ref:`simvolio-Throw`
+    - :ref:`simvolio-ValidateCondition`
 
 
 Operations with account addresses:
@@ -543,9 +543,9 @@ Operations with account addresses:
 .. hlist::
     :columns: 3
 
-    - :ref:`AddressToId`
-    - :ref:`IdToAddress`
-    - :ref:`PubToID`
+    - :ref:`simvolio-AddressToId`
+    - :ref:`simvolio-IdToAddress`
+    - :ref:`simvolio-PubToID`
 
 
 Operations with values of variables:
@@ -553,88 +553,98 @@ Operations with values of variables:
 .. hlist::
     :columns: 3
 
-    - :ref:`DecodeBase64`
-    - :ref:`EncodeBase64`
-    - :ref:`Float`
-    - :ref:`HexToBytes`
-    - :ref:`FormatMoney`
-    - :ref:`Random`
-    - :ref:`Int`
-    - :ref:`Hash`
-    - :ref:`Sha256`
-    - :ref:`Str`
-    - :ref:`UpdateLang`
+    - :ref:`simvolio-DecodeBase64`
+    - :ref:`simvolio-EncodeBase64`
+    - :ref:`simvolio-Float`
+    - :ref:`simvolio-HexToBytes`
+    - :ref:`simvolio-FormatMoney`
+    - :ref:`simvolio-Random`
+    - :ref:`simvolio-Int`
+    - :ref:`simvolio-Hash`
+    - :ref:`simvolio-Sha256`
+    - :ref:`simvolio-Str`
+    - :ref:`simvolio-UpdateLang`
 
 
 Operations with JSON:
 
-    - :ref:`JSONEncode`
-    - :ref:`JSONEncodeIndent`
-    - :ref:`JSONDecode`
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`simvolio-JSONEncode`
+    - :ref:`simvolio-JSONEncodeIndent`
+    - :ref:`simvolio-JSONDecode`
 
 Operations with strings:
 
 .. hlist::
     :columns: 3
 
-    - :ref:`HasPrefix`
-    - :ref:`Contains`
-    - :ref:`Replace`
-    - :ref:`Size`
-    - :ref:`Sprintf`
-    - :ref:`Substr`
-    - :ref:`ToLower`
-    - :ref:`ToUpper`
-    - :ref:`TrimSpace`
+    - :ref:`simvolio-HasPrefix`
+    - :ref:`simvolio-Contains`
+    - :ref:`simvolio-Replace`
+    - :ref:`simvolio-Size`
+    - :ref:`simvolio-Sprintf`
+    - :ref:`simvolio-Substr`
+    - :ref:`simvolio-ToLower`
+    - :ref:`simvolio-ToUpper`
+    - :ref:`simvolio-TrimSpace`
 
 Operations with bytes:
 
 .. hlist::
     :columns: 3
 
-    - :ref:`StringToBytes`
-    - :ref:`BytesToString`
+    - :ref:`simvolio-StringToBytes`
+    - :ref:`simvolio-BytesToString`
 
 Operations with date and time in SQL format:
 
 .. hlist::
     :columns: 3
 
-    - :ref:`BlockTime`
-    - :ref:`DateTime`
-    - :ref:`UnixDateTime`
+    - :ref:`simvolio-BlockTime`
+    - :ref:`simvolio-DateTime`
+    - :ref:`simvolio-UnixDateTime`
 
 Operations with system parameters:
 
 .. hlist::
     :columns: 3
 
-    - :ref:`SysParamString`
-    - :ref:`SysParamInt`
-    - :ref:`DBUpdateSysParam`
-    - :ref:`UpdateNotifications`
-    - :ref:`UpdateRolesNotifications`
+    - :ref:`simvolio-SysParamString`
+    - :ref:`simvolio-SysParamInt`
+    - :ref:`simvolio-DBUpdateSysParam`
+    - :ref:`simvolio-UpdateNotifications`
+    - :ref:`simvolio-UpdateRolesNotifications`
 
 Functions for VDE mode:
 
-    - :ref:`HTTPRequest`
-    - :ref:`HTTPPostJSON`
+.. hlist::
+    :columns: 3
+
+    - :ref:`simvolio-HTTPRequest`
+    - :ref:`simvolio-HTTPPostJSON`
 
 
 Functions for VDE Master mode:
 
-    - :ref:`CreateVDE`
-    - :ref:`ListVDE`
-    - :ref:`RunVDE`
-    - :ref:`StopVDE`
-    - :ref:`RemoveVDE`
+.. hlist::
+    :columns: 3
+
+    - :ref:`simvolio-CreateVDE`
+    - :ref:`simvolio-ListVDE`
+    - :ref:`simvolio-RunVDE`
+    - :ref:`simvolio-StopVDE`
+    - :ref:`simvolio-RemoveVDE`
 
 
 Simvolio functions reference
 ============================
 
 
-.. _AppParam:
+.. _simvolio-AppParam:
 
 AppParam
 --------
@@ -667,7 +677,7 @@ Example
     Println( AppParam(1, "app_account"))
 
 
-.. _DBFind:
+.. _simvolio-DBFind:
 
 DBFind
 ------
@@ -832,7 +842,7 @@ Example
    }
 
 
-.. _DBRow:
+.. _simvolio-DBRow:
 
 DBRow
 -----
@@ -868,7 +878,7 @@ Syntax
 
     Example: ``.Where({name: "John"})`` or ``.Where({"id": {"$gte": 4}})``.
 
-    For more information, see :ref:`DBFind`.
+    For more information, see :ref:`simvolio-DBFind`.
 
 .. describe:: id
 
@@ -878,7 +888,7 @@ Syntax
 
     A field that will be used for sorting. By default, values are sorted by *id*.
 
-    For more information, see :ref:`DBFind`.
+    For more information, see :ref:`simvolio-DBFind`.
 
 
 .. describe:: ecosystemid
@@ -896,7 +906,7 @@ Example
    Println(ret)
 
 
-.. _DBSelectMetrics:
+.. _simvolio-DBSelectMetrics:
 
 DBSelectMetrics
 ---------------
@@ -963,7 +973,7 @@ In the example below, ``row`` contains a map with ``key`` and ``value`` keys. Th
    }
 
 
-.. _EcosysParam:
+.. _simvolio-EcosysParam:
 
 EcosysParam
 -----------
@@ -996,7 +1006,7 @@ Example
     Println( EcosysParam("gov_account"))
 
 
-.. _GetHistory:
+.. _simvolio-GetHistory:
 
 GetHistory
 ----------
@@ -1045,7 +1055,7 @@ Example
     }
 
 
-.. _GetHistoryRow:
+.. _simvolio-GetHistoryRow:
 
 GetHistoryRow
 -------------
@@ -1084,7 +1094,7 @@ Returns a single history record with the *rollbackId* identifier from the *rollb
     Add example.
 
 
-.. _GetColumnType:
+.. _simvolio-GetColumnType:
 
 GetColumnType
 -------------
@@ -1121,7 +1131,7 @@ Example
     var coltype string
     coltype = GetColumnType("members", "member_name")
 
-.. _GetDataFromXLSX:
+.. _simvolio-GetDataFromXLSX:
 
 GetDataFromXLSX
 ---------------
@@ -1168,7 +1178,7 @@ Returned value
 Returned value is an array that contains arrays with spreadsheet cell data.
 
 
-.. _GetRowsCountXLSX:
+.. _simvolio-GetRowsCountXLSX:
 
 GetRowsCountXLSX
 ----------------
@@ -1201,7 +1211,7 @@ Example
     count = GetRowsCountXLSX(binid, 1)
 
 
-.. _LangRes:
+.. _simvolio-LangRes:
 
 LangRes
 -------
@@ -1235,7 +1245,7 @@ Example
     error LangRes("problems", "de")
 
 
-.. _GetBlock:
+.. _simvolio-GetBlock:
 
 GetBlock
 --------
@@ -1283,7 +1293,7 @@ Example
    Println(b)
 
 
-.. _DBInsert:
+.. _simvolio-DBInsert:
 
 DBInsert
 --------
@@ -1314,7 +1324,7 @@ Example
     DBInsert("mytable", {name: "John Smith", amount: 100})
 
 
-.. _DBUpdate:
+.. _simvolio-DBUpdate:
 
 DBUpdate
 --------
@@ -1351,7 +1361,7 @@ Example
     DBUpdate("mytable", myid, {name: "John Smith", amount: 100})
 
 
-.. _DBUpdateExt:
+.. _simvolio-DBUpdateExt:
 
 DBUpdateExt
 -----------
@@ -1392,7 +1402,7 @@ Example
     DBUpdateExt("mytable", "address", addr, {name: "John Smith", amount: 100})
 
 
-.. _DelColumn:
+.. _simvolio-DelColumn:
 
 DelColumn
 ---------
@@ -1421,7 +1431,7 @@ Syntax
     DelColumn("mytable", "mycolumn")
 
 
-.. _DelTable:
+.. _simvolio-DelTable:
 
 DelTable
 --------
@@ -1449,7 +1459,7 @@ Example
     DelTable("mytable")
 
 
-.. _Append:
+.. _simvolio-Append:
 
 Append
 ------
@@ -1482,7 +1492,7 @@ Example
   list = Append(list, "new_val")
 
 
-.. _Join:
+.. _simvolio-Join:
 
 Join
 ----
@@ -1518,7 +1528,7 @@ Example
     val = Join(myarr, ",")
 
 
-.. _Split:
+.. _simvolio-Split:
 
 Split
 -----
@@ -1552,7 +1562,7 @@ Example
     myarr = Split("first,second,third", ",")
 
 
-.. _Len:
+.. _simvolio-Len:
 
 Len
 ---
@@ -1583,7 +1593,7 @@ Example
     }
 
 
-.. _Row:
+.. _simvolio-Row:
 
 Row
 ---
@@ -1614,7 +1624,7 @@ Example
    Println(ret)
 
 
-.. _One:
+.. _simvolio-One:
 
 One
 ---
@@ -1650,7 +1660,7 @@ Example
       Println(ret)
    }
 
-.. _GetMapKeys:
+.. _simvolio-GetMapKeys:
 
 GetMapKeys
 ----------
@@ -1682,7 +1692,7 @@ Example
    val["k2"] = "v2"
 
 
-.. _SortedKeys:
+.. _simvolio-SortedKeys:
 
 SortedKeys
 ----------
@@ -1715,7 +1725,7 @@ Example
    arr = SortedKeys(val)
 
 
-.. _CallContract:
+.. _simvolio-CallContract:
 
 CallContract
 ------------
@@ -1751,7 +1761,7 @@ Example
     CallContract("MyContract", par)
 
 
-.. _ContractAccess:
+.. _simvolio-ContractAccess:
 
 ContractAccess
 --------------
@@ -1783,7 +1793,7 @@ Example
 
 
 
-.. _ContractConditions:
+.. _simvolio-ContractConditions:
 
 ContractConditions
 ------------------
@@ -1814,7 +1824,7 @@ Example
 
 
 
-.. _EvalCondition:
+.. _simvolio-EvalCondition:
 
 EvalCondition
 -------------
@@ -1852,7 +1862,7 @@ Example
 
 
 
-.. _GetContractById:
+.. _simvolio-GetContractById:
 
 GetContractById
 ---------------
@@ -1883,7 +1893,7 @@ Example
 
 
 
-.. _GetContractByName:
+.. _simvolio-GetContractByName:
 
 GetContractByName
 -----------------
@@ -1913,7 +1923,7 @@ Example
     id = GetContractByName(`NewBlock`)
 
 
-.. _RoleAccess:
+.. _simvolio-RoleAccess:
 
 RoleAccess
 ----------
@@ -1944,7 +1954,7 @@ Example
     RoleAccess(1, 3)
 
 
-.. _TransactionInfo:
+.. _simvolio-TransactionInfo:
 
 TransactionInfo
 ---------------
@@ -1997,7 +2007,7 @@ Example
     out = JSONDecode(TransactionInfo(hash))
 
 
-.. _Throw:
+.. _simvolio-Throw:
 
 Throw
 -----
@@ -2039,7 +2049,7 @@ Example
     Throw("Problem", "There is a problem")
 
 
-.. _ValidateCondition:
+.. _simvolio-ValidateCondition:
 
 ValidateCondition
 -----------------
@@ -2072,7 +2082,7 @@ Example
     ValidateCondition(`ContractAccess("@1MyContract")`, 1)
 
 
-.. _AddressToId:
+.. _simvolio-AddressToId:
 
 AddressToId
 -----------
@@ -2102,7 +2112,7 @@ Example
 
 
 
-.. _IdToAddress:
+.. _simvolio-IdToAddress:
 
 IdToAddress
 -----------
@@ -2132,7 +2142,7 @@ Example
 
 
 
-.. _PubToID:
+.. _simvolio-PubToID:
 
 PubToID
 -------
@@ -2162,7 +2172,7 @@ Example
     wallet = PubToID("fa5e78.....34abd6")
 
 
-.. _DecodeBase64:
+.. _simvolio-DecodeBase64:
 
 DecodeBase64
 ------------
@@ -2192,7 +2202,7 @@ Example
     val = DecodeBase64(mybase64)
 
 
-.. _EncodeBase64:
+.. _simvolio-EncodeBase64:
 
 EncodeBase64
 ------------
@@ -2221,7 +2231,7 @@ Example
     base64str = EncodeBase64("my text")
 
 
-.. _Float:
+.. _simvolio-Float:
 
 Float
 -----
@@ -2250,7 +2260,7 @@ Example
 
 
 
-.. _HexToBytes:
+.. _simvolio-HexToBytes:
 
 HexToBytes
 ----------
@@ -2281,7 +2291,7 @@ Example
 
 
 
-.. _FormatMoney:
+.. _simvolio-FormatMoney:
 
 FormatMoney
 -----------
@@ -2313,7 +2323,7 @@ Example
     s = FormatMoney("123456723722323332", 0)
 
 
-.. _Random:
+.. _simvolio-Random:
 
 Random
 ------
@@ -2345,7 +2355,7 @@ Example
     i = Random(10,5000)
 
 
-.. _Int:
+.. _simvolio-Int:
 
 Int
 ----
@@ -2374,7 +2384,7 @@ Example
     val = Int(mystr)
 
 
-.. _Hash:
+.. _simvolio-Hash:
 
 Hash
 ----
@@ -2404,7 +2414,7 @@ Example
 
 
 
-.. _Sha256:
+.. _simvolio-Sha256:
 
 Sha256
 ------
@@ -2434,7 +2444,7 @@ Example
     sha = Sha256("Test message")
 
 
-.. _Str:
+.. _simvolio-Str:
 
 Str
 ---
@@ -2464,7 +2474,7 @@ Example
 
 
 
-.. _UpdateLang:
+.. _simvolio-UpdateLang:
 
 UpdateLang
 ----------
@@ -2496,7 +2506,7 @@ Example
     UpdateLang($Name, $Trans)
 
 
-.. _JSONEncode:
+.. _simvolio-JSONEncode:
 
 JSONEncode
 ----------
@@ -2528,7 +2538,7 @@ Example
     json = JSONEncode(mydata)
 
 
-.. _JSONEncodeIndent:
+.. _simvolio-JSONEncodeIndent:
 
 JSONEncodeIndent
 ----------------
@@ -2563,7 +2573,7 @@ Example
     json = JSONEncodeIndent(mydata, "\t")
 
 
-.. _JSONDecode:
+.. _simvolio-JSONDecode:
 
 JSONDecode
 ----------
@@ -2594,7 +2604,7 @@ Example
 
 
 
-.. _HasPrefix:
+.. _simvolio-HasPrefix:
 
 HasPrefix
 ---------
@@ -2635,7 +2645,7 @@ Example
     }
 
 
-.. _Contains:
+.. _simvolio-Contains:
 
 Contains
 --------
@@ -2677,7 +2687,7 @@ Example
 
 
 
-.. _Replace:
+.. _simvolio-Replace:
 
 Replace
 -------
@@ -2714,7 +2724,7 @@ Example
 
 
 
-.. _Size:
+.. _simvolio-Size:
 
 Size
 ----
@@ -2743,7 +2753,7 @@ Example
     len = Size($Name)
 
 
-.. _Sprintf:
+.. _simvolio-Sprintf:
 
 Sprintf
 -------
@@ -2778,7 +2788,7 @@ Example
 
     out = Sprintf("%s=%d", mypar, 6448)
 
-.. _Substr:
+.. _simvolio-Substr:
 
 Substr
 ------
@@ -2820,7 +2830,7 @@ Example
     s = Substr($Name, 1, 10)
 
 
-.. _ToLower:
+.. _simvolio-ToLower:
 
 ToLower
 -------
@@ -2847,7 +2857,7 @@ Example
     val = ToLower(val)
 
 
-.. _ToUpper:
+.. _simvolio-ToUpper:
 
 ToUpper
 -------
@@ -2874,7 +2884,7 @@ Example
     val = ToUpper(val)
 
 
-.. _TrimSpace:
+.. _simvolio-TrimSpace:
 
 TrimSpace
 ---------
@@ -2901,7 +2911,7 @@ Example
     val = TrimSpace(val)
 
 
-.. _StringToBytes:
+.. _simvolio-StringToBytes:
 
 StringToBytes
 -------------
@@ -2930,7 +2940,7 @@ Example
     b = StringToBytes("my string")
 
 
-.. _BytesToString:
+.. _simvolio-BytesToString:
 
 BytesToString
 -------------
@@ -2959,7 +2969,7 @@ Example
     s = BytesToString($Bytes)
 
 
-.. _SysParamString:
+.. _simvolio-SysParamString:
 
 SysParamString
 --------------
@@ -2987,7 +2997,7 @@ Example
     url = SysParamString(`blockchain_url`)
 
 
-.. _SysParamInt:
+.. _simvolio-SysParamInt:
 
 SysParamInt
 -----------
@@ -3015,7 +3025,7 @@ Example
 
 
 
-.. _DBUpdateSysParam:
+.. _simvolio-DBUpdateSysParam:
 
 DBUpdateSysParam
 ----------------
@@ -3051,7 +3061,7 @@ Example
     DBUpdateSysParam(`fuel_rate`, `400000000000`, ``)
 
 
-.. _UpdateNotifications:
+.. _simvolio-UpdateNotifications:
 
 UpdateNotifications
 -------------------
@@ -3087,7 +3097,7 @@ Example
     UpdateNotifications(1, [$key_id, 23345355454, 35545454554] )
 
 
-.. _UpdateRolesNotifications:
+.. _simvolio-UpdateRolesNotifications:
 
 UpdateRolesNotifications
 ------------------------
@@ -3122,7 +3132,7 @@ Example
 
 
 
-.. _HTTPRequest:
+.. _simvolio-HTTPRequest:
 
 HTTPRequest
 -----------
@@ -3176,7 +3186,7 @@ Example
     json = JSONToMap(ret)
 
 
-.. _HTTPPostJSON:
+.. _simvolio-HTTPPostJSON:
 
 HTTPPostJSON
 ------------
@@ -3222,7 +3232,7 @@ Example
 
 
 
-.. _BlockTime:
+.. _simvolio-BlockTime:
 
 BlockTime
 ---------
@@ -3246,7 +3256,7 @@ Example
     DBInsert(`mytable`, `created_at`, BlockTime())
 
 
-.. _DateTime:
+.. _simvolio-DateTime:
 
 DateTime
 --------
@@ -3270,7 +3280,7 @@ Example
     DateTime(1532325250)
 
 
-.. _UnixDateTime:
+.. _simvolio-UnixDateTime:
 
 UnixDateTime
 ------------
@@ -3294,7 +3304,7 @@ Example
 
 
 
-.. _CreateVDE:
+.. _simvolio-CreateVDE:
 
 CreateVDE
 ---------
@@ -3329,7 +3339,7 @@ Syntax
     Add example.
 
 
-.. _ListVDE:
+.. _simvolio-ListVDE:
 
 ListVDE
 -------
@@ -3355,7 +3365,7 @@ An associative array where keys are VDE names and values are process statuses.
     Add example.
 
 
-.. _RunVDE:
+.. _simvolio-RunVDE:
 
 RunVDE
 ------
@@ -3383,7 +3393,7 @@ Syntax
     Add example.
 
 
-.. _StopVDE:
+.. _simvolio-StopVDE:
 
 StopVDE
 -------
@@ -3411,7 +3421,7 @@ Syntax
     Add example.
 
 
-.. _RemoveVDE:
+.. _simvolio-RemoveVDE:
 
 RemoveVDE
 ---------
