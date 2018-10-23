@@ -161,6 +161,7 @@ The following variables are predefined
 
 * ``#key_id#`` - current user account identifier,
 * ``#ecosystem_id#`` - current ecosystem identifier.
+* ``#guest_key#`` - guest wallet identifier.
 
 
 Passing parameters to a page using PageParams
@@ -182,33 +183,198 @@ Calling Contracts
 Protypo implements contract calling by clicking on a button in a form (*Button* function). Once  this event is initiated, the data entered by the user in the fields of the interface forms is passed to the contract (if the names of form fields correspond to the names of variables in the data section of the called contract, data is transferred automatically). The Button function allows for opening a modal window for user verification of the contract execution (Alert), and initiation of redirect to a specified page after the successful execution of the contract, and passing certain parameters to this page.    
 
 
-Functions of Protypo
-====================
+Predefined variables
+--------------------
+
+.. todo::
+
+  Merge with predefined variables list above.
+
+* **isMobile** - is 1 if the client is running on a mobile device.
+
+
+Protypo functions by purpose
+============================
 
 
 Operations with variables
 -------------------------
 
+.. hlist::
+    :columns: 3
 
-GetVar(Name)
-""""""""""""
+    - :ref:`protypo-GetVar`
+    - :ref:`protypo-SetVar`
+
+
+Navigation
+----------
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`protypo-AddToolButton`
+    - :ref:`protypo-Button`
+    - :ref:`protypo-LinkPage`
+
+
+Data operations
+---------------
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`protypo-Calculate`
+    - :ref:`protypo-CmpTime`
+    - :ref:`protypo-DateTime`
+    - :ref:`protypo-Now`
+    - :ref:`protypo-Money`
+
+
+
+Displaying data
+---------------
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`protypo-Code`
+    - :ref:`protypo-CodeAsIs`
+    - :ref:`protypo-Chart`
+    - :ref:`protypo-ForList`
+    - :ref:`protypo-Hint`
+    - :ref:`protypo-Image`
+    - :ref:`protypo-MenuGroup`
+    - :ref:`protypo-MenuItem`
+    - :ref:`protypo-QRcode`
+    - :ref:`protypo-Table`
+
+
+Receiving data
+--------------
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`protypo-Address`
+    - :ref:`protypo-AppParam`
+    - :ref:`protypo-Data`
+    - :ref:`protypo-DBFind`
+    - :ref:`protypo-EcosysParam`
+    - :ref:`protypo-GetHistory`
+    - :ref:`protypo-GetColumnType`
+    - :ref:`protypo-JsonToSource`
+    - :ref:`protypo-ArrayToSource`
+    - :ref:`protypo-LangRes`
+    - :ref:`protypo-Range`
+    - :ref:`protypo-SysParam`
+    - :ref:`protypo-Binary`
+    - :ref:`protypo-TransactionInfo`
+
+
+Elements of data formatting
+---------------------------
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`protypo-Div`
+    - :ref:`protypo-Em`
+    - :ref:`protypo-P`
+    - :ref:`protypo-SetTitle`
+    - :ref:`protypo-Label`
+    - :ref:`protypo-Span`
+    - :ref:`protypo-Strong`
+
+
+Elements of forms
+-----------------
+
+.. hlist::
+    :columns: 3
+
+
+    - :ref:`protypo-Form`
+    - :ref:`protypo-ImageInput`
+    - :ref:`protypo-Input`
+    - :ref:`protypo-InputErr`
+    - :ref:`protypo-RadioGroup`
+    - :ref:`protypo-Select`
+    - :ref:`protypo-InputMap`
+    - :ref:`protypo-Map`
+
+
+Operations with code
+--------------------
+
+.. hlist::
+    :columns: 3
+
+    - :ref:`protypo-If`
+    - :ref:`protypo-And`
+    - :ref:`protypo-Or`
+    - :ref:`protypo-Include`
+
+
+Protypo functions reference
+===========================
+
+
+.. _protypo-GetVar:
+
+GetVar
+------
 
 This function returns the value of the current variable if it exists, or returns an empty string if a variable with this name is not defined. An element with **getvar** name is created only when a tree for editing is requested. The difference between ``GetVar(varname)`` and ``#varname#`` is that in case *varname* does not exist, *GetVar* will return an empty string, whereas *#varname#* will be interpreted as a string value.
 
-* *Name* - variable name.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetVar(Name)
+
+.. describe:: GetVar
+
+    .. describe:: Name
+
+        Variable name.
+
+Example
+"""""""
 
 .. code:: js
 
      If(GetVar(name)){#name#}.Else{Name is unknown}
 
 
-SetVar(Name, Value)
-"""""""""""""""""""
+.. _protypo-SetVar:
 
-Assigns a *Value* to a *Name* variable. 
+SetVar
+------
 
-* *Name* - name of the variable,
-* *Value* - value of the variable, which can contain a reference to another variable.
+Assigns a *Value* to a *Name* variable.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    SetVar(Name, Value)
+
+.. describe:: SetVar
+
+    .. describe:: Name
+
+        Variable name.
+
+    .. describe:: Value
+
+        Value of the variable, which can contain a reference to another variable.
+
+Example
+"""""""
 
 .. code:: js
 
@@ -216,54 +382,182 @@ Assigns a *Value* to a *Name* variable.
      Span(#out#)      
 
 
-Navigation
-----------
+.. _protypo-AddToolButton:
 
-
-AddToolButton(Title, Icon, Page, PageParams)
-""""""""""""""""""""""""""""""""""""""""""""
+AddToolButton
+-------------
 
 Adds a button to the buttons panel. Creates **addtoolbutton** element. 
 
-* *Title* - button title,
-* *Icon* - icon for the icon,
-* *Page* - page name for the jump,
-* *PageParams* - parmeters for the page.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    AddToolButton(Title, Icon, Page, PageParams) 
+        [.Popup(Width, Header)]
+
+
+.. describe:: AddToolButton
+
+    .. describe:: Title
+
+        Button title.
+
+    .. describe:: Icon
+
+        Icon for the button.
+
+    .. describe:: Page
+
+        Page name for the jump.
+
+    .. describe:: PageParams
+
+        Parmeters that are passed to the page.
+
+.. describe:: Popup
+
+    Outputs a modal window.
+
+    .. describe:: Header
+
+        Window header.
+    
+    .. describe:: Width
+
+        Window width in percent.
+
+        Range of values for this parameter is from 1 to 100.
+
+
+Example
+"""""""
 
 .. code:: js
 
       AddToolButton(Help, help, help_page) 
 
 
-Button(Body, Page, Class, Contract, Params, PageParams) [.Alert(Text,ConfirmButton,CancelButton,Icon)] [.Style(Style)] [.ErrorRedirect(ErrorID,PageName,PageParams)]
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.. _protypo-Button:
 
-Creates a **button** HTML element. This element creates a button, which sends a specified contract for execution.
+Button
+------
 
-* *Body* - child text or elements,
-* *Page* - name of the page to redirect to,
-* *Class* - classes for the button,
-* *Contract* - name of the contract to execute,
-* *Params* - list of values to pass to the contract. By default, values of contract parameters (data ``section``) are obtained from HTML elements (for example, input fields) with similarly-named identifiers (``id``). If the element identifiers differ from the names of contract parameters, then the assignment in the ``contractField1=idname1, contractField2=idname2`` format should be used. This parameter is returned to *attr* as an object ``{field1: idname1, field2: idname2}``,
-* *PageParams* - parameters for redirection to a page in the following format: ``contractField1=idname1, contractField2=idname2``. In this case, variables with parameter names ``#contractField1#`` and ``#contractField2`` are created on the target page, and are assigned the specified values (see the parameter passing specifications in the "*Passing Parameters to a Page Using PageParams*" section above).
+Creates a **button** HTML element. This element creates a button, which executes a contract or opens a page.
 
-**Alert** - displays a message.
+Syntax
+""""""
 
-  * *Text* - message text,
-  * *ConfirmButton* - confirm button caption,
-  * *CancelButton* - cancel button caption,
-  * *Icon* - icon.
+.. code-block:: text
 
-**Style** - serves for specifying css styles.
+    Button(Body, Page, Class, Contract, Params, PageParams)
+        [.CompositeContract(Contract, Data)]
+        [.Alert(Text, ConfirmButton, CancelButton, Icon)]
+        [.Popup(Width, Header)]
+        [.Style(Style)]
+        [.ErrorRedirect((ErrorID,PageName,PageParams)]
 
-  * *Style* - css styles.
+.. describe:: Button
 
-**ErrorRedirect** - specifies a redirect page. This redirect page is used when the *Throw* function generates an error during the contract execution. There may be several *ErrorRedirect* calls. As a result, an *errredir* attribute is returnes with *ErrorID* list of keys and parameters as values.
+    .. describe:: Body
 
-  * *ErrorID* - error identifier
-  * *PageName* - name of the redirect page
-  * *PageParams* - parameters passed to this page
+        Child text or elements.
 
+    .. describe:: Page
+
+        Name of the page to redirect to.
+
+    .. describe:: Class
+
+        Classes for the button.
+
+    .. describe:: Contract
+
+        Name of the contract to execute.
+
+    .. describe:: Params
+
+        List of values to pass to the contract. By default, values of contract parameters (data ``section``) are obtained from HTML elements (for example, input fields) with similarly-named identifiers (``id``). If the element identifiers differ from the names of contract parameters, then the assignment in the ``contractField1=idname1, contractField2=idname2`` format should be used. This parameter is returned to *attr* as an object ``{field1: idname1, field2: idname2}``.
+
+    .. describe:: PageParams
+
+        Parameters for redirection to a page in the following format: ``contractField1=idname1, contractField2=idname2``. In this case, variables with parameter names ``#contractField1#`` and ``#contractField2`` are created on the target page, and are assigned the specified values (see the parameter passing specifications in the "*Passing Parameters to a Page Using PageParams*" section above).
+
+.. describe:: CompositeContract
+
+        Used for adding extra contracts for a button. CompositeContract can be used several times.
+
+        .. describe:: Name
+
+            Contract name.
+
+        .. describe:: Data
+
+            Contract parameters as a JSON array.
+
+.. describe:: Alert
+
+    Displays a message.
+
+    .. describe:: Text
+
+        Message text.
+
+    .. describe:: ConfirmButton
+
+        Confirm button caption.
+
+    .. describe:: CancelButton
+
+        Cancel button caption.
+
+    .. describe:: Icon
+
+        Icon.
+
+.. describe:: Popup
+
+    Outputs a modal window.
+
+    .. describe:: Header
+
+        Window header.
+    
+    .. describe:: Width
+
+        Window width in percent.
+
+        Range of values for this parameter is from 1 to 100.
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+.. describe:: ErrorRedirect
+
+    Specifies a redirect page. This redirect page is used when the *Throw* function generates an error during the contract execution. There may be several *ErrorRedirect* calls. As a result, an *errredir* attribute is returnes with *ErrorID* list of keys and parameters as values.
+
+    .. describe:: ErrorID
+
+        Error identifier.
+
+    .. describe:: PageName
+
+        Name of the redirect page.
+
+    .. describe:: PageParams
+
+        Parameters passed to this page.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -271,116 +565,263 @@ Creates a **button** HTML element. This element creates a button, which sends a 
       Button(Contract: MyContract, Body:My Contract, Class: myclass, Params:"Name=myid,Id=i10,Value")
 
 
-LinkPage(Body, Page, Class, PageParams) [.Style(Style)]
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.. _protypo-LinkPage:
+
+LinkPage
+--------
 
 Creates a **linkpage** element – a link to a page.
- 
-* *Body* - child text or elements,
-* *Page* - page to redirect to,
-* *Class* - classes for this button,
-* *PageParams* - redirection parameters,
 
-**Style** - specifies css styles,
 
-* *Style* - css styles.
+Syntax
+""""""
+
+.. code-block:: text
+
+    LinkPage(Body, Page, Class, PageParams)
+        [.Style(Style)]
+
+
+.. describe:: LinkPage
+
+    .. describe:: Body
+
+        Child elements or text.
+
+    .. describe:: Page
+
+        Page to redirect to.
+
+    .. describe:: Class
+
+        Classes for this button.
+
+    .. describe:: PageParams
+
+        Redirection parameters.
+
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles
+
+Example
+"""""""
 
 .. code:: js
 
       LinkPage(My Page, default_page, mybtn_class)
 
 
-Data Operations
----------------
+.. _protypo-Calculate:
 
-
-And (Parameters)
-""""""""""""""""
-
-This function returns the result of execution of the **and** logical operation with all parameters listed in parentheses and separated by commas. The parameter value will be ``false`` if it equals an empty string (``""``), zero or *false*. In all other cases the parameter value is ``true``. The function returns 1 if true or 0 in all other cases. The element named ``and`` is created only when a tree for editing is requested. 
-
-.. code:: js
-
-      If(And(#myval1#,#myval2#), Span(OK))
-
-
-Calculate(Exp, Type, Prec)
-""""""""""""""""""""""""""
+Calculate
+---------
 
 This function returns the result of an arithmetic expression passed in the **Exp** parameter. The following operations can be used: +, -, \*, /, and parenthesis (). 
 
-* **Exp** - arithmetic expression. Can contain numbers and *#name#* variables.
-* **Type** - result data type: **int, float, money**. If not specified, then the result type will be *float* in case there are numbers with a decimal point, or *int* in all other cases.
-* **Prec** - the number of significant digits after the point can be specified for *float* and *money* types.
+Syntax
+""""""
 
-Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
-Calculate(10000-(34+5)\*#val#)
-Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)      
+.. code-block:: text
+
+    Calculate(Exp, Type, Prec)
+
+.. describe:: Calculate
+
+    .. describe:: Exp
+
+        Arithmetic expression. Can contain numbers and *#name#* variables.
+
+    .. describe:: Type
+
+        Result data type: **int, float, money**. If not specified, then the result type will be *float* in case there are numbers with a decimal point, or *int* in all other cases.
+
+    .. describe:: Prec
+
+        The number of significant digits after the point can be specified for *float* and *money* types.
+
+Example
+"""""""
+
+.. code:: js
+
+    Calculate( Exp: (342278783438+5000)\*(#val#-932780000), Type: money, Prec:18 )
+    Calculate(10000-(34+5)\*#val#)
+    Calculate("((10+#val#-45)\*3.0-10)/4.5 + #val#", Prec: 4)      
 
 
-CmpTime(Time1, Time2)
-"""""""""""""""""""""
+.. _protypo-CmpTime:
 
-This function compares two time values in the same format (preferably, standard format - YYYY-MM-DD HH:MM:SS, but any format can be used provided that the sequence is followed from years to seconds). Returns:
+CmpTime
+-------
+
+This function compares two time values in the same format.
+
+Supports unixtime, ``YYYY-MM-DD HH:MM:SS``, and any arbitrary format, if the sequence is followed from years to seconds, for example ``YYYYMMDD``). 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    CmpTime(Time1, Time2)
+
+
+Return values
+"""""""""""""
 
 * **-1** - Time1 < Time2, 
 * **0** - Time1 = Time2, 
 * **1** - Time1 > Time2.
+
+
+Example
+"""""""
 
 .. code:: js
 
      If(CmpTime(#time1#, #time2#)<0){...}
 
 
-DateTime(DateTime, Format)
-""""""""""""""""""""""""""
+.. _protypo-DateTime:
 
-This function displays time and date in the specified format. 
+DateTime
+--------
 
- *  *DateTime* - time and date in standard format ``2006-01-02T15:04:05``.
- *  *Format* -  format template: ``YY`` 2-digit year format, ``YYYY`` 4-digit year format, ``MM`` - month, ``DD`` - day, ``HH`` - hours, ``MM`` - minutes, ``SS`` – seconds. Example: ``YY/MM/DD HH:MM``. If the format is not specified, the *timeformat* parameter value set in the *languages* table will be used. If this parameter is absent, the ``YYYY-MM-DD HH:MI:SS`` format will be used instead.
+Displays time and date in the specified format. 
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    DateTime(DateTime, Format)
+
+.. describe:: DateTime
+
+    .. describe:: DateTime
+
+        Time and date in unix time or in a standard format ``2006-01-02T15:04:05``.
  
+    .. describe:: Format
+
+        Format template: ``YY`` 2-digit year format, ``YYYY`` 4-digit year format, ``MM`` - month, ``DD`` - day, ``HH`` - hours, ``MM`` - minutes, ``SS`` – seconds. Example: ``YY/MM/DD HH:MM``. 
+
+        If the format is not specified, the *timeformat* parameter value set in the *languages* table will be used. If this parameter is absent, the ``YYYY-MM-DD HH:MI:SS`` format will be used instead.
+
+
+Example
+"""""""
+
  .. code:: js
 
     DateTime(2017-11-07T17:51:08)
     DateTime(#mytime#,HH:MI DD.MM.YYYY)
 
 
-Now(Format, Interval)
-"""""""""""""""""""""
+.. _protypo-Now:
+
+Now
+---
 
 This function returns the current time in the specified format, which by default is the UNIX format (number of seconds elapsed since January 1, 1970). If the requested time format is *datetime*, then date and time are shown as ``YYYY-MM-DD HH:MI:SS``. An interval can be specified in the second parameter (for instance, *+5 days*).
 
-* *Format* - output format with a desired combination of ``YYYY, MM, DD, HH, MI, SS`` or *datetime*,
-* *Interval* - backward or forward time offset.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Now(Format, Interval)
+
+.. describe:: Now
+
+    .. describe:: Format
+
+        Output format with a desired combination of ``YYYY, MM, DD, HH, MI, SS`` or *datetime*.
+
+    .. describe:: Interval
+
+        Time offset, backward or forward in time.
+
+        Example: ``+5 days``.
+
+
+Example
+"""""""
 
 .. code:: js
 
-       Now()
-       Now(DD.MM.YYYY HH:MM)
-       Now(datetime,-3 hours)
+    Now()
+    Now(DD.MM.YYYY HH:MM)
+    Now(datetime,-3 hours)
 
 
-Or(parameters)
-""""""""""""""
+.. _protypo-Money:
 
-This function returns a result of the **IF** logical operation with all parameters specified in parentheses and separated by commas. The parameter value is considered ``false`` if it equals an empty string (``""``), 0 or ``false``. In all other cases the parameter value is considered ``true``. The function returns 1 for true or 0 in all other cases. Element named **or** is created only when the tree for editing is requested. 
+Money
+-----
+
+Returns a string value of ``exp/10^digit``. If *Digit* parameter is not specified, it is taken from the **money_digit** ecosystem parameter.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Money(Exp, Digit)
+
+
+.. describe:: Money
+
+    .. describe:: Exp
+
+        Numeric value as a string.
+
+    .. describe:: Digit
+
+        Exponent of the base 10 in the ``exp/10^digit`` expression. This value can be positive or negative. Positive value determines the number of digits after the comma.
+
+
+Example
+"""""""
 
 .. code:: js
 
-      If(Or(#myval1#,#myval2#), Span(OK))
+    Money(Exp, Digit)
 
 
-Displaying data
----------------
+.. _protypo-Code:
 
-
-Code(Text)
-""""""""""
+Code
+----
 
 Creates a **code** element for displaying the specified code.
-	
-* *Text* - source code, which will be displayed.
+
+This function replaces variables (e.g. ``#name#``) with their values. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Code(Text)
+
+.. describe:: Code
+
+    .. describe:: Text	
+
+        Source code.
+
+Example
+"""""""
 
 .. code:: js
 
@@ -388,17 +829,77 @@ Creates a **code** element for displaying the specified code.
           Span(This is the second line.))
       )  
 
-   
-Chart(Type, Source, FieldLabel, FieldValue, Colors)
-"""""""""""""""""""""""""""""""""""""""""""""""""""
+.. _protypo-CodeAsIs:
+
+CodeAsIs
+--------
+
+Creates a **code** element for displaying the specified code.
+
+This function does not replace variables with their values. For example, ``#name#`` will be displayed as is. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    CodeAsIs(Text)
+
+.. describe:: CodeAsIs
+
+    .. describe:: Text  
+
+        Source code.
+
+Example
+"""""""
+
+.. code:: js
+
+      CodeAsIs( P(This is the #test1#.
+          Span(This is the #test2#.))
+      )
+
+
+.. _protypo-Chart:
+
+Chart
+-----
 
 Creates an HTML diagram.
 
-* *Type* - diagram type,
-* *Source* - name of the data source, for example, from the *DBFind* command,
-* *FieldLabel* - name of the field used for headers,
-* *FieldValue* - name of the field used for values,
-* *Colors* - list of used colors.
+Syntax
+""""""
+
+.. code-block:: text
+
+    Chart(Type, Source, FieldLabel, FieldValue, Colors)
+
+.. describe:: Chart
+
+    .. describe:: Type
+
+        Diagram type.
+
+    .. describe:: Source
+
+        Name of the data source, for example, a source taken from the *DBFind* command.
+
+    .. describe:: FieldLabel
+
+        Name of a field that will be used for headers.
+
+    .. describe:: FieldValue
+
+        Name of a field that will be used for values.
+
+    .. describe:: Colors
+
+        List of used colors.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -410,41 +911,152 @@ Creates an HTML diagram.
       Chart(Type: "bar", Source: mysrc, FieldLabel: "name", FieldValue: "count", Colors: "red, green")
 
 
-ForList(Source, Body)
-"""""""""""""""""""""
+.. _protypo-ForList:
+
+ForList
+-------
 
 Displays a list of elements from the *Source* data source in the template format set out in *Body*, and creates the **forlist** element.
 
-* *Source* - data source from *DBFind* or *Data* functions,
-* *Body* - a template to insert the elements in.
+Syntax
+""""""
+
+.. code-block:: text
+
+    ForList(Source, Index){Body}
+
+.. describe:: ForList
+
+    .. describe:: Source
+
+        Data source from *DBFind* or *Data* functions.
+
+    .. describe:: Index
+
+        Variable for the iteration counter. Count starts from 1.
+
+        This parameter is optional. If it is not specified, the iteration count value is written to the *[Source]_index* variable.
+
+    .. describe:: Body
+
+        A template to insert the elements in.
 
 .. code:: js
 
-      ForList(mysrc){Span(#name#)}
+      ForList(mysrc){Span(#mysrc_index#. #name#)}
 
 
-Image(Src,Alt,Class) [.Style(Style)]
-""""""""""""""""""""""""""""""""""""
+.. _protypo-Hint:
+
+Hint
+----
+
+Creates a **hint** element to display hints.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Hint(Icon,Title,Text)
+
+.. describe:: Hint
+
+    .. describe:: Icon
+
+        Icon name.
+
+    .. describe:: Title
+
+        Hint title.
+
+    .. describe:: Text
+
+        Hint text.
+
+Example
+"""""""
+
+.. code:: js
+
+    Hint(myicon, My Header, This is a hint text)
+
+
+.. _protypo-Image:
+
+Image
+-----
 
 Creates an **image** HTML element.
- 
-* *Src* - image source, file or ``data:...``,
-* *Alt* - alternative text for the image,
-* *Сlass* - list of classes.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Image(Src, Alt, Class)
+        [.Style(Style)]
+
+.. describe:: Image
+
+    .. describe:: Src
+
+        Image source, file or ``data:...``.
+
+    .. describe:: Alt
+
+        Alternative text for the image.
+
+    .. describe:: Сlass
+
+        List of classes.
+
+.. todo::
+
+    Style not documented. What Class does?
+
+
+Example
+"""""""
 
 .. code:: js
 
     Image(\images\myphoto.jpg)    
 
 
-MenuGroup(Title, Body, Icon)
-""""""""""""""""""""""""""""
+.. _protypo-MenuGroup:
 
-Forms a nested submenu in the menu and returns the **menugroup** element. The *name* parameter will also return the value of *Title* before replacement with language resources.
+MenuGroup
+---------
 
-* *Title* - menu item name,
-* *Body* - child elements in submenu,
-* *Icon* - icon.
+Creates a nested submenu in the menu and returns the **menugroup** element. The *name* parameter will also return the value of *Title* before replacement with language resources.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    MenuGroup(Title, Body, Icon)
+
+.. describe:: MenuGroup
+
+    .. describe:: Title
+
+        Menu item name.
+
+    .. describe:: Body
+
+        Child elements in submenu.
+
+    .. describe:: Icon
+
+        Icon.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -454,65 +1066,255 @@ Forms a nested submenu in the menu and returns the **menugroup** element. The *n
       }
 
 
-MenuItem(Title, Page, Params, Icon, Vde)
-""""""""""""""""""""""""""""""""""""""""
+.. _protypo-MenuItem:
+
+MenuItem
+--------
 
 Creates a menu item and returns the **menuitem** element. 
 
-* *Title* - menu item name,
-* *Page* - page to redirect to,
-* *Params* - parameters, passed to the page in the *var:value* format, separated by commas,
-* *Icon* - icon,
-* *Vde* -  is a parameter that defines the transition to a virtual ecosystem. If ``Vde: true``, then the link redirects to VDE; if ``Vde: false``, then the link redirects to the blockchain; if the parameter was not specified, then it is defined based on where the menu was loaded.
+Syntax
+""""""
+
+.. code-block:: text
+
+    MenuItem(Title, Page, Params, Icon, Vde)
+
+.. describe:: MenuItem
+
+    .. describe:: Title
+
+        Menu item name.
+
+    .. describe:: Page
+
+        Page to redirect to.
+
+    .. describe:: Params
+
+        Parameters, passed to the page in the *var:value* format, separated by commas.
+
+    .. describe:: Icon
+
+        Icon.
+
+    .. describe:: Vde
+
+        This parameter that defines the transition to a virtual ecosystem. If ``Vde: true``, then the link redirects to VDE; if ``Vde: false``, then the link redirects to the blockchain; if the parameter was not specified, then it is defined based on where the menu was loaded.
+
+
+Example
+"""""""
 
 .. code:: js
 
        MenuItem(Interface, interface)
 
 
-Table(Source, Columns) [.Style(Style)]
-""""""""""""""""""""""""""""""""""""""
+.. _protypo-QRcode:
+
+QRcode
+------
+
+Returns a *qrcode* element with a QR code for the specified text.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    QRcode(Text)
+
+.. describe:: QRcode
+
+    .. describe:: Text
+
+        Text for the QR code.
+
+Example
+"""""""
+
+.. code:: js
+
+     QRcode(#name#)
+
+
+.. _protypo-Table:
+
+Table
+-----
 
 Creates a **table** HTML element.
 
-* *Source* - data source name as specified, for example, in the *DBFind* command,
-* *Columns* - Headers and corresponding column names, as follows: ``Title1=column1,Title2=column2``.
+Syntax
+""""""
 
-**Style** - specifies css styles,
+.. code-block:: text
 
-* *Style* - css styles.
+    Table(Source, Columns)
+        [.Style(Style)]
+
+.. describe:: Table
+
+    .. describe:: Source
+
+        Data source name as specified, for example, in the *DBFind* command.
+
+    .. describe:: Columns
+
+        Headers and corresponding column names, as follows: ``Title1=column1,Title2=column2``.
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+
+Example
+"""""""
 
 .. code:: js
 
-      DBFind(mytable, mysrc)
-      Table(mysrc,"ID=id,Name=name")
+    DBFind(mytable, mysrc)
+    Table(mysrc,"ID=id,Name=name")
 
 
-Receiving data
---------------
+.. _protypo-Address:
 
-Address (account)
-"""""""""""""""""
+Address
+-------
 
 This function returns the account address in the ``1234-5678-...-7990`` format given the numerical value of the address; if the address is not specified, the address of the current user will be taken as the argument. 
 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Address (account)
+
+.. describe:: Address
+
+    .. describe:: account
+
+        Account identifier.
+
+
+Example
+"""""""
+
 .. code:: js
 
-      Span(Your wallet: Address(#account#))
+    Span(Your wallet: Address(#account#))
 
 
-Data(Source,Columns,Data) [.Custom(Column,Body)]
-""""""""""""""""""""""""""""""""""""""""""""""""
+.. _protypo-AppParam:
 
-Creates element **data** and fills it with specified data and put into the *Source*, that then should be specified in *Table* and other commands resivieng *Source* as the input data. The sequence of column names corresponds to that of *data* entry values.
+AppParam
+--------
+
+Outputs the value of an app parameter. The value is taken from the app_param table of the current ecosystem. If there is a language resource with the given name, then its value will be substituted automatically.
+
+.. todo::
+
+    Resulting or given name?
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    AppParam(App, Name, Index, Source) 
+
+.. describe:: AppParam
  
-* *Source* - data source name. You can specify any name, which will have to be included in other commands later on (ex. *Table*) as a data source,
-* *Columns* - list of columns,
-* *Data* - one data entry per line, divided into columns by commas. Data should be in the same order as set in *Columns*, Entry values can be embraced in double quotes. If you need to use quote marks in the text, use double quotes.
-* **Custom** - allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. Several calculated columns can be assigned. As a rule, these fields are assigned for output to *Table* and other commands that use received data,
- 
-  * *Column* - column name. A unique name should be assigned,
-  * *Body* - a code fragment. You can obtain values from other columns in this entry using ``#columnname#`` and use them in this code fragment.
+    .. describe:: App
+
+        Application identifier.
+
+    .. describe:: Name
+
+        Parameter name.
+
+    .. describe:: Index
+
+        This parameter can be used when the parameter value is a list of items separated by commas.
+
+        Index of a parameter element, starting from 1.  For example if ``type = full,light`` then ``AppParam(1, type, 2)`` returns ``light``.
+
+        This parameter cannot be used with *Source* parameter.
+
+    .. describe:: Source
+
+        This parameter can be used when the parameter value is a list of items separated by commas.
+
+        Creates a *data* object. Elements of this object are values of the specified parameter. The object can be used as a data source in :ref:`protypo-Table` and :ref:`protypo-Select` functions.
+
+        This parameter cannot be used with *Index* parameter.
+
+Example
+"""""""
+
+.. code:: js
+
+     AppParam(1, type, Source: mytype)
+
+
+.. _protypo-Data:
+
+Data
+----
+
+Creates a **data** element and fills it with specified data and put into the *Source*, that then should be specified in *Table* and other commands resivieng *Source* as the input data. The sequence of column names corresponds to that of *data* entry values.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Data(Source,Columns,Data) 
+        [.Custom(Column){Body}]
+
+.. describe:: Data
+
+    .. describe:: Source
+
+        Data source name. You can specify any name, which can be included in other commands later as a data source (e.g. :ref:`protypo-Table`).
+
+    .. describe:: Columns
+
+        List of columns, separated by commas.
+
+    .. describe:: Data
+
+        Data.
+
+        One record per line. Column values must be separated by commas. Data should be in the same order as set in *Columns*.
+
+        For values with commas, put the value in double quotes (``"example1, example2", 1, 2``).
+        For values with quotes, put the value in double double quotes (``"""example", "example2""", 1, 2``).
+
+.. describe:: Custom
+
+    Allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. These fields are usually assigned for output to *Table* and other commands that use received data.
+
+    If you want to assign several calculated columns, use multiple *Custom* tail functions.
+
+    .. describe:: Column
+
+        Column name. A unique name must be assigned.
+  
+    .. describe:: Body
+
+        A code fragment. You can obtain values from other columns in this entry using ``#columnname#``, and then use these values in the code fragment.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -523,29 +1325,140 @@ Creates element **data** and fills it with specified data and put into the *Sour
      }.Custom(link){Button(Body: View, Class: btn btn-link, Page: user, PageParams: "id=#id#"}    
 
 
-DBFind(table, Source) [.Columns(columns)] [.Where(conditions)] [.WhereId(id)] [.Order(name)] [.Limit(limit)] [.Offset(offset)] [.Ecosystem(id)] [.Custom(Column,Body)][.Vars(Prefix)]
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.. _protypo-DBFind:
 
-Creates the **dbfind** element, fills it with data from the *table* table, and puts it to the *Source* structure. The *Source* structure can be then used in *Table* and other commands that receive *Source* as input data. The sequence of records in *data* should correspond to the sequence of column names.
+DBFind
+------
 
-* *Name* - table name,
-* *Source* - arbitrary data source name,
+Creates a **dbfind** element, fills it with data from the *table* table, and puts it to the *Source* structure. The *Source* structure can be then used in *Table* and other commands that receive *Source* as input data. The sequence of records in *data* must correspond to the sequence of column names.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    DBFind(table, Source)
+        [.Columns(columns)]
+        [.Where(conditions)]
+        [.WhereId(id)]
+        [.Order(name)]
+        [.Limit(limit)]
+        [.Offset(offset)]
+        [.Count(countvar)]
+        [.Ecosystem(id)]
+        [.Cutoff(columns)]
+        [.Custom(Column){Body}]
+        [.Vars(Prefix)]
+
+.. describe:: DBFind
+
+    .. describe:: table
+
+        Table name.
+
+    .. describe:: Source
+
+        Data source name.
  
-* **Columns** - list of columns to be returned. If not specified, all columns will be returned. If there are columns of JSON type, you can address the record fields using the following syntax: **columnname->fieldname**. In this case, the resulting column name will be **columnname.fieldname**.
-* **Where** - data search condition, for example, ``.Where(name = '#myval#')``. If there are columns of JSON type, you can address record fields using the following syntax: **columnname->fieldname**,
-* **WhereId** - search by ID. For example, ``.WhereId(1)``,
-* **Order** - sort by this field,
-* **Limit** - number of returned rows. Default value = 25, maximum value = 250,
-* **Offset** - offset of returned rows,
-* **Ecosystem** - ecosystem ID. By default, data is taken from the specified table in the current ecosystem,
-* **Custom** - allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. You can assign any number of calculated columns. As a rule, these fields are assigned for output to *Table* and other commands that use received data,
- 
-  * *Column* - column name. A unique name should be assigned,
-  * *Body* - a code fragment. You can obtain values from other columns in this entry using **#columnname#** and use them in this code fragment.
+.. describe:: Columns
+
+    .. describe:: columns
+
+        List of columns to be returned. If not specified, all columns will be returned. If there are columns of JSON type, you can address the record fields using the following syntax: **columnname->fieldname**. In this case, the resulting column name will be **columnname.fieldname**.
+
+
+.. describe:: Where
+
+
+    .. describe:: conditions
+
+        Data search conditions. For example, ``.Where(name = '#myval#')``. 
+
+        If there are columns of JSON type, you can address record fields using the following syntax: **columnname->fieldname**.
+
+
+.. describe:: WhereId
+
+    Search by ID. For example, ``.WhereId(1)``.
+
+    .. describe:: id
+        
+        Record identifier.
+
+.. describe:: Order
+
+    Sorting by field.
+
+    For more information about sorting syntax, see :ref:`simvolio-DBFind`.
+    
+    .. describe:: name
+
+        Field name.
+
+.. describe:: Limit
+
+    .. describe:: limit
+
+        Number of returned rows. Default value is 25, maximum value is 250.
+
+.. describe:: Offset
+
+    .. describe:: offset
+
+        Offset for returned rows.
+
+.. describe:: Count
+
+        Total number of rows for the specified *Where* condition.
+
+        In addition to being stored in a variable, the total count is also returned in the *count* parameter of the *dbfind* element.
+
+        If *Where* and *WhereID* were not specified, then the total number of rows in a table will be returned. 
+
+        .. describe:: countvar
+
+            Name of a variable that will hold the row count.
+
+.. describe:: Ecosystem
+
+    .. describe:: id
+        
+        Ecosystem ID. By default, data is taken from the specified table in the current ecosystem.
+
+.. describe:: Cutoff
+
+    Is used for trimming and displaying a large volume of text data.
+
+    .. describe:: columns
+
+        List of columns separated by commas that must be processed by the *Cutoff* tail function.
+
+        As a result, column value is replaced by a JSON obkect with two fields: *link* and *title*. If the value in a column is longer than 32 symbols, then a link to a full text and first 32 symbols are returned. If the value is 32 symbols and shorter, then the link is empty, and the title holds the full column value.
+
+.. describe:: Custom
+
+    Allows for assigning calculated columns for data. For example, you can specify a template for buttons and additional page layout elements. These fields are usually assigned for output to *Table* and other commands that use received data.
+
+    If you want to assign several calculated columns, use multiple *Custom* tail functions.
+
+    .. describe:: Column
+
+        Column name. A unique name must be assigned.
   
-  * **Vars** - the function generates a set of variables with values from the database table, obtained from this query. When specifying this function, the *Limit* parameter automatically becomes equal to 1 and only one record is returned,
+    .. describe:: Body
 
-* *Prefix* - prefix function is used to generate names for variables, to which the values of the resulting row are saved: variables are of format *#prefix_id#, #prefix_name#*, where the column name follows the underscore sign. If there are columns containing JSON fields, then the resulting variable will be of the following format **#prefix_columnname_field#**.
+        A code fragment. You can obtain values from other columns in this entry using ``#columnname#``, and then use these values in the code fragment.
+  
+.. describe:: Vars
+
+    Generates a set of variables with values from the first row obtained by the query. When specifying this function, the *Limit* parameter automatically becomes equal to 1 and only one record is returned.
+
+    .. describe:: Prefix
+
+        Prefix that is added to variable names. The format is *#prefix_columnname#*, where the column name follows the underscore sign. If there are columns containing JSON fields, then the resulting variable will be in the following format *#prefix_columnname_field#*.
+
+Example
+-------
 
 .. code:: js
 
@@ -555,15 +1468,39 @@ Creates the **dbfind** element, fills it with data from the *table* table, and p
        Strong(Em(#name#))Div(myclass, #company#)
     }
 
+.. _protypo-EcosysParam:
 
-EcosysParam(Name, Index, Source)
-""""""""""""""""""""""""""""""""
+EcosysParam
+-----------
 
 This function gets a parameter value from the parameters table of the current ecosystem. If there is a language resource for the resulting name, it will be translated accordingly.
- 
-* *Name* - value name,
-* *Index* - in cases where the requested parameter is a list of elements separated by commas, you can specify an index starting from 1. For example, if ``gender = male,female``, then ``EcosysParam(gender, 2)`` will return *female*,  
-* *Source* - you can receive the parameter values separated by commas as a *data* object. After that you will be able to specify this list as a data source for both *Table* and *Select*. If you specify this parameter, then the function will return a list as a *Data* object, not a separate value.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    EcosysParam(Name, Index, Source)
+
+.. describe:: EcosysParam
+
+    .. describe:: Name
+     
+        Parameter name.
+
+    .. describe:: Index
+
+        In cases where the requested parameter is a list of elements separated by commas, you can specify an index starting from 1. For example, if ``gender = male,female``, then ``EcosysParam(gender, 2)`` will return ``female``.
+
+        This parameter cannot be used with *Source* parameter.
+
+    .. describe:: Source
+
+        This parameter can be used when the parameter value is a list of items separated by commas.
+
+        Creates a *data* object. Elements of this object are values of the specified parameter. The object can be used as a data source in :ref:`protypo-Table` and :ref:`protypo-Select` functions.
+
+        This parameter cannot be used with *Index* parameter.
 
 .. code:: js
 
@@ -574,13 +1511,192 @@ This function gets a parameter value from the parameters table of the current ec
      Select(Name: gender, Source: src_gender, NameColumn: name, ValueColumn: id)
 
 
-LangRes(Name, Lang)
-"""""""""""""""""""
+.. _protypo-GetHistory:
 
-Returns a specified language resource. In case of request to a tree for editing it returns the ``$langres$`` element.
+GetHistory
+----------
 
-* *Name* - name of language resource,
-* *Lang* - two-character language identifier, by default, returned is the language defined in request to *Accept-Language*. You can specify your own two-character language identifier. lcid identifiers can be specified, for example, *en-US,en-GB*. In this case, if the requested values will not be found, for example, for *en-US*, then the language resource will be looked for in *en*.
+Creates a **gethistory** element and popuates it with the history of changes of a record from the specified table. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
+
+The resulting list is sorted in the order from recent changes to earlier ones.
+
+The *id* field in the resulting table points to the id in the *rollback_tx* table. The *block_id* field contains the block number. The *block_time* field contains the block timestamp.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetHistory(Source, Name, Id, RollbackId)  
+
+.. describe:: GetHistory
+
+    .. describe:: Source
+
+        Name for the data source.
+
+    .. describe:: Name
+
+        Table name.
+
+    .. describe:: Id
+
+        Identifier of a record.
+
+    .. describe:: RollbackId
+
+        Optional parameter. If specified, only one record with the specified identifier will be returned from the *rollback_tx* table.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    GetHistory(blocks, BlockHistory, 1)
+
+.. _protypo-GetColumnType:
+
+GetColumnType
+-------------
+
+Returns the type of a column in a specified table.
+
+Following column types can be returned: *text, varchar, number, money, double, bytes, json, datetime, double*.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    GetColumnType(Table, Column)
+
+
+.. describe:: GetColumnType
+
+    .. describe:: Table
+
+        Table name.
+
+    .. describe:: Column
+
+        Column name.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    SetVar(coltype,GetColumnType(members, member_name))Div(){#coltype#}
+
+
+.. _protypo-JsonToSource:
+
+JsonToSource
+------------
+
+Creates a **jsontosource** element and populates it with *key* - *value* pairs that were passed in a JSON oblect. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
+
+The records in the resulting data is sorted by JSON keys, in alphabetical order. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    JsonToSource(Source, Data)
+
+
+.. describe:: JsonToSource
+    
+    .. describe:: Source
+
+        Data source name.
+
+    .. describe:: Data
+
+        A JSON oblect or a name of a variable (``#name#``)that holds a JSON array.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   JsonToSource(src, #myjson#)
+   JsonToSource(dat, {"param":"value", "param2": "value 2"})
+
+.. _protypo-ArrayToSource:
+
+ArrayToSource
+-------------
+
+Creates an **arraytosource** element and populates it with *key* - *value* pairs that were passed in a JSON array. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`).
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ArrayToSource(Source, Data)
+
+.. describe:: ArrayToSource
+    
+    .. describe:: Source
+
+        Data source name.
+
+    .. describe:: Data
+
+        A JSON array or a name of a variable (``#name#``) that holds a JSON array.
+
+
+Example
+"""""""
+
+.. code:: js
+
+   ArrayToSource(src, #myjsonarr#)
+   ArrayToSource(dat, [1, 2, 3])
+
+
+.. _protypo-LangRes:
+
+LangRes
+-------
+
+Returns a specified language resource. In case of request to a tree for editing it returns the **langres** element. A short notation in the ``$langres$`` format can be used.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+    
+    LangRes(Name, Lang)
+
+.. describe:: LangRes
+
+
+    .. describe:: Name
+
+        Name of language resource.
+
+    .. describe:: Lang
+
+        Two-character language identifier.
+
+        By default, the language defined in the *Accept-Language* request is returned. 
+
+        Lcid identifiers can be specified, for example, *en-US,en-GB*. In this case, if the requested values will not be found, for example, for *en-US*, then the language resource will be looked for in *en*.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -588,92 +1704,308 @@ Returns a specified language resource. In case of request to a tree for editing 
       LangRes(myres, fr)     
 
 
-SysParam(Name) 
-""""""""""""""
+.. _protypo-Range:
+
+Range
+-----
+
+Creates a **range** element and fills it with integer values from *From* to *To* (*To* is not included) with a *Step* step. The resulting data is put into the *Source* element, which can later be used in functions that use source inputs (such as :ref:`protypo-Table`). Values are written to the *id* column. If invalid parameters are specified, an empty *Source* is returned.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Range(Source,From,To,Step)
+
+.. describe:: Range
+
+    .. describe:: Source
+
+        Data source name.
+
+    .. describe:: From
+
+        Starting value (i = From).
+
+    .. describe:: To
+
+        End value (i < To).
+
+    .. describe:: Step
+
+        Value change step. If this parameter is not specified a value of 1 is used.
+
+
+Example
+"""""""
+
+.. code:: js
+
+     Range(my,0,5)
+     SetVar(from, 5).(to, -4).(step,-2)
+     Range(Source: neg, From: #from#, To: #to#, Step: #step#)
+
+
+.. _protypo-SysParam:
+
+SysParam
+--------
 
 Displays the value of a system parameter from the system_parameters table. 
 
-* *Name* - parameter name.
+
+Syntax
+""""""
+
+.. code-block:: text
+    
+    SysParam(Name) 
+
+.. describe:: SysParam
+
+    .. describe:: Name
+
+        Parameter name.
+
+
+Example
+"""""""
 
 .. code:: js
 
      Address(SysParam(founder_account))
 
 
-TransactionInfo(Hash)
-"""""""""""""""""""""
+.. _protypo-Binary:
+
+Binary
+------
+
+Returns a link to a static file that is stored in the *binaries* table.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Binary(Name, AppID, MemberID)[.ById(ID)][.Ecosystem(ecosystem)]
+ 
+.. describe:: Binary
+
+    .. describe:: Name
+
+        File name.
+
+    .. describe:: AppID
+
+        Application identifier.
+
+    .. describe:: MemberID
+
+        Account identifier. The default value is 0.
+
+    .. describe:: ID
+
+        Static file identifier.
+
+    .. describe:: ecosystem
+
+        Ecosystem identifier. If this parameter is not specified, binary file is requested from the current ecosystem.
+
+Example
+"""""""
+
+.. code:: js
+
+     Image(Src: Binary("my_image", 1))
+     Image(Src: Binary().ById(2))
+     Image(Src: Binary().ById(#id#).Ecosystem(#eco#))
+
+.. _protypo-TransactionInfo:
+
+TransactionInfo
+---------------
 
 The function searches a transaction by the specified hash and returns information about the executed contract and its parameters.
 
-* *hash* - transaction hash in a hex string format.
+Syntax
+""""""
+
+.. code-block:: text
+
+    TransactionInfo(Hash)
+
+.. describe:: TransactionInfo
+
+
+    .. describe:: Hash
+
+        Transaction hash in a hex string format.
+
+
+Return value
+""""""""""""
 
 The function returns a string in the json format: 
 
   ``{"contract":"ContractName", "params":{"key": "val"}, "block": "N"}``
 
 Above,  
+
   * *contract* - contract name
   * *params* - parameters passed to the contract
   * *block* - block ID where this transaction was processed.
+
+Example
+"""""""
 
 .. code:: js
 
     P(TransactionInfo(#hash#))
 
 
-Elements of data formatting
----------------------------
+.. _protypo-Div:
 
-
-Div(Class, Body) [.Style(Style)] [.Show(Condition)] [.Hide(Condition)]
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Div
+---
 
 Creates a **div** HTML element.
 
-* *Class* - classes for this *div*,
-* *Body* - child elements.
+Syntax
+""""""
 
-**Style** - serves for specifying css styles,
+.. code-block:: text
 
-  * *Style* - css styles.
+    Div(Class, Body)
+        [.Style(Style)]
+        [.Show(Condition)]
+        [.Hide(Condition)]
 
-**Show** - defines conditions to show this block.
+.. describe:: Div
 
-  * *Condition* - see below.
 
-**Hide** - defines conditions to hide this block.
+    .. describe:: Class
 
-  * *Condition* - sequence of ``InputName=Value`` expressions. *Condition* is true when all expressions that it contains are true. An expression is true when ``InputName`` input has the ``Value`` text. If several *Show* or *Hide* calls are specified, then at least one of the *Condition* parameters must be true.
+        Classes for this *div*.
+
+    .. describe:: Body
+
+        Child elements.
+
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+
+.. describe:: Show
+
+    Defines conditions to show this block.
+
+  .. describe:: Condition
+
+    See *Hide* below.
+
+
+.. describe:: Hide
+
+    Defines conditions to hide this block.
+
+    .. describe:: Condition
+
+    Sequence of ``InputName=Value`` expressions. *Condition* is true when all expressions that it contains are true. An expression is true when ``InputName`` input has the ``Value`` text. If several *Show* or *Hide* calls are specified, then at least one of the *Condition* parameters must be true.
+
+
+Example
+"""""""
 
 .. code:: js
 
     Div(class1 class2, This is a paragraph.).Show(inp1=test,inp2=none)
 
 
-Em(Body, Class)
-"""""""""""""""
+.. _protypo-Em:
+
+Em
+--
 
 Creates an **em** HTML element.
 
-* *Body* - child text or elements,
-* *Class* - classes for this *em*.
+.. todo::
+
+    Style tail function?
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Em(Body, Class)
+
+.. describe:: Em
+
+
+    .. describe:: Body
+
+        Сhild text or elements.
+
+    .. describe:: Class
+
+        Classes for this *em*.
+
+Example
+"""""""
 
 .. code:: js
 
       This is an Em(important news).
 
- 
-P(Body, Class)
-""""""""""""""
+
+.. _protypo-P:
+
+P
+-
 
 Creates a **p** HTML element.
 
-* *Body* - child text or elements,
-* *Class* - classes for this *p*,
+Syntax
+""""""
 
-**Style** - specifies css styles,
+.. code-block:: text
 
-* *Style* - css styles.
+    P(Body, Class) 
+        [.Style(Style)]
+
+.. describe:: P
+
+    .. describe:: Body
+
+        сhild text or elements.
+
+    .. describe:: Class
+
+        classes for this *p*.
+
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -681,118 +2013,302 @@ Creates a **p** HTML element.
         This is the second line.)
 
 
-SetTitle(Title)
-"""""""""""""""
+.. _protypo-SetTitle:
 
-Sets the page title. The element **settitle** will be created.
+SetTitle
+--------
 
-* *Title* - page title.
+Sets the page title. The element **settitle** IS be created.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    SetTitle(Title)
+
+.. describe:: SetTitle
+
+    .. describe:: Title
+
+        Page title.
+
+Example
+"""""""
 
 .. code:: js
 
      SetTitle(My page)	
 
 
-Label(Body, Class, For) [.Style(Style)]
-"""""""""""""""""""""""""""""""""""""""
+.. _protypo-Label:
+
+Label
+-----
 
 Creates a **label** HTML element.
 
-* *Body* - child text or elements,
-* *Class* - classes for this *label*,
-* *For* - this label's *for* value,
+Syntax
+""""""
 
-**Style** - serves for specifying css styles,
+.. code-block:: text
 
-* *Style* - css styles.
+    Label(Body, Class, For)
+        [.Style(Style)]
+
+.. describe:: Label
+
+
+    .. describe:: Body
+
+        Child text or elements.
+
+    .. describe:: Class
+
+        Classes for this *label*.
+
+    .. describe:: For
+
+        This label's *for* value.
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+Example
+"""""""
 
 .. code:: js
 
       Label(The first item).	
 
+.. _protypo-Span:
 
-Span(Body, Class) [.Style(Style)]
-"""""""""""""""""""""""""""""""""
+Span
+----
 
 Creates a **span** HTML element.
 
-* *Body* - child class or elements,
-* *Class* - classes for this *span*,
+Syntax
+""""""
 
-**Style** - specifies css styles,
+.. code-block:: text
 
-* *Style* - css styles.
+    Span(Body, Class)
+        [.Style(Style)]
+
+.. describe:: Span
+
+    .. describe:: Body
+        
+        Child class or elements.
+    
+    .. describe:: Class
+    
+        Classes for this *span*.
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+Example
+"""""""
 
 .. code:: js
 
       This is Span(the first item, myclass1).
 
 
-Strong(Body, Class)
-"""""""""""""""""""
+.. _protypo-Strong:
+
+Strong
+------
 
 Creates a **strong** HTML element.
 
-* *Body* - child text or elements,
-* *Class* - classes for this *strong*.
+Syntax
+""""""
+
+.. code-block:: text
+
+    Strong(Body, Class)
+
+.. describe:: Strong
+
+    .. describe:: Body
+        
+        Child class or elements.
+    
+    .. describe:: Class
+    
+        Classes for this *strong*.
+
+Example
+"""""""
 
 .. code:: js
 
       This is Strong(the first item, myclass1).
 
 
-Elements of forms
------------------
+.. _protypo-Form:
 
-
-Form(Class, Body) [.Style(Style)]
-"""""""""""""""""""""""""""""""""
+Form
+----
 
 Creates a **form** HTML element.
 
-* *Class* - classes for this *form*,
-* *Body* - child elements.
 
-**Style** - specifies css styles.
+Syntax
+""""""
 
-* *Style* - css styles.
+.. code-block:: text
+
+    Form(Class, Body) [.Style(Style)]
+
+
+.. describe:: Form
+
+    .. describe:: Body
+        
+        Child class or elements.
+    
+    .. describe:: Class
+    
+        Classes for this *form*.
+
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+
+Example
+"""""""
 
 .. code:: js
 
       Form(class1 class2, Input(myid))
 
 
-ImageInput(Name, Width, Ratio, Format) 
-""""""""""""""""""""""""""""""""""""""
+.. _protypo-ImageInput:
 
-This function creates an **imageinput** element for image upload. In the third parameter you can specify either image height or aspect ratio to apply: *1/2*, *2/1*, *3/4*, etc. The default width is 100 pixels with *1/1* aspect ratio.
+ImageInput
+----------
 
-* *Name* - element name,
-* *Width* - width of cropped image,
-* *Ratio* - aspect ratio (width to height) or height of the image,
-* *Format* - format of the uploaded image,
+Creates an **imageinput** element for image upload. In the third parameter you can specify either image height or aspect ratio to apply: *1/2*, *2/1*, *3/4*, etc. The default width is 100 pixels with *1/1* aspect ratio.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    ImageInput(Name, Width, Ratio, Format) 
+
+.. describe:: ImageInput
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Width
+
+        Width of the cropped image.
+
+    .. describe:: Ratio
+
+        Aspect ratio (width to height) or height of the image.
+
+    .. describe:: Format
+
+        Format of the uploaded image.
+
+
+Example
+"""""""
 
 .. code:: js
 
    ImageInput(avatar, 100, 2/1)    
 
 
-Input(Name,Class,Placeholder,Type,Value) [.Validate(validation parameters)] [.Style(Style)]
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.. _protypo-Input:
+
+Input
+-----
 
 Creates an **input** HTML element.
 
-* *Name* - element name,
-* *Class* - classes for the *input*,
-* *Placeholder* - *placeholder* for the *input*,
-* *Type* - *input* type,
-* *Value* - element value.
+Syntax
+""""""
 
-**Validate** - validation parameters.
+.. code-block:: text
 
-**Style** - serves for specifying css styles.
+    Input(Name, Class, Placeholder, Type, Value, Disabled)
+        [.Validate(validation parameters)]
+        [.Style(Style)]
 
-* *Style* - css styles.
+.. describe:: Input
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Class
+
+        Classes for this *input*.
+
+    .. describe:: Placeholder
+
+        The *placeholder* element for this *input*.
+
+    .. describe:: Type
+
+        Type of the *input*.
+
+    .. describe:: Value
+
+        Element value.
+
+    .. describe:: Disabled
+
+        If the *input* is disabled or not.
+
+        .. todo::
+
+            Values? Like HTML?
+
+.. describe:: Validate
+
+    Validation parameters.
+
+    .. todo::
+
+        Syntax?
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+Example
+"""""""
 
 .. code:: js
 
@@ -800,12 +2316,38 @@ Creates an **input** HTML element.
       Input(Name: num, Type: text).Validate(minLength: 6, maxLength: 20)
 
 
-InputErr(Name,validation errors)]
-"""""""""""""""""""""""""""""""""
+.. _protypo-InputErr:
+
+InputErr
+--------
 
 Creates an **inputerr** element with validation error texts.
 
-* *Name* - name of the corresponding **Input** element.
+.. todo::
+
+    How this is used?
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    InputErr(Name,validation errors)]
+
+.. describe:: InputErr
+
+    .. describe:: Name
+
+        Name of the corresponding :ref:`protypo-Input` element.
+
+    .. describe:: validation errors
+
+        One or more parameters for validation error messages.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -814,64 +2356,268 @@ Creates an **inputerr** element with validation error texts.
           maxLength: The length of the value must be less than 20 characters)
 	  
 
-RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) [.Validate(validation parameters)] [.Style(Style)]
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. _protypo-RadioGroup:
+
+RadioGroup
+----------
 
 Creates a **radiogroup** element.
 
-* *Name* - element name,
-* *Source* - data source name from *DBFind* or *Data* functions,
-* *NameColumn* - column name to use a source of element names,
-* *ValueColumn* - column name to use a source of element values. Columns created using Custom should not be used in this parameter,
-* *Value* - default value,
-* *Class* - classes for the element,
+Syntax
+""""""
 
-**Validate** - validation parameters,
+.. code-block:: text
 
-**Style** - specification of css styles,
- 
-* *Style* - css styles.
+    RadioGroup(Name, Source, NameColumn, ValueColumn, Value, Class) 
+        [.Validate(validation parameters)] 
+        [.Style(Style)]
+
+.. describe:: RadioGroup
+
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Source
+
+        Data source name from :ref:`protypo-DBFind` or :ref:`protypo-Data` functions.
+
+    .. describe:: NameColumn
+
+        Column name to use as a source of element names.
+
+    .. describe:: ValueColumn
+
+        Column name to use as a source of element values. 
+
+        Columns created using :ref:`Custom <protypo-Data>` must not be used in this parameter.
+
+    .. describe:: Value
+
+        Default value.
+
+    .. describe:: Class
+
+        Classes for the element.
+
+.. describe:: Validate
+
+    Validation parameters.
+
+    .. todo::
+
+        Syntax?
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+
+Example
+"""""""
 
 .. code:: js
 
-      DBFind(mytable, mysrc)
-      RadioGroup(mysrc, name)	  
+    DBFind(mytable, mysrc)
+    RadioGroup(mysrc, name)	  
 
 
-Select(Name, Source, NameColumn, ValueColumn, Value, Class) [.Validate(validation parameters)] [.Style(Style)]
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. _protypo-Select:
+
+Select
+------
 
 Creates a **select** HTML element.
 
-* *Name* - element name,
-* *Source* - data source name. For example, *DBFind* or *Data*,
-* *NameColumn* - column from which the element names will be taken,
-* *ValueColumn* - column from which the element values will be taken. Columns created using Custom should not be specified in this parameter,
-* *Value* - default value,
-* *Class* - element classes,
+Syntax
+""""""
 
-**Validate** - validation parameters,
+.. code-block:: text
 
-**Style** - specification of css styles,
+    Select(Name, Source, NameColumn, ValueColumn, Value, Class) 
+        [.Validate(validation parameters)]
+        [.Style(Style)]
 
-* *Style* - css styles.
+
+.. describe:: Select
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Source
+
+        Data source name from :ref:`protypo-DBFind` or :ref:`protypo-Data` functions.
+
+    .. describe:: NameColumn
+
+        Column name to use as a source of element names.
+
+    .. describe:: ValueColumn
+
+        Column name to use as a source of element values. 
+
+        Columns created using :ref:`Custom <protypo-Data>` must not be used in this parameter.
+
+    .. describe:: Value
+
+        Default value.
+
+    .. describe:: Class
+
+        Classes for the element.
+
+.. describe:: Validate
+
+    Validation parameters.
+
+    .. todo::
+
+        Syntax?
+
+.. describe:: Style
+
+    Specifies CSS styles.
+
+    .. describe:: Style
+
+        CSS styles.
+
+Example
+"""""""
 
 .. code:: js
 
-      DBFind(mytable, mysrc)
-      Select(mysrc, name) 
+    DBFind(mytable, mysrc)
+    Select(mysrc, name) 
 
 
-Operations with code
---------------------
+.. _protypo-InputMap:
 
-If(Condition){ Body } [.ElseIf(Condition){ Body }] [.Else{ Body }]
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+InputMap
+--------
 
-Conditional statement. Returned are child elements of the first ``If`` or ``ElseIf`` with fulfilled ``Condition``. Otherwise, returned are child elements of ``Else``, if it exists.
+Creates a text input field for an address. Provides an ability to select coordinates on a map.
 
-* *Condition* - a condition is considered non-fulfilled if it equals an *empty string*, *0* or *false*. In other cases the condition is considered true.
-* *Body* - child elements.
+Syntax
+""""""
+
+.. code-block:: text
+
+    InputMap(Name, Type, MapType, Value)
+
+.. describe:: InputMap
+
+
+    .. describe:: Name
+
+        Element name.
+
+    .. describe:: Value
+
+        Default value.
+
+        This value is an object in the string format. For example, ``{"coords":[{"lat":number,"lng":number},]}`` or ``{"zoom":int, "center":{"lat":number,"lng":number}}``. The *address* field can be used to save the address value for cases when InputMap is created with a predefined *Value*, so that address field is not empty.
+
+    .. describe:: Type
+
+        Use ``polygon`` value for this parameter.
+
+    .. describe:: MapType
+
+        Map type.
+
+        This parameter can have the following values: ``hybrid``, ``roadmap``, ``satellite``, ``terrain``.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    InputMap(Name: Coords,Type: polygon, MapType: hybrid, Value: `{"zoom":8, "center":{"lat":55.749942860682545,"lng":37.6207172870636}}`)
+
+
+.. _protypo-Map:
+
+Map
+---
+
+Creates a visual representation of a map and displays coordinates in an arbitrary format.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Map(Hmap, MapType, Value)
+
+.. describe:: Map
+
+    .. describe:: Hmap
+
+        HTML element height on a page.
+
+        The default value is 100.
+
+    .. describe:: Value
+
+        Map value, an object in the string format.
+
+        For example: ``{"coords":[{"lat":number,"lng":number},]}`` or ``{"zoom":int, "center":{"lat":number,"lng":number}}``. If ``center`` is not specified, then map window will be automatically adjusted for the specified coordinates.
+
+    .. describe:: MapType
+
+        Map type.
+
+        This parameter can have the following values: ``hybrid``, ``roadmap``, ``satellite``, ``terrain``.
+
+
+Example
+"""""""
+
+.. code:: js
+
+      Map(MapType:hybrid, Hmap:400, Value:{"coords":[{"lat":55.58774531752405,"lng":36.97260184619233},{"lat":55.58396161622043,"lng":36.973803475831005},{"lat":55.585222890513975,"lng":36.979811624024364},{"lat":55.58803635636347,"lng":36.978781655762646}],"area":146846.65783403456,"address":"Unnamed Road, Moscow, Russia, 143041"})
+
+
+.. _protypo-If:
+
+If
+--
+
+Conditional statement. 
+
+Child elements of the first *If* or *ElseIf* with fulfilled *Condition* are returned. Otherwise, child elements of *Else* are returned.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    If(Condition){ Body } 
+        [.ElseIf(Condition){ Body }]
+        [.Else{ Body }]
+
+.. describe:: If
+
+    .. describe:: Condition
+
+    A condition is considered to be not fulfilled if it equals an *empty string*, *0* or *false*. In all other cases the condition is considered fulfilled.
+
+    .. describe:: Body
+
+        Child elements.
+
+Example
+"""""""
 
 .. code:: js
 
@@ -883,12 +2629,82 @@ Conditional statement. Returned are child elements of the first ``If`` or ``Else
       }
 
 
-Include(Name)
-"""""""""""""
+.. _protypo-And:
 
-This command inserts a template with name *Name* in the code of a page. 
+And
+---
 
-* *Name* - name of the block.
+This function returns the result of execution of the **and** logical operation with all parameters listed in parentheses and separated by commas. The parameter value will be ``false`` if it equals an empty string (``""``), zero or *false*. In all other cases the parameter value is ``true``. The function returns 1 if true or 0 in all other cases. The element named ``and`` is created only when a tree for editing is requested. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    And(parameters)
+
+
+Example
+"""""""
+
+.. code:: js
+
+      If(And(#myval1#,#myval2#), Span(OK))
+
+
+.. _protypo-Or:
+
+
+Or
+--
+
+Returns a result of the **IF** logical operation with all parameters specified in parentheses and separated by commas. The parameter value is considered ``false`` if it equals an empty string (``""``), 0 or ``false``. In all other cases the parameter value is considered ``true``. The function returns 1 for true or 0 in all other cases. Element named **or** is created only when the tree for editing is requested. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Or(parameters)
+
+
+Example
+"""""""
+
+.. code:: js
+
+      If(Or(#myval1#,#myval2#), Span(OK))
+
+
+
+.. _protypo-Include:
+
+Include
+-------
+
+Inserts a template with a specified name to the page code. 
+
+.. todo::
+
+    How this is used?
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Include(Name)
+
+.. describe:: Include
+
+    .. describe:: Name
+
+    Template name.
+
+
+Example
+"""""""
 
 .. code:: js
 
@@ -897,7 +2713,6 @@ This command inserts a template with name *Name* in the code of a page.
 
 Styles for mobile app
 =====================
-
 
 Typography
 ----------
