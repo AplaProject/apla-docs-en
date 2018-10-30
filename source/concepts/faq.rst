@@ -39,7 +39,7 @@ FAQ
 
 #. Who can maintain a validating node?
 
-    - Any network node with sufficient processing power and fault tolerance can become a validating node. A node can become a validating node based on voting of ecosystems, but only ecosystems that are proved by investors as genuinely functioning (by platform tokens owners) can participate in such voting. Therefore, platform network implements a new consensus algorithm – Delegated Proof of Value of Ecosystems (DPoVE). With this algorithm it is most likely that the validating nodes will be run by major ecosystems, since it is in their best interest to maintain the network operation.
+    - Any network node with sufficient processing power and fault tolerance can become a validating node. |platform| uses a Proof of Authority (PoA) consensus, where a node can become a validating node based on the voting of ecosystems. Only those ecosystems that are proved by investors as genuinely functioning (by platform token owners) can participate in such votings. With this algorithm it is most likely that the validating nodes will be run by major ecosystems, since it is in their best interest to maintain the network operation.
 
 #. What are platform ecosystems?
 
