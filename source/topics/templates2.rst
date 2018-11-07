@@ -257,6 +257,7 @@ Receiving data
     :columns: 3
 
     - :ref:`protypo-Address`
+    - :ref:`protypo-AddressToId`
     - :ref:`protypo-AppParam`
     - :ref:`protypo-Data`
     - :ref:`protypo-DBFind`
@@ -347,6 +348,36 @@ Example
 .. code:: js
 
     Span(Your wallet: Address(#account#))
+
+
+.. _protypo-AddressToId:
+
+AddressToId
+-----------
+
+Returns the account identifier for the specified account address in the ``1234-5678-...-7990`` format.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    AddressToId(Wallet)
+
+
+.. describe:: AddressToId
+
+    .. describe:: Wallet
+
+        Account address in the ``XXXX-...-XXXX`` format or as a number.
+
+
+Example
+"""""""
+
+.. code:: js
+
+  AddressToId(#wallet#)
 
 
 
