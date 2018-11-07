@@ -3068,8 +3068,6 @@ UpdateNotifications
 
 Obtains a list of notifications for the specified keys from the database, and sends the obtained notifications to Centrifugo.
 
-The list of notifications is taken from the blocks that are already processed.
-
 
 Syntax
 """"""
@@ -3103,8 +3101,6 @@ UpdateRolesNotifications
 ------------------------
 
 Obtains a list of notifications for all keys with specified role identifiers from the database, and sends the obtained notifications to Centrifugo.
-
-The list of notifications is taken from the blocks that are already processed.
 
 
 Syntax
