@@ -75,6 +75,8 @@ Table limits:
 - :ref:`max_indexes`
 
 
+.. _parameters-block-limits:
+
 Block generation
 ----------------
 

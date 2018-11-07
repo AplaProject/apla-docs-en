@@ -46,6 +46,7 @@ Contents
    concepts/about-the-platform.rst
    concepts/blockchain-layers.rst
    concepts/blockchain-basics.rst
+   concepts/consensus.rst
    concepts/faq.rst
    concepts/thesaurus.rst
 
