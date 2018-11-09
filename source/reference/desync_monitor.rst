@@ -64,7 +64,7 @@ The file path can be changed using the configPath flag.
         nodes_list = ["http://127.0.0.1:7079", "http://127.0.0.1:7002"]
 
         [daemon]
-        daemon_mode = false
+        daemon = false
         querying_period = 1
 
         [alert_message]

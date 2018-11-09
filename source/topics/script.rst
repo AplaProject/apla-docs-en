@@ -3068,8 +3068,6 @@ UpdateNotifications
 
 Obtains a list of notifications for the specified keys from the database, and sends the obtained notifications to Centrifugo.
 
-The list of notifications is taken from the blocks that are already processed.
-
 
 Syntax
 """"""
@@ -3103,8 +3101,6 @@ UpdateRolesNotifications
 ------------------------
 
 Obtains a list of notifications for all keys with specified role identifiers from the database, and sends the obtained notifications to Centrifugo.
-
-The list of notifications is taken from the blocks that are already processed.
 
 
 Syntax
@@ -3515,24 +3511,24 @@ Parameters:
     * *Conditions string "optional"* - rights for contract change.
 
 
-ActivateContract
-----------------
+BindWallet
+----------
 
-Binding of a contract to the account in the current ecosystem. Contracts can be tied only from the account, which was specified when the contract was created. After the contract is tied, this account will pay for execution of this contract.
-
-Parameters:
-
-    * *Id int* - ID of the contract to activate.
-
-
-DeactivateContract
-------------------
-
-Unbinds a contract from an account in the current ecosystem. Only the account which the contract is currently bound to can unbind it. After the contract is unbound, its execution will be paid by a user that executes it.
+Binds a contract to an account in the current ecosystem. Contracts can be bound only from the account that was specified when the contract was created. After the contract is bound to an account, this account will pay for the execution of this contract.
 
 Parameters:
 
-    * *Id int* - identifier of the tied contract.
+    * *Id int* - identifier of the contract to bind.
+
+
+UnbindWallet
+------------
+
+Unbinds a contract from an account in the current ecosystem. Only the account that is bound to the contract can unbind it. After the contract is unbound, a user that executes the contract will pay for the execution.
+
+Parameters:
+
+    * *Id int* - identifier of the bound contract.
 
 
 NewParameter

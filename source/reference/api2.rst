@@ -432,7 +432,7 @@ Request
 
 * *key_id*
 
-    account id can be specified in any format - ``int64, uint64, XXXX-...-XXXX``. This wallet will be searched for in the ecosystem, which the user is currently logged in.   
+    Account id. Can be specified in any format: ``int64, uint64, XXXX-...-XXXX``. This wallet will be searched for in the ecosystem where the user is currently logged in.   
     
 
 Response
@@ -464,6 +464,66 @@ Errors
 """"""
 
 *E_SERVER, E_INVALIDWALLET*
+
+
+
+keyinfo
+-------
+
+**GET**/ Returns a list of ecosystems with roles where the specified key is registered.
+
+This request does not require authorization.
+
+
+Request
+"""""""
+
+.. code-block:: default 
+    
+    GET
+    /api/v2/keyinfo/{key_id}
+
+
+* *key_id*
+
+    Account identifier. Can be specified in any format: ``int64, uint64, XXXX-...-XXXX``. 
+
+    The search is performed in all ecosystems.
+
+
+Response
+""""""""
+
+* *ecosystem*
+
+    Ecosystem identifier.
+
+* *name*
+
+    Ecosystem name.
+
+* *roles*
+
+    List of roles in the ecosystem with *id* and *name* fields.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+    
+    200 (OK)
+    Content-Type: application/json
+    [{
+        "ecosystem":"1",
+        "name":"platform ecosystem",
+        "roles":[{"id":"1","name":"Admin"},{"id":"2","name":"Developer"}]
+    }]
+
+Errors
+""""""
+
+*E_SERVER, E_INVALIDWALLET* 
 
 
 
