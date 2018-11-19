@@ -3,6 +3,7 @@ Compiler and virtual machine
 
 This section reviews the code organization in the packages/script directory, which refers to program compilation and the operation of the Simvolio language virtual machine.
 
+
 Source code storage and compilation
 ===================================
 
@@ -21,8 +22,8 @@ The entire source code described in the contracts table for all ecosystems is co
 Each ecosystem can have a so-called virtual ecosystem that works with its tables outside the blockchain, within one node, and cannot directly affect the blockchain or other virtual ecosystems. In this case, a node hosting such a virtual ecosystem compiles its contracts and creates its own virtual machine.
 
 
-Virtual machine
-===============
+Virtual machine structures
+==========================
 
 
 VM structure
@@ -50,8 +51,8 @@ The VM structure has these elements:
   * **Extern** is a flag which states that the contract is external. When you create a VM, it is set to true and does not require the called contract to be present when compiling the code. That is, it allows calling the contract code that be determined in the future.
 
 
-Blocks
-------
+Blocks structure
+----------------
 
 A virtual machine is a tree of **Block** type objects.
 
@@ -68,11 +69,7 @@ For example, the following code creates a block with a function. This block in t
                }
          }
     } 
-    
 
-Blocks structure
-----------------
-  
 Blocks are organized in memory as follows.
 
 .. code:: 
@@ -110,7 +107,7 @@ The Block structure has these elements:
 ObjInfo structure
 -----------------
 
-Let us review another important structure of **ObjInfo**.
+**ObjInfo** structure contains information about an internal object.
 
 .. code:: 
 
@@ -118,16 +115,24 @@ Let us review another important structure of **ObjInfo**.
        Type int
        Value interface{}
     }
-    
-**Type** – the object type can take one of the following values:
 
-* **ObjContract** – contract,
-* **ObjFunc** – function,
-* **ObjExtFunc** – external golang function,
-* **ObjVar** – variable,
-* **ObjExtend** – the $name variable.
+The ObjInfo structure has these elements: 
 
-**Value** – contains the appropriate structure for each type.
+  * **Type** is the object type. It can have one of the following values:
+
+    * **ObjContract** – contract
+    * **ObjFunc** – function
+    * **ObjExtFunc** – external golang function
+    * **ObjVar** – variable
+    * **ObjExtend** – the $name variable
+
+  * **Value** – contains the structure for each type.
+
+
+ContractInfo structure
+""""""""""""""""""""""
+
+For the **ObjContract** type, the **Value** field contains the **ContractInfo** structure.
 
 .. code:: 
 
@@ -139,26 +144,46 @@ Let us review another important structure of **ObjInfo**.
         Tx *[]*FieldInfo
         Settings map[string]interface{}
     }
-    
-* **ID** – contract identifier. This value is indicated in the blockchain when calling the contract,
-* **Name** – contract name,
-* **Owner** – additional information about the contract,
-* **Used** – map of the names of contracts called inside,
-* **Tx** – data array described in the data section of the contract.
 
-.. code:: 
+The ContractInfo structure has these elements: 
+
+  * **ID** – contract identifier. This value is indicated in the blockchain when calling the contract.
+  
+  * **Name** – contract name.
+
+  * **Owner** – additional information about the contract.
+  
+  * **Used** – map of the contract names that are called inside this contract.
+
+  * **Tx** – data array described in the ``data`` section of the contract.
+
+  * **Settings** – map of the values ​​that are described in the ``settings`` section of the contract.
+
+
+FieldInfo structure
+^^^^^^^^^^^^^^^^^^^
+
+FieldInfo structure is used in **ContractInfo** structure and describes elements of ``data`` section in contracts.
+
+.. code::
 
     type FieldInfo struct {
-           Name string
+          Name string
           Type reflect.Type
           Tags string
     }
-    
-where **Name** is the name of the field, **Type** is the type, **Tags** – additional tags for the field.
 
-**Settings** – map of the values ​​that are described in the settings section of the contract.
+The FieldInfo structure has these elements: 
 
-As you can see, the information is largely duplicated with the block structure. This can be considered an architectural drawback, from which it is desirable to get rid of.
+  * **Name** is the name of the field.
+
+  * **Type** is the type of the field
+
+  * **Tags** – additional tags for the field.
+
+
+FuncInfo structure
+""""""""""""""""""
 
 For the **ObjFunc** type, the **Value** field contains the **FuncInfo** structure.
 
@@ -171,10 +196,24 @@ For the **ObjFunc** type, the **Value** field contains the **FuncInfo** structur
         Variadic bool
         ID uint32
     }
-    
-* **Params** – an array of parameter types,
-* **Results** – an array of returned types,
-* **Names** – map for tail functions data. For example, ``DBFind().Columns ()``.
+
+The FuncInfo structure has these elements: 
+
+  * **Params** – an array of parameter types.
+
+  * **Results** – an array of returned types.
+
+  * **Names** – map of data for tail functions. For example, ``DBFind().Columns ()``.
+
+  * **Variadic** – true if the function can have a variable number of parameters.
+
+  * **ID** – function identifier.
+
+
+FuncName structure
+^^^^^^^^^^^^^^^^^^
+
+FuncName structure is used in **FuncInfo** structure and describes the data for a tail function.
 
 .. code:: 
 
@@ -183,15 +222,20 @@ For the **ObjFunc** type, the **Value** field contains the **FuncInfo** structur
        Offset []int
        Variadic bool
     }
-    
-* **Params** – an array of parameter types,
-* **Offset** – an array of offsets for these variables. In fact, all parameters that are expressed in functions using the dot are variables that can be assigned initialization values,
-* **Variadic** – true, if the tail description can have the number of parameters as a variable.
 
-* **Variadic** – true if the function can the number of parameters as a variable,
-* **ID** – function identifier.
+The FuncName structure has these elements: 
 
-For the **ObjExtFunc type**, the **Value** field contains the structure of **ExtFuncInfo**. It describes the functions on golang.
+  * **Params** – an array of parameter types.
+
+  * **Offset** – an array of offsets for these variables. In fact, all parameters that are expressed in functions using the dot are variables that can be assigned initialization values.
+
+  * **Variadic** – true, if the tail function can description can have a variable number of parameters.
+
+
+ExtFuncInfo structure
+"""""""""""""""""""""
+
+For the **ObjExtFunc** type, the **Value** field contains the **ExtFuncInfo** structure. It describes the golang functions.
 
 .. code:: 
 
@@ -203,12 +247,20 @@ For the **ObjExtFunc type**, the **Value** field contains the structure of **Ext
        Variadic bool
        Func interface{}
     }
-    
-The matching parameters are the same as for the **FuncInfo** structure. 
-**Auto** – an array of variables that are additionally passed to the golang functions, if any. For example, the sc variables of *SmartContract* type, 
-**Func** – golang function.
 
-**For** - the **ObjVar** type, the **Value** field contains a **VarInfo** structure.
+The ExtFuncInfo structure has these elements: 
+
+  * The **Name**, **Params**, **Results** parameters are the same as for the **FuncInfo** structure. 
+
+  * **Auto** – an array of variables that are additionally passed to the golang functions, if any. For example, the *sc* variables of *SmartContract* type.
+
+  * **Func** – golang function.
+
+
+VarInfo structure
+"""""""""""""""""
+
+For the **ObjVar** type, the **Value** field contains a **VarInfo** structure.
 
 .. code:: 
 
@@ -216,15 +268,22 @@ The matching parameters are the same as for the **FuncInfo** structure.
        Obj *ObjInfo
        Owner *Block
     }
+The ExtFuncInfo structure has these elements: 
 
-* **ObjInfo** – information about the type and value of the variable,
-* **Owner** – owner block indicator.
+  * **ObjInfo** – information about the type and value of the variable.
 
-For **ObjExtend** objects, the **Value** field contains a string with the name of the variable or the function.
+  * **Owner** – pointer to the owner block.
+
+
+Value for ObjExtend
+"""""""""""""""""""
+
+For **ObjExtend** type, the **Value** field contains a string with the name of a variable or a function.
+
 
 
 Virtual machine commands
-------------------------
+========================
 
 The identifiers of the virtual machine commands are described in the *cmds_list.go file*. The bytecode is a sequence of **ByteCode** type structures.
 
@@ -481,7 +540,7 @@ Adding a function to the root Objects will allow the compiler to find them later
 
 Compilation
 ===========
-   
+
 The functions located in the *compile.go* file are responsible for the compilation of the array of tokens obtained from the lexical analyzer. The compilation can be conditionally divided into two levels. At the top level, we process functions, contracts, blocks of code, conditional statements and loop statements, variable definitions, and so on. At the lower level, we compile expressions that are inside of code blocks or conditions in a loop and a conditional statement. In the beginning, let us consider a simpler lower level.
 Translating expressions into a bytecode is done in the **compileEval** function. Since we have a virtual machine working with a stack, it is necessary to translate the usual infix record of expressions into a postfix notation or a reverse Polish notation. For example, 1 +2 should be converted to 12+, then you put 1 and 2 to the stack, and then we apply the addition operation for the last two elements in the stack and write the result to the stack. The translation algorithm itself can be found on the Internet – for example, https://master.virmandy.net/perevod-iz-infiksnoy-notatsii-v-postfiksnuyu-obratnaya-polskaya-zapis/. The global variable *opers = map [uint32] operPrior* contains the priorities of the operations that are necessary when translating into the reverse Polish notation. The following variables are defined at the beginning of the function:
 
