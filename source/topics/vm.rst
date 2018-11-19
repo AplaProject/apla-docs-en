@@ -1,9 +1,25 @@
 Compiler and virtual machine
 ############################
 
-This section reviews the code organization in the packages/script directory, which refers to program compilation and the operation of the Simvolio language virtual machine. The documentation is intended primarily for developers.
+This section reviews the code organization in the packages/script directory, which refers to program compilation and the operation of the Simvolio language virtual machine.
 
-The work with contracts is organized as follows: contracts and functions are written using the Simvolio language and stored in the contracts tables in ecosystems. When the program starts, it reads the source code from the database and compiles it into bytecode. When adding or changing contracts and writing them to the blockchain, the updated data is compiled and the corresponding virtual machine bytecode is added/updated. The bytecode is not physically saved anywhere, so when you exit the program and start again, the compilation happens anew. A virtual machine is a set of objects – contracts, functions, types, etc. The entire source code described in the contracts table for all ecosystems is compiled in strict sequence into one virtual machine and the state of the virtual machine is the same on all nodes. When you call a contract, the virtual machine does not change its state in any way. Any execution of a contract or a function call occurs on a separate runtime stack that is created with each external call. Each ecosystem can have a so-called virtual ecosystem that works with its tables outside the blockchain, within one node, and cannot directly affect the blockchain or other virtual ecosystems. In this case, a node hosting such a virtual ecosystem compiles its contracts and creates its own virtual machine for it.
+Source code storage and compilation
+===================================
+
+Contracts and functions are written in Simvolio language and stored in the contracts tables in ecosystems. 
+
+When a contract is executed, its source code is read from the database and compiled into bytecode.
+
+When a contract is changed, its source code is updated and saved in the database. This source code is then compiled, and as a result the corresponding virtual machine bytecode is also changed.
+
+The bytecode is not physically saved anywhere, so when a program is executed again, the source code is compiled anew.
+
+The entire source code described in the contracts table for all ecosystems is compiled in a strict sequence into one virtual machine and the state of the virtual machine is the same on all nodes.
+
+ When you call a contract, the virtual machine does not change its state in any way. Any execution of a contract or a function call occurs on a separate runtime stack that is created with each external call. 
+
+Each ecosystem can have a so-called virtual ecosystem that works with its tables outside the blockchain, within one node, and cannot directly affect the blockchain or other virtual ecosystems. In this case, a node hosting such a virtual ecosystem compiles its contracts and creates its own virtual machine.
+
 
 Virtual machine
 ===============
