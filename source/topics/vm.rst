@@ -24,7 +24,11 @@ Each ecosystem can have a so-called virtual ecosystem that works with its tables
 Virtual machine
 ===============
 
-Let us review how the virtual machine is organized in memory.
+
+VM structure
+------------
+
+The virtual machine is organized in memory as follows.
 
 .. code:: 
 
@@ -34,13 +38,26 @@ Let us review how the virtual machine is organized in memory.
        FuncCallsDB map[string]struct{}
        Extern bool 
     }
-    
-* **Block** - is the most important structure that contains all the information,
-* **ExtCost** - is a function that returns the cost of executing external golang functions,
-* **FuncCallsDB** – map of the names of golang functions’ that return the cost of execution to the first parameter. These are the functions of working with databases that calculate the cost using EXPLAIN,
-* **Extern** – when you create a VM, it is set to true and does not require the contract called to be present when compiling the code. That is, it allows calling the contract, which will be determined in the future.
 
-A virtual machine is a tree of **Block** type objects. In fact, a block is an independent unit containing some bytecode. In simple words – everything put in braces in the language is a block. For example,
+The VM structure has these elements: 
+
+  * **Block** is a structure that contains a block (see below).
+
+  * **ExtCost** is a function that returns the cost of executing external golang functions.
+
+  * **FuncCallsDB** is a map of golang function names that return the cost of execution as the first parameter. These are the functions for working with databases that calculate the cost using EXPLAIN.
+
+  * **Extern** is a flag which states that the contract is external. When you create a VM, it is set to true and does not require the called contract to be present when compiling the code. That is, it allows calling the contract code that be determined in the future.
+
+
+Blocks
+------
+
+A virtual machine is a tree of **Block** type objects.
+
+A block is an independent unit containing some bytecode. In simple words, everything you put in curly brackets (``{}``) in the language is a block. 
+
+For example, the following code creates a block with a function. This block in turn contains a block with an *if* statement, which, in turn, has a block with a *while* statement in it.
 
 .. code:: 
 
@@ -52,8 +69,12 @@ A virtual machine is a tree of **Block** type objects. In fact, a block is an in
          }
     } 
     
-Сreates a block with a function that includes a block with *if* statement, which, in turn, has a block with *while* statement in it.
-    
+
+Blocks structure
+----------------
+  
+Blocks are organized in memory as follows.
+
 .. code:: 
 
     type Block struct {
@@ -66,15 +87,28 @@ A virtual machine is a tree of **Block** type objects. In fact, a block is an in
         Code ByteCodes
         Children Blocks
     }
-    
-* **Objects** – map of internal objects of **ObjInfo** indicator type. If, for example, there is a variable in the block, then we can quickly get information about it by name,
-* **Type** – the type of the block, functions and contracts equal to **ObjFunc** and **ObjContract**,
-* **Owner** – a link to the **OwnerInfo** structure, which contains information about the owner of the compiled contract. It is specified during compilation of contracts or is loaded from the **contracts** table,
-* **Info** – contains information about the object and depends on the block type,
-* **Parent** – parent block indicator,
-* **Vars** – an array with the current block variables types,
-* **Code** – the bytecode itself, which will be executed when the control is transferred to this block. For example, in the case of calling the function or the loop body,
-* **Children** – an array of child blocks. For example, nested functions, loops, conditional operators,
+
+The Block structure has these elements: 
+
+  * **Objects** is a map of internal objects of the **ObjInfo** pointer type. If, for example, there is a variable in the block, then it is possible to get information about it by its name.
+
+  * **Type** is the type of the block. For functions, **ObjFunc**, for contracts **ObjContract**.
+
+  * **Owner** is a pointer to the **OwnerInfo** structure. This structure contains information about the owner of the compiled contract. It is specified during compilation of contracts or is taken from the **contracts** table.
+
+  * **Info** contains information about the object and depends on the block type.
+
+  * **Parent** is a pointer to the parent block.
+
+  * **Vars** is an array with the current block variable types.
+
+  * **Code** is the bytecode itself, which will be executed when the control is transferred to this block. For example, in the case when a function is called or a loop body is executed.
+
+  * **Children** is an array of child blocks. For example it may contain nested functions, loops, and conditional operators.
+
+
+ObjInfo structure
+-----------------
 
 Let us review another important structure of **ObjInfo**.
 
