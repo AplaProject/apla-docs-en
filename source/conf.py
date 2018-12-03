@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Genesis Blockchain Platform Guide'
+project = 'Apla Blockchain Platform Guide'
 copyright = '2018, Apla'
 author = 'Apla'
 
