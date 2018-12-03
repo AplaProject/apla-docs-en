@@ -178,7 +178,7 @@ Applications on the platform
 
 An |platform| application is a system of tables, contracts and interfaces with configured access rights. Such applications perform useful functions or implement various services.
 
-Each ecosystems creates its own set of tables for development of applications. This, however, does not exclude the possibility of accessing tables from other ecosystems by specifying those ecosystems' prefixes in table names. Tables are not in any way bound (nor belong) to specific contracts, and can be used by all applications. The permissions for entering data into tables are set by way of configuring the access rights. Specialized contracts – smart laws – can be used for rights management.
+Each ecosystem creates its own set of tables for the development of applications. This, however, does not exclude the possibility of accessing tables from other ecosystems by specifying those ecosystems' prefixes in table names. Tables are not in any way bound (nor belong) to specific contracts, and can be used by all applications. The permissions for entering data into tables are set by way of configuring the access rights. Specialized contracts – smart laws – can be used for rights management.
 
 The design and creation of applications on the platform does not require the software developers to know the structure of the network and its protocols, nor to understand the algorithm of blockchain formation and synchronization of databases on full nodes. Work in the Molis software client, including the creation of application elements, reading data from tables, execution of contracts and displaying results on the screen, looks and feels like operations with modules of a software environment on a local computer.
 
@@ -235,7 +235,7 @@ In order to retrieve values of certain ecosystem parameters, both the contracts 
 Parameters of the platform ecosystem
 """"""""""""""""""""""""""""""""""""
 
-All parameters of the blockchain platform are stored in the parameters table of the platform configuration ecosystem. These are the following parameters:
+All parameters of the blockchain platform are stored in the parameters table of the platform configuration ecosystem:
 
     - Time period for creation of a block by a validating node,
 
@@ -260,7 +260,7 @@ Access rights control mechanism
 
 |platform| has a multi-level access rights management system. Access rights can be configured to create and change any element of an application: contracts, database tables, interface pages, and ecosystem parameters. Permissions to change access rights can be configured as well.
 
-By default, all rights in an platform ecosystem are managed by its founder (this is defined in the MainCondition contract, which every ecosystem has by default). However, after specialized smart laws are created, access rights control can be transferred to all ecosystem members or a group of such members.
+By default, all rights in a |platform| ecosystem are managed by its founder (this is defined in the MainCondition contract, which every ecosystem has by default). However, after specialized smart laws are created, access rights control can be transferred to all ecosystem members or a group of such members.
 
 
 Controlled operations
