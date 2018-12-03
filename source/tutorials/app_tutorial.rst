@@ -4,15 +4,15 @@
 .. -- Conditionals Genesis / Apla -------------------------------------------------
 
 .. quick-start project link
-.. _quick-start: https://github.com/GenesisKernel/quick-start
-.. .. _quick-start: https://github.com/AplaProject/quick-start
+.. .. _quick-start: https://github.com/GenesisKernel/quick-start
+.. _quick-start: https://github.com/AplaProject/quick-start
 
-.. _quick-start README: https://github.com/GenesisKernel/quick-start/blob/master/README.md
-.. .. _quick-start-README: https://github.com/AplaProject/quick-start/blob/master/README.md
+.. .. _quick-start README: https://github.com/GenesisKernel/quick-start/blob/master/README.md
+.. _quick-start-README: https://github.com/AplaProject/quick-start/blob/master/README.md
 
 .. password for quick-start
-.. |pass_quickstart| replace:: ``genesis``
-.. .. |pass_quickstart| replace:: ``default``
+.. .. |pass_quickstart| replace:: ``genesis``
+.. |pass_quickstart| replace:: ``default``
 
 
 Application development tutorial

@@ -1,17 +1,17 @@
 .. -- Conditionals Genesis / Apla -------------------------------------------------
 
 .. backend GitHub repo name and link
-.. |backend_gh| replace:: `go-genesis`_
-.. _go-genesis: https://github.com/GenesisKernel/go-genesis 
-.. .. |backend_gh| replace:: `go-apla`_
-.. .. _go-apla: https://github.com/AplaProject/go-apla
+.. .. |backend_gh| replace:: `go-genesis`_
+.. .. _go-genesis: https://github.com/GenesisKernel/go-genesis 
+.. |backend_gh| replace:: `go-apla`_
+.. _go-apla: https://github.com/AplaProject/go-apla
 
 
 .. frontend GitHub repo name and link
-.. |frontend_gh| replace:: `genesis-front`_
-.. _genesis-front: https://github.com/GenesisKernel/genesis-front   
-.. .. |frontend_gh| replace:: `apla-front`_
-.. .. _apla-front: https://github.com/AplaProject/apla-front 
+.. .. |frontend_gh| replace:: `genesis-front`_
+.. .. _genesis-front: https://github.com/GenesisKernel/genesis-front   
+.. |frontend_gh| replace:: `apla-front`_
+.. _apla-front: https://github.com/AplaProject/apla-front 
 
 
 
