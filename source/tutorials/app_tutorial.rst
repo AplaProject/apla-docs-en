@@ -8,7 +8,7 @@
 .. _quick-start: https://github.com/AplaProject/quick-start
 
 .. .. _quick-start README: https://github.com/GenesisKernel/quick-start/blob/master/README.md
-.. _quick-start-README: https://github.com/AplaProject/quick-start/blob/master/README.md
+.. _quick-start README: https://github.com/AplaProject/quick-start/blob/master/README.md
 
 .. password for quick-start
 .. .. |pass_quickstart| replace:: ``genesis``
