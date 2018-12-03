@@ -1,10 +1,10 @@
 .. -- Conditionals Genesis / Apla -------------------------------------------------
 
 .. backend binary name and GitHub link
-.. |backend| replace:: `go-genesis`_
-.. _go-genesis: https://github.com/GenesisKernel/go-genesis
-.. .. |backend| replace:: `go-apla`_
-.. .. _go-apla: https://github.com/AplaProject/go-apla
+.. .. |backend| replace:: `go-genesis`_
+.. .. _go-genesis: https://github.com/GenesisKernel/go-genesis
+.. |backend| replace:: `go-apla`_
+.. _go-apla: https://github.com/AplaProject/go-apla
 
 
 

@@ -1,8 +1,8 @@
 .. -- Conditionals Genesis / Apla -------------------------------------------------
 
 .. token naming
-.. |tokens| replace:: tokens
-.. .. |tokens| replace:: APL tokens
+.. .. |tokens| replace:: tokens
+.. |tokens| replace:: APL tokens
 
 
 Platform parameters

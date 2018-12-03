@@ -1,6 +1,3 @@
-.. .. ifconfig:: if_project in ('genesis')
-.. .. ifconfig:: if_project in ('apla')
-
 |platform| overview
 ###################
 
