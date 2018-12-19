@@ -157,11 +157,12 @@ To substitute the language resources of the ecosystem, you can use the ``$langre
 
      Span($yourname$: #name#)
      
-The following variables are predefined 
+The following variables are predefined: 
 
 * ``#key_id#`` - current user account identifier,
 * ``#ecosystem_id#`` - current ecosystem identifier.
 * ``#guest_key#`` - guest wallet identifier.
+* ``#isMobile#`` - is 1 if the client is running on a mobile device.
 
 
 Passing parameters to a page using PageParams
@@ -181,16 +182,6 @@ Calling contracts
 """""""""""""""""
 
 Protypo implements contract calling by clicking on a button in a form (*Button* function). Once  this event is initiated, the data entered by the user in the fields of the interface forms is passed to the contract (if the names of form fields correspond to the names of variables in the data section of the called contract, data is transferred automatically). The Button function allows for opening a modal window for user verification of the contract execution (Alert), and initiation of redirect to a specified page after the successful execution of the contract, and passing certain parameters to this page.    
-
-
-Predefined variables
---------------------
-
-.. todo::
-
-  Merge with predefined variables list above.
-
-* **isMobile** - is 1 if the client is running on a mobile device.
 
 
 Protypo functions by purpose
