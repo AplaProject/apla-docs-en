@@ -84,5 +84,6 @@ Contents
    :maxdepth: 2
    :caption: HOWTOs
 
- 
+   howtos/deployment.rst
+
 .. todolist::
