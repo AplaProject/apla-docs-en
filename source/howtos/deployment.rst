@@ -2,10 +2,12 @@ Blockchain network deployment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This guide demonstrates how to deploy your own blockchain network.
-
-.. todo::
     
-    If you want to join the Apla blockchain network instead, see Joining Apla blockchain network.
+    .. note::
+    
+        * If you want to try the Apla blockchain network instead, check out `Apla Testnet <https://testapla0.apla.io/>`_.
+
+        * If you want to deploy a local testing environment quickly, consider using `Apla quickstart <https://github.com/AplaProject/quick-start>`_ which is based on Docker images.
 
 
 .. _deployment-config:
