@@ -1294,8 +1294,7 @@ contract/{name}
 Request
 """""""
 
-* *name*–contract name,
-* *[vde]*–set this parameter to true in case you request information about a contract from VDE, otherwise don't specify this parameter
+* *name*–contract name.
 
 .. code-block:: default 
     
@@ -1306,9 +1305,12 @@ Response
 """"""""
 
 * *id*–identifier of the contract in VM.
-* *name*–name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``
-* *active*–true if the contract is bound to the account and false otherwise,
-* *key_id*–contract owner's ID,
+* *name*–name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``.
+* *key_id*–contract owner's ID.
+
+* *stateid*–ID of the ecosystem where the contract was created.
+* *walletid* -ID the contract owner wallet.
+* *tokenid* - tokens that are accepted as contract payment.
 * *address*–address of the account bound to the contract in the ``XXXX-...-XXXX`` format.
 * *tableid*–entry ID in the contracts table, where the source code of the contract is stored.
 * *fields*–an array that contains information about every parameter in the **data** section of the contract and contains the following fields:
@@ -1316,7 +1318,7 @@ Response
   * *name*–field name,
   * *type*–parameter type,
   * *optional*–parameter optionality flag, this value is ``true`` if a parameter is optional and ``false`` if it is mandatory.
-    
+
 Response example
 """"""""""""""""
 
@@ -1332,8 +1334,7 @@ Response example
         "id": 150,
         "name": "@1mycontract",
         "tableid" : 10,
-        "active": true
-    }
+    }      
 
 
 sendTX
