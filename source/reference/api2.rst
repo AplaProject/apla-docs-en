@@ -170,10 +170,6 @@ Error List
 
     Unknown uid.
 
-.. describe:: E_VDE
-
-    Virtual Dedicated Ecosystem %s doesn't exist.
-
 .. describe:: E_VDECREATED
 
     Virtual Dedicated Ecosystem is already created.
@@ -236,6 +232,10 @@ Response
 
     The lifetime of a temporary token is 5 seconds.
 
+* *network_id*
+
+    NetworkID server identifier.
+
 In cases where authorization is not required, the following information is returned:
 
 * *expire*
@@ -265,6 +265,7 @@ Response example
     {
         "uid": "28726874268427424",
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYTDplQXbVu0Y"
+        "network_id": "5324976953280995276"
     }
     
 
@@ -754,10 +755,6 @@ Request
 
     Example: ``/api/v2/ecosystemparams/?names=name,currency,logo*``.
 
-* *[vde]*
-
-    Specify ``true``, if you want to recieve VDE params. Otherwise, do not specify this parameter.
-
 
 Response
 """"""""
@@ -796,7 +793,7 @@ Response example
 Errors
 """"""
 
-*E_ECOSYSTEM,E_VDE*
+*E_ECOSYSTEM*
 
 
 ecosystemparam/{name}
@@ -840,7 +837,7 @@ Response example
 Errors
 """"""
 
-*E_ECOSYSTEM,E_VDE*
+*E_ECOSYSTEM*
 
 
 tables/[?limit=...&offset=...]
@@ -890,11 +887,6 @@ Response example
        }, 
         ]
     }    
-
-Errors
-""""""
-
-*E_VDE* 
 
     
 table/{name}
@@ -956,7 +948,7 @@ Response example
 Errors
 """"""
 
-*E_TABLENOTFOUND,E_VDE*  
+*E_TABLENOTFOUND*  
 
 
 list/{name}[?limit=...&offset=...&columns=]
@@ -1058,7 +1050,7 @@ Response example
 Errors
 """"""
 
-*E_TABLENOTFOUND,E_VDE*    
+*E_TABLENOTFOUND*    
 
 
   
@@ -1302,8 +1294,7 @@ contract/{name}
 Request
 """""""
 
-* *name*–contract name,
-* *[vde]*–set this parameter to true in case you request information about a contract from VDE, otherwise don't specify this parameter
+* *name*–contract name.
 
 .. code-block:: default 
     
@@ -1314,9 +1305,12 @@ Response
 """"""""
 
 * *id*–identifier of the contract in VM.
-* *name*–name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``
-* *active*–true if the contract is bound to the account and false otherwise,
-* *key_id*–contract owner's ID,
+* *name*–name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``.
+* *key_id*–contract owner's ID.
+
+* *stateid*–ID of the ecosystem where the contract was created.
+* *walletid* -ID the contract owner wallet.
+* *tokenid* - tokens that are accepted as contract payment.
 * *address*–address of the account bound to the contract in the ``XXXX-...-XXXX`` format.
 * *tableid*–entry ID in the contracts table, where the source code of the contract is stored.
 * *fields*–an array that contains information about every parameter in the **data** section of the contract and contains the following fields:
@@ -1324,7 +1318,7 @@ Response
   * *name*–field name,
   * *type*–parameter type,
   * *optional*–parameter optionality flag, this value is ``true`` if a parameter is optional and ``false`` if it is mandatory.
-    
+
 Response example
 """"""""""""""""
 
@@ -1340,8 +1334,7 @@ Response example
         "id": 150,
         "name": "@1mycontract",
         "tableid" : 10,
-        "active": true
-    }
+    }      
 
 
 sendTX
@@ -1556,6 +1549,45 @@ Errors
 """"""
 
 *E_HASHWRONG*
+
+
+/page/validators_count/{name}
+-----------------------------
+
+**GET**/ Returns the number of nodes required for the validation of the specified page.
+
+Request
+"""""""
+
+* *name* - page name with ecosystem index prefix. The format is ``@ecosystem_id%%page_name%``. For example, ``@1main_page``.
+
+
+.. code-block:: default 
+
+    GET
+    /api/v2/page/validators_count/@1page_name
+
+
+Response
+""""""""
+
+* *validate_count* - number of nodes required to validate the specified page.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+    
+    200 (OK)
+    Content-Type: application/json
+    {"validate_count":1}
+
+
+Errors
+""""""
+
+*E_NOTFOUND, E_SERVER*
 
 
 content/{menu|page}/{name}

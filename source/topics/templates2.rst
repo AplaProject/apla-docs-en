@@ -86,34 +86,34 @@ Page template language is a functional language that allows for calling function
 
 .. code:: js
 
-      Text MyFunc(parameter number 1, parameter number 2) another text.
-      MyFunc(parameter 1,,,parameter 4)
+      Text FuncName(parameter number 1, parameter number 2) another text.
+      FuncName(parameter 1,,,parameter 4)
       
 If a parameter contains a comma, it should be enclosed in quotes marks (back quotes or double quotes). If a function can have only one parameter, commas can be used in it without quotes.  Also, quotes should be used in case a parameter has an unpaired closing parenthesis.
 
 .. code:: js
 
-      MyFunc("parameter number 1, the second part of first paremeter")
-      MyFunc(`parameter number 1, the second part of first paremeter`)
+      FuncName("parameter number 1, the second part of first paremeter")
+      FuncName(`parameter number 1, the second part of first paremeter`)
       
 If you put a parameter in quotes, but a parameter itself includes quotes, then you can use different type of quotes or double them in the text.
       
 .. code:: js
 
-      MyFunc("parameter number 1, ""the second part of first"" paremeter")
-      MyFunc(`parameter number 1, "the second part of first" paremeter`)
+      FuncName("parameter number 1, ""the second part of first"" paremeter")
+      FuncName(`parameter number 1, "the second part of first" paremeter`)
       
-In description of functions, every parameter has a specific name. You can call functions and specify parameters in the order they were declared, or specify any set of parameters in any order by their names: ''Parameter_name: Parameter_value''. This approach allows to safely add new function parameters without breaking the compatibility with current templates. For example, all of these calls are correct in terms of language use for a function described as ''MyFunc(Class,Value,Body)'':
+In description of functions, every parameter has a specific name. You can call functions and specify parameters in the order they were declared, or specify any set of parameters in any order by their names: ''Parameter_name: Parameter_value''. This approach allows to safely add new function parameters without breaking the compatibility with current templates. For example, all of these calls are correct in terms of language use for a function described as ''FuncName(Class,Value,Body)'':
 
 .. code:: js
 
-      MyFunc(myclass, This is value, Div(divclass, This is paragraph.))
-      MyFunc(Body: Div(divclass, This is paragraph.))
-      MyFunc(myclass, Body: Div(divclass, This is paragraph.))
-      MyFunc(Value: This is value, Body: 
+      FuncName(myclass, This is value, Div(divclass, This is paragraph.))
+      FuncName(Body: Div(divclass, This is paragraph.))
+      FuncName(myclass, Body: Div(divclass, This is paragraph.))
+      FuncName(Value: This is value, Body: 
            Div(divclass, This is paragraph.)
       )
-      MyFunc(myclass, Value without Body)
+      FuncName(myclass, Value without Body)
       
 Functions can return text, generate HTML elements (for instance, ''Input''), or create HTML elements with nested HTML elements (''Div, P, Span''). In the latter case a parameter with a pre-defined name **Body** should be used to define nested elements. For example, two *div*, nested in another *div*, can look like this:
 
@@ -124,7 +124,7 @@ Functions can return text, generate HTML elements (for instance, ''Input''), or 
          Div(class2, This is the second div.)
       )
       
-To define nested elements, which are described in the *Body* parameter, the following representation can be used: ``MyFunc(...){...}``. Nested elements should be specified in curly braces. 
+To define nested elements, which are described in the *Body* parameter, the following representation can be used: ``FuncName(...){...}``. Nested elements should be specified in curly braces. 
 
 .. code:: js
 
@@ -196,6 +196,7 @@ Operations with variables
 
     - :ref:`protypo-GetVar`
     - :ref:`protypo-SetVar`
+    - :ref:`protypo-VarAsIs`
 
 
 Navigation
@@ -218,9 +219,7 @@ Data operations
     - :ref:`protypo-Calculate`
     - :ref:`protypo-CmpTime`
     - :ref:`protypo-DateTime`
-    - :ref:`protypo-Now`
     - :ref:`protypo-Money`
-
 
 
 Displaying data
@@ -2167,44 +2166,6 @@ Example
     Money(Exp, Digit)
 
 
-.. _protypo-Now:
-
-Now
----
-
-This function returns the current time in the specified format, which by default is the UNIX format (number of seconds elapsed since January 1, 1970). If the requested time format is *datetime*, then date and time are shown as ``YYYY-MM-DD HH:MI:SS``. An interval can be specified in the second parameter (for instance, *+5 days*).
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Now(Format, Interval)
-
-.. describe:: Now
-
-    .. describe:: Format
-
-        Output format with a desired combination of ``YYYY, MM, DD, HH, MI, SS`` or *datetime*.
-
-    .. describe:: Interval
-
-        Time offset, backward or forward in time.
-
-        Example: ``+5 days``.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    Now()
-    Now(DD.MM.YYYY HH:MM)
-    Now(datetime,-3 hours)
-
-
 .. _protypo-Or:
 
 Or
@@ -2733,6 +2694,43 @@ Example
 .. code:: js
 
     P(TransactionInfo(#hash#))
+
+
+.. _protypo-VarAsIs:
+
+VarAsIs
+-------
+
+Assigns a value to a variable. The specified value is assigned as is, encountered variable names are not replaced with their values. 
+
+For a version with variables substitution, see :ref:`protypo-SetVar`.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    VarAsIs(Name, Value)
+
+
+.. describe:: VarAsIs
+
+    .. describe:: Name
+
+        Variable name.
+
+    .. describe:: Value
+
+        Value. Variable names in value are not replaced. 
+
+        For example, if *Value* is ``example #varname#``, then the value of the variable will also be ``example #varname#``.
+
+Example
+"""""""
+
+.. code:: js
+
+    VarAsIs(name, I am #name#)
 
 
 Styles for mobile app

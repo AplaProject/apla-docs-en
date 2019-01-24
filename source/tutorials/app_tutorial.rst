@@ -1,6 +1,3 @@
-.. _docker: https://docs.docker.com/engine/docker-overview
-
-
 .. -- Conditionals Genesis / Apla -------------------------------------------------
 
 .. quick-start project link
@@ -41,6 +38,8 @@ Part 1: The environment
 
 quick-start
 ^^^^^^^^^^^
+
+.. _docker: https://docs.docker.com/engine/docker-overview
 
 This tutorial uses |platform| `quick-start`_. The quick start provides `docker`_ containers for five network nodes. Each node has its own backend, database, and client. The manage.sh script can be used to control the nodes.
 
@@ -166,7 +165,7 @@ To create a new app:
 
         .. todo::
             
-            Explain morea bout access rights.
+            Explain more about access rights.
 
     #. Your app will appear in the list of apps. Click *select* to make it active.
 
@@ -196,7 +195,7 @@ To create a table:
 
     #. Add a column. Name it ``message`` and set its type to ``Text``.
 
-        As a result, the table must have two columns: ``id`` (predefined), and ``message``. You'll add more columns later.
+        As a result, the table must have two columns: ``id`` (predefined), and ``message``. You will add more columns later.
 
         .. image:: /_static/app-tut-table.png
             :scale: 60%
