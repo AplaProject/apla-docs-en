@@ -170,10 +170,6 @@ Error List
 
     Unknown uid.
 
-.. describe:: E_VDE
-
-    Virtual Dedicated Ecosystem %s doesn't exist.
-
 .. describe:: E_VDECREATED
 
     Virtual Dedicated Ecosystem is already created.
@@ -801,7 +797,7 @@ Response example
 Errors
 """"""
 
-*E_ECOSYSTEM,E_VDE*
+*E_ECOSYSTEM*
 
 
 ecosystemparam/{name}
@@ -845,7 +841,7 @@ Response example
 Errors
 """"""
 
-*E_ECOSYSTEM,E_VDE*
+*E_ECOSYSTEM*
 
 
 tables/[?limit=...&offset=...]
@@ -895,11 +891,6 @@ Response example
        }, 
         ]
     }    
-
-Errors
-""""""
-
-*E_VDE* 
 
     
 table/{name}
@@ -961,7 +952,7 @@ Response example
 Errors
 """"""
 
-*E_TABLENOTFOUND,E_VDE*  
+*E_TABLENOTFOUND*  
 
 
 list/{name}[?limit=...&offset=...&columns=]
@@ -1063,7 +1054,7 @@ Response example
 Errors
 """"""
 
-*E_TABLENOTFOUND,E_VDE*    
+*E_TABLENOTFOUND*    
 
 
   
