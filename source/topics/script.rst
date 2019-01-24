@@ -657,7 +657,7 @@ Syntax
 
 .. code-block:: text
     
-    AppParam(app int, name string) string
+    AppParam(app int, name string, ecosystemid int) string
 
 
 .. describe:: app
@@ -668,13 +668,17 @@ Syntax
 
     Application parameter name.
 
+.. describe:: ecosystemid
+
+    Ecosystem identifier.
+
 
 Example
 """""""
 
 .. code:: js
 
-    Println( AppParam(1, "app_account"))
+    AppParam(1, "app_account", 1)
 
 
 .. _simvolio-DBFind:
