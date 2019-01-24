@@ -328,7 +328,7 @@ The language supports two array types:
 * ``array`` - a simple array with numeric index starting from zero.
 * ``map`` - an associative array with string keys.
 
-When assigning and и retrieving array elements, index must be put in square brackets.
+When assigning and и retrieving array elements, index must be put in square brackets. Multiple indexes are not supported in arrays. For example, you cannot address an array element as *myarr[i][j]*.
 
 .. code:: js
 
