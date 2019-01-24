@@ -1550,6 +1550,45 @@ Errors
 *E_HASHWRONG*
 
 
+/page/validators_count/{name}
+-----------------------------
+
+**GET**/ Returns the number of nodes required for the validation of the specified page.
+
+Request
+"""""""
+
+* *name* - page name with ecosystem index prefix. The format is ``@ecosystem_id%%page_name%``. For example, ``@1main_page``.
+
+
+.. code-block:: default 
+
+    GET
+    /api/v2/page/validators_count/@1page_name
+
+
+Response
+""""""""
+
+* *validate_count* - number of nodes required to validate the specified page.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+    
+    200 (OK)
+    Content-Type: application/json
+    {"validate_count":1}
+
+
+Errors
+""""""
+
+*E_NOTFOUND, E_SERVER*
+
+
 content/{menu|page}/{name}
 --------------------------
 
