@@ -219,9 +219,7 @@ Data operations
     - :ref:`protypo-Calculate`
     - :ref:`protypo-CmpTime`
     - :ref:`protypo-DateTime`
-    - :ref:`protypo-Now`
     - :ref:`protypo-Money`
-
 
 
 Displaying data
@@ -2166,44 +2164,6 @@ Example
 .. code:: js
 
     Money(Exp, Digit)
-
-
-.. _protypo-Now:
-
-Now
----
-
-This function returns the current time in the specified format, which by default is the UNIX format (number of seconds elapsed since January 1, 1970). If the requested time format is *datetime*, then date and time are shown as ``YYYY-MM-DD HH:MI:SS``. An interval can be specified in the second parameter (for instance, *+5 days*).
-
-
-Syntax
-""""""
-
-.. code-block:: text
-
-    Now(Format, Interval)
-
-.. describe:: Now
-
-    .. describe:: Format
-
-        Output format with a desired combination of ``YYYY, MM, DD, HH, MI, SS`` or *datetime*.
-
-    .. describe:: Interval
-
-        Time offset, backward or forward in time.
-
-        Example: ``+5 days``.
-
-
-Example
-"""""""
-
-.. code:: js
-
-    Now()
-    Now(DD.MM.YYYY HH:MM)
-    Now(datetime,-3 hours)
 
 
 .. _protypo-Or:
