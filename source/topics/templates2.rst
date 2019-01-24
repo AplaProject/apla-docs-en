@@ -196,6 +196,7 @@ Operations with variables
 
     - :ref:`protypo-GetVar`
     - :ref:`protypo-SetVar`
+    - :ref:`protypo-VarAsIs`
 
 
 Navigation
@@ -2733,6 +2734,43 @@ Example
 .. code:: js
 
     P(TransactionInfo(#hash#))
+
+
+.. _protypo-VarAsIs:
+
+VarAsIs
+-------
+
+Assigns a value to a variable. The specified value is assigned as is, encountered variable names are not replaced with their values. 
+
+For a version with variables substitution, see :ref:`protypo-SetVar`.
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    VarAsIs(Name, Value)
+
+
+.. describe:: VarAsIs
+
+    .. describe:: Name
+
+        Variable name.
+
+    .. describe:: Value
+
+        Value. Variable names in value are not replaced. 
+
+        For example, if *Value* is ``example #varname#``, then the value of the variable will also be ``example #varname#``.
+
+Example
+"""""""
+
+.. code:: js
+
+    VarAsIs(name, I am #name#)
 
 
 Styles for mobile app
