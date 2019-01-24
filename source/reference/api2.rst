@@ -236,6 +236,10 @@ Response
 
     The lifetime of a temporary token is 5 seconds.
 
+* *network_id*
+
+    NetworkID server identifier.
+
 In cases where authorization is not required, the following information is returned:
 
 * *expire*
@@ -265,6 +269,7 @@ Response example
     {
         "uid": "28726874268427424",
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6I........AU3yPRp64SLO4aJqhN-kMoU5HNYTDplQXbVu0Y"
+        "network_id": "5324976953280995276"
     }
     
 
