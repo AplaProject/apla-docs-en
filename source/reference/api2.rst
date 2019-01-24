@@ -755,10 +755,6 @@ Request
 
     Example: ``/api/v2/ecosystemparams/?names=name,currency,logo*``.
 
-* *[vde]*
-
-    Specify ``true``, if you want to recieve VDE params. Otherwise, do not specify this parameter.
-
 
 Response
 """"""""
