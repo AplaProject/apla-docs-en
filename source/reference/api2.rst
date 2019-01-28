@@ -528,6 +528,139 @@ Errors
 
 
 
+Getting metrics
+===============
+
+keys
+----
+
+**GET**/ Returns the number of keys.
+
+
+Request
+"""""""
+
+.. code-block:: default 
+
+    GET
+    /api/v2/metrics/keys
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": 28
+    }
+
+
+blocks
+------
+
+**GET**/ Returns the number of blocks.
+
+
+Request
+"""""""
+
+.. code-block:: default 
+
+    GET
+    /api/v2/metrics/blocks
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": 28
+    }
+
+
+transactions
+------------
+
+**GET**/ Returns the number of transactions.
+
+
+Request
+"""""""
+
+.. code-block:: default 
+
+    GET
+    /api/v2/metrics/transactions
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": 28
+    }
+
+
+ecosystems
+----------
+
+**GET**/ Returns the number of ecosystems.
+
+
+Request
+"""""""
+
+.. code-block:: default 
+
+    GET
+    /api/v2/metrics/ecosystems
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": 28
+    }
+
+    
+fullnodes
+---------
+
+**GET**/ Returns the number of validating nodes.
+
+.. code::
+
+    GET
+    /api/v2/metrics/fullnodes
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "count": 28
+    }
+
+
 Working with ecosystems
 =======================
 
