@@ -388,7 +388,9 @@ Service Commands
 version
 -------
 
-**GET**/ Returns the current server version.
+**GET**/ Returns the current server version. 
+
+This request does not require authorization.
 
  
 Request
@@ -466,6 +468,261 @@ Errors
 
 *E_SERVER, E_INVALIDWALLET*
 
+
+blocks
+------
+
+**GET**/ Returns the list of blocks with additional information about transactions in each block. 
+
+This request does not require authorization.
+
+
+Request
+"""""""
+
+.. code-block:: default 
+
+    GET 
+    /api/v2/blocks
+
+
+Response
+""""""""
+
+* Block number
+
+    * List of transactions in the block with additional information for each transaction:
+
+        * *hash*
+
+            Transaction hash.
+
+        * *contract_name*
+
+            Name of the contract.
+
+        * *params*
+
+            Array with contract parameters.
+
+        * *key_id*
+
+            For the first block, identifier of the key that signed the first block.
+
+            For all other blocks, identifier of the key that signed the transaction.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {"1":
+        [{"hash":"PhHV1g7jUyDEwiETexBMLJPEwH4yEknCIIOAj43Dn4U=",
+        "contract_name":"",
+        "params":null,
+        "key_id":-2157832554603111963}]
+    }
+
+Errors
+""""""
+
+*E_SERVER, E_NOTFOUND*
+
+
+detailed_blocks
+---------------
+
+**GET**/ Returns the list of blocks with detailed additional information about transactions in each block.
+
+This request does not require authorization.
+
+
+Request
+"""""""
+
+.. code-block:: default 
+
+    GET
+    /api/v2/detailed_blocks
+
+
+Response
+""""""""
+
+* Block identifier
+
+    * *header*
+
+        Block header with the following fields:
+
+            * *block_id*
+
+                Block number.
+
+            * *time*
+
+                Block generation timestamp.
+
+            * *key_id*
+
+                Identifier of the key that signed the block.
+
+            * *node_position*
+
+                Position of the node that generated the block in the list of full nodes.
+
+            * *version*
+
+                Block structure version.
+
+    * *hash*
+
+        Hash of the block.
+
+    * *node_position*
+
+        Position of the node that generated the block in the list of full nodes.    
+
+    * *key_id*
+
+        Identifier of the key that signed the block.
+
+    * *time*
+
+        Block generation timestamp.
+
+    * *tx_count*
+
+        Number of transactions in the block.
+
+    * *rollback_hash*
+
+        Hash of all transactions in the block.
+
+    * *mrkl_root*
+
+        Merkle root of transactions in the block.
+
+    * *bin_data*
+
+        Serialized block header, transactions in this block, previous block hash, and the private key of the node that generated this block.
+
+    * *sys_update*
+
+        Block contains a transaction that updates system parameters.
+
+    * *transactions*
+
+        List of transactions in the block with additional information for each transaction:
+
+            * *hash*
+
+                Transaction hash.
+
+            * *contract_name*
+
+                Name of the contract.
+
+            * *params*
+
+                Array with contract parameters.
+
+            * *key_id*
+
+                For all other blocks, key identifier of the key that signed the transaction.
+
+            * *time*
+
+                Transaction generation timestamp.
+
+            * *type*
+
+                Transaction type.
+
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {"1":
+        {"header":
+            {"block_id":1,
+            "time":1545342081,
+            "ecosystem_id":0,
+            "key_id":3670289659738809576,
+            "node_position":0,
+            "sign":null,
+            "hash":null,
+            "version":1},
+        "hash":"TjTSRXcyJNgCn8GHEu16S2CheO0IZglxKQa/4S/Xzw4=",
+        "ecosystem_id":0,
+        "node_position":0,
+        "key_id":3670289659738809576,
+        "time":1545342081,
+        "tx_count":1,
+        "rollbacks_hash":"47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+        "mrkl_root":"NWNhODNmZGRiYmZhNTk3OTc0MzI1ODY4YjFiNDM3NDU3NTliOGUyNThmODM0NjY1ZWExOTkwZGZjNTZjZjhlMg==",
+        "bin_data":null,
+        "sys_update":false,
+        "gen_block":false,
+        "stop_count":0,
+        "transactions":[
+            {"hash":"ZkGFY/WrvlsHXhZtpmodEoMX6MsBwF2Ji1G5Y7XgRjY=","contract_name":"","params":null,"key_id":0,"time":0,"type":0}]
+        }
+    }
+
+Errors
+""""""
+
+*E_SERVER, E_NOTFOUND*
+
+
+/data/{table}/{id}/{column}/{hash}
+----------------------------------
+
+**GET**/ If the specified hash matches the hash of the data in the specified table, column and record ID, then this request returns the data. Otherwise, returns an error. 
+
+This request does not require authorization. 
+
+Request
+"""""""
+
+.. code-block:: default 
+
+    GET
+    /data/{table}/{id}/{column}/{hash}
+
+
+* *table*
+
+    Table name.
+
+* *id*
+
+    Record ID.
+
+* *column*
+
+    Column name.
+
+* *hash*
+
+    Hash of the requested data.
+
+Response
+""""""""
+
+    Binary data.
+
+.. todo::
+
+    Errors when hashes don't match?
 
 
 keyinfo
@@ -668,6 +925,8 @@ ecosystemname
 -------------
 
 **GET**/ returns the name of an ecosystem by its identifer.
+
+This request does not require authorization.
 
 .. code-block:: default 
 
@@ -1830,7 +2089,7 @@ content/hash/{name}
 
 **POST**/ Returns a SHA256 hash of the **{name}** page. If the page or menu is not found, a 404 error is returned.
 
-This method does not reqire authorization. Because of this, to receive a correct hash when making a request to other nodes, *ecosystem*, *keyID*, *roleID*, and *isMobile* parameters must be also passed. To receive pages from other systems, a ``@ecosystem_id`` prefix must be added to the page name. For example: ``@2mypage``.
+This request does not require authorization. Because of this, to receive a correct hash when making a request to other nodes, *ecosystem*, *keyID*, *roleID*, and *isMobile* parameters must be also passed. To receive pages from other systems, a ``@ecosystem_id`` prefix must be added to the page name. For example: ``@2mypage``.
 
 Request
 """""""
@@ -1872,6 +2131,8 @@ content
 -------
 
 **POST**/ Returns a JSON-representation of the page source code from the **template** parameter. If the additional parameter **source** is specified as true or 1, the JSON-representation will be returned without execution of functions and without receiving data. The returned tree corresponds to the sent template and can be used in the visual designer.
+
+This request does not require authorization.
 
  
 Request
@@ -1958,6 +2219,8 @@ maxblockid
 
 **GET**/ Returns the highest block ID on the current node. 
 
+This request does not require authorization.
+
 Request
 """""""
 
@@ -1994,6 +2257,8 @@ block/{id}
 ----------
 
 **GET**/ Returns information on the block with the specified ID.
+
+This request does not require authorization.
 
 Request
 """""""
@@ -2078,7 +2343,9 @@ Errors
 config/centrifugo
 -----------------
 
-**GET**/ Returns centrifugo's host and port (available without login)
+**GET**/ Returns centrifugo's host and port.
+
+This request does not require authorization.
  
 Request
 """""""
@@ -2099,5 +2366,40 @@ Errors
 *E_SERVER*
  
 
+updnotificator
+--------------
+
+**POST**/ Sends all messages that haven't been sent yet to the centrifugo notification service. Only sends messages for the specified ecosystems and members.
+
+This request does not require authorization.
+
+Request
+"""""""
+
+A list in the format:
+
+* *id*
+
+    Member ID.
+
+* *ecosystem*
+
+    Ecosystem ID.
+
+.. code-block:: default 
+
+    POST
+    /updnotificator
+
+Response example
+""""""""""""""""
+
+.. code-block:: default 
+
+    200 (OK)
+    Content-Type: application/json
+    {
+        "result": true
+    }      
 
 
