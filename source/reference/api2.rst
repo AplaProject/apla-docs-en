@@ -1439,8 +1439,6 @@ Response
 
 * *id*–identifier of the contract in VM.
 * *name*–name of the smart contract with ecosystem ID. Example: ``@{idecosystem}name``.
-* *key_id*–contract owner's ID.
-
 * *stateid*–ID of the ecosystem where the contract was created.
 * *walletid* -ID the contract owner wallet.
 * *tokenid* - tokens that are accepted as contract payment.
