@@ -565,9 +565,20 @@ Operations with values of variables:
     - :ref:`simvolio-Str`
     - :ref:`simvolio-UpdateLang`
 
+Mathematical operations:
+
+.. hlist::
+  :columns: 3
+
+  - :ref:`simvolio-Floor`
+  - :ref:`simvolio-Log`
+  - :ref:`simvolio-Log10`
+  - :ref:`simvolio-Pow`
+  - :ref:`simvolio-Round`
+  - :ref:`simvolio-Sqrt`
+
 
 Operations with JSON:
-
 
 .. hlist::
     :columns: 3
@@ -2913,6 +2924,173 @@ Example
 .. code:: js
 
     val = TrimSpace(val)
+
+
+
+.. _simvolio-Floor:
+
+Floor
+-----
+
+Returns the largest integer smaller than or equal to the specified number. 
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Floor(x float|int|string) int
+
+.. describe:: x
+  
+    A number.
+
+Example
+"""""""
+
+.. code:: js
+
+    val = Floor(5.6) // returns 5
+
+
+.. _simvolio-Log:
+
+Log
+---
+
+Returns the natural logarithm of the specified number. 
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Log(x float|int|string) float
+
+.. describe:: x
+
+    A number.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = Log(10)
+
+
+.. _simvolio-Log10:
+
+Log10
+-----
+
+Returns the base-10 logarithm of the specified number.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Log10(x float|int|string) float
+
+.. describe:: x
+
+    A number.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = Log10(100)
+
+
+.. _simvolio-Pow:
+
+Pow
+---
+
+Returns the specified base to the specified power (x\ :sup:`y`).
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Pow(x float|int|string, y float|int|string) float
+
+.. describe:: x
+
+    Base number.
+
+.. describe:: y
+
+    Exponent.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = Pow(2, 3)
+
+
+.. _simvolio-Round:
+
+Round
+-----
+
+Returns the value of the specified number rounded to the nearest integer.
+
+
+Syntax
+""""""
+
+.. code-block:: text
+
+    Round(x float|int|string) int
+
+.. describe:: x
+
+    A number.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = Round(5.6)
+
+
+.. _simvolio-Sqrt:
+
+Sqrt
+----
+
+Returns the square root of the specified number.
+
+.. code-block:: text
+
+    Sqrt(x float|int|string) float
+
+.. describe:: x
+
+  A number.
+
+
+Example
+"""""""
+
+.. code:: js
+
+    val = Sqrt(225)
 
 
 .. _simvolio-StringToBytes:
