@@ -105,12 +105,6 @@ A contract can access predefined variables that contain data about the transacti
 
     * ``$key_id`` – ID of the account that signed the transaction if the contract is outside of ecosystem with ``ecosystem_id == 0``.
 
-    * ``$role_id`` – ID of the account role.
-
-        .. todo::
-
-            Check that this is still used.
-
     * ``$type`` identifier of an external contract from where the current contract was called.
 
         .. todo::
