@@ -170,15 +170,15 @@ Error List
 
     Unknown uid.
 
-.. describe:: E_VDECREATED
+.. describe:: E_OBSCREATED
 
-    Virtual Dedicated Ecosystem is already created.
+    Off-Blockchain Server is already created.
 
 
-Routes unavailable in VDE
+Routes unavailable in OBS
 =========================
 
-Requests that are not available in VDE.
+Requests that are not available in OBS.
 
 - txstatus
 - txinfo
@@ -354,11 +354,15 @@ Response
 
     Values: true, false.
 
-* *vde*
+* *obs*
 
-    Does this ecosystem have a virtual dedicated ecosystem.
+    Does this ecosystem have an off-blockchain server.
 
     Values: true, false.
+
+    .. todo::
+
+        This field description may be outdated.
 
 
 Response example
@@ -1203,7 +1207,6 @@ Request
     
 * *name*–name of the requested parameter,
 * *[ecosystem]*–ecosystem ID can be specified. The current ecosystem value will be returned by default,
-* *[vde]*–specify ``true``, if you need to recieve VDE params, in the other case you don't need to specify this parameter.
 
 Response
 """"""""
@@ -1242,7 +1245,6 @@ Request
 
 * *[limit]*–number of entries (25 by default),
 * *[offset]*–entries start offset (0 by default),
-* *[vde]*–specify *true*, if you need to recieve the list of the tables in VDE, in the other case you don't need to specify this parameter.
 
 .. code-block:: default
     
@@ -1303,7 +1305,6 @@ Request
     /api/v2/table/mytable
      
 * *name*–table name (without ecosystem ID prefix),
-* *[vde]*–specify *true*, if you need to recieve VDE params. In the other case you don't need to specify this parameter,
 
 Response
 """"""""
@@ -1354,8 +1355,7 @@ Request
 * *name*–table name
 * *[limit]*–number of entries (25 by default)
 * *[offset]*–entries start offset (0 by default)
-* *[columns]*–list of requested columns, separated by commas, if not specified, all columns will be returned. The id column will be returned in all cases
-* *[vde]*–specify *true*, if you need to recieve records from the table in VDE. In the other case you don't need to specify this parameter.
+* *[columns]*–list of requested columns, separated by commas, if not specified, all columns will be returned. The id column will be returned in all cases.
 
 .. code-block:: default 
     
@@ -1457,7 +1457,6 @@ Request
 * *tablename*–table name
 * *id*–entry ID
 * *[columns]*–a list of requested columns, separated by commas. If not specified, all columns will be returned. The id column will be returned in all cases.
-* *[vde]*–specify *true*, if you need to recieve the record from the table in VDE, in the other case you don't need to specify this parameter.
 
 .. code-block:: default 
     
@@ -1582,15 +1581,14 @@ GET/ Searches the current ecosystem and returns a record from the selected table
 Request
 """""""
  
-* *name*–name of the record in the specified table,
-* *[vde]*–should be set to true, if the record is requested from a table on VDE; otherwise, this parameter should not be specified.
+* *name*–name of the record in the specified table.
  
 Response
 """"""""
  
 * *id* – identifier of the record,
 * *name* – name of the record,
-* *other* columns of the table.
+* other columns of the table.
 
 Response example
 """"""""""""""""
@@ -1625,7 +1623,6 @@ Request
 
 * *[limit]*–number of entries (25 by default)
 * *[offset]*–entries start offset (0 by default)
-* *[vde]*–specify *true*, if you need to recieve the list of contracts from VDE, in the other case you don't need to specify this parameter.
 
 .. code-block:: default 
     
@@ -1992,11 +1989,9 @@ Request
 
 * *name*–the name or menu of the page
 
-*[lang]*–either lcid or a two-letter language code can be specified to address the corresponding language resources. For example, *en,ru,fr,en-US,en-GB*. If, for example, the *en-US* resource will not be found, the *en* resources will be used instead of the missing *en-US* ones,
+* *[lang]*–either lcid or a two-letter language code can be specified to address the corresponding language resources. For example, *en,ru,fr,en-US,en-GB*. If, for example, the *en-US* resource will not be found, the *en* resources will be used instead of the missing *en-US* ones,
 
 * *[app_id]*–application ID. Passed together with lang, because the functions that work with the language in the template engine don’t automatically recognize the AppID. Should be passed as a number,
-
-* *[vde]*–specify *true*, if you recieve data from the page or menu in VDE. Otherwise, you do not need to specify this parameter.
 
 .. code-block:: default 
     
@@ -2045,7 +2040,6 @@ Request
 """""""
  
 * *name*–name of the requested page,
-* *[vde]*–*true* should be set to true, if the page or menu is requested from VDE; otherwise, this parameter should not be specified.
 
 
 Response
@@ -2177,13 +2171,13 @@ Errors
 node/{name}
 -----------
 
-**POST** Calls the **{name}** smart contract on behalf of a node. Used for calling smart contracts from VDE contracts though the **HTTPRequest** function. Since in this case the contract can't be signed with an account key, it will be signed with the node's private key. All other parameters are similar to those when sending a contract. The called contract should be bound to an account, because the node's private key account does not have enough funds to execute the contract. If the contract is called from a VDE contract, then the authorization token **$auth_token** should be passed to **HTTPRequest**.
+**POST** Calls the **{name}** smart contract on behalf of a node. Used for calling smart contracts from OBS contracts though the **HTTPRequest** function. Since in this case the contract can't be signed with an account key, it will be signed with the node's private key. All other parameters are similar to those when sending a contract. The called contract should be bound to an account, because the node's private key account does not have enough funds to execute the contract. If the contract is called from a OBS contract, then the authorization token **$auth_token** should be passed to **HTTPRequest**.
 
 .. code-block:: js
 
     var pars, heads map
     heads["Authorization"] = "Bearer " + $auth_token
-    pars["vde"] = "false"
+    pars["obs"] = "false"
     ret = HTTPRequest("http://localhost:7079/api/v2/node/mycontract", "POST", heads, pars)
 
 

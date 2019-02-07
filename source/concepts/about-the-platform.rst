@@ -306,32 +306,32 @@ To resolve conflict situations or those critical for the operation of an ecosyst
 
 
 
-Virtual Dedicated Ecosystems
-============================
+Off-Blockchain Servers
+======================
 
-The platform allows for creation of Virtual Dedicated Ecosystems (VDE), which have the full set of functions of standard ecosystems, but work outside the blockchain. In VDE full-scale applications can be created using the contract and template languages, database tables and other software client functions. Contracts from blockchain ecosystems can be called using API.
+The platform allows for creation of Off-Blockchain Servers (OBS), which have the full set of functions of standard ecosystems, but work outside the blockchain. In OBS full-scale applications can be created using the contract and template languages, database tables and other software client functions. Contracts from blockchain ecosystems can be called using API.
 
 
 Requests to web-resources
 -------------------------
 
-The main difference between VDE and standard ecosystems is the possibility to make requests from its contracts to any web-resources via HTTP/HTTPS using the HTTPRequest function. Arguments passed to this function should be: URL, request method (GET or POST), header, and request parameters.
+The main difference between OBS and standard ecosystems is the possibility to make requests from its contracts to any web-resources via HTTP/HTTPS using the HTTPRequest function. Arguments passed to this function should be: URL, request method (GET or POST), header, and request parameters.
 
 
 Rights to read data
 -------------------
 
-Since data in VDE are not saved to the blockchain (which, however, is available for reading), they have an option to configure rights to read tables. Read rights can be set for separate columns, and for any rows using a special contract.
+Since data in OBS is not saved to the blockchain (which, however, is available for reading), they have an option to configure rights to read tables. Read rights can be set for separate columns, and for any rows using a special contract.
 
 
-Using VDE
+Using OBS
 ---------
 
-VDE can be used for the creation of registration forms and sending verification information to users’ emails or phones, storing data out of public access, and writing and testing the work of applications with their further export and import to blockchain ecosystems. Also, in VDE you can schedule contract execution, which allows for the creation of oracles, which are used for receiving data from the web and sending it to the blockchain.
+OBS can be used for the creation of registration forms and sending verification information to users’ emails or phones, storing data out of public access, and writing and testing the work of applications with their further export and import to blockchain ecosystems. Also, in OBS you can schedule contract execution, which allows for the creation of oracles, which are used for receiving data from the web and sending it to the blockchain.
 
 
-Creating a VDE
---------------
+Creating an OBS
+---------------
 
-VDE can be created on any full node on the network. Node Administrator defines the list of ecosystems that are allowed to use the functions of dedicated ecosystems, and assigns a user who will have the rights of the ecosystem founder and will be able to: install applications, accept new members to the ecosystem, and configure access rights to the ecosystem's resources.
+OBS can be created on any full node on the network. Node Administrator defines the list of ecosystems that are allowed to use the functions of OBS, and assigns a user who will have the rights of the ecosystem founder and will be able to: install applications, accept new members, and configure resource access rights.
 
