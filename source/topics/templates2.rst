@@ -2098,7 +2098,7 @@ Syntax
 
 .. code-block:: text
 
-    MenuItem(Title, Page, Params, Icon, Vde)
+    MenuItem(Title, Page, Params, Icon, Obs)
 
 .. describe:: MenuItem
 
@@ -2118,9 +2118,9 @@ Syntax
 
         Icon.
 
-    .. describe:: Vde
+    .. describe:: Obs
 
-        This parameter that defines the transition to a virtual ecosystem. If ``Vde: true``, then the link redirects to VDE; if ``Vde: false``, then the link redirects to the blockchain; if the parameter was not specified, then it is defined based on where the menu was loaded.
+        This parameter that defines the transition to an off-blockchain server. If ``Obs: true``, then the link redirects to an OBS; if ``Obs: false``, then the link redirects to the blockchain; if the parameter was not specified, then it is defined based on where the menu was loaded.
 
 
 Example

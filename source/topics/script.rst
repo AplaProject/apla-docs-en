@@ -124,7 +124,7 @@ A contract can access predefined variables that contain data about the transacti
     * ``$stack`` – stack of contract calls. It is of the *array* type and contains strings with names of the called contract. Array element 0 is the currently executed contract. The last element is the name of the original contract that was called when transaction was processed.
 
 
-    * ``$auth_token`` is the authorization token, which can be used in VDE contracts, for example, when calling contracts though API with the ``HTTPRequest`` function.
+    * ``$auth_token`` is the authorization token, which can be used in OBS contracts, for example, when calling contracts though API with the ``HTTPRequest`` function.
 
     .. todo::
 
@@ -134,7 +134,7 @@ A contract can access predefined variables that contain data about the transacti
 
         var pars, heads map
         heads["Authorization"] = "Bearer " + $auth_token
-        pars["vde"] = "false"
+        pars["obs"] = "false"
         ret = HTTPRequest("http://localhost:7079/api/v2/node/mycontract", "POST", heads, pars)
 
 
@@ -624,7 +624,7 @@ Operations with system parameters:
     - :ref:`simvolio-UpdateNotifications`
     - :ref:`simvolio-UpdateRolesNotifications`
 
-Functions for VDE mode:
+Functions for OBS mode:
 
 .. hlist::
     :columns: 3
@@ -633,16 +633,16 @@ Functions for VDE mode:
     - :ref:`simvolio-HTTPPostJSON`
 
 
-Functions for VDE Master mode:
+Functions for OBS Master mode:
 
 .. hlist::
     :columns: 3
 
-    - :ref:`simvolio-CreateVDE`
-    - :ref:`simvolio-ListVDE`
-    - :ref:`simvolio-RunVDE`
-    - :ref:`simvolio-StopVDE`
-    - :ref:`simvolio-RemoveVDE`
+    - :ref:`simvolio-CreateOBS`
+    - :ref:`simvolio-ListOBS`
+    - :ref:`simvolio-RunOBS`
+    - :ref:`simvolio-StopOBS`
+    - :ref:`simvolio-RemoveOBS`
 
 
 Simvolio functions reference
@@ -3313,7 +3313,7 @@ Sends an HTTP request to a specified address.
 
 .. note::
 
-    This function can be used only in Virtual Dedicated Ecosystems (VDE) contracts.
+    This function can be used only in Off-Blockchain Server (OBS) contracts.
 
 
 Syntax
@@ -3353,7 +3353,7 @@ Example
     var ret string
     var pars, heads, json map
     heads["Authorization"] = "Bearer " + $auth_token
-    pars["vde"] = "true"
+    pars["obs"] = "true"
     ret = HTTPRequest("http://localhost:7079/api/v2/content/page/default_page", "POST", heads, pars)
     json = JSONToMap(ret)
 
@@ -3367,7 +3367,7 @@ This function is similar to the *HTTPRequest* function, but it sends a *POST* re
 
 .. note::
 
-    This function can be used only in Virtual Dedicated Ecosystems (VDE) contracts.
+    This function can be used only in Off-Blockchain Server (OBS) contracts.
 
 
 Syntax
@@ -3399,7 +3399,7 @@ Example
     var ret string
     var heads, json map
     heads["Authorization"] = "Bearer " + $auth_token
-    ret = HTTPPostJSON("http://localhost:7079/api/v2/content/page/default_page", heads, `{"vde":"true"}`)
+    ret = HTTPPostJSON("http://localhost:7079/api/v2/content/page/default_page", heads, `{"obs":"true"}`)
     json = JSONToMap(ret)
 
 
@@ -3476,23 +3476,27 @@ Example
 
 
 
-.. _simvolio-CreateVDE:
+.. _simvolio-CreateOBS:
 
-CreateVDE
+CreateOBS
 ---------
 
-Creates a child VDE (Virtual Dedicated Ecosystem).
+Creates a child OBS (Off-Blockchain Server).
+
+.. todo::
+
+  Check that it works as described.
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    CreateVDE(VDEName string, DBUser string, DBPassword string, VDEAPIPort int)
+    CreateOBS(OBSName string, DBUser string, DBPassword string, OBSAPIPort int)
 
-.. describe:: VDEName
+.. describe:: OBSName
 
-    Name for the created VDE.
+    Name for the created OBS.
 
 .. describe:: DBUser
 
@@ -3502,7 +3506,7 @@ Syntax
 
     Password for this role.
 
-.. describe:: VDEAPIPort
+.. describe:: OBSAPIPort
 
     Port for API requests.
 
@@ -3511,52 +3515,59 @@ Syntax
     Add example.
 
 
-.. _simvolio-ListVDE:
+.. _simvolio-ListOBS:
 
-ListVDE
+ListOBS
 -------
 
-Returns a list of child VDEs ((Virtual Dedicated Ecosystems).
+Returns a list of child OBSs (Off-Blockchain Servers).
 
-This function can be used only in VDE Master mode.
+This function can be used only in OBS Master mode.
+
+.. todo::
+
+  Check that it works as described.
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    ListVDE()
+    ListOBS()
 
 Returned value
 """"""""""""""
 
-An associative array where keys are VDE names and values are process statuses.
+An associative array where keys are OBS names and values are process statuses.
 
 .. todo::
 
     Add example.
 
 
-.. _simvolio-RunVDE:
+.. _simvolio-RunOBS:
 
-RunVDE
+RunOBS
 ------
 
-Runs a process for a VDE.
+Runs a process for an OBS.
 
-This function can be used only in VDE Master mode.
+This function can be used only in OBS Master mode.
 
+.. todo::
+
+  Check that it works as described.
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    RunVDE(VDEName string)
+    RunOBS(OBSName string)
 
-.. describe:: VDEName
+.. describe:: OBSName
 
-    Name for a VDE.
+    Name for an OBS.
 
     Can contain only letters and numbers. Space symbols cannot be used.
 
@@ -3565,14 +3576,14 @@ Syntax
     Add example.
 
 
-.. _simvolio-StopVDE:
+.. _simvolio-StopOBS:
 
-StopVDE
+StopOBS
 -------
 
-Stops the process of a specified VDE.
+Stops the process of a specified OBS.
 
-This function can be used only in VDE Master mode.
+This function can be used only in OBS Master mode.
 
 
 Syntax
@@ -3580,11 +3591,11 @@ Syntax
 
 .. code-block:: text
 
-    StopVDE(VDEName string)
+    StopOBS(OBSName string)
 
-.. describe:: VDEName
+.. describe:: OBSName
 
-    Name for a VDE.
+    Name for a OBS.
 
     Can contain only letters and numbers. Space symbols cannot be used.
 
@@ -3593,29 +3604,29 @@ Syntax
     Add example.
 
 
-.. _simvolio-RemoveVDE:
+.. _simvolio-RemoveOBS:
 
-RemoveVDE
+RemoveOBS
 ---------
 
-Removes the process of the specified VDE. Stops and removes linked processes.
+Removes the process of the specified OBS. Stops and removes linked processes.
 
 .. todo::
 
-    Clarify about linked processes.
+    Clarify about linked processes. Check that it works as described.
 
-This function can be used only in VDE Master mode.
+This function can be used only in OBS Master mode.
 
 Syntax
 """"""
 
 .. code-block:: text
 
-    RemoveVDE(VDEName string)
+    RemoveOBS(OBSName string)
 
-.. describe:: VDEName
+.. describe:: OBSName
 
-    Name for a VDE.
+    Name for a OBS.
 
     Can contain only letters and numbers. Space symbols cannot be used.
 
@@ -3965,12 +3976,12 @@ Parameters:
 NewCron
 -------
 
-The contract adds a new task in cron to be launched by timer. The contract is available only in VDE systems. 
+The contract adds a new task in cron to be launched by timer. The contract is available only in OBS. 
 
 Parameters:
 
     * *Cron string* - a string that defines the launch of the contract by timer in the *cron* format.
-    * *Contract string* - name of the contract to launch in VDE; the contract must not have parameters in its ``data`` section.
+    * *Contract string* - name of the contract to launch in OBS; the contract must not have parameters in its ``data`` section.
     * *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times).
     * *Till string* - an optional string with the time when the task must be ended (this feature is not yet implemented).
     * *Conditions string* - rights to modify the task.
@@ -3979,13 +3990,13 @@ Parameters:
 EditCron
 --------
 
-This contract changes the configuration of a task in cron for launch by timer. The contract is available only in VDE systems. 
+This contract changes the configuration of a task in cron for launch by timer. The contract is available only in OBS. 
 
 Parameters:
 
     * *Id int* - task ID.
     * *Cron string* - a string that defines the launch of the contract by timer in the *cron* format; to disable a task, this parameter must be either an empty string or absent.
-    * *Contract string* - name of the contract to launch in VDE; the contract must not have parameters in its data section.
+    * *Contract string* - name of the contract to launch in OBS; the contract must not have parameters in its data section.
     * *Limit int* - an optional field, where the number of contract launches can be specified (until contract is executed this number of times).
     * *Till string* - an optional string with the time of task must be ended (this feature is not yet implemented).
     * *Conditions string* - new rights to modify the task.
