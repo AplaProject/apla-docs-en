@@ -54,7 +54,7 @@ Page structure is formed using the ``If(Condition){Body } .ElseIf(Condition){Bod
 Variables, Column Names and Language Resources
 ==============================================
 
-The unification of names of variables (on pages and in contracts), identifiers of interface page form fields, table column names and language resource labels can help significantly speed up the development of applications and make the program code easier to read. Let's suppose we want to pass parameters from an interface page to a contract. In this case, if the name of the username variable in the data section of the contract corresponds to the name of the username field of an interface page, which was passed to this contract, then you don't need to specify this ``username=username`` pair in the *Params* parameters of the *Button* function. Using the same names for variables and column names makes it easier to use the DBInsert and DBUpdate functions; for example, ``DBUpdate("member", $id, "username",$username)``. Using the same names for variables and language resource labels makes it easier to display the columns names of interface tables ``Table(mysrc,"ID=id,$username$=username")``.
+The unification of names of variables (on pages and in contracts), identifiers of interface page form fields, table column names and language resource labels can help significantly speed up the development of applications and make the program code easier to read. Let's suppose we want to pass parameters from an interface page to a contract. In this case, if the name of the username variable in the data section of the contract corresponds to the name of the username field of an interface page, which was passed to this contract, then you don't need to specify this ``username=username`` pair in the *Params* parameters of the *Button* function. Using the same names for variables and column names makes it easier to use the DBInsert and DBUpdate functions; for example, ``DBUpdate("member", $id, {username: $username})``. Using the same names for variables and language resource labels makes it easier to display the columns names of interface tables ``Table(mysrc,"ID=id,$username$=username")``.
 
 
 Access Rights
@@ -122,8 +122,8 @@ In order to prevent the execution of the TokenTransfer contract from within anot
         }
     }
     action {
-        DBUpdate("keys", $Sender_AccountId, "-amount", $Amount)
-        DBUpdate("keys", $Recipient_AccountId, "+amount", $Amount)
+        DBUpdate("keys", $Sender_AccountId, {"-amount": $Amount})
+        DBUpdate("keys", $Recipient_AccountId, {"+amount": $Amount})
     }
     }
 
