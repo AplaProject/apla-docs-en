@@ -173,6 +173,8 @@ There is a number of functions that support the **PageParams** parameter, which 
 * ``PageParams: "hello=world"`` - the page will receive the hello parameter with world as value,
 * ``PageParams: "hello=#world#"`` - the page will receive the hello parameter with the value of the world variable.
 
+.. _protypo-Val:
+
 Additionally, the **Val** function allows for obtaining data from forms, which were specified in redirect. In this case,
 
 * ``PageParams: "hello=Val(world)"`` - the page will receive the hello parameter with the value of the world form element.
