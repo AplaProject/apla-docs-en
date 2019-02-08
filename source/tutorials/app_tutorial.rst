@@ -306,7 +306,7 @@ Fill the ``action`` section. The single action is writing the message to the tab
 .. code-block:: js
 
     action {
-        DBInsert("apptable", "message", $Message)
+        DBInsert("apptable", {message: $Message})
     }
 
 
@@ -330,7 +330,7 @@ All |platform| contracts are constructed like this and always contain ``data``, 
             }
         }
         action {
-            DBInsert("apptable", "message", $Message)
+            DBInsert("apptable", {message: $Message})
         }
     }
 
@@ -417,7 +417,7 @@ Change the contract so that the author's ID and the timestamp are written to the
 .. code-block:: js
 
     action {
-        DBInsert("apptable", "message, author, timestamp", $Message, $key_id, $time)
+        DBInsert("apptable", {message: $Message, author: $key_id, timestamp: $time})
     }
 
 
