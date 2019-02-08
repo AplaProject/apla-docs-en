@@ -88,6 +88,26 @@ The action section contains the contract's main program code that retrieves addi
 	}
 
 
+Price function
+--------------
+
+A contract can contain the **price** function. This function determines the extra fuel cost for executing the contract, in fuel units. 
+
+This function can return a value of *int* and *money* types. The returned value will be added to the cost of the contract execution and multiplied by **fuel_rate** coefficient.
+
+.. code:: js
+  
+  contract MyContract {
+    action {
+               DBUpdate("keys", $key_id, {"-amount": $amount})
+               DBUpdate("keys", $recipient, {"+amount": $amount,pub: $Pub})
+    }
+    func price int {
+         return 10000
+    }
+  }
+
+
 .. _simvolio-predefined-variables:
 
 Variables in the contract
