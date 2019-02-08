@@ -235,22 +235,6 @@ Functions do not allow direct possibilities to select, update, etc.. but they al
     to_timestamp(date_column) > now()
     date_initial < now() - 30 * interval '1 day'
 
-Consider the situation when we have a value in Unix format and we need to write it in a field of type *timestamp *. In this case, when listing fields, before the name of this column you need to specify **timestamp**.
-
-.. code:: js
-
-   DBInsert("mytable", "name,timestamp mytime", "John Smith", 146724678424 )
-
-If you have a string value of time and you need to write it in a field with the type *timestamp*, in this case, **timestamp** must be specified before the value itself.
-
-.. code:: js
-
-   DBInsert("mytable", "name,mytime", "John Smith", "timestamp 2017-05-20 00:00:00" )
-   var date string
-   date = "2017-05-20 00:00:00"
-   DBInsert("mytable", "name,mytime", "John Smith", "timestamp " + date )
-   DBInsert("mytable", "name,mytime", "John Smith", "timestamp " + $txtime )
-
 
 Following Simvolio functions work with date and time in SQL format:
 
