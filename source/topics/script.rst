@@ -83,9 +83,29 @@ The action section contains the contract's main program code that retrieves addi
 .. code:: js
 
 	action {
-		DBUpdate("keys", $key_id,"-amount", $amount)
-		DBUpdate("keys", $recipient,"+amount,pub", $amount, $Pub)
+    DBUpdate("keys", $key_id, {"-amount": $amount})
+    DBUpdate("keys", $recipient, {"+amount": $amount,pub: $Pub})
 	}
+
+
+Price function
+--------------
+
+A contract can contain the **price** function. This function determines the extra fuel cost for executing the contract, in fuel units. 
+
+This function can return a value of *int* and *money* types. The returned value will be added to the cost of the contract execution and multiplied by **fuel_rate** coefficient.
+
+.. code:: js
+  
+  contract MyContract {
+    action {
+               DBUpdate("keys", $key_id, {"-amount": $amount})
+               DBUpdate("keys", $recipient, {"+amount": $amount,pub: $Pub})
+    }
+    func price int {
+         return 10000
+    }
+  }
 
 
 .. _simvolio-predefined-variables:
@@ -146,7 +166,7 @@ Predefined variable ``$result`` is used to return a value from a nested contract
 
   contract my {
     data {
-        Name string
+        Name string 
         Amount money
     }
     func conditions {
@@ -156,8 +176,10 @@ Predefined variable ``$result`` is used to return a value from a nested contract
         $ownerId = 1232
     }
     func action {
-        DBUpdate("mytable", $ownerId, "name,amount", $Name, $Amount - 10 )
-        DBUpdate("mytable2", $citizen, "amount", 10 )
+        var amount money
+        amount = $Amount - 10
+        DBUpdate("mytable", $ownerId, {name: $Name,amount: amount})
+        DBUpdate("mytable2", $citizen, {amount: 10})
     }
   }
 
@@ -212,22 +234,6 @@ Functions do not allow direct possibilities to select, update, etc.. but they al
 
     to_timestamp(date_column) > now()
     date_initial < now() - 30 * interval '1 day'
-
-Consider the situation when we have a value in Unix format and we need to write it in a field of type *timestamp *. In this case, when listing fields, before the name of this column you need to specify **timestamp**.
-
-.. code:: js
-
-   DBInsert("mytable", "name,timestamp mytime", "John Smith", 146724678424 )
-
-If you have a string value of time and you need to write it in a field with the type *timestamp*, in this case, **timestamp** must be specified before the value itself.
-
-.. code:: js
-
-   DBInsert("mytable", "name,mytime", "John Smith", "timestamp 2017-05-20 00:00:00" )
-   var date string
-   date = "2017-05-20 00:00:00"
-   DBInsert("mytable", "name,mytime", "John Smith", "timestamp " + date )
-   DBInsert("mytable", "name,mytime", "John Smith", "timestamp " + $txtime )
 
 
 Following Simvolio functions work with date and time in SQL format:
@@ -1375,7 +1381,7 @@ Example
 DBUpdateExt
 -----------
 
-The function updates columns in a record whose column has a specified value. The table must have an index for a specified column.
+The function updates columns in a record whose column matches the search condition.
 
 
 Syntax
@@ -1383,20 +1389,20 @@ Syntax
 
 .. code-block:: text
 
-    DBUpdateExt(tblname string, column string, value (int|string), params map)
+    DBUpdateExt(tblname string, where map, params map)
 
 
 .. describe:: tblname
 
     Name of the table in the database.
 
-.. describe:: column
+.. describe:: where
 
-    Name of the column by which the record will be searched for.
+    Search condition. 
 
-.. describe:: value
+    Examples: ``{name: "John"}``, ``{"id": {"$gte": 4}}``, ``{id: $key_id, ecosystem: $ecosystem_id}``.
 
-    Value for searching a record in a column.
+    For more information about search condition syntax, see :ref:`simvolio-DBFind`.
 
 .. describe:: params
 
@@ -1408,7 +1414,7 @@ Example
 
 .. code:: js
 
-    DBUpdateExt("mytable", "address", addr, {name: "John Smith", amount: 100})
+    DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
 
 
 .. _simvolio-DelColumn:
@@ -3425,7 +3431,9 @@ Example
 
 .. code:: js
 
-    DBInsert(`mytable`, `created_at`, BlockTime())
+    var mytime string
+    mytime = BlockTime()
+    DBInsert("mytable", myid, {time: mytime})
 
 
 .. _simvolio-DateTime:

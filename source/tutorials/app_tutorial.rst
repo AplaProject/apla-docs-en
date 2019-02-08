@@ -77,7 +77,7 @@ App components
 
     Tables hold information that is used by contracts and user interfaces.
 
-    Tables are regular database tables: you can query, update, and insert. These actions are performed with three :doc:`Simvolio language</topics/script>` functions: :func:`DBFind`, :func:`DBInsert`, and :func:`DBUpdate`.
+    Tables are regular database tables: you can query, update, and insert. These actions are performed with three :doc:`Simvolio language</topics/script>` functions: :ref:`simvolio-DBFind`, :ref:`simvolio-DBInsert`, and :ref:`simvolio-DBUpdate`.
 
 
 * User interfaces
@@ -306,7 +306,7 @@ Fill the ``action`` section. The single action is writing the message to the tab
 .. code-block:: js
 
     action {
-        DBInsert("apptable", "message", $Message)
+        DBInsert("apptable", {message: $Message})
     }
 
 
@@ -330,7 +330,7 @@ All |platform| contracts are constructed like this and always contain ``data``, 
             }
         }
         action {
-            DBInsert("apptable", "message", $Message)
+            DBInsert("apptable", {message: $Message})
         }
     }
 
@@ -417,7 +417,7 @@ Change the contract so that the author's ID and the timestamp are written to the
 .. code-block:: js
 
     action {
-        DBInsert("apptable", "message, author, timestamp", $Message, $key_id, $time)
+        DBInsert("apptable", {message: $Message, author: $key_id, timestamp: $time})
     }
 
 
@@ -475,7 +475,7 @@ Get data from the table
 
 At the moment, the page template does nothing. Change the code, so that the page displays data from the ``apptable`` table.
 
-#. To request data from a table, use the :func:`DBFind` function. 
+#. To request data from a table, use the :ref:`simvolio-DBFind` function. 
 
     The function call in the following exaple gets data from the ``apptable`` table, puts it into the ``src_table`` source, and orders it by the timestamp field. The ``src_table`` source is later used as a source of data for the table view on the page.
 
@@ -610,7 +610,7 @@ Sending messages
 
 Buttons in Protypo can execute contracts and open pages, depending on the arguments.
 
-The :func:`Button` function has two arguments for contracts:
+The :ref:`protypo-Button` function has two arguments for contracts:
 
 * ``Contract``
 
@@ -626,7 +626,7 @@ Form
 
 To send data to contracts, add a form to the app's page. This form must have an input field for the message, and a button that will activate the AppContract contract.
 
-Below is an example of such form. It is enclosed in its own :func:`Div`. Place it after the Div element that holds the table view. The :func:`Input` field of this form has a defined name, ``message_input``. This name is used by the button to send ``Message`` parameter value to the contract. Finally, :func:`Val` function is used to obtain the value of the input field.
+Below is an example of such form. It is enclosed in its own :ref:`protypo-Div`. Place it after the Div element that holds the table view. The :ref:`protypo-Input` field of this form has a defined name, ``message_input``. This name is used by the button to send ``Message`` parameter value to the contract. Finally, :ref:`Val <protypo-Val>` function is used to obtain the value of the input field.
 
 .. code-block:: default
 
@@ -678,7 +678,7 @@ This navigation requires two variables to store the table view state:
 Record count
 """"""""""""
 
-To calculate ``#record_count#``, modify the existing :func:`DBFind` function call. The variable specified in the ``.Count()`` call will store the record count.
+To calculate ``#record_count#``, modify the existing :ref:`protypo-DBFind` function call. The variable specified in the ``.Count()`` call will store the record count.
 
     .. code-block:: default
         
@@ -690,7 +690,7 @@ Table offset
 
 The table view offset must be passed to the page when it is opened. If ``#table_view_offset#`` is not passed, it is assumed to be ``0``.
 
-Add the following code to the top of the page template. This code uses conditionals. :func:`GetVar` function checks if the variable is set. :func:`SetVar` function sets the variable.
+Add the following code to the top of the page template. This code uses conditionals. :ref:`protypo-GetVar` function checks if the variable is set. :ref:`protypo-SetVar` function sets the variable.
 
     .. code-block:: default
 
@@ -699,7 +699,7 @@ Add the following code to the top of the page template. This code uses condition
             SetVar(table_view_offset, 0)
         }
 
-Modify the :func:`DBFind` function call again. This time it must use the new table view offset. 
+Modify the :ref:`protypo-DBFind` function call again. This time it must use the new table view offset. 
 
     .. code-block:: default
 
@@ -713,7 +713,7 @@ Buttons in Protypo can execute contracts and open pages, depending on the argume
 
 If you haven't already done so, open the page in the editor, and delete the existing *More* button.
 
-Afterwards, locate the :func:`Div` function call that defines the footer, ``Div(Class: panel-footer text-right)``. Add the button code to it.
+Afterwards, locate the :ref:`protypo-Div` function call that defines the footer, ``Div(Class: panel-footer text-right)``. Add the button code to it.
 
     .. code-block:: default
 
