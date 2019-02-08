@@ -83,8 +83,8 @@ The action section contains the contract's main program code that retrieves addi
 .. code:: js
 
 	action {
-		DBUpdate("keys", $key_id,"-amount", $amount)
-		DBUpdate("keys", $recipient,"+amount,pub", $amount, $Pub)
+    DBUpdate("keys", $key_id, {"-amount": $amount})
+    DBUpdate("keys", $recipient, {"+amount": $amount,pub: $Pub})
 	}
 
 
@@ -166,7 +166,7 @@ Predefined variable ``$result`` is used to return a value from a nested contract
 
   contract my {
     data {
-        Name string
+        Name string 
         Amount money
     }
     func conditions {
@@ -176,8 +176,10 @@ Predefined variable ``$result`` is used to return a value from a nested contract
         $ownerId = 1232
     }
     func action {
-        DBUpdate("mytable", $ownerId, "name,amount", $Name, $Amount - 10 )
-        DBUpdate("mytable2", $citizen, "amount", 10 )
+        var amount money
+        amount = $Amount - 10
+        DBUpdate("mytable", $ownerId, {name: $Name,amount: amount})
+        DBUpdate("mytable2", $citizen, {amount: 10})
     }
   }
 
@@ -1395,7 +1397,7 @@ Example
 DBUpdateExt
 -----------
 
-The function updates columns in a record whose column has a specified value. The table must have an index for a specified column.
+The function updates columns in a record whose column matches the search condition.
 
 
 Syntax
@@ -1403,20 +1405,20 @@ Syntax
 
 .. code-block:: text
 
-    DBUpdateExt(tblname string, column string, value (int|string), params map)
+    DBUpdateExt(tblname string, where map, params map)
 
 
 .. describe:: tblname
 
     Name of the table in the database.
 
-.. describe:: column
+.. describe:: where
 
-    Name of the column by which the record will be searched for.
+    Search condition. 
 
-.. describe:: value
+    Examples: ``{name: "John"}``, ``{"id": {"$gte": 4}}``, ``{id: $key_id, ecosystem: $ecosystem_id}``.
 
-    Value for searching a record in a column.
+    For more information about search condition syntax, see :ref:`simvolio-DBFind`.
 
 .. describe:: params
 
@@ -1428,7 +1430,7 @@ Example
 
 .. code:: js
 
-    DBUpdateExt("mytable", "address", addr, {name: "John Smith", amount: 100})
+    DBUpdateExt("mytable", {id: $key_id, ecosystem: $ecosystem_id}, {name: "John Smith", amount: 100})
 
 
 .. _simvolio-DelColumn:
