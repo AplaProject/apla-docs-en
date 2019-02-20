@@ -165,7 +165,7 @@ Go language
 Install Go as described in the `official documentation <https://golang.org/doc/install#tarball>`_.
 
 
-1) Download the latest stable version of Go (1.11.2) from the `Golang official site <https://golang.org/dl/>`_ or via the command line:
+1) Download the latest stable version of Go (> 1.10.x) from the `Golang official site <https://golang.org/dl/>`_ or via the command line:
 
 .. code-block:: bash
 
@@ -202,7 +202,7 @@ Install Go as described in the `official documentation <https://golang.org/doc/i
 PostgreSQL
 """"""""""
 
-1) Install PostgreSQL and psql:
+1) Install PostgreSQL (> v.10) and psql:
 
 .. code-block:: bash
 
@@ -212,23 +212,23 @@ PostgreSQL
 Centrifugo
 """"""""""
 
-1) Download Centrifugo version 1.7.9 `from GitHub <https://github.com/centrifugal/centrifugo/releases/>`_ or via command line:
+1) Download Centrifugo version 1.8.0 `from GitHub <https://github.com/centrifugal/centrifugo/releases/>`_ or via command line:
 
 
 .. code-block:: bash
 
-    wget https://github.com/centrifugal/centrifugo/releases/download/v1.7.9/centrifugo-1.7.9-linux-amd64.zip \
-    && unzip centrifugo-1.7.9-linux-amd64.zip \
+    wget https://github.com/centrifugal/centrifugo/releases/download/v1.8.0/centrifugo-1.8.0-linux-amd64.zip \
+    && unzip centrifugo-1.8.0-linux-amd64.zip \
     && mkdir centrifugo \
-    && mv centrifugo-1.7.9-linux-amd64/* centrifugo/
+    && mv centrifugo-1.8.0-linux-amd64/* centrifugo/
 
 
 2) Remove temporary files:
 
 .. code-block:: bash
 
-    rm -R centrifugo-1.7.9-linux-amd64 \
-    && rm centrifugo-1.7.9-linux-amd64.zip
+    rm -R centrifugo-1.8.0-linux-amd64 \
+    && rm centrifugo-1.8.0-linux-amd64.zip
 
 
 Directories
